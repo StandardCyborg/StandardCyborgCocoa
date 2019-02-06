@@ -74,7 +74,7 @@ class AspectFillTextureCommandEncoder {
         // This enforces either fill (cover if you're into css) by comparing the space we're
         // aiming to fill with the aspect ratio of the input.
         var imageScale: float2
-        if (sourceAspectRatio > resultAspectRatio) {
+        if sourceAspectRatio > resultAspectRatio {
             // The source data is wider than the display
             imageScale = float2(sourceAspectRatio / resultAspectRatio, 1.0)
         } else {

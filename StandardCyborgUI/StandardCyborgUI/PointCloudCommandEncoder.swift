@@ -100,7 +100,7 @@ public class PointCloudCommandEncoder {
                                pointSize: Float,
                                outputTexture: MTLTexture)
     {
-        guard pointCloud.pointCount > 0 else { return }
+        guard pointCloud.pointCount > 0, var pointsData = pointCloud.pointsData else { return }
         
         if _depthTexture == nil {
             let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float,
@@ -117,7 +117,6 @@ public class PointCloudCommandEncoder {
         let pointCount = pointCloud.pointCount
         let pointsBufferLength = _roundUpToMultiple(value: pointStride * pointCount, multiple: 4096)
         
-        var pointsData = pointCloud.pointsData!
         let pointsBytes: UnsafeMutableRawPointer = pointsData.withUnsafeMutableBytes { UnsafeMutableRawPointer($0) }
         let pointsBuffer = _device.makeBuffer(bytesNoCopy: pointsBytes,
                                               length: pointsBufferLength,
