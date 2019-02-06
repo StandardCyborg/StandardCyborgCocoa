@@ -1,0 +1,7 @@
+github "tristanhimmelman/ObjectMapper"
+
+github "mxcl/PromiseKit"
+github "PromiseKit/Foundation" 
+
+github "ZipArchive/ZipArchive"
+

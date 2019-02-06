@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_9" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="StandardCyborgExample" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="812"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="4sE-4M-wBv">
+                                <rect key="frame" x="50" y="58" width="275" height="616"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="StandardCyborgLogoText" translatesAutoresizingMaskIntoConstraints="NO" id="uwJ-9b-Dd9">
+                                        <rect key="frame" x="0.0" y="0.0" width="77" height="39"/>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="750" verticalHuggingPriority="251" horizontalCompressionResistancePriority="749" text="Scanner" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VuP-8L-BYd">
+                                        <rect key="frame" x="0.0" y="236.66666666666666" width="229.66666666666666" height="71.666666666666657"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="60"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YAf-BB-BYA" userLabel="Horizontal line">
+                                        <rect key="frame" x="0.0" y="324.33333333333331" width="229.66666666666666" height="10"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="10" id="1OX-mE-0N2"/>
+                                        </constraints>
+                                    </view>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Your Scan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nG7-M6-g5e">
+                                        <rect key="frame" x="0.0" y="354.33333333333331" width="87" height="21.666666666666686"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" clipsSubviews="YES" contentMode="scaleAspectFit" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bVY-y3-2tz">
+                                        <rect key="frame" x="0.0" y="396" width="275" height="220"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.15014982876712329" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="bVY-y3-2tz" secondAttribute="height" multiplier="5:4" id="aNk-Oy-ao1"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="12"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" title="no scan yet"/>
+                                        <state key="disabled" title="No cat scanned yet"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                <integer key="value" value="15"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
+                                        <connections>
+                                            <action selector="showScan:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kqG-KM-zNI"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="nG7-M6-g5e" secondAttribute="trailing" id="1rI-gB-bLX"/>
+                                    <constraint firstItem="nG7-M6-g5e" firstAttribute="top" secondItem="YAf-BB-BYA" secondAttribute="bottom" constant="20" id="4bm-A3-Vhn"/>
+                                    <constraint firstItem="uwJ-9b-Dd9" firstAttribute="leading" secondItem="4sE-4M-wBv" secondAttribute="leading" id="FM9-Gb-EgK"/>
+                                    <constraint firstItem="bVY-y3-2tz" firstAttribute="top" secondItem="nG7-M6-g5e" secondAttribute="bottom" constant="20" id="aJu-YU-wDA"/>
+                                    <constraint firstItem="YAf-BB-BYA" firstAttribute="leading" secondItem="4sE-4M-wBv" secondAttribute="leading" id="asX-j8-8Db"/>
+                                    <constraint firstAttribute="trailing" secondItem="bVY-y3-2tz" secondAttribute="trailing" id="bMP-Nh-Ljf"/>
+                                    <constraint firstAttribute="bottom" secondItem="bVY-y3-2tz" secondAttribute="bottom" id="k0r-rB-JEg"/>
+                                    <constraint firstItem="bVY-y3-2tz" firstAttribute="leading" secondItem="4sE-4M-wBv" secondAttribute="leading" id="nVI-Lb-xDQ"/>
+                                    <constraint firstItem="YAf-BB-BYA" firstAttribute="top" secondItem="VuP-8L-BYd" secondAttribute="bottom" constant="16" id="oSn-kp-gMR"/>
+                                    <constraint firstItem="nG7-M6-g5e" firstAttribute="leading" secondItem="4sE-4M-wBv" secondAttribute="leading" id="oVj-7j-k0P"/>
+                                    <constraint firstItem="YAf-BB-BYA" firstAttribute="trailing" secondItem="VuP-8L-BYd" secondAttribute="trailing" id="prx-E9-sB9"/>
+                                    <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="VuP-8L-BYd" secondAttribute="trailing" id="rcc-vW-X82"/>
+                                    <constraint firstItem="VuP-8L-BYd" firstAttribute="leading" secondItem="4sE-4M-wBv" secondAttribute="leading" id="sBm-6r-WQP"/>
+                                    <constraint firstItem="uwJ-9b-Dd9" firstAttribute="top" secondItem="4sE-4M-wBv" secondAttribute="top" id="vrY-dK-Yc7"/>
+                                </constraints>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="psc-aW-mFu">
+                                <rect key="frame" x="0.0" y="724" width="375" height="88"/>
+                                <color key="backgroundColor" name="SaveAction"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="88" id="4jo-KX-v8X"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
+                                <state key="normal" title="Scan">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <connections>
+                                    <action selector="startScanning:" destination="BYZ-38-t0r" eventType="touchUpInside" id="dKd-Bg-0zu"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="psc-aW-mFu" firstAttribute="top" secondItem="4sE-4M-wBv" secondAttribute="bottom" constant="50" id="7UK-9a-CF4"/>
+                            <constraint firstItem="4sE-4M-wBv" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="50" id="AQk-nH-FOt"/>
+                            <constraint firstItem="psc-aW-mFu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="RPn-qv-KGO"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="psc-aW-mFu" secondAttribute="trailing" id="f7Q-Ts-T9d"/>
+                            <constraint firstItem="4sE-4M-wBv" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="14" id="iQ3-9e-VN9"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="4sE-4M-wBv" secondAttribute="trailing" constant="50" id="m5E-X3-hX7"/>
+                            <constraint firstAttribute="bottom" secondItem="psc-aW-mFu" secondAttribute="bottom" id="wNo-XK-UEU"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <connections>
+                        <outlet property="showScanButton" destination="bVY-y3-2tz" id="z9t-QU-apz"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140" y="132.26600985221674"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="StandardCyborgLogoText" width="77" height="39"/>
+        <namedColor name="SaveAction">
+            <color red="0.60000002384185791" green="1" blue="0.75999999046325684" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
+        </namedColor>
+    </resources>
+</document>
