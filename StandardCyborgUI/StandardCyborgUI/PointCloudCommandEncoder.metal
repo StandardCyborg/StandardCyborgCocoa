@@ -46,7 +46,7 @@ vertex ProjectedVertex RenderSCPointCloudVertex(Vertex v [[stage_in]],
     
     float3 viewPosition = (uniforms->modelView * float4(v.position, 1)).xyz;
     float3 normal = normalize(uniforms->normalMatrix * v.normal);
-    float pointSize = (normal.z < 0 && v.weight > 0.0) ? (uniforms->pointSize * fadeIn) : 0;
+    float pointSize = (normal.z > 0 && v.weight > 0.0) ? (uniforms->pointSize * fadeIn) : 0;
     
     // Eye vector is implicitly at the origin since we're in view coordinates
     float3 positionRelEye = normalize(viewPosition);

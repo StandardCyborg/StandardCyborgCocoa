@@ -18,6 +18,7 @@ FOUNDATION_EXPORT const unsigned char StandardCyborgFusionVersionString[];
 
 #import <StandardCyborgFusion/CVPixelBufferHelpers.h>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
+#import <StandardCyborgFusion/SCMeshingOperation.h>
 #import <StandardCyborgFusion/SCPointCloud.h>
 #import <StandardCyborgFusion/SCPointCloud+FileIO.h>
 #import <StandardCyborgFusion/SCPointCloud+Metal.h>
