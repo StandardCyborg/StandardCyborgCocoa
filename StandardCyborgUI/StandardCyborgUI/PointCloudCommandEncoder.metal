@@ -49,7 +49,7 @@ vertex ProjectedVertex RenderSCPointCloudVertex(Vertex v [[stage_in]],
     float pointSize = (normal.z > 0 && v.weight > 0.0) ? (uniforms->pointSize * fadeIn) : 0;
     
     // Eye vector is implicitly at the origin since we're in view coordinates
-    float3 positionRelEye = normalize(viewPosition);
+    float3 positionRelEye = -normalize(viewPosition);
     float2 matcapLookup = computeMatcap(positionRelEye, normal);
     
     float3 matcapColor = matcap.sample(matcapSampler, float2(1.0 - matcapLookup.x, matcapLookup.y)).xyz;
