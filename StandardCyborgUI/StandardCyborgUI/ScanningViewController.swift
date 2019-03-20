@@ -176,8 +176,8 @@ import UIKit
         dismissButton.center = CGPoint(x: 20 + 0.5 * dismissButton.frame.width,
                                        y: 10 + 0.5 * dismissButton.frame.height + view.safeAreaInsets.top)
         shutterButton.sizeToFit()
-        shutterButton.center = CGPoint(x: view.frame.midX,
-                                       y: view.frame.maxY - 5 - 0.5 * shutterButton.frame.size.height - view.safeAreaInsets.bottom)
+        shutterButton.center = CGPoint(x: view.bounds.midX,
+                                       y: view.bounds.maxY - 5 - 0.5 * shutterButton.frame.size.height - view.safeAreaInsets.bottom)
     }
     
     override public func didReceiveMemoryWarning() {
