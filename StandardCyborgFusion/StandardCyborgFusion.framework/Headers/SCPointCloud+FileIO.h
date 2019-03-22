@@ -14,7 +14,11 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (nullable instancetype)initWithPLYPath:(NSString *)PLYPath;
 
+- (nullable instancetype)initWithOBJPath:(NSString *)OBJPath;
+
 - (BOOL)writeToPLYAtPath:(NSString *)PLYPath;
+
+- (BOOL)writeToOBJAtPath:(NSString *)OBJPath;
 
 - (BOOL)writeToUSDZAtPath:(NSString *)USDZPath;
 

@@ -55,6 +55,11 @@ typedef NS_ENUM(NSUInteger, SCReconstructionManagerAPIError) {
 /** Continually updated while reconstruction is in process */
 @property (nonatomic, readonly) SCReconstructionManagerStatistics currentStatistics;
 
+/** The gravity vector of the current scan. */
+@property (nonatomic, readonly) simd_float3 gravity;
+
+/** When YES, the input depth frames are flipped horizontally before assimilating or reconstructing single frames. Useful when scanning using a mirror. */
+@property (nonatomic) BOOL flipsInputHorizontally;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithDevice:(id<MTLDevice>)device

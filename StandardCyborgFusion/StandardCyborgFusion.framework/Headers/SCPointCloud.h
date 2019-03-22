@@ -41,6 +41,11 @@
 /** Buffer for all points in the cloud. Position, normal, and other data for each point are interleaved at the offsets provided. */
 @property (nonatomic, readonly) NSData *pointsData;
 
+@property (nonatomic, readonly) simd_float3 gravity;
+
+/** Computes the geometric mean of this point cloud */
+- (simd_float3)centerOfMass;
+
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
