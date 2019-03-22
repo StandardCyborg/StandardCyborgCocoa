@@ -216,8 +216,8 @@ public class PointCloudCommandEncoder {
         }
         
         let projection = simd_float4x4([
-            float4([-2 * fx / referenceSize * imageScale[0], 0, 0, 0]),
-            float4([ 0, -2 * fy / referenceSize * imageScale[1], 0, 0]),
+            float4([ 2 * fx / referenceSize * imageScale[0], 0, 0, 0]),
+            float4([ 0,  2 * fy / referenceSize * imageScale[1], 0, 0]),
             float4([ 0,  0, (far + near) / (near - far), -1]),
             float4([ 0,  0, 2 * far * near / (near - far), 0])
         ])
@@ -227,8 +227,8 @@ public class PointCloudCommandEncoder {
         // Construct an intrinsic matrix which flips the image vertically on the screen, swaps
         // the horizontal and vertical axes, and also performs a self-flip.
         let extrinsic = simd_float4x4([
-            float4([  0, -1,  0,  0 ]),
-            float4([ -1,  0,  0,  0 ]), // This line performs the "selfie flip"
+            float4([  0,  1,  0,  0 ]),
+            float4([  1,  0,  0,  0 ]), // This line performs the "selfie flip"
             float4([  0,  0,  1,  0 ]),
             float4([  0,  0,  0,  1 ]),
         ])
