@@ -9,6 +9,8 @@
 #import <Foundation/Foundation.h>
 #import <simd/simd.h>
 
+#if !TARGET_OS_OSX
+
 #import <StandardCyborgFusion/SCReconstructionManagerParameters.h>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
 
@@ -108,3 +110,5 @@ NS_SWIFT_NAME(accumulate(depthBuffer:colorBuffer:calibrationData:));
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif // !TARGET_OS_OSX
