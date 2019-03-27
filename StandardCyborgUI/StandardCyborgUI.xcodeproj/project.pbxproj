@@ -154,7 +154,7 @@
 				TargetAttributes = {
 					7620D24621CDACEA008D0095 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1010;
+						LastSwiftMigration = 1020;
 					};
 				};
 			};
@@ -164,6 +164,7 @@
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 7620D23D21CDACEA008D0095;
 			productRefGroup = 7620D24821CDACEA008D0095 /* Products */;
