@@ -98,6 +98,7 @@ public class PointCloudCommandEncoder {
                                depthCameraCalibrationData: AVCameraCalibrationData,
                                viewMatrix: simd_float4x4,
                                pointSize: Float,
+                               flipsInputHorizontally: Bool = false,
                                outputTexture: MTLTexture)
     {
         guard pointCloud.pointCount > 0, var pointsData = pointCloud.pointsData else { return }
@@ -128,7 +129,8 @@ public class PointCloudCommandEncoder {
                                          viewMatrix: viewMatrix,
                                          resultWidth: outputTexture.width,
                                          resultHeight: outputTexture.height,
-                                         pointSize: pointSize)
+                                         pointSize: pointSize,
+                                         flipsInputHorizontally: flipsInputHorizontally)
         
         let passDescriptor = MTLRenderPassDescriptor()
         passDescriptor.colorAttachments[0].texture = outputTexture
@@ -164,7 +166,8 @@ public class PointCloudCommandEncoder {
                                              viewMatrix: simd_float4x4,
                                              resultWidth: Int,
                                              resultHeight: Int,
-                                             pointSize: Float)
+                                             pointSize: Float,
+                                             flipsInputHorizontally: Bool)
     {
         // The full perpective matrix based given intrinsic matrix K,
         //
@@ -226,12 +229,15 @@ public class PointCloudCommandEncoder {
         
         // Construct an intrinsic matrix which flips the image vertically on the screen, swaps
         // the horizontal and vertical axes, and also performs a self-flip.
-        let extrinsic = simd_float4x4([
+        var extrinsic = simd_float4x4([
             float4([  0,  1,  0,  0 ]),
-            float4([  1,  0,  0,  0 ]), // This line performs the "selfie flip"
+            float4([  1,  0,  0,  0 ]),
             float4([  0,  0,  1,  0 ]),
             float4([  0,  0,  0,  1 ]),
         ])
+        if flipsInputHorizontally {
+            extrinsic.columns.0.y = -1
+        }
         
         let modelView = matrix_multiply(extrinsic, viewInverse)
         

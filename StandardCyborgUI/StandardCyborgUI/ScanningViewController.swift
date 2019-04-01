@@ -228,10 +228,10 @@ import UIKit
         }
         
         scanningViewRenderer.draw(colorBuffer: colorBuffer,
-                                   pointCloud: pointCloud,
-                                   depthCameraCalibrationData: depthCalibrationData,
-                                   viewMatrix: _latestViewMatrix,
-                                   into: _metalLayer)
+                                  pointCloud: pointCloud,
+                                  depthCameraCalibrationData: depthCalibrationData,
+                                  viewMatrix: _latestViewMatrix,
+                                  into: _metalLayer)
         
         if isScanning {
             _reconstructionManager.accumulate(depthBuffer: depthBuffer,

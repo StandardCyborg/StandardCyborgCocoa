@@ -11,9 +11,8 @@ import simd
 class AspectFillTextureCommandEncoder {
     
     private struct Uniforms {
-        var minDepth: Float = 0
-        var maxDepth: Float = .greatestFiniteMagnitude
         var transform = simd_float3x3(0)
+        var alpha: Float = 0.3
     }
     
     private let _pipelineState: MTLComputePipelineState
