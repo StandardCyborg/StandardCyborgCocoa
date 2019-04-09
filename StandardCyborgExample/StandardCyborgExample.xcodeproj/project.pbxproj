@@ -14,8 +14,8 @@
 		7642B80621E679E900BC45C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7642B80421E679E900BC45C7 /* LaunchScreen.storyboard */; };
 		7642B82021E69B5B00BC45C7 /* StandardCyborgUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7642B81B21E69B3500BC45C7 /* StandardCyborgUI.framework */; };
 		7642B82321E69CBB00BC45C7 /* StandardCyborgFusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7642B82221E69CBB00BC45C7 /* StandardCyborgFusion.framework */; };
-		7642B82521E69CD600BC45C7 /* StandardCyborgFusion.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7642B82221E69CBB00BC45C7 /* StandardCyborgFusion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7642B82621E69CD600BC45C7 /* StandardCyborgUI.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7642B81B21E69B3500BC45C7 /* StandardCyborgUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7642B82521E69CD600BC45C7 /* StandardCyborgFusion.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7642B82221E69CBB00BC45C7 /* StandardCyborgFusion.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7642B82621E69CD600BC45C7 /* StandardCyborgUI.framework in Copy Frameworks */ = {isa = PBXBuildFile; fileRef = 7642B81B21E69B3500BC45C7 /* StandardCyborgUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -36,15 +36,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		7642B82421E69CC900BC45C7 /* CopyFiles */ = {
+		7642B82421E69CC900BC45C7 /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7642B82521E69CD600BC45C7 /* StandardCyborgFusion.framework in CopyFiles */,
-				7642B82621E69CD600BC45C7 /* StandardCyborgUI.framework in CopyFiles */,
+				7642B82521E69CD600BC45C7 /* StandardCyborgFusion.framework in Copy Frameworks */,
+				7642B82621E69CD600BC45C7 /* StandardCyborgUI.framework in Copy Frameworks */,
 			);
+			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -131,7 +132,7 @@
 				7642B7F421E679E800BC45C7 /* Sources */,
 				7642B7F521E679E800BC45C7 /* Frameworks */,
 				7642B7F621E679E800BC45C7 /* Resources */,
-				7642B82421E69CC900BC45C7 /* CopyFiles */,
+				7642B82421E69CC900BC45C7 /* Copy Frameworks */,
 			);
 			buildRules = (
 			);
@@ -364,8 +365,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion";
+				DEVELOPMENT_TEAM = KAW83335BG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/../StandardCyborgFusion",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/StandardCyborgExample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -374,8 +378,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StandardCyborg.StandardCyborgExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
 			};
 			name = Debug;
 		};
@@ -384,8 +390,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion";
+				DEVELOPMENT_TEAM = KAW83335BG;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(BUILT_PRODUCTS_DIR)",
+					"$(PROJECT_DIR)/../StandardCyborgFusion",
+				);
 				INFOPLIST_FILE = "$(SRCROOT)/StandardCyborgExample/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -394,8 +403,10 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StandardCyborg.StandardCyborgExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				VALID_ARCHS = arm64;
 			};
 			name = Release;
 		};

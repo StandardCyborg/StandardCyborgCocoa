@@ -383,7 +383,7 @@ import UIKit
     
     private func _cancelCountdown() {
         ScanningHapticFeedbackEngine.shared.scanningCanceled()
-        _countdownLabel.alpha = 1
+        _countdownLabel.alpha = 0
         _state = .default
     }
     

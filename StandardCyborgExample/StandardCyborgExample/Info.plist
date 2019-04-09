@@ -24,8 +24,8 @@
 	<string>StandardCyborgExample uses the front-facing camera for 3D scanning</string>
 	<key>NSMainStoryboardFile</key>
 	<string>LaunchScreen</string>
-    <key>SC_API_KEY</key>
-    <string>REPLACE_WITH_YOUR_API_KEY</string>
+	<key>SC_API_KEY</key>
+	<string>mKRRsEK7sdGo546N</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
