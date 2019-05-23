@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Metal
 import simd
 
 class AspectFillTextureCommandEncoder {
@@ -13,6 +14,7 @@ class AspectFillTextureCommandEncoder {
     private struct Uniforms {
         var transform = simd_float3x3(0)
         var alpha: Float = 0.3
+        var __memoryPadding = simd_float4.zero
     }
     
     private let _pipelineState: MTLComputePipelineState
@@ -31,7 +33,8 @@ class AspectFillTextureCommandEncoder {
                         colorBuffer: CVPixelBuffer,
                         outputTexture: MTLTexture)
     {
-        let colorTexture = _metalTexture(fromColorBuffer: colorBuffer)!
+        guard let colorTexture = _metalTexture(fromColorBuffer: colorBuffer)
+            else { return }
         
         _uniforms.transform = AspectFillTextureCommandEncoder._buildRotateAspectFitTransform(
             sourceWidth: colorTexture.width,
@@ -127,7 +130,7 @@ class AspectFillTextureCommandEncoder {
                                                   0,
                                                   &texture)
         
-        return CVMetalTextureGetTexture(texture!)
+        return texture == nil ? nil : CVMetalTextureGetTexture(texture!)
     }
     
     private class func _buildColorPipelineState(withDevice device: MTLDevice, library: MTLLibrary) -> MTLComputePipelineState {
