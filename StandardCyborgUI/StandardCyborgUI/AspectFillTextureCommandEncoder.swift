@@ -8,13 +8,14 @@
 import Foundation
 import Metal
 import simd
+import StandardCyborgFusion
 
 public class AspectFillTextureCommandEncoder {
     
     private struct Uniforms {
         var transform = simd_float3x3(0)
         var alpha: Float = 0.3
-        var __memoryPadding = simd_float4.zero
+        var __memoryPadding = simd_float4(0)
     }
     
     private let _pipelineState: MTLComputePipelineState

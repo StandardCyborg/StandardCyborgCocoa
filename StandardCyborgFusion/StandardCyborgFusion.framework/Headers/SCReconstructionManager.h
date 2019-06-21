@@ -63,6 +63,12 @@ typedef NS_ENUM(NSUInteger, SCReconstructionManagerAPIError) {
 /** When YES, the input depth frames are flipped horizontally before assimilating or reconstructing single frames. Useful when scanning using a mirror. */
 @property (nonatomic) BOOL flipsInputHorizontally;
 
+/** When YES, assimilated frame metadata will be provided with the color buffer for the frame that was assimilated. Uses more RAM. */
+@property (nonatomic) BOOL includesColorBuffersInMetadata;
+
+/** When non-empty, clips the reconstruction region of incoming depth buffers and frames to this position and size, each normalized from [0..1] */
+@property (nonatomic) CGRect normalizedFrameClipRegion;
+
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithDevice:(id<MTLDevice>)device
                   commandQueue:(id<MTLCommandQueue>)commandQueue
