@@ -13,9 +13,10 @@ import UIKit
 @objc public class PointCloudPreviewViewController: UIViewController, SCNSceneRendererDelegate {
     
     /** A convenience initializer that simply calls init and sets the point cloud */
-    @objc public convenience init(pointCloud: SCPointCloud) {
+    @objc public convenience init(pointCloud: SCPointCloud, landmarks: [SCLandmark3D]?) {
         self.init()
         self.pointCloud = pointCloud
+        self.landmarks = landmarks
         _buildNodeFromPointCloud()
     }
     
@@ -58,9 +59,10 @@ import UIKit
     // MARK: - Public
     
     /** Set this or call the convenience initializer before presenting this view controller */
-    @objc public var pointCloud: SCPointCloud? {
-        didSet { _buildNodeFromPointCloud() }
-    }
+    @objc public var pointCloud: SCPointCloud?
+    
+    /** Set this or call the convenience initializer before presenting this view controller */
+    @objc public var landmarks: [SCLandmark3D]?
     
     /** A snapshot of the point cloud as rendered, which becomes available
         as soon as the view controller's view appears */
@@ -82,6 +84,10 @@ import UIKit
     
     override public func viewWillAppear(_ animated: Bool) {
         sceneView.pointOfView!.transform = _initialPointOfView
+        
+        if _pointCloudNode == nil && pointCloud != nil {
+            _buildNodeFromPointCloud()
+        }
         
         leftButton.isHidden = leftButton.title(for: UIControl.State.normal)?.isEmpty ?? true
         rightButton.isHidden = rightButton.title(for: UIControl.State.normal)?.isEmpty ?? true
@@ -139,7 +145,7 @@ import UIKit
             child.removeFromParentNode()
         }
         
-        _pointCloudNode = pointCloud?.buildNode()
+        _pointCloudNode = pointCloud?.buildNode(with: landmarks)
         _pointCloudNode?.name = "Point cloud"
         
         if let node = _pointCloudNode {
