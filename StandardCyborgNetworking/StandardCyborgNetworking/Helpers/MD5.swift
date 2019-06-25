@@ -5,6 +5,7 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+import CommonCrypto
 import Foundation
 
 // https://stackoverflow.com/questions/42935148/swift-calculate-md5-checksum-for-large-files
