@@ -5,6 +5,7 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+#import <CoreVideo/CoreVideo.h>
 #import <Foundation/Foundation.h>
 #import <simd/simd.h>
 
@@ -22,5 +23,8 @@ typedef NS_ENUM(NSInteger, SCAssimilatedFrameResult) {
 typedef struct {
     SCAssimilatedFrameResult result;
     matrix_float4x4 viewMatrix;
-    simd_float3 cameraPosition;
+    matrix_float4x4 projectionMatrix;
+    CVPixelBufferRef _Nullable colorBuffer;
 } SCAssimilatedFrameMetadata;
+
+extern simd_float3 EulerAnglesFromSCAssimilatedFrameMetadata(SCAssimilatedFrameMetadata metadata);

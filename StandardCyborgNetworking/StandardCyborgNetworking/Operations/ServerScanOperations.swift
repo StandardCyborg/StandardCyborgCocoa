@@ -7,7 +7,11 @@
 
 import Foundation
 import PromiseKit
+#if canImport(ZipArchive)
 import ZipArchive
+#else
+import SSZipArchive
+#endif
 
 
 private struct ClientAPIPath {

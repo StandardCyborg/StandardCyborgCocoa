@@ -7,7 +7,9 @@
 
 import Foundation
 import PromiseKit
+#if canImport(PMKFoundation)
 import PMKFoundation
+#endif
 
 public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDelegate {
 
