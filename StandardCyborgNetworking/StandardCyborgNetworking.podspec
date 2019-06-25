@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name              = "StandardCyborgNetworking"
-  s.version           = "1.3.1"
+  s.version           = "1.3.2"
   s.summary           = "Classes for interacting with the Standard Cyborg Platform networking APIs"
   s.homepage          = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url  = 'https://twitter.com/StandardCyborg'
