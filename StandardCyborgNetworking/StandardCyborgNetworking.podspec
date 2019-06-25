@@ -14,7 +14,6 @@ Pod::Spec.new do |s|
   s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}" }
   s.source_files      = "StandardCyborgNetworking/**/*.{swift}"
   s.dependency          "SSZipArchive"
-  s.dependency          "ObjectMapper"
   s.dependency          "PromiseKit", "~> 6.0"
   s.dependency          "PromiseKit/Foundation", "~> 6.0"
 
