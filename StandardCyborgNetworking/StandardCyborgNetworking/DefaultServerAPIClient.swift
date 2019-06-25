@@ -10,7 +10,7 @@ import PromiseKit
 import PMKFoundation
 
 public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDelegate {
-    
+
     private static let _BaseURLString = "https://platform.standardcyborg.com"
     private static let _ClientAPIURLRootComponent = "/api/v1/"
     
@@ -55,15 +55,19 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
             completion(serverError)
         }
     }
-    
-    public func performJSONOperation(
+
+    public func performJSONOperation<T>(
         withURL url: URL,
         httpMethod: HTTPMethod,
         httpBodyDict: [AnyHashable: Any]?,
-        completion: @escaping (ServerOperationError?, Any?) -> Void)
+        responseObjectRootKey: String? = nil,
+        completion: @escaping (Result<T>) -> Void) where T: Codable
     {
         UIApplication.shared.isNetworkActivityIndicatorVisible = true
-        
+
+        // Note for some of the promise closures we explicity define the type since the Swift
+        // compiler will throw bizarre errors otherwise (was getting
+        // "Use of '=' in a boolean context, did you mean '=='?" in the `ensure` block.
         firstly {
             return URLSession.shared.dataTask(.promise, with:
                 try self._makeJSONURLRequest(url: url, httpMethod: httpMethod, httpBodyDict: httpBodyDict)
@@ -71,15 +75,25 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
         }.map { data, urlResponse in
             try self._validateURLResponse(urlResponse)
             try self._updateCredentialsFromURLResponse(urlResponse)
-            
+
+            // Technically we don't always need deserialize the json object, but this
+            // approach is much easier to understand and since the json payloads are
+            // small it's not a big deal to eat the performance hit here.
             return try JSONSerialization.jsonObject(with: data, options: [])
-        }.done { jsonObject in
-            completion(nil, jsonObject)
+        }.compactMap { (jsonObject: Any) in
+            guard let key = responseObjectRootKey else { return jsonObject }
+
+            return (jsonObject as? [String : Any])?[key]
+        }.map { (unwrappedJSONObject: Any) in
+            let data = try JSONSerialization.data(withJSONObject: unwrappedJSONObject, options: [])
+            return try JSONDecoder().decode(T.self, from: data)
+        }.done { (value: T) in
+            completion(.success(value))
         }.ensure {
             UIApplication.shared.isNetworkActivityIndicatorVisible = false
         }.catch { error in
             let serverError = error as? ServerOperationError ?? ServerOperationError.genericError(error)
-            completion(serverError, nil)
+            completion(.failure(serverError))
         }
     }
     

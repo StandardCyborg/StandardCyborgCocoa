@@ -82,19 +82,20 @@ public class ServerSyncEngine {
         isSyncing = true
         
         ServerFetchScansOperation(dataSource: _dataSource, serverAPIClient: _serverAPIClient)
-        .perform { error, scans in
-            guard let scans = scans else {
-                completion(error)
-                return
-            }
-            
-            var scansToUpload: [ServerScan] = []
-            var scansToDownload: [ServerScan] = []
-            try? self._reconcileRemoteScansWithLocal(scans, scansToUpload: &scansToUpload, scansToDownload: &scansToDownload)
-            
-            self._upload(scansToUpload, download: scansToDownload) { error in
-                self.isSyncing = false
-                completion(error)
+        .perform { result in
+            switch result {
+            case .success(let scans):
+                var scansToUpload: [ServerScan] = []
+                var scansToDownload: [ServerScan] = []
+                try? self._reconcileRemoteScansWithLocal(scans, scansToUpload: &scansToUpload, scansToDownload: &scansToDownload)
+
+                self._upload(scansToUpload, download: scansToDownload) { error in
+                    self.isSyncing = false
+                    completion(error)
+                }
+
+            case .failure(let error):
+                completion(error as? ServerOperationError)
             }
         }
     }

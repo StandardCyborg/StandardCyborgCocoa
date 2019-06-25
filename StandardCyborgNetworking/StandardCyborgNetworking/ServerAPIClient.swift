@@ -6,8 +6,16 @@
 //
 
 import Foundation
-import ObjectMapper
 import PromiseKit
+
+internal struct SuccessResponse: Codable {
+    let success: Bool
+}
+
+public enum Result<T> {
+    case success(T)
+    case failure(Error)
+}
 
 public enum HTTPMethod: String {
     case GET
@@ -51,12 +59,13 @@ public protocol ServerAPIClient {
     func performBasicOperation(withURL url: URL,
                                httpMethod: HTTPMethod,
                                completion: @escaping (ServerOperationError?) -> Void)
-    
+
     /** Makes a request on the server, translating the specified dictionary into a JSON stringified HTTP body */
-    func performJSONOperation(withURL url: URL,
-                              httpMethod: HTTPMethod,
-                              httpBodyDict: [AnyHashable: Any]?,
-                              completion: @escaping (ServerOperationError?, Any?) -> Void)
+    func performJSONOperation<T: Codable>(withURL url: URL,
+                                          httpMethod: HTTPMethod,
+                                          httpBodyDict: [AnyHashable: Any]?,
+                                          responseObjectRootKey: String?,
+                                          completion: @escaping (Result<T>) -> Void)
     
     /** Performs a long-running HTTP upload request on the server */
     func performDataUploadOperation(withURL url: URL,

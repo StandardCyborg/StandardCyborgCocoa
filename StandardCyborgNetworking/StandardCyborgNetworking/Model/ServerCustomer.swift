@@ -7,7 +7,7 @@
 
 import Foundation
 
-public final class ServerCustomer {
+public final class ServerCustomer: Codable {
     
     var key: String?
     var email: String?

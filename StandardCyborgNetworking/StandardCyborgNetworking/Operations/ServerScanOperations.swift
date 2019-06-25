@@ -9,6 +9,7 @@ import Foundation
 import PromiseKit
 import ZipArchive
 
+
 private struct ClientAPIPath {
     static let scans = "scans"
     static let s3Files = "direct_uploads"
@@ -24,34 +25,13 @@ public struct ServerFetchScansOperation {
         self.serverAPIClient = serverAPIClient
     }
     
-    func perform(_ completion: @escaping (ServerOperationError?, Array<ServerScan>?) -> Void)
+    func perform(_ completion: @escaping (Result<[ServerScan]>) -> Void)
     {
         let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scans)
-        
         serverAPIClient.performJSONOperation(withURL: url,
-                                             httpMethod: .GET,
-                                             httpBodyDict: nil)
-        { (error: ServerOperationError?, resultJSONObject: Any?) in
-            guard error == nil else { return completion(error, nil) }
-            
-            guard let resultDict = resultJSONObject as? [String: Any],
-                  let scansDict = resultDict["scans"] as? [[String: Any]]
-            else {
-                let mapError = ServerOperationError.genericErrorString(
-                    "Failed to map root JSON results to scans")
-                completion(mapError, nil)
-                return
-            }
-            
-            guard let remoteScans = ServerScan.scans(fromJSONObject: scansDict) else {
-                let mapError = ServerOperationError.genericErrorString(
-                    "Failed to map servers scans to local scans: \(String(describing: resultJSONObject))")
-                completion(mapError, nil)
-                return
-            }
-            
-            completion(nil, remoteScans)
-        }
+                                                  httpMethod: .GET, httpBodyDict: nil,
+                                                  responseObjectRootKey: "scans",
+                                                  completion: completion)
     }
     
 }
@@ -83,17 +63,17 @@ public struct ServerDeleteScanOperation {
                 .appendingPathComponent(key)
         
         serverAPIClient.performJSONOperation(withURL: url,
-                                             httpMethod: .DELETE,
-                                             httpBodyDict: nil)
-        { (error: ServerOperationError?, resultJSONObject: Any?) in
-            guard error == nil else {
-                completion(error)
-                return
+                                                  httpMethod: .DELETE,
+                                                  httpBodyDict: nil,
+                                                  responseObjectRootKey: nil)
+        { (result: Result<SuccessResponse>) in
+            switch result {
+            case .success(_):
+                self.dataSource.delete(self.scan)
+                completion(nil)
+            case .failure(let error):
+                completion(error as? ServerOperationError)
             }
-            
-            self.dataSource.delete(self.scan)
-            
-            completion(nil)
         }
     }
     
@@ -105,14 +85,41 @@ public struct ServerAddScanOperation {
     let dataSource: ServerSyncEngineLocalDataSource
     let serverAPIClient: ServerAPIClient
     
-    private struct S3UploadInfo {
+    private struct S3UploadInfo: Codable {
         let localURL: URL
         let s3URL: URL
         let uploadHeaders: [String:Any]
         let directUploadFileKey: String
+
+        enum CodingKeys: String, CodingKey {
+            case localURL, s3URL, uploadHeaders, directUploadFileKey = "key"
+        }
+
+        init(from decoder: Decoder) throws {
+            let container = try! decoder.container(keyedBy: CodingKeys.self)
+            localURL = try! container.decode(URL.self, forKey: .localURL)
+            s3URL = try! container.decode(URL.self, forKey: .s3URL)
+
+            let headerData = try! container.decode(Data.self, forKey: .uploadHeaders)
+            uploadHeaders = try! JSONSerialization.jsonObject(with: headerData, options: []) as! [String : Any]
+            directUploadFileKey = try! container.decode(String.self, forKey: .directUploadFileKey)
+        }
+
+        func encode(to encoder: Encoder) throws {
+            fatalError("Not currently supported (but implemented since our generic networking code requires objects to conform to Encodable)")
+        }
+    }
+
+    public init(scan: ServerScan,
+                dataSource: ServerSyncEngineLocalDataSource,
+                serverAPIClient: ServerAPIClient)
+    {
+        self.scan = scan
+        self.dataSource = dataSource
+        self.serverAPIClient = serverAPIClient
     }
     
-    func perform(uploadProgress: ((Double) -> Void)?,
+    public func perform(uploadProgress: ((Double) -> Void)?,
                  completion: @escaping (ServerOperationError?) -> Void)
     {
         let thumbnailURL = self.dataSource.localThumbnailURL(for: self.scan)
@@ -216,30 +223,16 @@ public struct ServerAddScanOperation {
             print("Creating S3 file reference for \(localFileURL)")
             serverAPIClient.performJSONOperation(withURL: url,
                                                  httpMethod: HTTPMethod.POST,
-                                                 httpBodyDict: postDict)
-            { (error: ServerOperationError?, jsonObject: Any?) in
-                guard error == nil else {
-                    return seal.reject(error!)
+                                                 httpBodyDict: postDict,
+                                                 responseObjectRootKey: nil)
+            { (result: Result<S3UploadInfo>) in
+                switch result {
+                case .success(let uploadInfo):
+                    print("Successfully created S3 file reference \(uploadInfo.directUploadFileKey)")
+                    seal.fulfill(uploadInfo)
+                case .failure(let error):
+                    seal.reject(ServerOperationError.genericErrorString("Error creating S3 file from result: \(error.localizedDescription)"))
                 }
-                
-                guard
-                    let jsonDict = jsonObject as? [String: Any],
-                    let fileKey = jsonDict["key"] as? String,
-                    let directUploadDict = jsonDict["direct_upload"] as? [String:Any],
-                    let uploadURLString = directUploadDict["url"] as? String,
-                    let uploadURL = URL(string: uploadURLString),
-                    let uploadHeaders = directUploadDict["headers"] as? [String:Any]
-                else {
-                    seal.reject(ServerOperationError.genericErrorString("Error creating S3 file from result \(String(describing: jsonObject))"))
-                    return
-                }
-                
-                print("Successfully created S3 file reference \(fileKey)")
-                let uploadInfo = S3UploadInfo(localURL: localFileURL,
-                                              s3URL: uploadURL,
-                                              uploadHeaders: uploadHeaders,
-                                              directUploadFileKey: fileKey)
-                seal.fulfill(uploadInfo)
             }
         }
     }
@@ -259,6 +252,7 @@ public struct ServerAddScanOperation {
                 
                 var scan = self.scan
                 scan.uploadedAt = Date()
+                scan.uploadStatus = .uploaded
                 self.dataSource.update(scan)
                 
                 print("Successfully uploaded scan file to S3")
@@ -298,23 +292,20 @@ public struct ServerAddScanOperation {
             }
             
             serverAPIClient.performJSONOperation(withURL: url,
-                                                 httpMethod: .POST,
-                                                 httpBodyDict: postDict)
-            { (error: ServerOperationError?, jsonObject: Any?) in
-                guard error == nil else { return seal.reject(error!) }
-                
-                if  let jsonDict = jsonObject as? [String:Any],
-                    let scanDict = jsonDict["scan"] as? [String:Any]
-                {
-                    print("Successfully created server scan with uid \(scanDict["uid"] ?? "unknown")")
-                    var scan = self.scan
-                    scan.update(fromJSONObject: scanDict)
-                    self.dataSource.update(scan)
-                } else {
+                                                      httpMethod: .POST,
+                                                      httpBodyDict: postDict,
+                                                      responseObjectRootKey: "scan")
+            { (result: Result<ServerScan>) in
+                switch result {
+                case .success(let scan):
+                    print("Successfully created server scan with uid \(scan.key ?? "unknown")")
+                    self.dataSource.update(self.scan.merge(withScan: scan))
+                    seal.fulfill(())
+
+                case .failure(let error):
                     print("Failed to get scan info from POST to \(url)")
+                    seal.reject(error)
                 }
-                
-                seal.fulfill(())
             }
         }
     }
@@ -323,9 +314,14 @@ public struct ServerAddScanOperation {
 
 public struct ServerDownloadScanOperation {
     
-    private struct S3DownloadInfo {
+    private struct S3DownloadInfo: Codable {
         let zippedScanURL: URL
         let thumbnailURL: URL?
+
+        enum CodingKeys: String, CodingKey {
+            case zippedScanURL = "fileUrl"
+            case thumbnailURL = "thumbnailUrl"
+        }
     }
     
     let scan: ServerScan
@@ -363,22 +359,15 @@ public struct ServerDownloadScanOperation {
             let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scans).appendingPathComponent(key)
             
             serverAPIClient.performJSONOperation(withURL: url,
-                                                 httpMethod: .GET,
-                                                 httpBodyDict: nil)
-            { (error: ServerOperationError?, jsonObject: Any?) in
-                if error == nil,
-                    let json = jsonObject as? [String:Any],
-                    let scan = json["scan"] as? [String:Any],
-                    let fileURLString = scan["file_url"] as? String,
-                    let s3FileURL = fileURLString.toURL()
-                {
-                    let thumbnailURLString = scan["thumbnail_url"] as? String
-                    let s3ThumbnailURL = thumbnailURLString?.toURL()
-                    let downloadInfo = S3DownloadInfo(zippedScanURL: s3FileURL, thumbnailURL: s3ThumbnailURL)
-                    
+                                                      httpMethod: .GET,
+                                                      httpBodyDict: nil,
+                                                      responseObjectRootKey: "scan")
+            { (result: Result<S3DownloadInfo>) in
+                switch result {
+                case .success(let downloadInfo):
                     seal.fulfill(downloadInfo)
-                } else {
-                    seal.reject(error!)
+                case .failure(let error):
+                    seal.reject(error)
                 }
             }
         }
