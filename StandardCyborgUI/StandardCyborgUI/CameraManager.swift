@@ -48,6 +48,9 @@ public extension Notification.Name {
     /** The mechanism for clients of CameraManager to be provided with streaming camera and depth frames */
     @objc public weak var delegate: CameraManagerDelegate!
     
+    /** Configures the minimum color camera shutter speed. Defaults to 1/60s */
+    @objc public var minColorExposureDuration: TimeInterval = 1.0/60.0
+    
     /** Call this before calling startSession to request camera access and
         configure the AVCaptureSession for the desired resolution and framerate.
         Only necessary to call this once per instance of CameraManager.
@@ -139,14 +142,20 @@ public extension Notification.Name {
     }
     
     /** Fixes the RGB camera's focus at the current focal distance when true */
-    @objc public var isFocusLocked: Bool = false
+    @objc public var isFocusLocked: Bool = false {
+        didSet {
+            _focus(mode: isFocusLocked ? .locked : .continuousAutoFocus,
+                   exposureMode: isFocusLocked ? .locked : .continuousAutoExposure,
+                   at: CGPoint(x: 0.5, y: 0.5))
+        }
+    }
     
     /** Focuses the RGB camera at the specified point in screen space */
     @objc public func focusOnTap(at location: CGPoint) {
         let locationRect = CGRect(origin: location, size: .zero)
         let deviceRect = _videoDataOutput.metadataOutputRectConverted(fromOutputRect: locationRect)
         
-        _focus(with: .autoFocus, exposureMode: .autoExpose, at: deviceRect.origin, monitorSubjectAreaChange: true)
+        _focus(mode: .autoFocus, exposureMode: .autoExpose, at: deviceRect.origin)
     }
     
     // MARK: - Private properties
@@ -243,7 +252,7 @@ public extension Notification.Name {
         guard !isFocusLocked else { return }
         
         let devicePoint = CGPoint(x: 0.5, y: 0.5)
-        _focus(with: .continuousAutoFocus, exposureMode: .continuousAutoExposure, at: devicePoint, monitorSubjectAreaChange: false)
+        _focus(mode: .continuousAutoFocus, exposureMode: .continuousAutoExposure, at: devicePoint)
     }
     
     @objc private func didEnterBackground(notification: Notification) {
@@ -345,6 +354,8 @@ public extension Notification.Name {
             try videoDevice.lockForConfiguration()
             videoDevice.activeDepthDataFormat = selectedFormat
             videoDevice.activeDepthDataMinFrameDuration = CMTimeMake(value: 1, timescale: Int32(maxFramerate))
+            videoDevice.activeMaxExposureDuration = CMTimeMake(value: 1, timescale: Int32(minColorExposureDuration))
+            videoDevice.isSubjectAreaChangeMonitoringEnabled = false
             videoDevice.unlockForConfiguration()
         } catch {
             print("Could not lock device for configuration: \(error)")
@@ -361,10 +372,9 @@ public extension Notification.Name {
         return .success
     }
     
-    private func _focus(with focusMode: AVCaptureDevice.FocusMode,
+    private func _focus(mode focusMode: AVCaptureDevice.FocusMode,
                         exposureMode: AVCaptureDevice.ExposureMode,
-                        at devicePoint: CGPoint,
-                        monitorSubjectAreaChange: Bool)
+                        at devicePoint: CGPoint)
     {
         _sessionQueue.async {
             guard let videoDevice = self._videoDeviceInput?.device else { return }
@@ -381,7 +391,15 @@ public extension Notification.Name {
                     videoDevice.exposureMode = exposureMode
                 }
                 
-                videoDevice.isSubjectAreaChangeMonitoringEnabled = monitorSubjectAreaChange
+                if videoDevice.exposureDuration.seconds > self.minColorExposureDuration {
+                    // Decrease the exposure duration and increase the ISO to get us closer
+                    let scale = (videoDevice.exposureDuration.seconds / self.minColorExposureDuration).rounded()
+                    let newDuration = CMTimeMake(value: videoDevice.exposureDuration.value, timescale: Int32(scale) * videoDevice.exposureDuration.timescale)
+                    let newISO = videoDevice.iso * Float(scale)
+                    videoDevice.setExposureModeCustom(duration: newDuration,
+                                                      iso: newISO,
+                                                      completionHandler: nil)
+                }
                 videoDevice.unlockForConfiguration()
             } catch {
                 print("Could not lock device for configuration: \(error)")
