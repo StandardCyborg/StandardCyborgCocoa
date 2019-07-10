@@ -260,9 +260,7 @@ import UIKit
     }
     
     // MARK: - Private properties
-    
-    private lazy var _bundle = Bundle(for: ScanningViewController.self)
-    
+        
     private let _metalDevice = MTLCreateSystemDefaultDevice()!
     private lazy var _algorithmCommandQueue = _metalDevice.makeCommandQueue()!
     private lazy var _visualizationCommandQueue = _metalDevice.makeCommandQueue()!
@@ -319,7 +317,7 @@ import UIKit
         _scanFailedLabel.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
         _scanFailedLabel.isHidden = true
         
-        dismissButton.setImage(UIImage(named: "Dismiss", in: _bundle, compatibleWith: nil), for: UIControl.State.normal)
+        dismissButton.setImage(UIImage(named: "Dismiss", in: Bundle.scuiBundle, compatibleWith: nil), for: UIControl.State.normal)
         dismissButton.addTarget(self, action: #selector(dismissTapped(_:)), for: UIControl.Event.touchUpInside)
         shutterButton.addTarget(self, action: #selector(shutterTapped(_:)), for: UIControl.Event.touchUpInside)
         
