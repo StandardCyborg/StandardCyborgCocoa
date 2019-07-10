@@ -43,7 +43,7 @@ public struct ServerScan: Codable {
     public var uploadedAt: Date?
     public var uploadStatus: UploadStatus?
 
-    enum CodingKeys: String, CodingKey {
+    private enum CodingKeys: String, CodingKey {
         case key = "uid"
         case createdAt
         case uploadedAt

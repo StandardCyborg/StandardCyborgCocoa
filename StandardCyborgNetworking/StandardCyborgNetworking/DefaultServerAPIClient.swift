@@ -12,7 +12,7 @@ import PMKFoundation
 #endif
 
 public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDelegate {
-
+    
     private static let _BaseURLString = "https://platform.standardcyborg.com"
     private static let _ClientAPIURLRootComponent = "/api/v1/"
     

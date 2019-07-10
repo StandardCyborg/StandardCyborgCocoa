@@ -59,8 +59,9 @@ public protocol ServerAPIClient {
     func performBasicOperation(withURL url: URL,
                                httpMethod: HTTPMethod,
                                completion: @escaping (ServerOperationError?) -> Void)
-
-    /** Makes a request on the server, translating the specified dictionary into a JSON stringified HTTP body */
+    
+    /** Makes a request on the server, translating the specified dictionary into a JSON stringified HTTP body. Upon completion
+        the response will be deserialized into an instance of an object of type T. */
     func performJSONOperation<T: Codable>(withURL url: URL,
                                           httpMethod: HTTPMethod,
                                           httpBodyDict: [AnyHashable: Any]?,
