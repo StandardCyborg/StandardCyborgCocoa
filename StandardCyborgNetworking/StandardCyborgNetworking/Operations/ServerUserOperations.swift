@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import PromiseKit
+import class PromiseKit.Promise
 
 private struct ClientAPIPath {
     static let authSignUp = "auth"
@@ -33,24 +33,26 @@ public struct ServerSignUpOperation {
         self.password = password
     }
     
-    public func perform(_ completion: @escaping (ServerOperationError?) -> Void) {
+    public func perform(_ completion: @escaping (Result<ServerUser>) -> Void) {
         let postDictionary = [
             "email": email,
             "password": password
         ]
         let url = apiClient.buildAPIURL(for: ClientAPIPath.authSignUp)
-        
+
         apiClient.performJSONOperation(withURL: url,
-                                       httpMethod: .POST,
-                                       httpBodyDict: postDictionary)
-        { (error: ServerOperationError?, jsonObject: Any?) in
-            defer { completion(error) }
-            guard error == nil else { return }
-            
-            if var user = ServerUser(jsonObject) {
+                                            httpMethod: .POST,
+                                            httpBodyDict: postDictionary,
+                                            responseObjectRootKey: "user")
+        { (result: Result<ServerUser>) in
+            var modifiedResult = result
+            if case var .success(user) = result {
                 user.key = self.email // Maybe correct? Works for now.
                 self.dataSource.updateUser(user)
+                modifiedResult = Result.success(user)
             }
+
+            completion(modifiedResult)
         }
     }
     
@@ -74,23 +76,21 @@ public struct ServerSignInOperation {
         self.password = password
     }
     
-    public func perform(_ completion: @escaping (ServerOperationError?) -> Void) {
+    public func perform(_ completion: @escaping (Result<ServerUser>) -> Void) {
         let postDictionary = [
             "email": email,
             "password": password
         ]
         let url = apiClient.buildAPIURL(for: ClientAPIPath.authSignIn)
-        
         apiClient.performJSONOperation(withURL: url,
-                                       httpMethod: .POST,
-                                       httpBodyDict: postDictionary)
-        { (error: ServerOperationError?, jsonObject: Any?) in
-            defer { completion(error) }
-            guard error == nil else { return }
-            
-            if let user = ServerUser(jsonObject) {
+                                            httpMethod: .POST,
+                                            httpBodyDict: postDictionary,
+                                            responseObjectRootKey: "user")
+        { (result: Result<ServerUser>) in
+            if case let .success(user) = result {
                 self.dataSource.updateUser(user)
             }
+            completion(result)
         }
     }
     

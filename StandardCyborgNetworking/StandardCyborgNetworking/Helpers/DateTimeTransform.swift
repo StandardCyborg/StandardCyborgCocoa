@@ -6,13 +6,17 @@
 //
 
 import Foundation
-import ObjectMapper
 
-class DateTimeTransform: DateFormatterTransform {
+class DateTimeTransform {
     
     // DEV: Due to inconsistencies in the server, the server sends us
     //      a couple different date/time formats, so we have to support both
-    private static let _Formatter = DateFormatter(withFormat: "yyyy-MM-dd HH:mm:ss Z", locale: "en_US_POSIX")
+    private static let _Formatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        return formatter
+    }()
     
     private static let _FallbackFormatter: ISO8601DateFormatter = {
         let formatter = ISO8601DateFormatter()
@@ -20,29 +24,13 @@ class DateTimeTransform: DateFormatterTransform {
         return formatter
     }()
     
-    init() {
-        super.init(dateFormatter: DateTimeTransform._Formatter)
+    private init() {}
+    
+    static func fromString(_ value: String) -> Date? {
+        return _Formatter.date(from: value) ?? _FallbackFormatter.date(from: value)
     }
     
-    override func transformFromJSON(_ value: Any?) -> Date? {
-        if let value = value, let date = super.transformFromJSON(value) {
-            return date
-        }
-        
-        if let stringValue = value as? String {
-            return DateTimeTransform._FallbackFormatter.date(from: stringValue)
-        }
-        
-        return nil
-    }
-    
-    override func transformToJSON(_ value: Date?) -> String? {
-        guard let value = value else { return nil }
-        
-        if let string = super.transformToJSON(value) {
-            return string
-        }
-        
-        return DateTimeTransform._FallbackFormatter.string(from: value)
+    static func toString(_ value: Date) -> String {
+        return _Formatter.string(from: value)
     }
 }

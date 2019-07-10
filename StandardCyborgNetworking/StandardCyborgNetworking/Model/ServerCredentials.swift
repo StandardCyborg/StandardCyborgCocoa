@@ -9,7 +9,7 @@ import Foundation
 
 // These credentials are specific to interfacing with the Standard Cyborg server
 // They're effectively two-legged OAuth2
-struct ServerCredentials {
+struct ServerCredentials: Codable {
     
     private static let MinimumSecondsToExpiration: TimeInterval = 2 * 60 * 60 // 2 hours
     

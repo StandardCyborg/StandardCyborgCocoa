@@ -7,18 +7,21 @@
 
 import Foundation
 
-public struct ServerUser {
+public struct ServerUser: Codable {
     
     public var key: String?
-    public var team: String?
     public var email: String?
     public var name: String?
-    
-    public init(key: String? = nil, team: String? = nil, email: String? = nil, name: String? = nil) {
+    public var teams: [ServerTeam]?
+
+    enum CodingKeys: String, CodingKey {
+        case key = "uid", email, name, teams
+    }
+
+    public init(key: String? = nil, email: String? = nil, name: String? = nil, teams: [ServerTeam]? = nil) {
         self.key = key
-        self.team = team
         self.email = email
         self.name = name
+        self.teams = teams
     }
-    
 }
