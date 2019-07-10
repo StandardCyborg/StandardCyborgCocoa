@@ -89,23 +89,25 @@ public struct ServerAddScanOperation {
     let dataSource: ServerSyncEngineLocalDataSource
     let serverAPIClient: ServerAPIClient
     
-    private struct S3UploadInfo: Codable {
-        let localURL: URL
-        let s3URL: URL
-        let uploadHeaders: [String:Any]
+    fileprivate struct S3UploadInfo: Codable {
+        let url: URL
+        let uploadHeaders: [String : Any]
         let directUploadFileKey: String
 
         enum CodingKeys: String, CodingKey {
-            case localURL, s3URL, uploadHeaders, directUploadFileKey = "key"
+            case directUpload, directUploadFileKey = "key"
+        }
+
+        enum DirectUploadKeys: String, CodingKey {
+            case url, headers
         }
 
         init(from decoder: Decoder) throws {
             let container = try! decoder.container(keyedBy: CodingKeys.self)
-            localURL = try! container.decode(URL.self, forKey: .localURL)
-            s3URL = try! container.decode(URL.self, forKey: .s3URL)
 
-            let headerData = try! container.decode(Data.self, forKey: .uploadHeaders)
-            uploadHeaders = try! JSONSerialization.jsonObject(with: headerData, options: []) as! [String : Any]
+            let directUploadContainer = try! container.nestedContainer(keyedBy: DirectUploadKeys.self, forKey: .directUpload)
+            url = try! directUploadContainer.decode(URL.self, forKey: .url)
+            uploadHeaders = try! directUploadContainer.decode([String : String].self, forKey: .headers)
             directUploadFileKey = try! container.decode(String.self, forKey: .directUploadFileKey)
         }
 
@@ -135,8 +137,8 @@ public struct ServerAddScanOperation {
             self._zipScanFile(for: scan)
         }.then { scanZipURL in
             self._createS3FileReference(for: scanZipURL, remoteFilename: "scan.ply.zip")
-        }.then { uploadInfo in
-            self._uploadScanFileToS3(uploadInfo, progressHandler: uploadProgress)
+        }.then { (localURL, uploadInfo) in
+            self._uploadScanFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
         }.map { uploadInfo in
             scanZipUploadInfo = uploadInfo
         }
@@ -145,8 +147,8 @@ public struct ServerAddScanOperation {
         if let thumbnailURL = thumbnailURL { promise = promise
             .then {
                 self._createS3FileReference(for: thumbnailURL, remoteFilename: "thumbnail.jpeg")
-            }.then { uploadInfo in
-                self._uploadScanThumbnailToS3(uploadInfo)
+            }.then { (localURL, uploadInfo) in
+                self._uploadScanThumbnailToS3(localURL: localURL, uploadInfo: uploadInfo)
             }.map { uploadInfo in
                 thumbnailUploadInfo = uploadInfo
             }
@@ -199,7 +201,7 @@ public struct ServerAddScanOperation {
         }
     }
     
-    private func _createS3FileReference(for localFileURL: URL, remoteFilename: String) -> Promise<S3UploadInfo> {
+    private func _createS3FileReference(for localFileURL: URL, remoteFilename: String) -> Promise<(URL, S3UploadInfo)> {
         return Promise { seal in
             guard let fileMD5 = MD5File(url: localFileURL) else {
                 seal.reject(ServerOperationError.genericErrorString("Couldn't calculate MD5 for \(localFileURL)"))
@@ -233,7 +235,7 @@ public struct ServerAddScanOperation {
                 switch result {
                 case .success(let uploadInfo):
                     print("Successfully created S3 file reference \(uploadInfo.directUploadFileKey)")
-                    seal.fulfill(uploadInfo)
+                    seal.fulfill((localFileURL, uploadInfo))
                 case .failure(let error):
                     seal.reject(ServerOperationError.genericErrorString("Error creating S3 file from result: \(error.localizedDescription)"))
                 }
@@ -241,18 +243,18 @@ public struct ServerAddScanOperation {
         }
     }
     
-    private func _uploadScanFileToS3(_ uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
+    private func _uploadScanFileToS3(localURL: URL, uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
         return Promise<S3UploadInfo> { seal in
             print("Uploading scan file to S3 for \(uploadInfo.directUploadFileKey)")
-            serverAPIClient.performDataUploadOperation(withURL: uploadInfo.s3URL,
+            serverAPIClient.performDataUploadOperation(withURL: uploadInfo.url,
                                                        httpMethod: HTTPMethod.PUT,
-                                                       dataURL: uploadInfo.localURL,
+                                                       dataURL: localURL,
                                                        extraHeaders: uploadInfo.uploadHeaders,
                                                        progressHandler: progressHandler)
             { error in
                 guard error == nil else { return seal.reject(error!) }
                 
-                try? FileManager.default.removeItem(at: uploadInfo.localURL)
+                try? FileManager.default.removeItem(at: localURL)
                 
                 var scan = self.scan
                 scan.uploadedAt = Date()
@@ -265,12 +267,12 @@ public struct ServerAddScanOperation {
         }
     }
     
-    private func _uploadScanThumbnailToS3(_ uploadInfo: S3UploadInfo) -> Promise<S3UploadInfo> {
+    private func _uploadScanThumbnailToS3(localURL: URL, uploadInfo: S3UploadInfo) -> Promise<S3UploadInfo> {
         return Promise<S3UploadInfo> { seal in
             print("Uploading scan thumbnail to S3 for \(uploadInfo.directUploadFileKey)")
-            serverAPIClient.performDataUploadOperation(withURL: uploadInfo.s3URL,
+            serverAPIClient.performDataUploadOperation(withURL: uploadInfo.url,
                                                        httpMethod: HTTPMethod.PUT,
-                                                       dataURL: uploadInfo.localURL,
+                                                       dataURL: localURL,
                                                        extraHeaders: uploadInfo.uploadHeaders,
                                                        progressHandler: nil)
             { error in
@@ -289,21 +291,25 @@ public struct ServerAddScanOperation {
             }
             
             let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scans)
-            
-            var postDict: [String: Any] = ["file_key": scanZipUploadInfo.directUploadFileKey]
-            if let thumbnailKey = thumbnailUploadInfo?.directUploadFileKey {
-                postDict["thumbnail_key"] = thumbnailKey
-            }
-            
+            let scanToUpload = ServerScan(scanUploadInfo: scanZipUploadInfo, thumbnailUploadInfo: thumbnailUploadInfo)
+
+            // Convert the scan object to a dictionary by encoding it ServerScan => Data => Dictionary.
+            // We then embed that dictionary inside a root "scan" object since that's what the server expects.
+            let encoder = JSONEncoder()
+            encoder.keyEncodingStrategy = .convertToSnakeCase
+            let scan = try! JSONSerialization.jsonObject(with: try! encoder.encode(scanToUpload), options: []) as! [AnyHashable : Any]
+
             serverAPIClient.performJSONOperation(withURL: url,
-                                                      httpMethod: .POST,
-                                                      httpBodyDict: postDict,
-                                                      responseObjectRootKey: "scan")
+                                                 httpMethod: .POST,
+                                                 httpBodyDict: ["scan" : scan],
+                                                 responseObjectRootKey: "scan")
             { (result: Result<ServerScan>) in
                 switch result {
-                case .success(let scan):
+                case .success(var scan):
                     print("Successfully created server scan with uid \(scan.key ?? "unknown")")
-                    self.dataSource.update(self.scan.merge(withScan: scan))
+                    scan.localUUID = self.scan.localUUID
+                    scan.uploadStatus = self.scan.uploadStatus
+                    self.dataSource.update(scan)
                     seal.fulfill(())
 
                 case .failure(let error):
@@ -481,4 +487,41 @@ extension String {
     func toURL() -> URL? {
         return URL(string: self)
     }
+}
+
+fileprivate extension ServerScan {
+    typealias UploadInfo = ServerAddScanOperation.S3UploadInfo
+
+    init(scanUploadInfo: UploadInfo, thumbnailUploadInfo: UploadInfo?) {
+        self.localUUID = UUID()
+        self.uploadStatus = .notUploaded
+        self.key = nil
+        self.createdAt = nil
+        self.uploadedAt = nil
+        self.tagList = []
+        self.attachments = [
+            ServerScanAttachment(scanUploadInfo: scanUploadInfo, thumbnailUploadInfo: thumbnailUploadInfo)
+        ]
+    }
+}
+
+fileprivate extension ServerScanAttachment {
+    typealias UploadInfo = ServerAddScanOperation.S3UploadInfo
+
+    init(scanUploadInfo: UploadInfo, thumbnailUploadInfo: UploadInfo?) {
+        self.fileKey = scanUploadInfo.directUploadFileKey
+        self.thumbnailKey = thumbnailUploadInfo?.directUploadFileKey
+        self.kind = nil
+        self.publiclyDownloadable = false
+        self.publiclyVisible = false
+        self.metadata = [:]
+
+        self.createdAt = nil
+        self.uploadedAt = nil
+        self.fileUrl = nil
+        self.thumbnailUrl = nil
+        self.teamUid = nil
+        self.collectionUid = nil
+    }
+
 }
