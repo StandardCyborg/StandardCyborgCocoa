@@ -44,11 +44,10 @@ import UIKit
     
     // MARK: - Private
     
-    private static let _bundle = Bundle(for: ShutterButton.self)
     private var _imageForState: [ShutterButtonState: UIImage] = [
-        .default: UIImage(named: "ShutterButton", in: _bundle, compatibleWith: nil)!,
-        .countdown: UIImage(named: "ShutterButton-Selected", in: _bundle, compatibleWith: nil)!,
-        .scanning: UIImage(named: "ShutterButton-Recording", in: _bundle, compatibleWith: nil)!,
+        .default: UIImage(named: "ShutterButton", in: Bundle.scuiBundle, compatibleWith: nil)!,
+        .countdown: UIImage(named: "ShutterButton-Selected", in: Bundle.scuiBundle, compatibleWith: nil)!,
+        .scanning: UIImage(named: "ShutterButton-Recording", in: Bundle.scuiBundle, compatibleWith: nil)!,
     ]
     
     private func _updateButtonImage() {
