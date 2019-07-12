@@ -68,8 +68,8 @@ import UIKit
         as soon as the view controller's view appears */
     @objc public private(set) var renderedPointCloudImage: UIImage?
 
-    /** Gives us a hook into the VC lifecycle where we can reliably get renderedPointCloudImage. */
-    @objc public var onViewDidAppear: ((PointCloudPreviewViewController) -> Void)?
+    /** Gives us a hook to capture the renderedPointCloudImage separate from when it may be set. */
+    @objc public var onRenderedPointCloudImageReady: ((UIImage) -> Void)?
 
     // MARK: - UIViewController
     
@@ -98,7 +98,7 @@ import UIKit
     
     override public func viewDidAppear(_ animated: Bool) {
         self.renderedPointCloudImage = self.sceneView.snapshot()
-        onViewDidAppear?(self)
+        onRenderedPointCloudImageReady?(self.renderedPointCloudImage!)
     }
     
     override public func viewDidLayoutSubviews() {
