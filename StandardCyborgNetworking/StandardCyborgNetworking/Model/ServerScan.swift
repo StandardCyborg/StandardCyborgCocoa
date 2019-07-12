@@ -38,56 +38,70 @@ public struct ServerScan: Codable {
     }
     
     public var localUUID = UUID()
-    public var key: String?
+    public let key: String?
+
     public var createdAt: Date?
     public var uploadedAt: Date?
+    public let tagList: [String]
+    public let attachments: [ServerScanAttachment]
+
     public var uploadStatus: UploadStatus?
 
     private enum CodingKeys: String, CodingKey {
         case key = "uid"
-        case createdAt
-        case uploadedAt
+        case createdAt, uploadedAt, tagList, attachments
     }
-    
-    public init(
-        localUUID: UUID = UUID(),
-        key: String? = nil,
-        createdAt: Date? = nil,
-        uploadedAt: Date? = nil,
-        uploadStatus: UploadStatus? = nil)
-    {
+
+    public static func create(withLocalUUID localUUID: UUID, uploadStatus: UploadStatus) -> ServerScan {
+        return ServerScan(localUUID: localUUID, uploadStatus: uploadStatus)
+    }
+
+    private init(localUUID: UUID, uploadStatus: UploadStatus) {
         self.localUUID = localUUID
-        self.key = key
-        self.createdAt = createdAt
-        self.uploadedAt = uploadedAt
         self.uploadStatus = uploadStatus
+
+        self.key = nil
+        self.createdAt = nil
+        self.uploadedAt = nil
+        self.tagList = []
+        self.attachments = []
     }
 
     public init(from decoder: Decoder) {
         let container = try! decoder.container(keyedBy: CodingKeys.self)
         localUUID = UUID()
-        key = try! container.decode(String.self, forKey: .key)
+        key = try! container.decodeIfPresent(String.self, forKey: .key)
 
-        let createdAtString = try! container.decode(String.self, forKey: .createdAt)
-        createdAt = DateTimeTransform.fromString(createdAtString)
+        if let createdAtString = (try? container.decodeIfPresent(String.self, forKey: .createdAt)) ?? nil {
+            createdAt = DateTimeTransform.fromString(createdAtString)
+        } else {
+            createdAt = nil
+        }
 
-        let uploadedAtString = try! container.decode(String.self, forKey: .uploadedAt)
-        uploadedAt = DateTimeTransform.fromString(uploadedAtString)
+        if let uploadedAtString = (try? container.decodeIfPresent(String.self, forKey: .uploadedAt)) ?? nil {
+            uploadedAt = DateTimeTransform.fromString(uploadedAtString)
+        } else {
+            uploadedAt = nil
+        }
+
+        self.tagList = try! container.decodeIfPresent([String].self, forKey: .tagList) ?? []
+        self.attachments = try! container.decodeIfPresent([ServerScanAttachment].self, forKey: .attachments) ?? [ServerScanAttachment]()
     }
 
     public func encode(to encoder: Encoder) {
         var container = encoder.container(keyedBy: CodingKeys.self)
-        try! container.encode(key, forKey: .key)
+
+        try? container.encodeIfPresent(key, forKey: .key)
+
         if let createdAt = createdAt {
-            try! container.encode(DateTimeTransform.toString(createdAt), forKey: .createdAt)
+            try? container.encodeIfPresent(DateTimeTransform.toString(createdAt), forKey: .createdAt)
         }
 
         if let uploadedAt = uploadedAt {
-            try! container.encode(DateTimeTransform.toString(uploadedAt), forKey: .uploadedAt)
+            try? container.encodeIfPresent(DateTimeTransform.toString(uploadedAt), forKey: .uploadedAt)
         }
-    }
 
-    internal func merge(withScan scan: ServerScan) -> ServerScan {
-        return ServerScan(localUUID: localUUID, key: scan.key, createdAt: scan.createdAt, uploadedAt: scan.uploadedAt, uploadStatus: uploadStatus)
+        try? container.encodeIfPresent(tagList, forKey: .tagList)
+        try? container.encodeIfPresent(attachments, forKey: .attachments)
     }
 }

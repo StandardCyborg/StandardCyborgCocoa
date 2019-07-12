@@ -14,20 +14,24 @@ import PMKFoundation
 public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDelegate {
     
     private static let _BaseURLString = "https://platform.standardcyborg.com"
-    private static let _ClientAPIURLRootComponent = "/api/v1/"
+    private static let _ClientAPIURLRootComponent = "/api/v2/"
     
-    private let _baseURLString: String
-    private var _credentials = ServerCredentials()
+    private let _baseURLString = DefaultServerAPIClient._BaseURLString
+    private var _personalCredentials = PersonalCredentials.fromDefaults()
+    private var _teamCredentials = TeamCredentials.fromDefaults()
     private var _progressHandlersBySession: [URLSession: ProgressHandler] = [:]
-    
-    public override init() {
-        _baseURLString = DefaultServerAPIClient._BaseURLString
+
+    private var _currentCredentials: ServerCredentials? {
+        return _teamCredentials ?? _personalCredentials
     }
-    
+
     // MARK: - ServerAPIClient
     
     public func invalidateCredentials() {
-        _credentials.invalidate()
+        PersonalCredentials.invalidate()
+        TeamCredentials.invalidate()
+        _personalCredentials = nil
+        _teamCredentials = nil
     }
     
     public func buildAPIURL(for urlComponentString: String) -> URL {
@@ -76,7 +80,7 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
             )
         }.map { data, urlResponse in
             try self._validateURLResponse(urlResponse)
-            try self._updateCredentialsFromURLResponse(urlResponse)
+            try self._updatePersonalCredentialsFromURLResponse(urlResponse)
 
             // Technically we don't always need deserialize the json object, but this
             // approach is much easier to understand and since the json payloads are
@@ -87,8 +91,15 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
 
             return (jsonObject as? [String : Any])?[key]
         }.map { (unwrappedJSONObject: Any) in
+            // Look at the body of the response. If it has an access token key we should update our team credentials
+            // to use that token.
+            // NOTE: This approach WILL NOT work with an app wanting to support access to multiple teams at once.
+            self._updateTeamCredentialsFromResponseBody(unwrappedJSONObject)
+
             let data = try JSONSerialization.data(withJSONObject: unwrappedJSONObject, options: [])
-            return try JSONDecoder().decode(T.self, from: data)
+            let decoder = JSONDecoder()
+            decoder.keyDecodingStrategy = .convertFromSnakeCase
+            return try decoder.decode(T.self, from: data)
         }.done { (value: T) in
             completion(.success(value))
         }.ensure {
@@ -159,17 +170,19 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
         }
     }
     
-    public var isValid: Bool { return _credentials.isValid }
+    public var isValid: Bool { return _currentCredentials?.isValid ?? false }
     
     public func buildURLRequest(url: URL, httpMethod: HTTPMethod, extraHeaders: [String: Any]?) throws -> URLRequest {
-        guard _credentials.isExpired == false else {
+        if let _currentCredentials = _currentCredentials, _currentCredentials.isExpired {
             throw ServerOperationError.sessionExpired
         }
         
         var request = URLRequest(url: url)
         request.httpMethod = httpMethod.rawValue
-        _credentials.setResponseHeaders(on: &request)
-        
+
+        // Set headers if we have them.
+        _currentCredentials?.setResponseHeaders(on: &request)
+
         for (key, value) in extraHeaders ?? [:] {
             var valueString = value as? String
             
@@ -205,8 +218,8 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
         case 1 ..< 300:
             break
         case 401:
-            if _credentials.accessToken == nil {
-                // DEV: Still probably not the best place to do this, but it's less terribvle than other band-aid fixes
+            if _currentCredentials?.accessToken == nil {
+                // DEV: Still probably not the best place to do this, but it's less terrible than other band-aid fixes
                 throw ServerOperationError.invalidUsernamePassword
             } else {
                 throw ServerOperationError.sessionInvalid
@@ -220,17 +233,41 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
         }
     }
     
-    private func _updateCredentialsFromURLResponse(_ urlResponse: URLResponse) throws {
+    private func _updatePersonalCredentialsFromURLResponse(_ urlResponse: URLResponse) throws {
         guard let httpResponse = urlResponse as? HTTPURLResponse else {
             throw ServerOperationError.genericErrorString("URL response was not an HTTP response for \(urlResponse.url?.absoluteString ?? "no URL")")
         }
         
         let responseHeaders = httpResponse.allHeaderFields
-        
-        if responseHeaders[ResponseHeader.accessToken.rawValue] != nil {
-            _credentials.updateFromResponseHeaders(responseHeaders)
-//            throw ServerOperationError.genericErrorString("Sign in failed. No access-token header was returned in the response.")
+
+        if responseHeaders[ResponseHeader.client.rawValue] != nil {
+            // Create an instance here since it will be updated immediately after. An empty initialization let's
+            // us avoid needing to duplicate the logic to pull the values out of the headers.
+            // This could also be moved to an init method if desired.
+            if self._personalCredentials == nil {
+                _personalCredentials = PersonalCredentials(expiry: "", tokenType: "", accessToken: "", client: "", uid: "")
+            }
+            _personalCredentials?.updateAndPersistFromResponseHeaders(responseHeaders)
         }
+    }
+
+    private func _updateTeamCredentialsFromResponseBody(_ responseBody: Any) {
+        guard
+            let dict = responseBody as? [String : Any],
+            let accessToken = dict[TeamCredentials.Key.accessToken.rawValue] as? String,
+            let apiKey = dict[TeamCredentials.Key.apiKey.rawValue] as? String
+        else {
+            return
+        }
+
+        if self._teamCredentials == nil {
+            _teamCredentials = TeamCredentials(apiKey: apiKey, accessToken: accessToken)
+        }
+
+        // This is technically redundant since we may have just created the credentials above, but
+        // it handles the persistence for us as well as the case where we generate a token after
+        // already having generated one.
+        _teamCredentials?.updateAndPersistFromResponseHeaders(dict)
     }
     
     // MARK: - URLSessionTaskDelegate
@@ -242,5 +279,4 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
             }
         }
     }
-    
 }

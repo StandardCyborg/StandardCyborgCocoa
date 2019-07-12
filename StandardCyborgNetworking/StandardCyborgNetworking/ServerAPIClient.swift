@@ -87,23 +87,7 @@ public protocol ServerAPIClient {
 }
 
 extension ServerCredentials {
-    
-    mutating func updateFromResponseHeaders(_ responseHeaders: [AnyHashable: Any]) {
-        accessToken  = responseHeaders[ResponseHeader.accessToken.rawValue] as? String
-        client       = responseHeaders[ResponseHeader.client.rawValue] as? String
-        expiry       = responseHeaders[ResponseHeader.expiry.rawValue] as? String
-        tokenType    = responseHeaders[ResponseHeader.tokenType.rawValue] as? String
-        uid          = responseHeaders[ResponseHeader.uid.rawValue] as? String
-        
-        persist()
-    }
-    
     func setResponseHeaders(on request: inout URLRequest) {
-        request.setValue(accessToken, forHTTPHeaderField: ResponseHeader.accessToken.rawValue)
-        request.setValue(client,      forHTTPHeaderField: ResponseHeader.client.rawValue)
-        request.setValue(expiry,      forHTTPHeaderField: ResponseHeader.expiry.rawValue)
-        request.setValue(tokenType,   forHTTPHeaderField: ResponseHeader.tokenType.rawValue)
-        request.setValue(uid,         forHTTPHeaderField: ResponseHeader.uid.rawValue)
+        headerValues.forEach { request.setValue($0.value, forHTTPHeaderField: $0.key) }
     }
-    
 }
