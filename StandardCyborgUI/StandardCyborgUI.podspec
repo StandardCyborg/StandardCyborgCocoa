@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name              = "StandardCyborgUI"
-  s.version           = "1.3.4"
+  s.version           = "1.3.5"
   s.summary           = "Classes for driving and visualizing scanning using StandardCyborgFusion"
   s.homepage          = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url  = 'https://twitter.com/StandardCyborg'
@@ -26,7 +26,7 @@ Pod::Spec.new do |s|
   s.platform          = :ios, "12.0"
   s.swift_version     = '4.2'
   s.requires_arc      = true
-  s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}" }
+  s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}-ui" }
   s.source_files      = "StandardCyborgUI/**/*.{h,swift,metal}"
   s.resources         = ['StandardCyborgUI/*.scn', 'StandardCyborgUI/Assets.xcassets']
   s.weak_frameworks   = "StandardCyborgFusion", "QuartzCore", "CoreVideo"
