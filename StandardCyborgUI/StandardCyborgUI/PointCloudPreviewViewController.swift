@@ -13,7 +13,7 @@ import UIKit
 @objc public class PointCloudPreviewViewController: UIViewController, SCNSceneRendererDelegate {
     
     /** A convenience initializer that simply calls init and sets the point cloud */
-    @objc public convenience init(pointCloud: SCPointCloud, landmarks: [SCLandmark3D]?) {
+    @objc public convenience init(pointCloud: SCPointCloud, landmarks: Set<SCLandmark3D>?) {
         self.init()
         self.pointCloud = pointCloud
         self.landmarks = landmarks
@@ -62,7 +62,7 @@ import UIKit
     @objc public var pointCloud: SCPointCloud?
     
     /** Set this or call the convenience initializer before presenting this view controller */
-    @objc public var landmarks: [SCLandmark3D]?
+    @objc public var landmarks: Set<SCLandmark3D>?
     
     /** A snapshot of the point cloud as rendered, which becomes available
         as soon as the view controller's view appears */

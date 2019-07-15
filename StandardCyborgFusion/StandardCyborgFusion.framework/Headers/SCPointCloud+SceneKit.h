@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (SCNGeometryElement *)buildPointCloudGeometryElement;
 
 - (SCNNode *)buildPointCloudNode;
-- (SCNNode *)buildPointCloudNodeWithLandmarks:(NSArray<SCLandmark3D *> * _Nullable)landmarks;
+- (SCNNode *)buildPointCloudNodeWithLandmarks:(NSSet<SCLandmark3D *> * _Nullable)landmarks;
 
 @end
 
