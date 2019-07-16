@@ -51,6 +51,9 @@ public extension Notification.Name {
     /** Configures the minimum color camera shutter speed. Defaults to 1/60s */
     @objc public var minColorExposureDuration: TimeInterval = 1.0/60.0
     
+    /** Configures the default color camera resolution. Defaults to 1280x720. Values larger than 1920x1280 are not recommended. */
+    @objc public var colorCaptureSessionPreset: AVCaptureSession.Preset = .hd1280x720
+    
     /** Call this before calling startSession to request camera access and
         configure the AVCaptureSession for the desired resolution and framerate.
         Only necessary to call this once per instance of CameraManager.
@@ -324,7 +327,7 @@ public extension Notification.Name {
         }
         
         _captureSession.beginConfiguration()
-        _captureSession.sessionPreset = AVCaptureSession.Preset.hd1280x720
+        _captureSession.sessionPreset = colorCaptureSessionPreset
         _captureSession.addInput(_videoDeviceInput!)
         _captureSession.addOutput(_videoDataOutput)
         _captureSession.addOutput(_depthDataOutput)
@@ -339,7 +342,7 @@ public extension Notification.Name {
             print("No AVCaptureConnection")
         }
         
-        // Search for highest resolution with half-point depth values
+        // Search for the highest resolution with 32-bit depth values
         let depthFormats = videoDevice.activeFormat.supportedDepthDataFormats
         let selectedFormat = depthFormats.filter {
             CMFormatDescriptionGetMediaSubType($0.formatDescription) == kCVPixelFormatType_DepthFloat32
