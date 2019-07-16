@@ -24,6 +24,7 @@
 		7642B7E521E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */; };
 		7642B82721E69FC900BC45C7 /* StandardCyborgFusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7620D26B21CE0A89008D0095 /* StandardCyborgFusion.framework */; };
 		7642B82F21E6BA6C00BC45C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */; };
+		76751A6522DD9E4E00482EC4 /* NodeToNodeLineNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */; };
 		A080752F22D3B3FF00D1CFD8 /* Bundle+SCUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */; };
 /* End PBXBuildFile section */
 
@@ -47,6 +48,7 @@
 		7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = PointCloudPreviewViewController.scn; sourceTree = "<group>"; };
 		7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultScanningViewRenderer.swift; sourceTree = "<group>"; };
 		7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeToNodeLineNode.swift; sourceTree = "<group>"; };
 		A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+SCUI.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -100,6 +102,7 @@
 				7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */,
 				7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */,
 				A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */,
+				76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */,
 			);
 			path = StandardCyborgUI;
 			sourceTree = "<group>";
@@ -207,6 +210,7 @@
 				7620D26221CDADA5008D0095 /* DrawColorTexture.metal in Sources */,
 				7620D25321CDAD40008D0095 /* CameraManager.swift in Sources */,
 				7642B7E221E55E6100BC45C7 /* PointCloudPreviewViewController.swift in Sources */,
+				76751A6522DD9E4E00482EC4 /* NodeToNodeLineNode.swift in Sources */,
 				7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
