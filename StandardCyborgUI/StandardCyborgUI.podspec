@@ -26,10 +26,10 @@ Pod::Spec.new do |s|
   s.platform          = :ios, "12.0"
   s.swift_version     = '4.2'
   s.requires_arc      = true
-  s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}-ui" }
+  s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}-StandardCyborgUI" }
   s.source_files      = "StandardCyborgUI/**/*.{h,swift,metal}"
   s.resources         = "StandardCyborgUI/**/*.{scn,xcassets}"
   s.weak_frameworks   = "StandardCyborgFusion", "QuartzCore", "CoreVideo"
-  s.dependency          "StandardCyborgFusion", "~> #{s.version}"
+  s.dependency          "StandardCyborgFusion", "~> 1.3.5-StandardCyborgFusion"
 
 end
