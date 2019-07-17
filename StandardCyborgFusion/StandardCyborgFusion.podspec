@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.documentation_url       = 'https://standardcyborg.com/docs/cocoa-api'
   s.license                 = { :type => 'Commercial', :file => 'LICENSE' }
   s.author                  = { 'Standard Cyborg' => 'sdk@standardcyborg.com' }
-  s.source                  = { :http => "https://github.com/StandardCyborg/StandardCyborgCocoa/releases/download/v#{s.version}/StandardCyborgFusion.framework.zip" }
+  s.source                  = { :http => "https://github.com/StandardCyborg/StandardCyborgCocoa/releases/download/v#{s.version}-StandardCyborgFusion/StandardCyborgFusion.framework.zip" }
   s.platform                = :ios
   s.ios.deployment_target   = '12.0'
   s.ios.vendored_frameworks = 'StandardCyborgFusion.framework'
