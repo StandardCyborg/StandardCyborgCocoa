@@ -9,5 +9,5 @@ float u_fadeDistance = 0.03;
 float4 position = scn_node.inverseModelViewTransform * float4(_surface.position, 1.0);
 
 // Fade out transparency when the position is fadeOutPosition meters back, away from the camera
-float transparency = (position.z + u_fadePositionZ) / u_fadeDistance;
+float transparency = (-position.y + u_fadePositionZ) / u_fadeDistance;
 _surface.transparent = float4(clamp(transparency, 0, 1));
