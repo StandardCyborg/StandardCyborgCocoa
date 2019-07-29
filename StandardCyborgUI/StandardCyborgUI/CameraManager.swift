@@ -399,9 +399,11 @@ public extension Notification.Name {
                     let scale = (videoDevice.exposureDuration.seconds / self.minColorExposureDuration).rounded()
                     let newDuration = CMTimeMake(value: videoDevice.exposureDuration.value, timescale: Int32(scale) * videoDevice.exposureDuration.timescale)
                     let newISO = videoDevice.iso * Float(scale)
-                    videoDevice.setExposureModeCustom(duration: newDuration,
-                                                      iso: newISO,
-                                                      completionHandler: nil)
+                    if newISO < videoDevice.activeFormat.maxISO {
+                        videoDevice.setExposureModeCustom(duration: newDuration,
+                                                          iso: newISO,
+                                                          completionHandler: nil)
+                    }
                 }
                 videoDevice.unlockForConfiguration()
             } catch {
