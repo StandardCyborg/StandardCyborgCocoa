@@ -22,6 +22,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) simd_float3 position;
 
 - (instancetype)init NS_UNAVAILABLE;
+- (instancetype)initWithLabel:(NSString *)label
+                   labelIndex:(int)labelIndex
+                     position:(simd_float3)position;
 
 /** Returns the Euclidean distance from this landmark to another */
 - (float)distanceToLandmark3D:(SCLandmark3D *)other;
