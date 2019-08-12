@@ -8,8 +8,9 @@ Pod::Spec.new do |s|
   s.license                 = { :type => 'Commercial', :file => 'LICENSE' }
   s.author                  = { 'Standard Cyborg' => 'sdk@standardcyborg.com' }
   s.source                  = { :http => "https://github.com/StandardCyborg/StandardCyborgCocoa/releases/download/v#{s.version}-StandardCyborgFusion/StandardCyborgFusion.framework.zip" }
-  s.platform                = :ios
   s.ios.deployment_target   = '12.0'
   s.ios.vendored_frameworks = 'StandardCyborgFusion.framework'
+  s.osx.deployment_target   = '10.14'
+  s.osx.vendored_frameworks = 'StandardCyborgFusion.framework'
 end
 
