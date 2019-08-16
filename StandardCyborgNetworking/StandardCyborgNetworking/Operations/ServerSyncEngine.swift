@@ -1,6 +1,6 @@
 //
 //  ServerSyncEngine.swift
-//  Scanner
+//  StandardCyborgNetworking
 //
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
@@ -118,7 +118,7 @@ public class ServerSyncEngine {
     }
     
     /** Provides the current upload status for a given scan */
-    public func uploadStatus(for scan: ServerScan) -> ServerScan.UploadStatus {
+    public func uploadStatus(for scan: ServerScan) -> UploadStatus {
         if let uploadStatus = _uploadStatusPerScanUUID[scan.localUUID] {
             return uploadStatus
         } else if let status = scan.uploadStatus {
@@ -130,9 +130,9 @@ public class ServerSyncEngine {
     
     // MARK: - Private
     
-    private var _uploadStatusPerScanUUID: [UUID: ServerScan.UploadStatus] = [:]
+    private var _uploadStatusPerScanUUID: [UUID: UploadStatus] = [:]
     
-    private func _setSyncStatus(_ status: ServerScan.UploadStatus, for scan: ServerScan) {
+    private func _setSyncStatus(_ status: UploadStatus, for scan: ServerScan) {
         DispatchQueue.main.async {
             NotificationCenter.default.post(name: ServerSyncEngine.syncDidStartNotification, object: self)
         }

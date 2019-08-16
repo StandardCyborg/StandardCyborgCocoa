@@ -10,10 +10,14 @@
 		76122BEA21EC2AFD00D887DF /* ServerUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76122BE921EC2AFD00D887DF /* ServerUser.swift */; };
 		76122BEC21EC2B3A00D887DF /* ServerCustomer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76122BEB21EC2B3A00D887DF /* ServerCustomer.swift */; };
 		76122BF221ED041500D887DF /* ServerOperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76122BF121ED041500D887DF /* ServerOperationError.swift */; };
-		7623165C21EDB0E5004D1AFB /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623165A21EDB0E5004D1AFB /* ObjectMapper.framework */; };
+		761FB76F2306062B004E48F3 /* ServerS3Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FB76E2306062B004E48F3 /* ServerS3Support.swift */; };
+		761FB771230608AA004E48F3 /* ServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FB770230608AA004E48F3 /* ServerOperation.swift */; };
 		7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; };
 		7623166421EDB40F004D1AFB /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166321EDB40F004D1AFB /* ZipArchive.framework */; };
 		7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; };
+		765BC1C7230288DB005BD512 /* ServerSceneGraphOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */; };
+		765BC1C923028F28005BD512 /* ServerSceneGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C823028F28005BD512 /* ServerSceneGraph.swift */; };
+		765BC1CB23028FDB005BD512 /* UploadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1CA23028FDB005BD512 /* UploadStatus.swift */; };
 		76E7E14121E95C140038C9E0 /* StandardCyborgNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */; };
 		76E7E15321E95C5B0038C9E0 /* ServerAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14921E95C5A0038C9E0 /* ServerAPIClient.swift */; };
@@ -34,10 +38,14 @@
 		76122BE921EC2AFD00D887DF /* ServerUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerUser.swift; sourceTree = "<group>"; };
 		76122BEB21EC2B3A00D887DF /* ServerCustomer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCustomer.swift; sourceTree = "<group>"; };
 		76122BF121ED041500D887DF /* ServerOperationError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerOperationError.swift; sourceTree = "<group>"; };
-		7623165A21EDB0E5004D1AFB /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
+		761FB76E2306062B004E48F3 /* ServerS3Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerS3Support.swift; sourceTree = "<group>"; };
+		761FB770230608AA004E48F3 /* ServerOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerOperation.swift; sourceTree = "<group>"; };
 		7623165B21EDB0E5004D1AFB /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 		7623166321EDB40F004D1AFB /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
 		7623166521EDBD2D004D1AFB /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
+		765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneGraphOperations.swift; sourceTree = "<group>"; };
+		765BC1C823028F28005BD512 /* ServerSceneGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneGraph.swift; sourceTree = "<group>"; };
+		765BC1CA23028FDB005BD512 /* UploadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadStatus.swift; sourceTree = "<group>"; };
 		76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StandardCyborgNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StandardCyborgNetworking.h; sourceTree = "<group>"; };
 		76E7E14021E95C140038C9E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -62,7 +70,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				7623166421EDB40F004D1AFB /* ZipArchive.framework in Frameworks */,
-				7623165C21EDB0E5004D1AFB /* ObjectMapper.framework in Frameworks */,
 				7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */,
 				7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */,
 			);
@@ -78,9 +85,11 @@
 				76E7E14F21E95C5A0038C9E0 /* ServerCredentials.swift */,
 				76122BEB21EC2B3A00D887DF /* ServerCustomer.swift */,
 				A0C582E422D553EC0090FF6A /* ServerScan.swift */,
+				765BC1C823028F28005BD512 /* ServerSceneGraph.swift */,
 				A0C582DE22D553E10090FF6A /* ServerScanAttachment.swift */,
 				A0C582E022D553E10090FF6A /* ServerTeam.swift */,
 				76122BE921EC2AFD00D887DF /* ServerUser.swift */,
+				765BC1CA23028FDB005BD512 /* UploadStatus.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -90,8 +99,11 @@
 			children = (
 				76E7E14C21E95C5A0038C9E0 /* ServerSyncEngine.swift */,
 				76122BF121ED041500D887DF /* ServerOperationError.swift */,
+				761FB770230608AA004E48F3 /* ServerOperation.swift */,
 				76E7E14D21E95C5A0038C9E0 /* ServerScanOperations.swift */,
+				765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */,
 				76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */,
+				761FB76E2306062B004E48F3 /* ServerS3Support.swift */,
 			);
 			path = Operations;
 			sourceTree = "<group>";
@@ -111,7 +123,6 @@
 			children = (
 				7623166521EDBD2D004D1AFB /* PMKFoundation.framework */,
 				7623166321EDB40F004D1AFB /* ZipArchive.framework */,
-				7623165A21EDB0E5004D1AFB /* ObjectMapper.framework */,
 				7623165B21EDB0E5004D1AFB /* PromiseKit.framework */,
 			);
 			name = Frameworks;
@@ -237,13 +248,18 @@
 				76E7E15521E95C5B0038C9E0 /* DefaultServerAPIClient.swift in Sources */,
 				A0C582E522D553EC0090FF6A /* ServerScan.swift in Sources */,
 				A0C582E322D553E10090FF6A /* ServerTeam.swift in Sources */,
+				765BC1C923028F28005BD512 /* ServerSceneGraph.swift in Sources */,
 				A0C582E722D553F90090FF6A /* Coding+Util.swift in Sources */,
 				76E7E15921E95C5B0038C9E0 /* ServerCredentials.swift in Sources */,
 				76E7E15A21E95C5B0038C9E0 /* DateTimeTransform.swift in Sources */,
 				A0C582DD22D553D70090FF6A /* ServerAccessToken.swift in Sources */,
+				765BC1CB23028FDB005BD512 /* UploadStatus.swift in Sources */,
 				76122BEC21EC2B3A00D887DF /* ServerCustomer.swift in Sources */,
 				76E7E15421E95C5B0038C9E0 /* MD5.swift in Sources */,
+				761FB771230608AA004E48F3 /* ServerOperation.swift in Sources */,
 				76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */,
+				761FB76F2306062B004E48F3 /* ServerS3Support.swift in Sources */,
+				765BC1C7230288DB005BD512 /* ServerSceneGraphOperations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

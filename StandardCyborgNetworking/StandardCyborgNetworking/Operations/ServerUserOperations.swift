@@ -1,6 +1,6 @@
 //
 //  ServerUserOperations.swift
-//  Scanner
+//  StandardCyborgNetworking
 //
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
@@ -17,11 +17,8 @@ private struct ClientAPIPath {
 
 
 
-
-public struct ServerSignUpOperation {
+public class ServerSignUpOperation: ServerOperation {
     
-    let dataSource: ServerSyncEngineLocalDataSource
-    let apiClient: ServerAPIClient
     let email: String
     let password: String
     
@@ -30,10 +27,9 @@ public struct ServerSignUpOperation {
                 email: String,
                 password: String)
     {
-        self.dataSource = dataSource
-        self.apiClient = apiClient
         self.email = email
         self.password = password
+        super.init(dataSource: dataSource, serverAPIClient: apiClient)
     }
     
     public func perform(_ completion: @escaping (Result<ServerUser>) -> Void) {
@@ -41,14 +37,15 @@ public struct ServerSignUpOperation {
             "email": email,
             "password": password
         ]
-        let url = apiClient.buildAPIURL(for: ClientAPIPath.authSignUp)
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.authSignUp)
 
-        apiClient.performJSONOperation(withURL: url,
-                                       httpMethod: .POST,
-                                       httpBodyDict: postDictionary,
-                                       responseObjectRootKey: "user")
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .POST,
+                                             httpBodyDict: postDictionary,
+                                             responseObjectRootKey: "user")
         { (result: Result<ServerUser>) in
             var modifiedResult = result
+            
             if case var .success(user) = result {
                 user.key = self.email // Maybe correct? Works for now.
                 self.dataSource.updateUser(user)
@@ -61,10 +58,8 @@ public struct ServerSignUpOperation {
     
 }
 
-public struct ServerSignInOperation {
+public class ServerSignInOperation: ServerOperation {
     
-    let dataSource: ServerSyncEngineLocalDataSource
-    let apiClient: ServerAPIClient
     let email: String
     let password: String
     
@@ -73,10 +68,9 @@ public struct ServerSignInOperation {
                 email: String,
                 password: String)
     {
-        self.dataSource = dataSource
-        self.apiClient = apiClient
         self.email = email
         self.password = password
+        super.init(dataSource: dataSource, serverAPIClient: apiClient)
     }
     
     public func perform(_ completion: @escaping (Result<ServerUser>) -> Void) {
@@ -84,42 +78,35 @@ public struct ServerSignInOperation {
             "email": email,
             "password": password
         ]
-        let url = apiClient.buildAPIURL(for: ClientAPIPath.authSignIn)
-        apiClient.performJSONOperation(withURL: url,
-                                       httpMethod: .POST,
-                                       httpBodyDict: postDictionary,
-                                       responseObjectRootKey: "user")
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.authSignIn)
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .POST,
+                                             httpBodyDict: postDictionary,
+                                             responseObjectRootKey: "user")
         { (result: Result<ServerUser>) in
             if case let .success(user) = result {
                 self.dataSource.updateUser(user)
             }
+            
             completion(result)
         }
     }
     
 }
 
-public struct ServerSignOutOperation {
-    
-    let dataSource: ServerSyncEngineLocalDataSource
-    let apiClient: ServerAPIClient
-    
-    public init(dataSource: ServerSyncEngineLocalDataSource, apiClient: ServerAPIClient) {
-        self.dataSource = dataSource
-        self.apiClient = apiClient
-    }
+public class ServerSignOutOperation: ServerOperation {
     
     public func perform(_ completion: @escaping (ServerOperationError?) -> Void) {
-        let url = apiClient.buildAPIURL(for: ClientAPIPath.authSignOut)
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.authSignOut)
         
         Promise<Void> { seal in
-            apiClient.performBasicOperation(withURL: url, httpMethod: .DELETE) { (error: ServerOperationError?) in
+            serverAPIClient.performBasicOperation(withURL: url, httpMethod: .DELETE) { (error: ServerOperationError?) in
                 seal.resolve(error)
             }
         }.ensure {
             // Always sign out, regardless of the result of the network operation
             self.dataSource.resetUser()
-            self.apiClient.invalidateCredentials()
+            self.serverAPIClient.invalidateCredentials()
         }.done {
             completion(nil)
         }.catch { error in
@@ -130,56 +117,51 @@ public struct ServerSignOutOperation {
     
 }
 
-public struct ServerGenerateAccessTokenOperation {
+public class ServerGenerateAccessTokenOperation: ServerOperation {
 
-    let dataSource: ServerSyncEngineLocalDataSource
-    let apiClient: ServerAPIClient
     let apiKey: String
 
     public init(dataSource: ServerSyncEngineLocalDataSource, apiClient: ServerAPIClient, apiKey: String) {
-        self.dataSource = dataSource
-        self.apiClient = apiClient
         self.apiKey = apiKey
+        super.init(dataSource: dataSource, serverAPIClient: apiClient)
     }
 
     public func perform(_ completion: @escaping (Result<ServerAccessToken>) -> Void) {
         let postDictionary = [
             "api_key": apiKey,
         ]
-        let url = apiClient.buildAPIURL(for: ClientAPIPath.authGenerateAccessToken)
-        apiClient.performJSONOperation(withURL: url,
-                                       httpMethod: .POST,
-                                       httpBodyDict: postDictionary,
-                                       responseObjectRootKey: nil,
-                                       completion: completion)
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.authGenerateAccessToken)
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .POST,
+                                             httpBodyDict: postDictionary,
+                                             responseObjectRootKey: nil,
+                                             completion: completion)
     }
 }
 
 
-public struct ServerTeamSignInOperation {
+public class ServerTeamSignInOperation: ServerOperation {
 
-    let dataSource: ServerSyncEngineLocalDataSource
-    let apiClient: ServerAPIClient
     let email: String
     let password: String
     let apiKey: String  // read from info.plist
 
     public init(dataSource: ServerSyncEngineLocalDataSource, apiClient: ServerAPIClient, email: String, password: String) {
-        self.dataSource = dataSource
-        self.apiClient = apiClient
         self.email = email
         self.password = password
-
+        
         guard let apiKey = Bundle.main.object(forInfoDictionaryKey: "SC_API_KEY") as? String else {
             fatalError("SC_API_KEY not set in info.plist.")
         }
-
+        
         self.apiKey = apiKey
+        
+        super.init(dataSource: dataSource, serverAPIClient: apiClient)
     }
-
+    
     public func perform(_ completion: @escaping (Result<(ServerUser, ServerAccessToken)>) -> Void) {
-        let signInOperation = ServerSignInOperation(dataSource: dataSource, apiClient: apiClient, email: email, password: password)
-        let accessTokenOperation = ServerGenerateAccessTokenOperation(dataSource: dataSource, apiClient: apiClient, apiKey: apiKey)
+        let signInOperation = ServerSignInOperation(dataSource: dataSource, apiClient: serverAPIClient, email: email, password: password)
+        let accessTokenOperation = ServerGenerateAccessTokenOperation(dataSource: dataSource, apiClient: serverAPIClient, apiKey: apiKey)
 
         // NOTE: If we end up having more methods like this, the internals using PromiseKit (or Combine
         // if we get this to iOS 13+) should be exposed to make composing these async operations
@@ -196,7 +178,7 @@ public struct ServerTeamSignInOperation {
                         completion(.success((user, token)))
                     case .failure(let error):
                         self.dataSource.resetUser()
-                        self.apiClient.invalidateCredentials()
+                        self.serverAPIClient.invalidateCredentials()
                         completion(.failure(error))
                     }
                 }

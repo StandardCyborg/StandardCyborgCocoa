@@ -1,6 +1,6 @@
 //
 //  ServerScanOperations.swift
-//  Scanner
+//  StandardCyborgNetworking
 //
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
@@ -19,15 +19,7 @@ private struct ClientAPIPath {
     static let s3Files = "direct_uploads"
 }
 
-public struct ServerFetchScansOperation {
-    
-    let dataSource: ServerSyncEngineLocalDataSource
-    let serverAPIClient: ServerAPIClient
-    
-    public init(dataSource: ServerSyncEngineLocalDataSource, serverAPIClient: ServerAPIClient) {
-        self.dataSource = dataSource
-        self.serverAPIClient = serverAPIClient
-    }
+public class ServerFetchScansOperation: ServerOperation {
     
     func perform(_ completion: @escaping (Result<[ServerScan]>) -> Void)
     {
@@ -40,21 +32,17 @@ public struct ServerFetchScansOperation {
     
 }
 
-public struct ServerDeleteScanOperation {
+public class ServerDeleteScanOperation: ServerOperation {
     
     let scan: ServerScan
-    let dataSource: ServerSyncEngineLocalDataSource
-    let serverAPIClient: ServerAPIClient
     
     public init(scan: ServerScan,
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
         self.scan = scan
-        self.dataSource = dataSource
-        self.serverAPIClient = serverAPIClient
+        super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
     }
-
     
     public func perform(_ completion: @escaping (ServerOperationError?) -> Void)
     {
@@ -83,46 +71,16 @@ public struct ServerDeleteScanOperation {
     
 }
 
-public struct ServerAddScanOperation {
+public class ServerAddScanOperation: ServerOperation {
     
     let scan: ServerScan
-    let dataSource: ServerSyncEngineLocalDataSource
-    let serverAPIClient: ServerAPIClient
     
-    fileprivate struct S3UploadInfo: Codable {
-        let url: URL
-        let uploadHeaders: [String : Any]
-        let directUploadFileKey: String
-
-        enum CodingKeys: String, CodingKey {
-            case directUpload, directUploadFileKey = "key"
-        }
-
-        enum DirectUploadKeys: String, CodingKey {
-            case url, headers
-        }
-
-        init(from decoder: Decoder) throws {
-            let container = try! decoder.container(keyedBy: CodingKeys.self)
-
-            let directUploadContainer = try! container.nestedContainer(keyedBy: DirectUploadKeys.self, forKey: .directUpload)
-            url = try! directUploadContainer.decode(URL.self, forKey: .url)
-            uploadHeaders = try! directUploadContainer.decode([String : String].self, forKey: .headers)
-            directUploadFileKey = try! container.decode(String.self, forKey: .directUploadFileKey)
-        }
-
-        func encode(to encoder: Encoder) throws {
-            fatalError("Not currently supported (but implemented since our generic networking code requires objects to conform to Encodable)")
-        }
-    }
-
     public init(scan: ServerScan,
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
         self.scan = scan
-        self.dataSource = dataSource
-        self.serverAPIClient = serverAPIClient
+        super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
     }
     
     public func perform(uploadProgress: ((Double) -> Void)?,
@@ -201,48 +159,6 @@ public struct ServerAddScanOperation {
         }
     }
     
-    private func _createS3FileReference(for localFileURL: URL, remoteFilename: String) -> Promise<(URL, S3UploadInfo)> {
-        return Promise { seal in
-            guard let fileMD5 = MD5File(url: localFileURL) else {
-                seal.reject(ServerOperationError.genericErrorString("Couldn't calculate MD5 for \(localFileURL)"))
-                return
-            }
-            
-            guard
-                let fileAttributes = try? FileManager.default.attributesOfItem(atPath: localFileURL.path),
-                let fileSize = fileAttributes[FileAttributeKey.size] as? UInt64
-            else {
-                seal.reject(ServerOperationError.genericErrorString("Couldn't get file size for \(localFileURL)"))
-                return
-            }
-            
-            let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.s3Files)
-            let postDict = [
-                "blob": [
-                    "content_type": "text/plain",
-                    "filename": remoteFilename,
-                    "checksum": fileMD5.base64EncodedString(),
-                    "byte_size": fileSize,
-                ]
-            ]
-            
-            print("Creating S3 file reference for \(localFileURL)")
-            serverAPIClient.performJSONOperation(withURL: url,
-                                                 httpMethod: HTTPMethod.POST,
-                                                 httpBodyDict: postDict,
-                                                 responseObjectRootKey: nil)
-            { (result: Result<S3UploadInfo>) in
-                switch result {
-                case .success(let uploadInfo):
-                    print("Successfully created S3 file reference \(uploadInfo.directUploadFileKey)")
-                    seal.fulfill((localFileURL, uploadInfo))
-                case .failure(let error):
-                    seal.reject(ServerOperationError.genericErrorString("Error creating S3 file from result: \(error.localizedDescription)"))
-                }
-            }
-        }
-    }
-    
     private func _uploadScanFileToS3(localURL: URL, uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
         return Promise<S3UploadInfo> { seal in
             print("Uploading scan file to S3 for \(uploadInfo.directUploadFileKey)")
@@ -305,6 +221,7 @@ public struct ServerAddScanOperation {
                                                  responseObjectRootKey: "scan")
             { (result: Result<ServerScan>) in
                 switch result {
+                    
                 case .success(var scan):
                     print("Successfully created server scan with uid \(scan.key ?? "unknown")")
                     scan.localUUID = self.scan.localUUID
@@ -322,7 +239,7 @@ public struct ServerAddScanOperation {
     
 }
 
-public struct ServerDownloadScanOperation {
+public class ServerDownloadScanOperation: ServerOperation {
     
     private struct S3DownloadInfo: Codable {
         let zippedScanURL: URL
@@ -335,8 +252,15 @@ public struct ServerDownloadScanOperation {
     }
     
     let scan: ServerScan
-    let dataSource: ServerSyncEngineLocalDataSource
-    let serverAPIClient: ServerAPIClient
+    
+    public init(scan: ServerScan,
+                dataSource: ServerSyncEngineLocalDataSource,
+                serverAPIClient: ServerAPIClient)
+    {
+        self.scan = scan
+        super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
+    }
+    
     
     // DEV: This can be called from any stage in an interrupted upload,
     //      e.g. if the SC server scan was created, but the S3 file reference was not yet,
@@ -490,9 +414,7 @@ extension String {
 }
 
 fileprivate extension ServerScan {
-    typealias UploadInfo = ServerAddScanOperation.S3UploadInfo
-
-    init(scanUploadInfo: UploadInfo, thumbnailUploadInfo: UploadInfo?) {
+    init(scanUploadInfo: S3UploadInfo, thumbnailUploadInfo: S3UploadInfo?) {
         self.localUUID = UUID()
         self.uploadStatus = .notUploaded
         self.key = nil
@@ -506,9 +428,7 @@ fileprivate extension ServerScan {
 }
 
 fileprivate extension ServerScanAttachment {
-    typealias UploadInfo = ServerAddScanOperation.S3UploadInfo
-
-    init(scanUploadInfo: UploadInfo, thumbnailUploadInfo: UploadInfo?) {
+    init(scanUploadInfo: S3UploadInfo, thumbnailUploadInfo: S3UploadInfo?) {
         self.fileKey = scanUploadInfo.directUploadFileKey
         self.thumbnailKey = thumbnailUploadInfo?.directUploadFileKey
         self.kind = nil

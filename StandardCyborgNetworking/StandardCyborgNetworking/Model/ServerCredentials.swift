@@ -1,6 +1,6 @@
 //
 //  Credentials.swift
-//  Scanner
+//  StandardCyborgNetworking
 //
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
