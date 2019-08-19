@@ -12,9 +12,10 @@
 		76122BF221ED041500D887DF /* ServerOperationError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76122BF121ED041500D887DF /* ServerOperationError.swift */; };
 		761FB76F2306062B004E48F3 /* ServerS3Support.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FB76E2306062B004E48F3 /* ServerS3Support.swift */; };
 		761FB771230608AA004E48F3 /* ServerOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761FB770230608AA004E48F3 /* ServerOperation.swift */; };
+		761FB794230738D4004E48F3 /* PMKFoundation.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		761FB79623073BEB004E48F3 /* PromiseKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; };
-		7623166421EDB40F004D1AFB /* ZipArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166321EDB40F004D1AFB /* ZipArchive.framework */; };
-		7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; };
+		7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		765BC1C7230288DB005BD512 /* ServerSceneGraphOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */; };
 		765BC1C923028F28005BD512 /* ServerSceneGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C823028F28005BD512 /* ServerSceneGraph.swift */; };
 		765BC1CB23028FDB005BD512 /* UploadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1CA23028FDB005BD512 /* UploadStatus.swift */; };
@@ -34,6 +35,20 @@
 		A0C582E722D553F90090FF6A /* Coding+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C582E622D553F90090FF6A /* Coding+Util.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		761FB793230738CB004E48F3 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				761FB79623073BEB004E48F3 /* PromiseKit.framework in CopyFiles */,
+				761FB794230738D4004E48F3 /* PMKFoundation.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		76122BE921EC2AFD00D887DF /* ServerUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerUser.swift; sourceTree = "<group>"; };
 		76122BEB21EC2B3A00D887DF /* ServerCustomer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerCustomer.swift; sourceTree = "<group>"; };
@@ -41,7 +56,6 @@
 		761FB76E2306062B004E48F3 /* ServerS3Support.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerS3Support.swift; sourceTree = "<group>"; };
 		761FB770230608AA004E48F3 /* ServerOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerOperation.swift; sourceTree = "<group>"; };
 		7623165B21EDB0E5004D1AFB /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
-		7623166321EDB40F004D1AFB /* ZipArchive.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ZipArchive.framework; path = Carthage/Build/iOS/ZipArchive.framework; sourceTree = "<group>"; };
 		7623166521EDBD2D004D1AFB /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
 		765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneGraphOperations.swift; sourceTree = "<group>"; };
 		765BC1C823028F28005BD512 /* ServerSceneGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneGraph.swift; sourceTree = "<group>"; };
@@ -69,7 +83,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7623166421EDB40F004D1AFB /* ZipArchive.framework in Frameworks */,
 				7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */,
 				7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */,
 			);
@@ -122,7 +135,6 @@
 			isa = PBXGroup;
 			children = (
 				7623166521EDBD2D004D1AFB /* PMKFoundation.framework */,
-				7623166321EDB40F004D1AFB /* ZipArchive.framework */,
 				7623165B21EDB0E5004D1AFB /* PromiseKit.framework */,
 			);
 			name = Frameworks;
@@ -180,7 +192,7 @@
 				76E7E13721E95C140038C9E0 /* Headers */,
 				76E7E13821E95C140038C9E0 /* Sources */,
 				76E7E13921E95C140038C9E0 /* Frameworks */,
-				76E7E13A21E95C140038C9E0 /* Resources */,
+				761FB793230738CB004E48F3 /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -223,16 +235,6 @@
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXResourcesBuildPhase section */
-		76E7E13A21E95C140038C9E0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		76E7E13821E95C140038C9E0 /* Sources */ = {

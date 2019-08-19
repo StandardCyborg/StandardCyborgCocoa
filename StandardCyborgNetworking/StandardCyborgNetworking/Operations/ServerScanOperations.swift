@@ -7,12 +7,7 @@
 
 import Foundation
 import PromiseKit
-#if canImport(ZipArchive)
-import ZipArchive
-#else
-import SSZipArchive
-#endif
-
+import Zip
 
 private struct ClientAPIPath {
     static let scans = "scans"
@@ -143,16 +138,21 @@ public class ServerAddScanOperation: ServerOperation {
                 let tempZipURL = URL(fileURLWithPath: NSTemporaryDirectory())
                     .appendingPathComponent(NSUUID().uuidString)
                     .appendingPathExtension("zip")
-                let pathsToZip = [plyPath]
+                let pathsToZip: [URL] = [URL(fileURLWithPath: plyPath)]
                 
-                let zipSuccess = SSZipArchive.createZipFile(atPath: tempZipURL.path, withFilesAtPaths: pathsToZip)
+                var zipError: Error?
+                do {
+                    try _ = Zip.quickZipFiles(pathsToZip, fileName: tempZipURL.path)
+                } catch {
+                    zipError = error
+                }
                 
                 DispatchQueue.main.async {
-                    if zipSuccess {
-                        seal.fulfill(tempZipURL)
-                    } else {
+                    if let zipError = zipError {
                         seal.reject(ServerOperationError.genericErrorString(
-                            "Failed to zip files at \(pathsToZip) to \(tempZipURL))"))
+                            "Failed to zip files at \(pathsToZip) to \(tempZipURL): \(zipError)"))
+                    } else {
+                        seal.fulfill(tempZipURL)
                     }
                 }
             }
@@ -356,7 +356,7 @@ public class ServerDownloadScanOperation: ServerOperation {
         
         try fileManager.createDirectory(atPath: unzipWorkspacePath, withIntermediateDirectories: false, attributes: nil)
         
-        SSZipArchive.unzipFile(atPath: url.path, toDestination: unzipWorkspacePath)
+        try Zip.unzipFile(url, destination: URL(fileURLWithPath: unzipWorkspacePath), overwrite: true, password: nil)
         
         guard
             let contents = try? fileManager.contentsOfDirectory(atPath: unzipWorkspacePath),

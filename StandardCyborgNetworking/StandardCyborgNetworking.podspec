@@ -15,6 +15,6 @@ Pod::Spec.new do |s|
   s.source_files      = "StandardCyborgNetworking/**/*.{swift}"
   s.dependency          "PromiseKit", "~> 6.0"
   s.dependency          "PromiseKit/Foundation", "~> 6.0"
-  s.dependency          "SSZipArchive"
+  s.dependency          "Zip", "~> 1.1"
 
 end

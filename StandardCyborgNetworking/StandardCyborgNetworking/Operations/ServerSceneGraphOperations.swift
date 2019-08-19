@@ -11,6 +11,7 @@ import PromiseKit
 
 private struct ClientAPIPath {
     static let scenes = "scenes"
+    static let scenesVersions = "scenes/:uid/versions/:version_number"
 }
 
 public class ServerAddSceneGraphOperation: ServerOperation {
@@ -44,7 +45,7 @@ public class ServerAddSceneGraphOperation: ServerOperation {
             self._uploadSceneGraphFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
         }.then { uploadInfo in
             // 5. Update the version created in step 2 to fill in the pending scenegraph_key and thumbnail
-            self._updateSceneGraph(sceneVersion: sceneGraph.versions.first!, uploadInfo: uploadInfo)
+            self._updateSceneGraph(sceneGraph, uploadInfo: uploadInfo)
         }.done {
             completion(nil)
         }.catch { error in
@@ -92,25 +93,32 @@ public class ServerAddSceneGraphOperation: ServerOperation {
         }
     }
     
-    private func _updateSceneGraph(sceneVersion: ServerSceneVersion, uploadInfo: S3UploadInfo) -> Promise<Void> {
+    private func _updateSceneGraph(_ sceneGraph: ServerSceneGraph, uploadInfo: S3UploadInfo) -> Promise<Void> {
         return Promise { seal in
-            guard sceneVersion.key == nil else {
-                seal.reject(ServerOperationError.genericErrorString("This sceneGraph already has a server key: \(sceneVersion.key!)"))
+            guard let sceneGraphKey = sceneGraph.key else {
+                seal.reject(ServerOperationError.genericErrorString("This ServerSceneGraph has no server key: \(sceneGraph)"))
+                return
+            }
+            guard let sceneVersion = sceneGraph.versions.first else {
+                seal.reject(ServerOperationError.genericErrorString("This ServerSceneGraph has no versions: \(sceneGraph)"))
                 return
             }
             
-            let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+            var tempURLString = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenesVersions).absoluteString
+            tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: sceneGraphKey)
+            tempURLString = tempURLString.replacingOccurrences(of: ":version_number", with: "\(sceneVersion.versionNumber)")
+            let url = URL(string: tempURLString)!
             
             // Convert the sceneGraph object to a dictionary by encoding it ServerSceneGraph => Data => Dictionary.
             // We then embed that dictionary inside a root "sceneGraph" object since that's what the server expects.
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
-            let sceneVersionDict = try! JSONSerialization.jsonObject(with: try! encoder.encode(sceneVersion), options: []) as! [AnyHashable : Any]
+            let sceneVersionDict = ["scenegraph_key": uploadInfo.directUploadFileKey]
             
             serverAPIClient.performJSONOperation(withURL: url,
                                                  httpMethod: .PUT,
                                                  httpBodyDict: ["scene_version" : sceneVersionDict],
-                                                 responseObjectRootKey: "scene_graph")
+                                                 responseObjectRootKey: "scene_version")
             { (result: Result<ServerSceneVersion>) in
                 switch result {
                 case .success(var updatedSceneVersion):

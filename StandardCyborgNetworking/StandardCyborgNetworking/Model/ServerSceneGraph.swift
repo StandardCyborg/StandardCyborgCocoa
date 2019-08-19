@@ -10,10 +10,10 @@ import Foundation
 public struct ServerSceneGraph: Codable {
     
     private enum CodingKeys: String, CodingKey {
-        case createdAt = "created_at"
+        case createdAt
         case key = "uid"
         case teamUID = "team_uid"
-        case versions = "scene_versions"
+        case sceneVersions
     }
     
     public var localUUID = UUID()
@@ -28,19 +28,19 @@ public struct ServerSceneGraph: Codable {
     public init(from decoder: Decoder) {
         let container = try! decoder.container(keyedBy: CodingKeys.self)
         
-        createdAt = try! container.decodeIfPresent(Date.self, forKey: .createdAt)
+        createdAt = try! container.decodeDateStringIfPresent(forKey: .createdAt)
         key = try! container.decodeIfPresent(String.self, forKey: .key)
         teamUID = try! container.decodeIfPresent(String.self, forKey: .teamUID)
-        versions = try! container.decodeIfPresent([ServerSceneVersion].self, forKey: .versions) ?? []
+        versions = try! container.decodeIfPresent([ServerSceneVersion].self, forKey: .sceneVersions) ?? []
     }
     
     public func encode(to encoder: Encoder) {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
-        try? container.encodeIfPresent(createdAt, forKey: .createdAt)
+        try? container.encodeDateAsStringIfPresent(createdAt, forKey: .createdAt)
         try? container.encodeIfPresent(key, forKey: .key)
         try? container.encodeIfPresent(teamUID, forKey: .teamUID)
-        try? container.encodeIfPresent(versions, forKey: .versions)
+        try? container.encodeIfPresent(versions, forKey: .sceneVersions)
     }
 }
 
@@ -48,12 +48,13 @@ public struct ServerSceneGraph: Codable {
 public struct ServerSceneVersion: Codable {
     
     private enum CodingKeys: String, CodingKey {
-        case createdAt = "created_at"
-        case version = "version_number"
-        case parentVersion = "parent_version_number"
+        case createdAt
+        case versionNumber
+        case parentVersionNumber
         case key = "uid"
-        case sceneUID = "scene_uid"
-        case sceneGraphURL = "scenegraph_url"
+        case sceneUid
+        case scenegraphUrl
+        case thumbnailUrl
     }
     
     public var localUUID = UUID()
@@ -72,29 +73,29 @@ public struct ServerSceneVersion: Codable {
         let container = try! decoder.container(keyedBy: CodingKeys.self)
         
         createdAt = try! container.decodeDateStringIfPresent(forKey: CodingKeys.createdAt)
-        versionNumber = try! container.decode(Int.self, forKey: CodingKeys.version)
-        parentVersionNumber = try! container.decode(Int.self, forKey: CodingKeys.parentVersion)
+        versionNumber = try! container.decode(Int.self, forKey: CodingKeys.versionNumber)
+        parentVersionNumber = try! container.decode(Int.self, forKey: CodingKeys.parentVersionNumber)
         key = try! container.decodeIfPresent(String.self, forKey: .key)
-        sceneUID = try! container.decode(String.self, forKey: CodingKeys.sceneUID)
-        sceneGraphURL = try! container.decode(URL.self, forKey: CodingKeys.sceneGraphURL)
+        sceneUID = try! container.decode(String.self, forKey: CodingKeys.sceneUid)
+        sceneGraphURL = try! container.decodeIfPresent(URL.self, forKey: CodingKeys.scenegraphUrl)
     }
     
     public func encode(to encoder: Encoder) {
         var container = encoder.container(keyedBy: CodingKeys.self)
         
         try? container.encodeDateAsStringIfPresent(createdAt, forKey: CodingKeys.createdAt)
-        try? container.encode(versionNumber, forKey: .version)
-        try? container.encode(parentVersionNumber, forKey: .parentVersion)
+        try? container.encode(versionNumber, forKey: .versionNumber)
+        try? container.encode(parentVersionNumber, forKey: .parentVersionNumber)
         try? container.encodeIfPresent(key, forKey: .key)
-        try? container.encodeIfPresent(sceneUID, forKey: .sceneUID)
-        try? container.encodeIfPresent(sceneGraphURL, forKey: .sceneGraphURL)
+        try? container.encodeIfPresent(sceneUID, forKey: .sceneUid)
+        try? container.encodeIfPresent(sceneGraphURL, forKey: .scenegraphUrl)
     }
 }
 
 private extension KeyedDecodingContainer where Key : CodingKey {
     func decodeDateStringIfPresent(forKey key: Key) throws -> Date? {
-        if let dateString = try? decodeIfPresent(String.self, forKey: key) {
-            return DateTimeTransform.fromString(dateString!)
+        if let dateString = try! decodeIfPresent(String.self, forKey: key) {
+            return DateTimeTransform.fromString(dateString)
         }
         return nil
     }
