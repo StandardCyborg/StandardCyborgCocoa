@@ -42,7 +42,9 @@ public extension Notification.Name {
     }
     
     deinit {
-        _captureSession.removeObserver(self, forKeyPath: "running", context: &_sessionRunningContext)
+        if _hasAddedObservers {
+            _captureSession.removeObserver(self, forKeyPath: "running", context: &_sessionRunningContext)
+        }
     }
     
     /** The mechanism for clients of CameraManager to be provided with streaming camera and depth frames */
@@ -163,6 +165,7 @@ public extension Notification.Name {
     
     // MARK: - Private properties
     
+    private var _hasAddedObservers = false
     private var _sessionQueue_setupResult: SessionSetupResult = .success
     private let _captureSession = AVCaptureSession()
     private var _sessionQueue_isSessionRunning = false
@@ -212,6 +215,8 @@ public extension Notification.Name {
         NotificationCenter.default.addObserver(self, selector: #selector(subjectAreaDidChange),
                                                name: .AVCaptureDeviceSubjectAreaDidChange,
                                                object: videoDevice)
+        
+        _hasAddedObservers = true
     }
     
     override public func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
