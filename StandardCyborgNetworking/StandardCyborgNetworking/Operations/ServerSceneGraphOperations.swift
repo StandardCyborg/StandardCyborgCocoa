@@ -27,7 +27,7 @@ public class ServerAddSceneGraphOperation: ServerOperation {
     }
     
     public func perform(uploadProgress: ((Double) -> Void)?,
-                        completion: @escaping (ServerOperationError?) -> Void)
+                        completion: @escaping (ServerOperationError?, ServerSceneGraph?) -> Void)
     {
         var sceneGraph: ServerSceneGraph!
         
@@ -46,11 +46,11 @@ public class ServerAddSceneGraphOperation: ServerOperation {
         }.then { uploadInfo in
             // 5. Update the version created in step 2 to fill in the pending scenegraph_key and thumbnail
             self._updateSceneGraph(sceneGraph, uploadInfo: uploadInfo)
-        }.done {
-            completion(nil)
+        }.done { sceneGraph in
+            completion(nil, sceneGraph)
         }.catch { error in
             let serverError = error as? ServerOperationError ?? ServerOperationError.genericError(error)
-            completion(serverError)
+            completion(serverError, nil)
         }
     }
     
@@ -93,7 +93,7 @@ public class ServerAddSceneGraphOperation: ServerOperation {
         }
     }
     
-    private func _updateSceneGraph(_ sceneGraph: ServerSceneGraph, uploadInfo: S3UploadInfo) -> Promise<Void> {
+    private func _updateSceneGraph(_ sceneGraph: ServerSceneGraph, uploadInfo: S3UploadInfo) -> Promise<ServerSceneGraph> {
         return Promise { seal in
             guard let sceneGraphKey = sceneGraph.key else {
                 seal.reject(ServerOperationError.genericErrorString("This ServerSceneGraph has no server key: \(sceneGraph)"))
@@ -123,10 +123,14 @@ public class ServerAddSceneGraphOperation: ServerOperation {
                 switch result {
                 case .success(var updatedSceneVersion):
                     print("Successfully updated scene graph with uid \(updatedSceneVersion.key ?? "unknown")")
+                    // self.dataSource.update(updatedSceneVersion)
+                    // Take the local UUID from the one this is replacing
                     updatedSceneVersion.localUUID = sceneVersion.localUUID
-                    updatedSceneVersion.uploadStatus = sceneVersion.uploadStatus
-//                    self.dataSource.update(updatedSceneVersion)
-                    seal.fulfill(())
+                    updatedSceneVersion.uploadStatus = .uploaded
+                    
+                    var updatedSceneGraph = sceneGraph
+                    updatedSceneGraph.versions = [updatedSceneVersion]
+                    seal.fulfill(updatedSceneGraph)
 
                 case .failure(let error):
                     print("Failed to get sceneGraph info from POST to \(url)")

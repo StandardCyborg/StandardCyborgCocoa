@@ -21,7 +21,7 @@ public struct ServerSceneGraph: Codable {
     public let createdAt: Date?
     public let key: String?
     public let teamUID: String?
-    public let versions: [ServerSceneVersion]
+    public var versions: [ServerSceneVersion]
     
     // MARK: - Codable
     
