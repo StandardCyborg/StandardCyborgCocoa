@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSInteger labelIndex;
 
 /** Units in meters */
-@property (nonatomic, readonly) simd_float3 position;
+@property (nonatomic) simd_float3 position;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithLabel:(NSString *)label

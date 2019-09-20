@@ -5,9 +5,6 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
-#ifndef SCPointCloud_h
-#define SCPointCloud_h
-
 #import <Foundation/Foundation.h>
 #import <simd/simd.h>
 
@@ -49,5 +46,3 @@
 - (instancetype)init NS_UNAVAILABLE;
 
 @end
-
-#endif /* SCPointCloud_h */

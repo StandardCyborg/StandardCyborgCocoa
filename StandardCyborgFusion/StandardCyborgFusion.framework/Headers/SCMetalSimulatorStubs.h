@@ -16,14 +16,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-#pragma mark - CVMetalTexture.h
+// MARK: - CVMetalTexture.h
 
 typedef CVImageBufferRef CVMetalTextureRef;
 CV_EXPORT const CFStringRef CV_NONNULL kCVMetalTextureUsage;
 CV_EXPORT id <MTLTexture> CV_NULLABLE CVMetalTextureGetTexture(CVMetalTextureRef CV_NONNULL image);
 
 
-#pragma mark - CVMetalTextureCache.h
+// MARK: - CVMetalTextureCache.h
 typedef struct
 CV_BRIDGED_TYPE(id) __CVMetalTextureCache *CVMetalTextureCacheRef;
 CV_EXPORT CVReturn CVMetalTextureCacheCreate(CFAllocatorRef CV_NULLABLE allocator,
@@ -42,7 +42,7 @@ CV_EXPORT CVReturn CVMetalTextureCacheCreateTextureFromImage(CFAllocatorRef CV_N
                                                              CV_RETURNS_RETAINED_PARAMETER CVMetalTextureRef CV_NULLABLE * CV_NONNULL textureOut);
 
 
-#pragma mark - CAMetalLayer.h
+// MARK: - CAMetalLayer.h
 
 @class CAMetalLayer;
 

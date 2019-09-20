@@ -39,7 +39,7 @@ typedef NS_ENUM(NSUInteger, SCMeshingAPIError) {
  */
 @property (nonatomic, nullable) NSError *error;
 
-#pragma mark - Tuning parameters
+// MARK: - Tuning parameters
 
 /**
  The resolution of the reconstructed mesh vertices.
