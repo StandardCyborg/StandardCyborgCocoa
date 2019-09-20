@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name              = "StandardCyborgUI"
-  s.version           = "1.3.8"
+  s.version           = "1.3.9"
   s.summary           = "Classes for driving and visualizing scanning using StandardCyborgFusion"
   s.homepage          = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url  = 'https://twitter.com/StandardCyborg'
@@ -30,6 +30,6 @@ Pod::Spec.new do |s|
   s.source_files      = "StandardCyborgUI/**/*.{h,swift,metal}"
   s.resources         = "StandardCyborgUI/**/*.{scn,xcassets}"
   s.weak_frameworks   = "StandardCyborgFusion", "QuartzCore", "CoreVideo"
-  s.dependency          "StandardCyborgFusion", "~> 1.3.5-StandardCyborgFusion"
+  s.dependency          "StandardCyborgFusion"
 
 end
