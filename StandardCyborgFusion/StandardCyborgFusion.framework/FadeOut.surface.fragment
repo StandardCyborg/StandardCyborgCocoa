@@ -12,4 +12,4 @@ float positionAlongDirection = dot(position.xyz, u_fadeDirection);
 
 // Fade out transparency when the position is fadeOutPosition meters back, away from the camera
 float transparency = (positionAlongDirection + u_fadePosition) / u_fadeDistance;
-_surface.transparent = float4(clamp(transparency, 0, 1));
+_surface.transparent = float4(clamp(transparency, 0.0f, 1.0f));
