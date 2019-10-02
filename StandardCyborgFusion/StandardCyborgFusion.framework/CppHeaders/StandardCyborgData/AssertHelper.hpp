@@ -8,9 +8,11 @@
 
 #pragma once
 
+// clang-format off
 #if EMBIND_ONLY
 
 #include <iostream>
+
 
 #define SCASSERT(condition, webConsoleErrorMessage)\
     ({\
@@ -24,13 +26,16 @@
 
 #include <cassert>
 #include <iostream>
+
 #define SCASSERT(condition, messageForInternalSDKDeveloper)\
     ({\
-        std::cerr << (messageForInternalSDKDeveloper) << std::endl;\
+        if (!(condition)) std::cerr << (messageForInternalSDKDeveloper) << std::endl;\
         assert(condition); \
     })
 
 #else // is production
+
+#include <iostream>
 
 #define SCASSERT(condition, messageForSDKUser)\
     ({\
@@ -41,3 +46,5 @@
     })
 
 #endif
+
+// clang-format on

@@ -11,29 +11,21 @@
 #include <functional>
 #include <initializer_list>
 #include <set>
+#include <vector>
 
 #include <StandardCyborgData/Vec3.hpp>
 
 namespace StandardCyborg {
-
 class Geometry;
+class Polyline;
 
 class VertexSelection {
 public:
     /* Empty selection constructor */
     VertexSelection();
-    
-    /* Makes `VertexSelection selection {1, 2, 3}` work */
-    VertexSelection(std::initializer_list<int> initialSelectedVertices);
-    
-    VertexSelection(int vertexCount);
-    
-    /* Copy constructor disabled */
-    //VertexSelection(const VertexSelection&) = delete;
-    
-    /* Works if type implements begin and end */
-    template <class T>
-    VertexSelection(const T& initialSelectedVertices);
+    VertexSelection(const Geometry& geometry, std::vector<int> initialSelectedVertices = std::vector<int>());
+    VertexSelection(const Polyline& polyline, std::vector<int> initialSelectedVertices = std::vector<int>());
+    VertexSelection(int totalVertexCount, std::vector<int> initialSelectedVertices = std::vector<int>());
     
     /* Make this selection a copy of that */
     void copy(const VertexSelection& that);
@@ -41,9 +33,17 @@ public:
     /* Number of vertices in selection */
     int size() const;
     
+    int getTotalVertexCount() const;
+    
     /* Insert and erase a single index */
-    void insertValue(const int index);
-    void removeValue(const int index);
+    void insertValue(int index);
+    void removeValue(int index);
+    bool contains(int index) const;
+    
+    /* Remove all values */
+    void clear();
+    
+    void invert();
     
     /* Boolean operations with a second selection */
     void unionWith(const VertexSelection& other);
@@ -64,29 +64,23 @@ public:
     void print() const;
     
     
-    void clear();
-    
-    /* Compare against other vertetx selections*/
+    /* Compare against other vertex selections */
     bool operator==(const VertexSelection& other) const;
     bool operator!=(const VertexSelection& other) const;
     
+    /* Selects all vertices from the given geometry where filterFn returns true */
     static std::unique_ptr<VertexSelection> fromGeometryVertices(
         const Geometry& geometry,
         const std::function<bool(int index, Vec3 position, Vec3 normal, Vec3 color)>& filterFn);
     
-    void invert(const Geometry& geometry);
-    void invert(int totalVertexCount);
-    
 private:
     std::set<int> _vertexIndices;
+    
+    // This class maintains a subset of the vertices of the geometry or polyline it was instantiated with
+    // Maintaining the original count allows us to invert the selection and make correctness assertions
+    int _totalVertexCount = 0;
 };
 
 //static_assert(!std::is_copy_constructible<VertexSelection>::value, "Copy constructor is disabled");
-
-template <class T>
-VertexSelection::VertexSelection(const T& initialSelectedVertices)
-{
-    _vertexIndices.insert(initialSelectedVertices.begin(), initialSelectedVertices.end());
-}
 
 } // namespace StandardCyborg

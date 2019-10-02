@@ -47,6 +47,7 @@ struct LandmarkNode;
 struct PlaneNode;
 struct PolylineNode;
 struct ValueFieldNode;
+struct PerspectiveCameraNode;
 
 struct Material {
     Vec3 emissive;
@@ -110,8 +111,8 @@ public:
     static int calculateHistorySizeInBytes(const std::vector<std::shared_ptr<Node>>& history);
     
     /** Mutate a target node under a root node, returning a new root node */
-    static std::shared_ptr<Node> mutateNode(std::shared_ptr<Node> rootNode,
-                                            std::shared_ptr<Node> targetNode,
+    static std::shared_ptr<Node> mutateNode(std::shared_ptr<Node> targetNode,
+                                            std::shared_ptr<Node> rootNode,
                                             const std::function<void(std::shared_ptr<Node>, std::shared_ptr<Node>)>& mutateFn);
     
     /** Find a node by id by searching in a node (including the root node itself). */
@@ -156,7 +157,7 @@ public:
     Mat3x4 getTransform() const;
     
     /** Set the visibility of the node */
-    Node& setVisibility(bool isVisible, std::shared_ptr<Node> rootNode = nullptr);
+    Node& setVisibility(bool newVisibility, std::shared_ptr<Node> rootNode = nullptr);
     
     /** Toggle node visibility and return the the resulting visibility */
     bool toggleVisibility(std::shared_ptr<Node> rootNode = nullptr);
@@ -166,6 +167,7 @@ public:
     
     Material& getMaterial();
     Material getMaterial() const;
+    Node& setMaterial(const Material& material, std::shared_ptr<Node> rootNode = nullptr);
     
     /** Get a visual representation of the node for node types (like a plane or camera) whose visual representation
         does not directly correspond to the underlying data */
@@ -345,10 +347,11 @@ public:
     virtual PerspectiveCameraNode* deepCopy() const;
     
     PerspectiveCameraNode();
-    PerspectiveCameraNode(const std::string& name, std::shared_ptr<PerspectiveCamera> camera = nullptr);
-    PerspectiveCameraNode(const std::string& name, const PerspectiveCamera& camera);
     virtual ~PerspectiveCameraNode();
     
+    PerspectiveCameraNode(const std::string& name, std::shared_ptr<PerspectiveCamera> camera = nullptr);
+    PerspectiveCameraNode(const std::string& name, const PerspectiveCamera& camera);
+
     PerspectiveCamera& getPerspectiveCamera();
     const PerspectiveCamera& getPerspectiveCamera() const;
 
@@ -356,7 +359,7 @@ public:
     PerspectiveCamera* getPerspectiveCameraPtr();
 #endif // EMBIND_ONLY
     
-    void setPerspectiveCamera(std::shared_ptr<PerspectiveCamera> otherPerspectiveCamera);
+    void setPerspectiveCamera(std::shared_ptr<PerspectiveCamera> camera);
     void setPerspectiveCamera(const PerspectiveCamera& camera);
 
     bool hasRepresentationGeometry() const;

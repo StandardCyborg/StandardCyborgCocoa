@@ -1,4 +1,3 @@
-
 //
 //  PerspectiveCameraFileIO_JSON.hpp
 //  StandardCyborgIO

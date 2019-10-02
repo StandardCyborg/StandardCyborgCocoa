@@ -34,6 +34,9 @@ struct Mat4x4
            float m20_, float m21_, float m22_, float m23_,
            float m30_, float m31_, float m32_, float m33_);
     
+    static Mat4x4 Identity();
+    static Mat4x4 Zeros();
+    
     static Mat4x4 fromColumnMajorVector(const std::vector<float>& data);
     static Mat4x4 fromRowMajorVector(const std::vector<float>& data);
 

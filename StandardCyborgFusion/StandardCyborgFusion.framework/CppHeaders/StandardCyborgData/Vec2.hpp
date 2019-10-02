@@ -70,6 +70,10 @@ struct Vec2 {
     static inline Vec2 pow(const Vec2& a, float exponent);
 };
 
+static_assert(offsetof(Vec2, x) == 0, "offset of Vec2.x is 0 bytes");
+static_assert(offsetof(Vec2, y) == 4, "offset of Vec2.y is 4 bytes");
+static_assert(sizeof(Vec2) == 8, "size of Vec2 is 8 bytes");
+
 /* Equality operators */
 inline bool operator==(const Vec2& lhs, const Vec2& rhs)
 {

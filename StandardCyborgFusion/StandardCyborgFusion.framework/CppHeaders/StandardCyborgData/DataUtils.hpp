@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <map>
 #include <vector>
 
 #include <StandardCyborgData/Face3.hpp>

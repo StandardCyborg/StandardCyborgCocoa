@@ -94,6 +94,11 @@ public:
     static inline Vec3 pow(const Vec3& a, float exponent);
 };
 
+static_assert(offsetof(Vec3, x) == 0, "offset of Vec3.x is 0 bytes");
+static_assert(offsetof(Vec3, y) == 4, "offset of Vec3.y is 4 bytes");
+static_assert(offsetof(Vec3, z) == 8, "offset of Vec3.z is 8 bytes");
+static_assert(sizeof(Vec3) == 16, "size of Vec3 is 16 bytes");
+
 /* Equality operators */
 inline bool operator==(const Vec3& lhs, const Vec3& rhs)
 {

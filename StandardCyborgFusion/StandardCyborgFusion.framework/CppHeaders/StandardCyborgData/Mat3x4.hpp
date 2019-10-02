@@ -22,17 +22,20 @@ struct Mat3x4 {
           m20, m21, m22, m23;
     
     Mat3x4();
-
+    
     Mat3x4(float m00_, float m01_, float m02_, float m03_,
            float m10_, float m11_, float m12_, float m13_,
            float m20_, float m21_, float m22_, float m23_);
+    
+    static Mat3x4 Identity();
+    static Mat3x4 Zeros();
     
     static Mat3x4 fromColumnMajorVector(const std::vector<float>& data);
     static Mat3x4 fromRowMajorVector(const std::vector<float>& data);
     
     std::vector<float> toColumnMajorVector() const;
     std::vector<float> toRowMajorVector() const;
-
+    
     /* Compute whether two matrices are equal to within floating point epsilon */
     static inline bool almostEqual(
         const Mat3x4& lhs,
@@ -48,7 +51,10 @@ struct Mat3x4 {
     Mat3x4 inverse() const;
     
     /* Sets the translation components to the specified coordinates */
-    Mat3x4& translate(float x, float y, float z);
+    Mat3x4& scale(Vec3 xyz);
+    
+    /* Sets the translation components to the specified coordinates */
+    Mat3x4& translate(Vec3 xyz);
     
     /* Rotate the matrix about the x-axis by an angle in radians */
     Mat3x4& rotateX(float radians);
@@ -58,6 +64,21 @@ struct Mat3x4 {
     
     /* Rotate the matrix about the z-axis by an angle in radians */
     Mat3x4& rotateZ(float radians);
+    
+    /* Rotate the matrix about the x-axis by an angle in radians */
+    static Mat3x4 fromRotationX(float radians);
+    
+    /* Rotate the matrix about the y-axis by an angle in radians */
+    static Mat3x4 fromRotationY(float radians);
+    
+    /* Rotate the matrix about the z-axis by an angle in radians */
+    static Mat3x4 fromRotationZ(float radians);
+    
+    /* Rotate the matrix about the z-axis by an angle in radians */
+    static Mat3x4 fromTranslation(Vec3 xyz);
+    
+    /* Rotate the matrix about the z-axis by an angle in radians */
+    static Mat3x4 fromScale(Vec3 xyz);
 };
 
 inline Mat3x4 operator*(const Mat3x4& lhs, const Mat3x4& rhs)

@@ -22,12 +22,15 @@ struct Mat3x3 {
     float m00, m01, m02,
           m10, m11, m12,
           m20, m21, m22;
-
+    
     Mat3x3();
     
     Mat3x3(float m00_, float m01_, float m02_,
            float m10_, float m11_, float m12_,
            float m20_, float m21_, float m22_);
+    
+    static Mat3x3 Identity();
+    static Mat3x3 Zeros();
     
     static Mat3x3 fromColumnMajorVector(const std::vector<float>& data);
     static Mat3x3 fromRowMajorVector(const std::vector<float>& data);
@@ -40,7 +43,7 @@ struct Mat3x3 {
     
     /* Return an inverted copy */
     Mat3x3 inverse() const;
-
+    
     static Mat3x3 normalMatrix(const Mat3x4& matrix);
     
     /* Compute whether two matrices are equal to within floating point epsilon */
@@ -58,11 +61,11 @@ inline Mat3x3 operator*(const Mat3x3& lhs, const Mat3x3& rhs)
         lhs.m00 * rhs.m00 + lhs.m01 * rhs.m10 + lhs.m02 * rhs.m20,
         lhs.m00 * rhs.m01 + lhs.m01 * rhs.m11 + lhs.m02 * rhs.m21,
         lhs.m00 * rhs.m02 + lhs.m01 * rhs.m12 + lhs.m02 * rhs.m22,
-
+        
         lhs.m10 * rhs.m00 + lhs.m11 * rhs.m10 + lhs.m12 * rhs.m20,
         lhs.m10 * rhs.m01 + lhs.m11 * rhs.m11 + lhs.m12 * rhs.m21,
         lhs.m10 * rhs.m02 + lhs.m11 * rhs.m12 + lhs.m12 * rhs.m22,
-
+        
         lhs.m20 * rhs.m00 + lhs.m21 * rhs.m10 + lhs.m22 * rhs.m20,
         lhs.m20 * rhs.m01 + lhs.m21 * rhs.m11 + lhs.m22 * rhs.m21,
         lhs.m20 * rhs.m02 + lhs.m21 * rhs.m12 + lhs.m22 * rhs.m22

@@ -52,14 +52,17 @@ public:
     /* Makes this Geometry into a deep copy of 'that'*/
     void copy(const Geometry& that);
     
-    /* Return the index of the point that is closest to the queryPoint, in terms of the Euclidean distance. */
-    int getClosestPointIndex(const Vec3& queryPoint) const;
+    /* Return the index of the vertex that is closest to queryPosition, in terms of the Euclidean distance. */
+    int getClosestVertexIndex(const Vec3& queryPosition) const;
     
-    /* Return the point that is closest to the queryPoint, in terms of the Euclidean distance. */
-    Vec3 getClosestPoint(const Vec3& queryPoint) const;
+    /* Return the vertex position that is closest to queryPosition, in terms of the Euclidean distance. */
+    Vec3 getClosestVertexPosition(const Vec3& queryPosition) const;
     
-    /* Return the indices of the `n` points that are closest to the queryPoint, in terms of the Euclidean distance. */
-    std::vector<int> getClosestPointIndices(const Vec3& queryPoint, int n) const;
+    /* Return the indices of the `n` vertices that are closest to queryPosition, in terms of the Euclidean distance. */
+    std::vector<int> getNClosestVertexIndices(const Vec3& queryPosition, int n) const;
+    
+    /* Return the indices of all vertices that are within the radius of queryPosition, in terms of the Euclidean distance. Unsorted. */
+    std::vector<int> getVertexIndicesInRadius(const Vec3& queryPosition, float radius) const;
     
     RayTraceResult rayTrace(Vec3 rayOrigin, Vec3 rayDirection, float rayMin = 0.001f, float rayMax = 1.0e+30f) const;
     
@@ -78,6 +81,9 @@ public:
     bool hasColors() const;
     bool hasTexCoords() const;
     bool hasFaces() const;
+    
+    bool normalsEncodeSurfelRadius() const;
+    void setNormalsEncodeSurfelRadius(bool normalsEncodeSurfelRadius);
     
     void normalizeNormals();
     
@@ -136,6 +142,7 @@ private:
     static std::set<int> _allocatedIds;
     
     int _id;
+    bool _normalsEncodeSurfelRadius = false;
 };
 
 

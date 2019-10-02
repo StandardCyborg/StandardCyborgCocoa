@@ -85,6 +85,12 @@ struct __attribute__((packed, aligned(16))) Vec4
     static inline Vec4 pow(const Vec4& a, float exponent);
 };
 
+static_assert(offsetof(Vec4, x) == 0, "offset of Vec4.x is 0 bytes");
+static_assert(offsetof(Vec4, y) == 4, "offset of Vec4.y is 4 bytes");
+static_assert(offsetof(Vec4, z) == 8, "offset of Vec4.z is 8 bytes");
+static_assert(offsetof(Vec4, w) == 12, "offset of Vec4.w is 12 bytes");
+static_assert(sizeof(Vec4) == 16, "size of Vec4 is 16 bytes");
+
 /* Equality operators */
 inline bool operator==(const Vec4& lhs, const Vec4& rhs)
 {
