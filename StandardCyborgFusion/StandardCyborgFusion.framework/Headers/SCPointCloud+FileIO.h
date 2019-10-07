@@ -8,6 +8,8 @@
 #import <Foundation/Foundation.h>
 #import <StandardCyborgFusion/SCPointCloud.h>
 
+@class SCLandmark3D;
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface SCPointCloud (FileIO)
@@ -21,6 +23,9 @@ NS_ASSUME_NONNULL_BEGIN
 - (BOOL)writeToOBJAtPath:(NSString *)OBJPath;
 
 - (BOOL)writeToUSDZAtPath:(NSString *)USDZPath;
+
+- (BOOL)writeToSceneGraphGLTFAtPath:(NSString *)GLTFPath
+                          landmarks:(NSSet<SCLandmark3D *> * _Nullable)landmarks;
 
 @end
 

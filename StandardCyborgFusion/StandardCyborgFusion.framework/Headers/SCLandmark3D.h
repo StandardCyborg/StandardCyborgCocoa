@@ -21,10 +21,14 @@ NS_ASSUME_NONNULL_BEGIN
 /** Units in meters */
 @property (nonatomic) simd_float3 position;
 
+/** RGB from 0.0 - 1.0 */
+@property (nonatomic) simd_float3 color;
+
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithLabel:(NSString *)label
                    labelIndex:(int)labelIndex
-                     position:(simd_float3)position;
+                     position:(simd_float3)position
+                        color:(simd_float3)color;
 
 /** Returns the Euclidean distance from this landmark to another */
 - (float)distanceToLandmark3D:(SCLandmark3D *)other;
