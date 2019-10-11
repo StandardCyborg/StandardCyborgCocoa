@@ -143,7 +143,7 @@ public:
      We can turn off check equality of the revision counters, since you dont always want to
      check them for equality in unit testing.
      */
-    bool equals(const Node* that, bool checkRevisionCounters = false) const;
+    bool equals(const Node& that, bool checkRevisionCounters = false) const;
     
     /** Get an integer identifier, unique only per-execution */
     Uuid getId() const;
