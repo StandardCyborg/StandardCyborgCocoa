@@ -18,8 +18,13 @@ FOUNDATION_EXPORT const unsigned char StandardCyborgFusionVersionString[];
 
 #import <StandardCyborgFusion/CVPixelBufferHelpers.h>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
+#import <StandardCyborgFusion/SCEyewearNode.h>
+#import <StandardCyborgFusion/SCEyewearTryOnViewController.h>
+#import <StandardCyborgFusion/SCFaceLandmarking3D.h>
 #import <StandardCyborgFusion/SCFaceTracking.h>
+#import <StandardCyborgFusion/SCLandmark2D.h>
 #import <StandardCyborgFusion/SCLandmark3D.h>
+#import <StandardCyborgFusion/SCLandmarking2D.h>
 #import <StandardCyborgFusion/SCMeshingOperation.h>
 #import <StandardCyborgFusion/SCMetalSimulatorStubs.h>
 #import <StandardCyborgFusion/SCPointCloud.h>
