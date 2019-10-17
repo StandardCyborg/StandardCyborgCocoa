@@ -378,10 +378,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StandardCyborg.StandardCyborgExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = x86_64;
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
 			name = Debug;
 		};
@@ -403,10 +404,11 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.StandardCyborg.StandardCyborgExample;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = arm64;
+				VALID_ARCHS = x86_64;
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
 			};
 			name = Release;
 		};
