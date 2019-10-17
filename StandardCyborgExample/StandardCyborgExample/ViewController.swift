@@ -16,10 +16,15 @@ class ViewController: UIViewController, ScanningViewControllerDelegate {
     @IBOutlet private weak var showScanButton: UIButton!
     
     @IBAction private func startScanning(_ sender: UIButton) {
+        #if targetEnvironment(simulator)
+        let alert = UIAlertController(title: "Simulator Unsupported", message: "There is no depth camera available on the iOS Simulator. Please build and run on an iOS device with TrueDepth", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true)
+        #else
         let scanningVC = ScanningViewController()
         scanningVC.delegate = self
-        
         present(scanningVC, animated: true)
+        #endif
     }
     
     @IBAction private func showScan(_ sender: UIButton) {

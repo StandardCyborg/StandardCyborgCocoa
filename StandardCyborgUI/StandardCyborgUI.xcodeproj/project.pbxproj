@@ -25,6 +25,8 @@
 		7642B82721E69FC900BC45C7 /* StandardCyborgFusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7620D26B21CE0A89008D0095 /* StandardCyborgFusion.framework */; };
 		7642B82F21E6BA6C00BC45C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */; };
 		76751A6522DD9E4E00482EC4 /* NodeToNodeLineNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */; };
+		767B3C0D2359034300138B1E /* SCMetalSimulatorStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = 767B3C0C2359034300138B1E /* SCMetalSimulatorStubs.m */; };
+		767B3C0F2359034E00138B1E /* SCMetalSimulatorStubs.h in Headers */ = {isa = PBXBuildFile; fileRef = 767B3C0E2359034E00138B1E /* SCMetalSimulatorStubs.h */; };
 		A080752F22D3B3FF00D1CFD8 /* Bundle+SCUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */; };
 /* End PBXBuildFile section */
 
@@ -49,6 +51,8 @@
 		7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultScanningViewRenderer.swift; sourceTree = "<group>"; };
 		7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeToNodeLineNode.swift; sourceTree = "<group>"; };
+		767B3C0C2359034300138B1E /* SCMetalSimulatorStubs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMetalSimulatorStubs.m; sourceTree = "<group>"; };
+		767B3C0E2359034E00138B1E /* SCMetalSimulatorStubs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMetalSimulatorStubs.h; sourceTree = "<group>"; };
 		A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+SCUI.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -103,6 +107,8 @@
 				7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */,
 				A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */,
 				76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */,
+				767B3C0E2359034E00138B1E /* SCMetalSimulatorStubs.h */,
+				767B3C0C2359034300138B1E /* SCMetalSimulatorStubs.m */,
 			);
 			path = StandardCyborgUI;
 			sourceTree = "<group>";
@@ -125,6 +131,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7620D24C21CDACEA008D0095 /* StandardCyborgUI.h in Headers */,
+				767B3C0F2359034E00138B1E /* SCMetalSimulatorStubs.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -160,7 +167,7 @@
 				TargetAttributes = {
 					7620D24621CDACEA008D0095 = {
 						CreatedOnToolsVersion = 10.1;
-						LastSwiftMigration = 1020;
+						LastSwiftMigration = 1030;
 					};
 				};
 			};
@@ -199,6 +206,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				767B3C0D2359034300138B1E /* SCMetalSimulatorStubs.m in Sources */,
 				7642B7D321E455AB00BC45C7 /* ShutterButton.swift in Sources */,
 				A080752F22D3B3FF00D1CFD8 /* Bundle+SCUI.swift in Sources */,
 				7620D26421CDADA5008D0095 /* ScanningViewRenderer.swift in Sources */,
@@ -256,7 +264,6 @@
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
-				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
@@ -355,6 +362,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.StandardCyborgUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -381,6 +389,7 @@
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MARKETING_VERSION = 1.3.10;
 				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.StandardCyborgUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
