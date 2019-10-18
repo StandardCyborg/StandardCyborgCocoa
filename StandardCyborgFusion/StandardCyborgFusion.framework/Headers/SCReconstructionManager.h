@@ -11,8 +11,8 @@
 
 #if !TARGET_OS_OSX
 
-#import <StandardCyborgFusion/SCReconstructionManagerParameters.h>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
+#import <StandardCyborgFusion/SCReconstructionManagerParameters.h>
 
 @class AVCameraCalibrationData;
 @class CMDeviceMotion;
@@ -63,11 +63,19 @@ typedef NS_ENUM(NSUInteger, SCReconstructionManagerAPIError) {
 /** When YES, the input depth frames are flipped horizontally before assimilating or reconstructing single frames. Useful when scanning using a mirror. */
 @property (nonatomic) BOOL flipsInputHorizontally;
 
+/** When YES, assimilated frame metadata will be provided with the depth buffer for the frame that was assimilated. Uses more RAM. */
+@property (nonatomic) BOOL includesDepthBuffersInMetadata;
+
 /** When YES, assimilated frame metadata will be provided with the color buffer for the frame that was assimilated. Uses more RAM. */
 @property (nonatomic) BOOL includesColorBuffersInMetadata;
 
 /** When non-empty, clips the reconstruction region of incoming depth buffers and frames to this position and size, each normalized from [0..1] */
 @property (nonatomic) CGRect normalizedFrameClipRegion;
+
+/** The camera calibration data used by the most recently passed depth frame. */
+@property (nonatomic, readonly) AVCameraCalibrationData *latestCameraCalibrationData;
+@property (nonatomic, readonly) NSInteger latestCameraCalibrationFrameWidth;
+@property (nonatomic, readonly) NSInteger latestCameraCalibrationFrameHeight;
 
 - (instancetype)init NS_UNAVAILABLE;
 - (instancetype)initWithDevice:(id<MTLDevice>)device

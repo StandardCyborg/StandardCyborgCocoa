@@ -20,26 +20,7 @@ typedef NS_ENUM(NSUInteger, SCMeshingAPIError) {
     SCMeshingAPIErrorExceededMeshingCountLimit = 2
 };
 
-
-@interface SCMeshingOperation : NSOperation
-
-- (instancetype)init NS_UNAVAILABLE;
-
-- (instancetype)initWithInputPLYPath:(NSString *)inputPath
-                       outputPLYPath:(NSString *)outputPath;
-
-/**
- Set this to be informed about the progress of the meshing operation.
- @param progress From 0.0-1.0
- */
-@property (nonatomic, copy) void (^progressHandler)(float progress);
-
-/**
- If non-nil, the error that occurred when performing this operation.
- */
-@property (nonatomic, nullable) NSError *error;
-
-// MARK: - Tuning parameters
+@interface SCMeshingParameters : NSObject
 
 /**
  The resolution of the reconstructed mesh vertices.
@@ -66,6 +47,29 @@ typedef NS_ENUM(NSUInteger, SCMeshingAPIError) {
  If YES, attempts to build a closed mesh. Defaults to YES.
  */
 @property (nonatomic) BOOL closed;
+
+@end
+
+
+@interface SCMeshingOperation : NSOperation
+
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithInputPLYPath:(NSString *)inputPath
+                       outputPLYPath:(NSString *)outputPath;
+
+@property (nonatomic) SCMeshingParameters *parameters;
+
+/**
+ Set this to be informed about the progress of the meshing operation.
+ @param progress From 0.0-1.0
+ */
+@property (nonatomic, copy) void (^progressHandler)(float progress);
+
+/**
+ If non-nil, the error that occurred when performing this operation.
+ */
+@property (nonatomic, nullable) NSError *error;
 
 @end
 

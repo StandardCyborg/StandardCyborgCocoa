@@ -30,7 +30,6 @@ extern bool WriteGeometryToPLYStream(std::ostream& output, const Geometry& geome
 extern bool WriteGeometryToPLYFile(std::string filename, const Geometry& geometry);
 
 
-
 void FragileWriteGeometryToPLYStream(std::ostream& output, const Geometry& geometry);
 bool FragileReadGeometryFromPLYFile(Geometry& geometryOut, std::string filename);
 

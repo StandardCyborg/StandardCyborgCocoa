@@ -11,6 +11,7 @@
 #include <functional>
 #include <vector>
 
+#include <StandardCyborgData/AssertHelper.hpp>
 #include <StandardCyborgData/Vec2.hpp>
 #include <StandardCyborgData/Vec4.hpp>
 
@@ -57,6 +58,7 @@ public:
     
     /** Get a pixel value by column and row */
     inline Vec4& getPixelAtColRow(int col, int row);
+    inline const Vec4& getPixelAtColRow(int col, int row) const;
     
     /** Set a pixel value by column and row */
     inline void setPixelAtColRow(int col, int row, Vec4 value);
@@ -83,8 +85,6 @@ public:
       * and current RGBA value and returns a mutated value. */
     void mutatePixelsByColRow(const std::function<Vec4(int col, int row, Vec4 rgba)>& mapFn);
     
-    void sobelEdgeFilter(const ColorImage& src, float threshold = 0.25);
-
     void premultiplyAlpha();
     
 private:
@@ -102,20 +102,30 @@ bool operator==(const ColorImage& lhs, const ColorImage& rhs);
 
 inline Vec4& ColorImage::getPixelAtColRow(int col, int row)
 {
-    assert(col >= 0);
-    assert(col < width);
-    assert(row >= 0);
-    assert(row < height);
+    SCASSERT(col >= 0, "Column out of bounds");
+    SCASSERT(col < width, "Column out of bounds");
+    SCASSERT(row >= 0, "Row out of bounds");
+    SCASSERT(row < height, "Row out of bounds");
+    
+    return rgba[row * width + col];
+}
+
+inline const Vec4& ColorImage::getPixelAtColRow(int col, int row) const
+{
+    SCASSERT(col >= 0, "Column out of bounds");
+    SCASSERT(col < width, "Column out of bounds");
+    SCASSERT(row >= 0, "Row out of bounds");
+    SCASSERT(row < height, "Row out of bounds");
     
     return rgba[row * width + col];
 }
 
 inline void ColorImage::setPixelAtColRow(int col, int row, Vec4 value)
 {
-    assert(col >= 0);
-    assert(col < width);
-    assert(row >= 0);
-    assert(row < height);
+    SCASSERT(col >= 0, "Column out of bounds");
+    SCASSERT(col < width, "Column out of bounds");
+    SCASSERT(row >= 0, "Row out of bounds");
+    SCASSERT(row < height, "Row out of bounds");
     
     rgba[row * width + col] = value;
 }

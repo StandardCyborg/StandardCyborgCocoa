@@ -62,6 +62,10 @@ public:
     /** Get a 4x4 OpenGL-style perspective matrix for this camera */
     Mat4x4 getPerspectiveMatrix(float near, float far) const;
 
+    /** Get a transform which may be applied to a ColorImage or DepthImage to align it with
+      * this camera */
+    Mat3x4 getImageAlignmentTransform() const;
+    
 private:
     float focalLengthScaleFactor = 1.0;
     

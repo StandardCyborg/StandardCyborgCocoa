@@ -11,6 +11,7 @@
 #include <functional>
 #include <vector>
 
+#include <StandardCyborgData/AssertHelper.hpp>
 #include <StandardCyborgData/Vec2.hpp>
 
 namespace StandardCyborg {
@@ -60,18 +61,25 @@ public:
     /** Get a pixel value by column and row */
     inline float& getPixelAtColRow(int col, int row);
     
+    /** Get a pixel value by column and row */
+    inline const float& getPixelAtColRow(int col, int row) const;
+    
     /** Set a pixel value by column and row */
     inline void setPixelAtColRow(int col, int row, float value);
     
     /** Iterate over the pixels of a depth frame*/
-    void forEachPixelAtColRow(const std::function<void(int col, int row, float depth)>& fn);
+    void forEachPixelAtColRow(const std::function<void(int col, int row, float depth)>& fn) const;
+    
+    /** Mutate the image by passing a lambda function which receives the column, row
+      * and current depth value and returns a mutated value. */
+    void mutatePixelsByColRow(const std::function<float(int col, int row, float value)>& mapFn);
     
     /** Flip an image vertically, writing the new result in-place */
     void flipY();
     
     /** Return the pixel location in [0, 1] x [0, 1] texture coordinates */
     inline Vec2 getTexCoordAtColRow(int col, int row) const;
-    
+
 private:
     /** Floating point depth pixel data in meters */
     std::vector<float> depth;
@@ -87,20 +95,30 @@ bool operator==(const DepthImage& lhs, const DepthImage& rhs);
 
 inline float& DepthImage::getPixelAtColRow(int col, int row)
 {
-    assert(col >= 0);
-    assert(col < width);
-    assert(row >= 0);
-    assert(row < height);
+    SCASSERT(col >= 0, "Column out of bounds");
+    SCASSERT(col < width, "Column out of bounds");
+    SCASSERT(row >= 0, "Row out of bounds");
+    SCASSERT(row < height, "Row out of bounds");
+    
+    return depth[row * width + col];
+}
+
+inline const float& DepthImage::getPixelAtColRow(int col, int row) const
+{
+    SCASSERT(col >= 0, "Column out of bounds");
+    SCASSERT(col < width, "Column out of bounds");
+    SCASSERT(row >= 0, "Row out of bounds");
+    SCASSERT(row < height, "Row out of bounds");
     
     return depth[row * width + col];
 }
 
 inline void DepthImage::setPixelAtColRow(int col, int row, float value)
 {
-    assert(col >= 0);
-    assert(col < width);
-    assert(row >= 0);
-    assert(row < height);
+    SCASSERT(col >= 0, "Column out of bounds");
+    SCASSERT(col < width, "Column out of bounds");
+    SCASSERT(row >= 0, "Row out of bounds");
+    SCASSERT(row < height, "Row out of bounds");
     
     depth[row * width + col] = value;
 }

@@ -24,6 +24,7 @@ typedef struct {
     SCAssimilatedFrameResult result;
     matrix_float4x4 viewMatrix;
     matrix_float4x4 projectionMatrix;
+    CVPixelBufferRef _Nullable depthBuffer;
     CVPixelBufferRef _Nullable colorBuffer;
 } SCAssimilatedFrameMetadata;
 
