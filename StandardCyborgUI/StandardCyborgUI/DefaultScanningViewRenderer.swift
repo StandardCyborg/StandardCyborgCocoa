@@ -16,6 +16,8 @@ public class DefaultScanningViewRenderer: ScanningViewRenderer {
     private let _drawTextureCommandEncoder: AspectFillTextureCommandEncoder
     private let _pointCloudRenderer: PointCloudCommandEncoder
     
+    public var flipsInputHorizontally: Bool = false
+    
     required public init(device: MTLDevice, commandQueue: MTLCommandQueue) {
         _commandQueue = commandQueue
         
@@ -50,6 +52,7 @@ public class DefaultScanningViewRenderer: ScanningViewRenderer {
                                                    depthCameraCalibrationData: depthCameraCalibrationData,
                                                    viewMatrix: viewMatrix,
                                                    pointSize: 16,
+                                                   flipsInputHorizontally: flipsInputHorizontally,
                                                    outputTexture: outputTexture)
             }
             

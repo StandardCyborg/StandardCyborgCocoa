@@ -236,7 +236,7 @@ public class PointCloudCommandEncoder {
             float4([  0,  0,  0,  1 ]),
         ])
         if flipsInputHorizontally {
-            extrinsic.columns.0.y = -1
+            extrinsic.columns.1.x = -1
         }
         
         let modelView = matrix_multiply(extrinsic, viewInverse)
