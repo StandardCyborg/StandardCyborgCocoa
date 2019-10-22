@@ -74,9 +74,12 @@ public:
       * and current depth value and returns a mutated value. */
     void mutatePixelsByColRow(const std::function<float(int col, int row, float value)>& mapFn);
     
+    /** Flip an image horizontally, writing the new result in-place */
+    void flipX();
+    
     /** Flip an image vertically, writing the new result in-place */
     void flipY();
-    
+
     /** Return the pixel location in [0, 1] x [0, 1] texture coordinates */
     inline Vec2 getTexCoordAtColRow(int col, int row) const;
 

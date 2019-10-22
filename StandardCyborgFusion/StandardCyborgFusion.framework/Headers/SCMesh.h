@@ -1,5 +1,5 @@
 //
-//  SCPointCloud.h
+//  SCMesh.h
 //  StandardCyborgFusion
 //
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
@@ -28,14 +28,5 @@
 @property (nonatomic, readonly) NSData *textureData;
 
 - (instancetype)init NS_UNAVAILABLE;
-
-- (SCNGeometrySource *)buildVertexGeometrySource;
-- (SCNGeometrySource *)buildNormalGeometrySource;
-- (SCNGeometrySource *)buildTexCoordGeometrySource;
-- (SCNGeometryElement *)buildMeshGeometryElement;
-- (SCNNode *)buildMeshNode NS_SWIFT_NAME(buildMeshNode());
-
-- (BOOL)writeToGLBAtPath:(NSString *)GLBPath;
-- (BOOL)writeToObjZipAtPath:(NSString *)objZipPath;
 
 @end

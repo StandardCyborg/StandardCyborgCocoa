@@ -28,6 +28,9 @@ typedef NS_ENUM(NSUInteger, SCMeshTexturingAPIError) {
     SCMeshTexturingAPIErrorArgument = 4 // Invalid arguments were passed in
 };
 
+/**
+ Use this class during and at the end of scanning to generate a textured mesh from a SCPointCloud.
+ */
 @interface SCMeshTexturing : NSObject
 
 /**
@@ -38,6 +41,22 @@ typedef NS_ENUM(NSUInteger, SCMeshTexturingAPIError) {
 @property (nonatomic) AVCameraCalibrationData *cameraCalibrationData;
 @property (nonatomic) NSInteger cameraCalibrationFrameWidth;
 @property (nonatomic) NSInteger cameraCalibrationFrameHeight;
+
+/**
+ For typical usage in a scanning session, use this default init method.
+ */
+- (instancetype)init;
+
+/**
+ To load a reconstruction session previously saved via `saveReconstructionSessionDataToDirectoryPath`.
+ */
+- (nullable instancetype)initWithReconstructionSessionDataDirectory:(NSString *)path;
+
+/**
+ Saves off all data internally used for a reconstruction session.
+ Useful for running mesh texturing later on with different parameters.
+ */
+- (void)saveReconstructionSessionDataToDirectory:(NSString *)path;
 
 /**
  @discussion
@@ -55,7 +74,7 @@ typedef NS_ENUM(NSUInteger, SCMeshTexturingAPIError) {
  @discussion
     After finalizing a scanning session, call this with the resulting point cloud to
     reconstruct a mesh from the given point cloud and the previously saved color buffers.
- @param textureResolution In pixels, the width and height (square) of the resulting texture
+ @param textureResolution In pixels, the width or height (square) of the resulting texture
  @param pointCloud Which we apply the texture projection onto
  @param progress Provides progress as the algorithm goes on, from 0.0 to 1.0.
                  Called on an arbitrary thread; callers may want to dispatch to the main queue to update UI.
@@ -69,7 +88,7 @@ typedef NS_ENUM(NSUInteger, SCMeshTexturingAPIError) {
                         meshingParameters:(SCMeshingParameters *)meshingParameters
                                  progress:(void (^)(float progress, BOOL *shouldStop))progress
                                completion:(void (^)(NSError * _Nullable, SCMesh * _Nullable))completion
-NS_SWIFT_NAME(reconstructMesh(pointCloud:resolution:meshingParameters:progress:completion:));
+NS_SWIFT_NAME(reconstructMesh(pointCloud:textureResolution:meshingParameters:progress:completion:));
 
 /**
  Call this to reset the internal state for a new scan after performing or abandoning a reconstruction.

@@ -69,6 +69,9 @@ public:
     /** Resize an image in-place */
     void resize(int width, int height);
     
+    /** Flip an image horizontally in-place */
+    void flipX();
+    
     /** Flip an image vertically in-place */
     void flipY();
     
