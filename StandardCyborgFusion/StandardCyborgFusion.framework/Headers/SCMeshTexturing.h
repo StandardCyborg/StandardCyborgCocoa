@@ -42,6 +42,9 @@ typedef NS_ENUM(NSUInteger, SCMeshTexturingAPIError) {
 @property (nonatomic) NSInteger cameraCalibrationFrameWidth;
 @property (nonatomic) NSInteger cameraCalibrationFrameHeight;
 
+/** Flips the color input horizontally, such as when using with a mirror bracket */
+@property (nonatomic) BOOL flipsInputHorizontally;
+
 /**
  For typical usage in a scanning session, use this default init method.
  */
