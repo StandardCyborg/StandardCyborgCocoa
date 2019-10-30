@@ -14,6 +14,7 @@
 #include <StandardCyborgData/Mat3x4.hpp>
 #include <StandardCyborgData/Vec3.hpp>
 #include <StandardCyborgData/VertexSelection.hpp>
+#include <StandardCyborgData/ColorImage.hpp>
 
 namespace StandardCyborg {
 
@@ -75,12 +76,18 @@ public:
     const std::vector<Vec3>& getColors() const;
     const std::vector<Vec2>& getTexCoords() const;
     const std::vector<Face3>& getFaces() const;
+    const ColorImage& getTexture() const;
+    
+    #ifdef EMBIND_ONLY
+        ColorImage* getTexturePtr();
+    #endif // EMBIND_ONLY
     
     bool hasPositions() const;
     bool hasNormals() const;
     bool hasColors() const;
     bool hasTexCoords() const;
     bool hasFaces() const;
+    bool hasTexture() const;
     
     bool normalsEncodeSurfelRadius() const;
     void setNormalsEncodeSurfelRadius(bool normalsEncodeSurfelRadius);
@@ -99,6 +106,7 @@ public:
     bool setColors(const std::vector<Vec3>& colors);
     bool setTexCoords(const std::vector<Vec2>& texCoords);
     bool setFaces(const std::vector<Face3>& faces);
+    bool setTexture(const ColorImage& texture);
     
     void setColor(const Vec3& color, float alpha);
     void setColor(const Vec3& color, float alpha, const VertexSelection& vertexIndices);
@@ -138,6 +146,8 @@ private:
     std::vector<Vec3> _colors;
     std::vector<Vec2> _texCoords;
     std::vector<Face3> _faces;
+    
+    std::shared_ptr<ColorImage> _texture;
     
     static std::set<int> _allocatedIds;
     
