@@ -57,8 +57,8 @@ public:
     std::vector<Vec4>& getData();
     
     /** Get a pixel value by column and row */
-    inline Vec4& getPixelAtColRow(int col, int row);
-    inline const Vec4& getPixelAtColRow(int col, int row) const;
+    inline Vec4 getPixelAtColRow(int col, int row);
+    inline Vec4 getPixelAtColRow(int col, int row) const;
     
     /** Set a pixel value by column and row */
     inline void setPixelAtColRow(int col, int row, Vec4 value);
@@ -103,32 +103,35 @@ private:
 
 bool operator==(const ColorImage& lhs, const ColorImage& rhs);
 
-inline Vec4& ColorImage::getPixelAtColRow(int col, int row)
+inline Vec4 ColorImage::getPixelAtColRow(int col, int row)
 {
-    SCASSERT(col >= 0, "Column out of bounds");
-    SCASSERT(col < width, "Column out of bounds");
-    SCASSERT(row >= 0, "Row out of bounds");
-    SCASSERT(row < height, "Row out of bounds");
+    SCASSERT(col >= 0 &&
+             col < width &&
+             row >= 0 &&
+             row < height,
+             "Row or column out of bounds");
     
     return rgba[row * width + col];
 }
 
-inline const Vec4& ColorImage::getPixelAtColRow(int col, int row) const
+inline Vec4 ColorImage::getPixelAtColRow(int col, int row) const
 {
-    SCASSERT(col >= 0, "Column out of bounds");
-    SCASSERT(col < width, "Column out of bounds");
-    SCASSERT(row >= 0, "Row out of bounds");
-    SCASSERT(row < height, "Row out of bounds");
+    SCASSERT(col >= 0 &&
+             col < width &&
+             row >= 0 &&
+             row < height,
+             "Row or column out of bounds");
     
     return rgba[row * width + col];
 }
 
 inline void ColorImage::setPixelAtColRow(int col, int row, Vec4 value)
 {
-    SCASSERT(col >= 0, "Column out of bounds");
-    SCASSERT(col < width, "Column out of bounds");
-    SCASSERT(row >= 0, "Row out of bounds");
-    SCASSERT(row < height, "Row out of bounds");
+    SCASSERT(col >= 0 &&
+             col < width &&
+             row >= 0 &&
+             row < height,
+             "Row or column out of bounds");
     
     rgba[row * width + col] = value;
 }
