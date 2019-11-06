@@ -125,6 +125,16 @@ import UIKit
         }
     }
     
+    /** If true, displays a button that flips the output horizontally for scanning with a mirror bracket */
+    @objc public var showsMirrorModeButton: Bool = false {
+        didSet { _updateUI() }
+    }
+    
+    @objc public var mirrorModeEnabled: Bool {
+        get { return _mirrorModeButton.isSelected }
+        set { _mirrorModeButton.isSelected = newValue }
+    }
+    
     // MARK: - UIViewController
     
     override public func viewDidLoad() {
@@ -174,7 +184,16 @@ import UIKit
         _scanFailedLabel.center = _metalContainerView.center
         dismissButton.sizeToFit()
         dismissButton.center = CGPoint(x: 20 + 0.5 * dismissButton.frame.width,
-                                       y: 10 + 0.5 * dismissButton.frame.height + view.safeAreaInsets.top)
+                                       y: 0.5 * dismissButton.frame.height + view.safeAreaInsets.top)
+        
+        _mirrorModeBackground.frame = CGRect(x: 0, y: 0, width: view.bounds.width, height: dismissButton.frame.maxY + 15)
+        _mirrorModeLabel.sizeToFit()
+        _mirrorModeLabel.center = CGPoint(x: view.bounds.midX,
+                                          y: dismissButton.center.y)
+        _mirrorModeButton.sizeToFit()
+        _mirrorModeButton.center = CGPoint(x: view.bounds.maxX - 0.5 * _mirrorModeButton.frame.width - 20,
+                                           y: dismissButton.center.y)
+        
         shutterButton.sizeToFit()
         shutterButton.center = CGPoint(x: view.bounds.midX,
                                        y: view.bounds.maxY - 5 - 0.5 * shutterButton.frame.size.height - view.safeAreaInsets.bottom)
@@ -273,6 +292,10 @@ import UIKit
     private let _countdownLabel = UILabel()
     private let _scanFailedLabel = UILabel()
     
+    private let _mirrorModeBackground = UIView()
+    private let _mirrorModeLabel = UILabel()
+    private let _mirrorModeButton = UIButton()
+    
     // MARK: - UI State Management
     
     private enum _State: Equatable {
@@ -303,8 +326,22 @@ import UIKit
         view.addSubview(_metalContainerView)
         view.addSubview(_countdownLabel)
         view.addSubview(_scanFailedLabel)
+        view.addSubview(_mirrorModeBackground)
         view.addSubview(dismissButton)
         view.addSubview(shutterButton)
+        _mirrorModeBackground.addSubview(_mirrorModeLabel)
+        _mirrorModeBackground.addSubview(_mirrorModeButton)
+        
+        let mirrorModeText = NSMutableAttributedString(string: "Mirror Mode On\n", attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .bold)])
+        mirrorModeText.append(NSAttributedString(string: "Attach Mirror Clip", attributes: [.font: UIFont.systemFont(ofSize: 12, weight: .regular)]))
+        
+        _mirrorModeBackground.backgroundColor = UIColor(white: 0, alpha: 0.28)
+        _mirrorModeLabel.attributedText = mirrorModeText
+        _mirrorModeLabel.textColor = UIColor.white
+        _mirrorModeLabel.textAlignment = NSTextAlignment.center
+        _mirrorModeLabel.numberOfLines = 2
+        _mirrorModeButton.addTarget(self, action: #selector(toggleMirrorMode(_:)), for: UIControl.Event.touchUpInside)
+        _mirrorModeButton.setImage(UIImage(named: "FlipCamera", in: Bundle(for: ScanningViewController.self), compatibleWith: nil)!, for: UIControl.State.normal)
         
         _countdownLabel.textColor = UIColor.white
         _countdownLabel.textAlignment = NSTextAlignment.center
@@ -343,6 +380,11 @@ import UIKit
         }
         
         _cameraManager.isFocusLocked = _state == .scanning
+        
+        _mirrorModeBackground.isHidden = !showsMirrorModeButton
+        _mirrorModeLabel.isHidden = !mirrorModeEnabled
+        scanningViewRenderer.flipsInputHorizontally = mirrorModeEnabled
+        _reconstructionManager.flipsInputHorizontally = mirrorModeEnabled
     }
     
     private func _startCameraSession() {
@@ -438,6 +480,11 @@ import UIKit
             preferredStyle: .alert)
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         self.present(alertController, animated: true)
+    }
+    
+    @objc private func toggleMirrorMode(_ sender: UIButton) {
+        sender.isSelected = !sender.isSelected
+        _updateUI()
     }
     
     @objc private func dismissTapped(_ sender: UIButton?) {
