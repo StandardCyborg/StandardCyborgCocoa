@@ -49,22 +49,7 @@ struct Mat3x4 {
     
     /* Return an inverted copy */
     Mat3x4 inverse() const;
-    
-    /* Sets the translation components to the specified coordinates */
-    Mat3x4& scale(Vec3 xyz);
-    
-    /* Sets the translation components to the specified coordinates */
-    Mat3x4& translate(Vec3 xyz);
-    
-    /* Rotate the matrix about the x-axis by an angle in radians */
-    Mat3x4& rotateX(float radians);
-    
-    /* Rotate the matrix about the y-axis by an angle in radians */
-    Mat3x4& rotateY(float radians);
-    
-    /* Rotate the matrix about the z-axis by an angle in radians */
-    Mat3x4& rotateZ(float radians);
-    
+
     /* Rotate the matrix about the x-axis by an angle in radians */
     static Mat3x4 fromRotationX(float radians);
     

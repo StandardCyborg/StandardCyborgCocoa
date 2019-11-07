@@ -1,5 +1,5 @@
 //
-//  SCPointCloud+Geometry.hpp
+//  SCPointCloud+Geometry.h
 //  StandardCyborgData
 //
 //  Copyright © 2019 Standard Cyborg. All rights reserved.

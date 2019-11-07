@@ -82,6 +82,9 @@ public:
 
     /** Return the pixel location in [0, 1] x [0, 1] texture coordinates */
     inline Vec2 getTexCoordAtColRow(int col, int row) const;
+    
+    /** Get the approximate size of the image in bytes */
+    int getSizeInBytes() const;
 
 private:
     /** Floating point depth pixel data in meters */

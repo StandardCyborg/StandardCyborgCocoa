@@ -21,6 +21,7 @@ namespace StandardCyborg {
 
 class Geometry;
 class ColorImage;
+class DepthImage;
 class PerspectiveCamera;
 class Labels;
 class Landmark;
@@ -36,11 +37,13 @@ enum class SGNodeType {
     Polyline,
     ValueField,
     ColorImage,
+    DepthImage,
     PerspectiveCamera
 };
 
 struct GeometryNode;
 struct ColorImageNode;
+struct DepthImageNode;
 struct PerspectiveCameraNode;
 struct LabelsNode;
 struct LandmarkNode;
@@ -263,6 +266,7 @@ public:
 
     bool isGeometryNode() const;
     bool isColorImageNode() const;
+    bool isDepthImageNode() const;
     bool isPerspectiveCameraNode() const;
     bool isLabelsNode() const;
     bool isLandmarkNode() const;
@@ -272,6 +276,7 @@ public:
 
     GeometryNode* asGeometryNode() const;
     ColorImageNode* asColorImageNode() const;
+    DepthImageNode* asDepthImageNode() const;
     PerspectiveCameraNode* asPerspectiveCameraNode() const;
     LabelsNode* asLabelsNode() const;
     LandmarkNode* asLandmarkNode() const;
@@ -306,6 +311,37 @@ public:
 
     void setGeometry(std::shared_ptr<Geometry> geometry);
     void setGeometry(const Geometry& geometry);
+};
+
+// MARK: - DepthImageNode
+
+struct DepthImageNode : public Node {
+private:
+    std::shared_ptr<DepthImage> image;
+
+public:
+    virtual SGNodeType getType() const;
+    virtual int approximateSizeInBytes() const;
+    virtual DepthImageNode* copy() const;
+    virtual DepthImageNode* deepCopy() const;
+
+    DepthImageNode();
+    DepthImageNode(const std::string& name, std::shared_ptr<DepthImage> image = nullptr);
+    DepthImageNode(const std::string& name, const DepthImage& image);
+    virtual ~DepthImageNode();
+
+    DepthImage& getDepthImage();
+    const DepthImage& getDepthImage() const;
+
+#ifdef EMBIND_ONLY
+    DepthImage* getDepthImagePtr();
+#endif // EMBIND_ONLY
+
+    void setDepthImage(std::shared_ptr<DepthImage> otherImage);
+    void setDepthImage(const DepthImage& image);
+
+    bool hasRepresentationGeometry() const;
+    std::shared_ptr<Geometry> getRepresentationGeometry() const;
 };
 
 // MARK: - ColorImageNode

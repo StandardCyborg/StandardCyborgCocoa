@@ -26,6 +26,8 @@ typedef struct {
     matrix_float4x4 projectionMatrix;
     CVPixelBufferRef _Nullable depthBuffer;
     CVPixelBufferRef _Nullable colorBuffer;
+    
+    CFAbsoluteTime assimilationTime;
 } SCAssimilatedFrameMetadata;
 
 extern simd_float3 EulerAnglesFromSCAssimilatedFrameMetadata(SCAssimilatedFrameMetadata metadata);
