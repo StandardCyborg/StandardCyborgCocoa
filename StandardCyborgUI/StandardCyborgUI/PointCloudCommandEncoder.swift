@@ -230,9 +230,9 @@ public class PointCloudCommandEncoder {
         // Construct an intrinsic matrix which flips the image vertically on the screen, swaps
         // the horizontal and vertical axes, and also performs a self-flip.
         var extrinsic = simd_float4x4([
-            float4([  0,  1,  0,  0 ]),
             float4([  1,  0,  0,  0 ]),
-            float4([  0,  0,  1,  0 ]),
+            float4([  0,  1,  0,  0 ]),
+            float4([  0,  0,  -1,  0 ]),
             float4([  0,  0,  0,  1 ]),
         ])
         if flipsInputHorizontally {
