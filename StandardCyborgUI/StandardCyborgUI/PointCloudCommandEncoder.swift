@@ -101,7 +101,7 @@ public class PointCloudCommandEncoder {
                                flipsInputHorizontally: Bool = false,
                                outputTexture: MTLTexture)
     {
-        guard pointCloud.pointCount > 0, var pointsData = pointCloud.pointsData else { return }
+        guard pointCloud.pointCount > 0 else { return }
         
         if _depthTexture == nil {
             let descriptor = MTLTextureDescriptor.texture2DDescriptor(pixelFormat: MTLPixelFormat.depth32Float,
@@ -114,15 +114,7 @@ public class PointCloudCommandEncoder {
             _depthTexture?.label = "PointCloudCommandEncoder._depthTexture"
         }
         
-        let pointStride = SCPointCloud.pointStride()
-        let pointCount = pointCloud.pointCount
-        let pointsBufferLength = _roundUpToMultiple(value: pointStride * pointCount, multiple: 4096)
-        
-        let pointsBytes: UnsafeMutableRawPointer = pointsData.withUnsafeMutableBytes { UnsafeMutableRawPointer($0) }
-        let pointsBuffer = _device.makeBuffer(bytesNoCopy: pointsBytes,
-                                              length: pointsBufferLength,
-                                              options: [MTLResourceOptions.optionCPUCacheModeWriteCombined],
-                                              deallocator: nil)!
+        let pointsBuffer = pointCloud.buildPointsMTLBuffer(with: _device)
         pointsBuffer.label = "PointCloudCommandEncoder.pointsBuffer"
         
         self._updateSharedUniformsBuffer(calibrationData: depthCameraCalibrationData,
@@ -155,7 +147,7 @@ public class PointCloudCommandEncoder {
         commandEncoder.setVertexTexture(_matcapTexture, index: 0)
         commandEncoder.setVertexBuffer(pointsBuffer, offset: 0, index: 0)
         commandEncoder.setVertexBuffer(_sharedUniformsBuffer, offset: 0, index: 1)
-        commandEncoder.drawPrimitives(type: MTLPrimitiveType.point, vertexStart: 0, vertexCount: pointCount)
+        commandEncoder.drawPrimitives(type: MTLPrimitiveType.point, vertexStart: 0, vertexCount: pointCloud.pointCount)
         
         commandEncoder.endEncoding()
     }
