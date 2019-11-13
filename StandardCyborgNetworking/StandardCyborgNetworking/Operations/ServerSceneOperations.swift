@@ -1,5 +1,5 @@
 //
-//  ServerSceneGraphOperations.swift
+//  ServerSceneOperations.swift
 //  StandardCyborgNetworking
 //
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
@@ -14,7 +14,7 @@ private struct ClientAPIPath {
     static let scenesVersions = "scenes/:uid/versions/:version_number"
 }
 
-public class ServerAddSceneGraphOperation: ServerOperation {
+public class ServerAddSceneOperation: ServerOperation {
     
     let gltfURL: URL
     
@@ -27,34 +27,34 @@ public class ServerAddSceneGraphOperation: ServerOperation {
     }
     
     public func perform(uploadProgress: ((Double) -> Void)?,
-                        completion: @escaping (ServerOperationError?, ServerSceneGraph?) -> Void)
+                        completion: @escaping (ServerOperationError?, ServerScene?) -> Void)
     {
-        var sceneGraph: ServerSceneGraph!
+        var scene: ServerScene!
         
         firstly {
             // 1. Submit an empty scene to /scenes
-            self._createEmptySceneGraph()
+            self._createEmptyScene()
             // 2. Receive a response with a scene `uid` and an initial `version_number`
             // 3. Associate the files on the device with the returned scene `uid` and `version_number`
-        }.map { emptySceneGraph in
-            sceneGraph = emptySceneGraph
+        }.map { emptyScene in
+            scene = emptyScene
         }.then {
             // 4. Upload files to S3 via the POST `/direct_uploads` endpoint
-            return self._createS3FileReference(for: self.gltfURL, remoteFilename: "SceneGraph.gltf")
+            return self._createS3FileReference(for: self.gltfURL, remoteFilename: "Scene.gltf")
         }.then { localURL, uploadInfo in
-            self._uploadSceneGraphFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
+            self._uploadSceneFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
         }.then { uploadInfo in
             // 5. Update the version created in step 2 to fill in the pending scenegraph_key and thumbnail
-            self._updateSceneGraph(sceneGraph, uploadInfo: uploadInfo)
-        }.done { sceneGraph in
-            completion(nil, sceneGraph)
+            self._updateScene(scene, uploadInfo: uploadInfo)
+        }.done { scene in
+            completion(nil, scene)
         }.catch { error in
             let serverError = error as? ServerOperationError ?? ServerOperationError.genericError(error)
             completion(serverError, nil)
         }
     }
     
-    private func _createEmptySceneGraph() -> Promise<ServerSceneGraph> {
+    private func _createEmptyScene() -> Promise<ServerScene> {
         return Promise { seal in
             let url: URL = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
             
@@ -62,23 +62,23 @@ public class ServerAddSceneGraphOperation: ServerOperation {
                                                  httpMethod: HTTPMethod.POST,
                                                  httpBodyDict: nil,
                                                  responseObjectRootKey: "scene")
-            { (result: Result<ServerSceneGraph>) in
+            { (result: Result<ServerScene>) in
                 switch result {
-                case .success(let sceneGraph):
-                    print("Successfully created server sceneGraph with uid \(sceneGraph.key ?? "unknown")")
-                    seal.fulfill(sceneGraph)
+                case .success(let scene):
+                    print("Successfully created server scene with uid \(scene.key ?? "unknown")")
+                    seal.fulfill(scene)
                     
                 case .failure(let error):
-                    print("Failed to create empty scene graph on server")
+                    print("Failed to create empty scene on server")
                     seal.reject(error)
                 }
             }
         }
     }
     
-    private func _uploadSceneGraphFileToS3(localURL: URL, uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
+    private func _uploadSceneFileToS3(localURL: URL, uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
         return Promise<S3UploadInfo> { seal in
-            print("Uploading sceneGraph file to S3 for \(uploadInfo.directUploadFileKey)")
+            print("Uploading scene file to S3 for \(uploadInfo.directUploadFileKey)")
             serverAPIClient.performDataUploadOperation(withURL: uploadInfo.url,
                                                        httpMethod: HTTPMethod.PUT,
                                                        dataURL: localURL,
@@ -87,30 +87,30 @@ public class ServerAddSceneGraphOperation: ServerOperation {
             { error in
                 guard error == nil else { return seal.reject(error!) }
                 
-                print("Successfully uploaded sceneGraph file to S3")
+                print("Successfully uploaded scene file to S3")
                 seal.fulfill(uploadInfo)
             }
         }
     }
     
-    private func _updateSceneGraph(_ sceneGraph: ServerSceneGraph, uploadInfo: S3UploadInfo) -> Promise<ServerSceneGraph> {
+    private func _updateScene(_ scene: ServerScene, uploadInfo: S3UploadInfo) -> Promise<ServerScene> {
         return Promise { seal in
-            guard let sceneGraphKey = sceneGraph.key else {
-                seal.reject(ServerOperationError.genericErrorString("This ServerSceneGraph has no server key: \(sceneGraph)"))
+            guard let sceneKey = scene.key else {
+                seal.reject(ServerOperationError.genericErrorString("This ServerScene has no server key: \(scene)"))
                 return
             }
-            guard let sceneVersion = sceneGraph.versions.first else {
-                seal.reject(ServerOperationError.genericErrorString("This ServerSceneGraph has no versions: \(sceneGraph)"))
+            guard let sceneVersion = scene.versions.first else {
+                seal.reject(ServerOperationError.genericErrorString("This ServerScene has no versions: \(scene)"))
                 return
             }
             
             var tempURLString = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenesVersions).absoluteString
-            tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: sceneGraphKey)
+            tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: sceneKey)
             tempURLString = tempURLString.replacingOccurrences(of: ":version_number", with: "\(sceneVersion.versionNumber)")
             let url = URL(string: tempURLString)!
             
-            // Convert the sceneGraph object to a dictionary by encoding it ServerSceneGraph => Data => Dictionary.
-            // We then embed that dictionary inside a root "sceneGraph" object since that's what the server expects.
+            // Convert the scene object to a dictionary by encoding it ServerScene => Data => Dictionary.
+            // We then embed that dictionary inside a root "scene" object since that's what the server expects.
             let encoder = JSONEncoder()
             encoder.keyEncodingStrategy = .convertToSnakeCase
             let sceneVersionDict = ["scenegraph_key": uploadInfo.directUploadFileKey]
@@ -122,18 +122,18 @@ public class ServerAddSceneGraphOperation: ServerOperation {
             { (result: Result<ServerSceneVersion>) in
                 switch result {
                 case .success(var updatedSceneVersion):
-                    print("Successfully updated scene graph with uid \(updatedSceneVersion.key ?? "unknown")")
+                    print("Successfully updated scene with uid \(updatedSceneVersion.key ?? "unknown")")
                     // self.dataSource.update(updatedSceneVersion)
                     // Take the local UUID from the one this is replacing
                     updatedSceneVersion.localUUID = sceneVersion.localUUID
                     updatedSceneVersion.uploadStatus = .uploaded
                     
-                    var updatedSceneGraph = sceneGraph
-                    updatedSceneGraph.versions = [updatedSceneVersion]
-                    seal.fulfill(updatedSceneGraph)
+                    var updatedScene = scene
+                    updatedScene.versions = [updatedSceneVersion]
+                    seal.fulfill(updatedScene)
 
                 case .failure(let error):
-                    print("Failed to get sceneGraph info from POST to \(url)")
+                    print("Failed to get scene info from POST to \(url)")
                     seal.reject(error)
                 }
             }

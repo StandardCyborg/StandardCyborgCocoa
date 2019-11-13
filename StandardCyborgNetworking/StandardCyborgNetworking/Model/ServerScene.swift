@@ -1,5 +1,5 @@
 //
-//  ServerSceneGraph.swift
+//  ServerScene.swift
 //  StandardCyborgNetworking
 //
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct ServerSceneGraph: Codable {
+public struct ServerScene: Codable {
     
     private enum CodingKeys: String, CodingKey {
         case createdAt
@@ -65,7 +65,7 @@ public struct ServerSceneVersion: Codable {
     public let parentVersionNumber: Int
     public let key: String?
     public var sceneUID: String?
-    public var sceneGraphURL: URL?
+    public var sceneURL: URL?
     
     // MARK: - Codable
     
@@ -77,7 +77,7 @@ public struct ServerSceneVersion: Codable {
         parentVersionNumber = try! container.decode(Int.self, forKey: CodingKeys.parentVersionNumber)
         key = try! container.decodeIfPresent(String.self, forKey: .key)
         sceneUID = try! container.decode(String.self, forKey: CodingKeys.sceneUid)
-        sceneGraphURL = try! container.decodeIfPresent(URL.self, forKey: CodingKeys.scenegraphUrl)
+        sceneURL = try! container.decodeIfPresent(URL.self, forKey: CodingKeys.scenegraphUrl)
     }
     
     public func encode(to encoder: Encoder) {
@@ -88,7 +88,7 @@ public struct ServerSceneVersion: Codable {
         try? container.encode(parentVersionNumber, forKey: .parentVersionNumber)
         try? container.encodeIfPresent(key, forKey: .key)
         try? container.encodeIfPresent(sceneUID, forKey: .sceneUid)
-        try? container.encodeIfPresent(sceneGraphURL, forKey: .scenegraphUrl)
+        try? container.encodeIfPresent(sceneURL, forKey: .scenegraphUrl)
     }
 }
 

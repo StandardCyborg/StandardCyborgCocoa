@@ -79,7 +79,7 @@ public class ServerAddScanOperation: ServerOperation {
     }
     
     public func perform(uploadProgress: ((Double) -> Void)?,
-                 completion: @escaping (ServerOperationError?) -> Void)
+                        completion: @escaping (ServerOperationError?) -> Void)
     {
         let thumbnailURL = self.dataSource.localThumbnailURL(for: self.scan)
         var scanZipUploadInfo: S3UploadInfo!
