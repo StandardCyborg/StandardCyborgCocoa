@@ -16,8 +16,8 @@
 		761FB79623073BEB004E48F3 /* PromiseKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; };
 		7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
-		765BC1C7230288DB005BD512 /* ServerSceneGraphOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */; };
-		765BC1C923028F28005BD512 /* ServerSceneGraph.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C823028F28005BD512 /* ServerSceneGraph.swift */; };
+		765BC1C7230288DB005BD512 /* ServerSceneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */; };
+		765BC1C923028F28005BD512 /* ServerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C823028F28005BD512 /* ServerScene.swift */; };
 		765BC1CB23028FDB005BD512 /* UploadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1CA23028FDB005BD512 /* UploadStatus.swift */; };
 		76E7E14121E95C140038C9E0 /* StandardCyborgNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */; };
@@ -57,8 +57,8 @@
 		761FB770230608AA004E48F3 /* ServerOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerOperation.swift; sourceTree = "<group>"; };
 		7623165B21EDB0E5004D1AFB /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 		7623166521EDBD2D004D1AFB /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
-		765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneGraphOperations.swift; sourceTree = "<group>"; };
-		765BC1C823028F28005BD512 /* ServerSceneGraph.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneGraph.swift; sourceTree = "<group>"; };
+		765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneOperations.swift; sourceTree = "<group>"; };
+		765BC1C823028F28005BD512 /* ServerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerScene.swift; sourceTree = "<group>"; };
 		765BC1CA23028FDB005BD512 /* UploadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadStatus.swift; sourceTree = "<group>"; };
 		76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StandardCyborgNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StandardCyborgNetworking.h; sourceTree = "<group>"; };
@@ -98,7 +98,7 @@
 				76E7E14F21E95C5A0038C9E0 /* ServerCredentials.swift */,
 				76122BEB21EC2B3A00D887DF /* ServerCustomer.swift */,
 				A0C582E422D553EC0090FF6A /* ServerScan.swift */,
-				765BC1C823028F28005BD512 /* ServerSceneGraph.swift */,
+				765BC1C823028F28005BD512 /* ServerScene.swift */,
 				A0C582DE22D553E10090FF6A /* ServerScanAttachment.swift */,
 				A0C582E022D553E10090FF6A /* ServerTeam.swift */,
 				76122BE921EC2AFD00D887DF /* ServerUser.swift */,
@@ -114,7 +114,7 @@
 				76122BF121ED041500D887DF /* ServerOperationError.swift */,
 				761FB770230608AA004E48F3 /* ServerOperation.swift */,
 				76E7E14D21E95C5A0038C9E0 /* ServerScanOperations.swift */,
-				765BC1C6230288DB005BD512 /* ServerSceneGraphOperations.swift */,
+				765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */,
 				76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */,
 				761FB76E2306062B004E48F3 /* ServerS3Support.swift */,
 			);
@@ -250,7 +250,7 @@
 				76E7E15521E95C5B0038C9E0 /* DefaultServerAPIClient.swift in Sources */,
 				A0C582E522D553EC0090FF6A /* ServerScan.swift in Sources */,
 				A0C582E322D553E10090FF6A /* ServerTeam.swift in Sources */,
-				765BC1C923028F28005BD512 /* ServerSceneGraph.swift in Sources */,
+				765BC1C923028F28005BD512 /* ServerScene.swift in Sources */,
 				A0C582E722D553F90090FF6A /* Coding+Util.swift in Sources */,
 				76E7E15921E95C5B0038C9E0 /* ServerCredentials.swift in Sources */,
 				76E7E15A21E95C5B0038C9E0 /* DateTimeTransform.swift in Sources */,
@@ -261,7 +261,7 @@
 				761FB771230608AA004E48F3 /* ServerOperation.swift in Sources */,
 				76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */,
 				761FB76F2306062B004E48F3 /* ServerS3Support.swift in Sources */,
-				765BC1C7230288DB005BD512 /* ServerSceneGraphOperations.swift in Sources */,
+				765BC1C7230288DB005BD512 /* ServerSceneOperations.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
