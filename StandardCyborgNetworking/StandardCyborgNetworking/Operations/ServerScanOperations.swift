@@ -90,7 +90,7 @@ public class ServerAddScanOperation: ServerOperation {
             self._zipScanFile(for: scan)
         }.then { scanZipURL in
             self._createS3FileReference(for: scanZipURL, remoteFilename: "scan.ply.zip")
-        }.then { (localURL, uploadInfo) in
+        }.then { localURL, uploadInfo in
             self._uploadScanFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
         }.map { uploadInfo in
             scanZipUploadInfo = uploadInfo
@@ -100,7 +100,7 @@ public class ServerAddScanOperation: ServerOperation {
         if let thumbnailURL = thumbnailURL { promise = promise
             .then {
                 self._createS3FileReference(for: thumbnailURL, remoteFilename: "thumbnail.jpeg")
-            }.then { (localURL, uploadInfo) in
+            }.then { localURL, uploadInfo in
                 self._uploadScanThumbnailToS3(localURL: localURL, uploadInfo: uploadInfo)
             }.map { uploadInfo in
                 thumbnailUploadInfo = uploadInfo
