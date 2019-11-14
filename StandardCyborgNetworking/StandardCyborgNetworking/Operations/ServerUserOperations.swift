@@ -139,6 +139,42 @@ public class ServerGenerateAccessTokenOperation: ServerOperation {
     }
 }
 
+public class ServerGenerateScopedAccessTokenOperation {
+    
+    let dataSource: ServerSyncEngineLocalDataSource
+    let serverAPIClient: ServerAPIClient
+    let apiKey: String
+    let apiSecret: String
+    let scope: String
+    
+    public init(dataSource: ServerSyncEngineLocalDataSource,
+         serverAPIClient: ServerAPIClient,
+         apiKey: String,
+         apiSecret: String,
+         scope: String)
+    {
+        self.dataSource = dataSource
+        self.serverAPIClient = serverAPIClient
+        self.apiKey = apiKey
+        self.apiSecret = apiSecret
+        self.scope = scope
+    }
+    
+    public func perform(_ completion: @escaping (StandardCyborgNetworking.Result<ServerAccessToken>) -> Void) {
+        let postDictionary = [
+            "api_key": apiKey,
+            "api_secret": apiSecret,
+            "scope": scope,
+        ]
+        
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.authGenerateAccessToken)
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .POST,
+                                             httpBodyDict: postDictionary,
+                                             responseObjectRootKey: nil,
+                                             completion: completion)
+    }
+}
 
 public class ServerTeamSignInOperation: ServerOperation {
 
