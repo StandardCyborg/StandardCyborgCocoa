@@ -66,6 +66,7 @@ public struct ServerSceneVersion: Codable {
     public let key: String?
     public var sceneUID: String?
     public var sceneURL: URL?
+    public var thumbnailURL: URL?
     
     // MARK: - Codable
     
@@ -78,6 +79,7 @@ public struct ServerSceneVersion: Codable {
         key = try! container.decodeIfPresent(String.self, forKey: .key)
         sceneUID = try! container.decode(String.self, forKey: CodingKeys.sceneUid)
         sceneURL = try! container.decodeIfPresent(URL.self, forKey: CodingKeys.scenegraphUrl)
+        thumbnailURL = try! container.decodeIfPresent(URL.self, forKey: CodingKeys.thumbnailUrl)
     }
     
     public func encode(to encoder: Encoder) {
@@ -89,6 +91,7 @@ public struct ServerSceneVersion: Codable {
         try? container.encodeIfPresent(key, forKey: .key)
         try? container.encodeIfPresent(sceneUID, forKey: .sceneUid)
         try? container.encodeIfPresent(sceneURL, forKey: .scenegraphUrl)
+        try? container.encodeIfPresent(thumbnailURL, forKey: .thumbnailUrl)
     }
 }
 

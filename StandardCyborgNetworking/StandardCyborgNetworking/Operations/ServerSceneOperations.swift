@@ -17,12 +17,15 @@ private struct ClientAPIPath {
 public class ServerAddSceneOperation: ServerOperation {
     
     let gltfURL: URL
+    let thumbnailURL: URL?
     
     public init(gltfURL: URL,
+                thumbnailURL: URL?,
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
         self.gltfURL = gltfURL
+        self.thumbnailURL = thumbnailURL
         super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
     }
     
@@ -30,7 +33,10 @@ public class ServerAddSceneOperation: ServerOperation {
                         completion: @escaping (ServerOperationError?, ServerScene?) -> Void)
     {
         var scene: ServerScene!
+        var sceneUploadInfo: S3UploadInfo!
+        var thumbnailUploadInfo: S3UploadInfo?
         
+        var promise =
         firstly {
             // 1. Submit an empty scene to /scenes
             self._createEmptyScene()
@@ -40,13 +46,31 @@ public class ServerAddSceneOperation: ServerOperation {
             scene = emptyScene
         }.then {
             // 4. Upload files to S3 via the POST `/direct_uploads` endpoint
-            return self._createS3FileReference(for: self.gltfURL, remoteFilename: "Scene.gltf")
+            self._createS3FileReference(for: self.gltfURL, remoteFilename: "Scene.gltf")
         }.then { localURL, uploadInfo in
-            self._uploadSceneFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
-        }.then { uploadInfo in
+            self._uploadFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
+        }.map { uploadInfo in
+            sceneUploadInfo = uploadInfo
+        }
+        
+        if let thumbnailURL = thumbnailURL { promise = promise
+            .then {
+                return self._createS3FileReference(for: thumbnailURL, remoteFilename: "thumbnail.jpeg")
+            }.then { localURL, uploadInfo in
+                self._uploadFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: nil)
+            }.map { uploadInfo in
+                thumbnailUploadInfo = uploadInfo
+            }
+        }
+        
+        promise = promise.then { _ in
             // 5. Update the version created in step 2 to fill in the pending scenegraph_key and thumbnail
-            self._updateScene(scene, uploadInfo: uploadInfo)
-        }.done { scene in
+            self._updateScene(scene, sceneUploadInfo: sceneUploadInfo, thumbnailUploadInfo: thumbnailUploadInfo)
+        }.map { updatedScene in
+            scene = updatedScene
+        }
+        
+        promise.done {
             completion(nil, scene)
         }.catch { error in
             let serverError = error as? ServerOperationError ?? ServerOperationError.genericError(error)
@@ -76,9 +100,9 @@ public class ServerAddSceneOperation: ServerOperation {
         }
     }
     
-    private func _uploadSceneFileToS3(localURL: URL, uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
+    private func _uploadFileToS3(localURL: URL, uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
         return Promise<S3UploadInfo> { seal in
-            print("Uploading scene file to S3 for \(uploadInfo.directUploadFileKey)")
+            print("Uploading file to S3 for \(uploadInfo.directUploadFileKey) from local path \(localURL.path)")
             serverAPIClient.performDataUploadOperation(withURL: uploadInfo.url,
                                                        httpMethod: HTTPMethod.PUT,
                                                        dataURL: localURL,
@@ -93,7 +117,7 @@ public class ServerAddSceneOperation: ServerOperation {
         }
     }
     
-    private func _updateScene(_ scene: ServerScene, uploadInfo: S3UploadInfo) -> Promise<ServerScene> {
+    private func _updateScene(_ scene: ServerScene, sceneUploadInfo: S3UploadInfo, thumbnailUploadInfo: S3UploadInfo?) -> Promise<ServerScene> {
         return Promise { seal in
             guard let sceneKey = scene.key else {
                 seal.reject(ServerOperationError.genericErrorString("This ServerScene has no server key: \(scene)"))
@@ -111,9 +135,8 @@ public class ServerAddSceneOperation: ServerOperation {
             
             // Convert the scene object to a dictionary by encoding it ServerScene => Data => Dictionary.
             // We then embed that dictionary inside a root "scene" object since that's what the server expects.
-            let encoder = JSONEncoder()
-            encoder.keyEncodingStrategy = .convertToSnakeCase
-            let sceneVersionDict = ["scenegraph_key": uploadInfo.directUploadFileKey]
+            var sceneVersionDict = ["scenegraph_key": sceneUploadInfo.directUploadFileKey]
+            sceneVersionDict["thumbnail_key"] = thumbnailUploadInfo?.directUploadFileKey
             
             serverAPIClient.performJSONOperation(withURL: url,
                                                  httpMethod: .PUT,
