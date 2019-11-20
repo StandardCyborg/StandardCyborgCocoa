@@ -18,14 +18,22 @@ public class ServerAddSceneOperation: ServerOperation {
     
     let gltfURL: URL
     let thumbnailURL: URL?
+    let metadata: [String: Any]
     
     public init(gltfURL: URL,
-                thumbnailURL: URL?,
+                thumbnailURL: URL? = nil,
+                metadata: [String: Any] = [:],
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
         self.gltfURL = gltfURL
         self.thumbnailURL = thumbnailURL
+        self.metadata = metadata
+        
+        for value in metadata.values {
+            assert(value is Bool || value is Int || value is Float || value is Double || value is String)
+        }
+        
         super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
     }
     
@@ -135,8 +143,9 @@ public class ServerAddSceneOperation: ServerOperation {
             
             // Convert the scene object to a dictionary by encoding it ServerScene => Data => Dictionary.
             // We then embed that dictionary inside a root "scene" object since that's what the server expects.
-            var sceneVersionDict = ["scenegraph_key": sceneUploadInfo.directUploadFileKey]
+            var sceneVersionDict: [String: Any] = ["scenegraph_key": sceneUploadInfo.directUploadFileKey]
             sceneVersionDict["thumbnail_key"] = thumbnailUploadInfo?.directUploadFileKey
+            sceneVersionDict["metadata"] = metadata
             
             serverAPIClient.performJSONOperation(withURL: url,
                                                  httpMethod: .PUT,
