@@ -27,6 +27,7 @@ class Labels;
 class Landmark;
 class Plane;
 class Polyline;
+class Mat3x4;
 
 enum class SGNodeType {
     Generic,
@@ -38,7 +39,9 @@ enum class SGNodeType {
     ValueField,
     ColorImage,
     DepthImage,
-    PerspectiveCamera
+    PerspectiveCamera,
+    CoordinateFrame,
+    Point
 };
 
 struct GeometryNode;
@@ -50,7 +53,8 @@ struct LandmarkNode;
 struct PlaneNode;
 struct PolylineNode;
 struct ValueFieldNode;
-struct PerspectiveCameraNode;
+struct CoordinateFrameNode;
+struct PointNode;
 
 enum class MaterialModel {
     Unlit,
@@ -273,6 +277,8 @@ public:
     bool isPlaneNode() const;
     bool isPolylineNode() const;
     bool isValueFieldNode() const;
+    bool isCoordinateFrameNode() const;
+    bool isPointNode() const;
 
     GeometryNode* asGeometryNode() const;
     ColorImageNode* asColorImageNode() const;
@@ -283,6 +289,8 @@ public:
     PlaneNode* asPlaneNode() const;
     PolylineNode* asPolylineNode() const;
     ValueFieldNode* asValueFieldNode() const;
+    CoordinateFrameNode* asCoordinateFrameNode() const;
+    PointNode *asPointNode() const;
 };
 
 // MARK: - GeometryNode
@@ -342,6 +350,20 @@ public:
 
     bool hasRepresentationGeometry() const;
     std::shared_ptr<Geometry> getRepresentationGeometry() const;
+};
+
+// MARK: - CoordinateFrameNode
+
+struct CoordinateFrameNode : public Node {
+public:
+    virtual SGNodeType getType() const;
+    virtual int approximateSizeInBytes() const;
+    virtual CoordinateFrameNode* copy() const;
+    virtual CoordinateFrameNode* deepCopy() const;
+
+    CoordinateFrameNode();
+    CoordinateFrameNode(const std::string& name, const Mat3x4& axes = Mat3x4::Identity());
+    virtual ~CoordinateFrameNode();
 };
 
 // MARK: - ColorImageNode
@@ -405,6 +427,30 @@ public:
 
     bool hasRepresentationGeometry() const;
     std::shared_ptr<Geometry> getRepresentationGeometry() const;
+};
+
+// MARK: - PointNode
+
+struct PointNode : public Node {
+public:
+    virtual SGNodeType getType() const;
+    virtual int approximateSizeInBytes() const;
+    virtual PointNode* copy() const;
+    virtual PointNode* deepCopy() const;
+
+    PointNode();
+    PointNode(const std::string& name, const Vec3& position = Vec3(0, 0, 0));
+    PointNode(const Landmark& landmark);
+    virtual ~PointNode();
+    
+    Landmark getAsLandmark() const;
+    
+#ifdef EMBIND_ONLY
+    // Return this point's data as if it's a landmark so that we don't need extra conditionals
+    // in the rendering code. Beware that this returns a landmark at [0, 0, 0] so that the node
+    // transform positions it correctly.
+    Landmark getLandmark() const;
+#endif
 };
 
 // MARK: - LabelsNode
