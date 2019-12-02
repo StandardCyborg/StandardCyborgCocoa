@@ -23,6 +23,7 @@ class ViewController: UIViewController, ScanningViewControllerDelegate {
         #else
         let scanningVC = ScanningViewController()
         scanningVC.delegate = self
+        scanningVC.modalPresentationStyle = .fullScreen
         present(scanningVC, animated: true)
         #endif
     }
@@ -35,6 +36,7 @@ class ViewController: UIViewController, ScanningViewControllerDelegate {
         pointCloudPreviewVC.rightButton.setTitle("Dismiss", for: UIControl.State.normal)
         pointCloudPreviewVC.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
         pointCloudPreviewVC.rightButton.backgroundColor = UIColor(named: "DefaultAction")
+        pointCloudPreviewVC.modalPresentationStyle = .fullScreen
         
         present(pointCloudPreviewVC, animated: true)
     }
