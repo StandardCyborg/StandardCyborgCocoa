@@ -21,6 +21,9 @@ NS_ASSUME_NONNULL_BEGIN
                           flipTextureY:(BOOL)flipTextureY
                      textureResolution:(NSInteger)textureResolution;
 
++ (SCMesh * _Nullable)meshFromGeometry:(const StandardCyborg::Geometry &)geometry
+                       textureJPEGPath:(NSString *)JPEGPath;
+
 - (void)toGeometry:(StandardCyborg::Geometry &)geo;
 
 @end
