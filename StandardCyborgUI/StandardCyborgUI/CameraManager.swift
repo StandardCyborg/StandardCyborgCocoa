@@ -124,7 +124,7 @@ public extension Notification.Name {
     }
     
     /** Stops streaming to the delegate */
-    @objc public func stopSession() {
+    @objc public func stopSession( _ completion: (() -> Void)? = nil) {
         _dataOutputQueue.async {
             self._dataOutputQueue_renderingEnabled = false
         }
@@ -134,6 +134,8 @@ public extension Notification.Name {
                 self._captureSession.stopRunning()
                 self._sessionQueue_isSessionRunning = self._captureSession.isRunning
             }
+            
+            DispatchQueue.main.async { completion?() }
         }
     }
     
@@ -143,6 +145,16 @@ public extension Notification.Name {
             var running = false
             _sessionQueue.sync { running = self._sessionQueue_isSessionRunning }
             return running
+        }
+    }
+    
+    @objc public var isPaused: Bool = false {
+        didSet {
+            _sessionQueue.sync {
+                if let connection = _depthDataOutput.connection(with: .depthData) {
+                    connection.isEnabled = !isPaused
+                }
+            }
         }
     }
     
