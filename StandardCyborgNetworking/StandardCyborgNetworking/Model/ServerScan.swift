@@ -28,6 +28,23 @@ public struct ServerScan: Codable {
         return ServerScan(localUUID: localUUID, uploadStatus: uploadStatus)
     }
     
+    public init(localUUID: UUID,
+                key: String?,
+                createdAt: Date?,
+                uploadedAt: Date?,
+                tagList: [String]?,
+                attachments: [ServerScanAttachment]?,
+                uploadStatus: UploadStatus?)
+    {
+        self.localUUID = localUUID
+        self.key = key
+        self.createdAt = createdAt
+        self.uploadedAt = uploadedAt
+        self.tagList = tagList ?? []
+        self.attachments = attachments ?? []
+        self.uploadStatus = uploadStatus
+    }
+    
     private init(localUUID: UUID, uploadStatus: UploadStatus) {
         self.localUUID = localUUID
         self.uploadStatus = uploadStatus
