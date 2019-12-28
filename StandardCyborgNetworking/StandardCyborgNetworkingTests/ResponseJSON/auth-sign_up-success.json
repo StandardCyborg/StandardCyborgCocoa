@@ -1,0 +1,15 @@
+{
+  "user": {
+    "email": "test@example.com",
+    "name": "John Doe",
+    "uid": "siuayACV",
+    "teams": [
+      {
+        "name": "John Doe",
+        "personal": true,
+        "uid": "uMQrVFHx"
+      }
+    ]
+  },
+  "success": true
+}
