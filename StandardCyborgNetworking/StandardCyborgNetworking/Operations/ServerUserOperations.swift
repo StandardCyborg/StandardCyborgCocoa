@@ -16,7 +16,6 @@ private struct ClientAPIPath {
 }
 
 
-
 public class ServerSignUpOperation: ServerOperation {
     
     let email: String
