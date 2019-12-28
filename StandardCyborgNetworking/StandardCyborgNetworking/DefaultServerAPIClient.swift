@@ -10,6 +10,7 @@ import PromiseKit
 #if canImport(PMKFoundation)
 import PMKFoundation
 #endif
+import UIKit
 
 public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDelegate {
     
@@ -20,7 +21,7 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
     private var _personalCredentials = PersonalCredentials.fromDefaults()
     private var _teamCredentials = TeamCredentials.fromDefaults()
     private var _progressHandlersBySession: [URLSession: ProgressHandler] = [:]
-
+    
     private var _currentCredentials: ServerCredentials? {
         return _teamCredentials ?? _personalCredentials
     }
@@ -272,7 +273,7 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
     
     // MARK: - URLSessionTaskDelegate
     
-    @objc private func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
+    @objc public func urlSession(_ session: URLSession, task: URLSessionTask, didSendBodyData bytesSent: Int64, totalBytesSent: Int64, totalBytesExpectedToSend: Int64) {
         if let progressHandler = _progressHandlersBySession[session] {
             DispatchQueue.main.async {
                 progressHandler(Double(totalBytesSent) / Double(totalBytesExpectedToSend))
