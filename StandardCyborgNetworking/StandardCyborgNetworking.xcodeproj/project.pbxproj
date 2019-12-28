@@ -16,6 +16,15 @@
 		761FB79623073BEB004E48F3 /* PromiseKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; };
 		7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		7632DBA223B6C26500B67A7E /* ServerUserOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */; };
+		7632DBA423B6C26500B67A7E /* StandardCyborgNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */; };
+		7632DBB423B6D87F00B67A7E /* auth-generate_access_token-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBB323B6D87F00B67A7E /* auth-generate_access_token-success.json */; };
+		7632DBB623B6DB7300B67A7E /* TestAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DB9923B6C05C00B67A7E /* TestAPIClient.swift */; };
+		7632DBB823B6E03400B67A7E /* Zip.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7632DBB723B6E03400B67A7E /* Zip.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		7632DBBA23B6E3AF00B67A7E /* auth-sign_in-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBB923B6E3AF00B67A7E /* auth-sign_in-success.json */; };
+		7632DBBD23B6E88600B67A7E /* auth-sign_in-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBBC23B6E78B00B67A7E /* auth-sign_in-failure.json */; };
+		7632DBBE23B6E88A00B67A7E /* auth-sign_up-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBBB23B6E6CD00B67A7E /* auth-sign_up-success.json */; };
+		7632DBC023B6ED1A00B67A7E /* TestDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DBBF23B6ED1A00B67A7E /* TestDataSource.swift */; };
 		765BC1C7230288DB005BD512 /* ServerSceneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */; };
 		765BC1C923028F28005BD512 /* ServerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C823028F28005BD512 /* ServerScene.swift */; };
 		765BC1CB23028FDB005BD512 /* UploadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1CA23028FDB005BD512 /* UploadStatus.swift */; };
@@ -35,6 +44,16 @@
 		A0C582E722D553F90090FF6A /* Coding+Util.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C582E622D553F90090FF6A /* Coding+Util.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		7632DBA523B6C26500B67A7E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 76E7E13321E95C140038C9E0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 76E7E13B21E95C140038C9E0;
+			remoteInfo = StandardCyborgNetworking;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXCopyFilesBuildPhase section */
 		761FB793230738CB004E48F3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
@@ -42,8 +61,9 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				761FB79623073BEB004E48F3 /* PromiseKit.framework in CopyFiles */,
 				761FB794230738D4004E48F3 /* PMKFoundation.framework in CopyFiles */,
+				761FB79623073BEB004E48F3 /* PromiseKit.framework in CopyFiles */,
+				7632DBB823B6E03400B67A7E /* Zip.framework in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -57,6 +77,16 @@
 		761FB770230608AA004E48F3 /* ServerOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerOperation.swift; sourceTree = "<group>"; };
 		7623165B21EDB0E5004D1AFB /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 		7623166521EDBD2D004D1AFB /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
+		7632DB9923B6C05C00B67A7E /* TestAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPIClient.swift; sourceTree = "<group>"; };
+		7632DB9F23B6C26500B67A7E /* StandardCyborgNetworkingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StandardCyborgNetworkingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerUserOperationsTests.swift; sourceTree = "<group>"; };
+		7632DBA323B6C26500B67A7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		7632DBB323B6D87F00B67A7E /* auth-generate_access_token-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-generate_access_token-success.json"; sourceTree = "<group>"; };
+		7632DBB723B6E03400B67A7E /* Zip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Zip.framework; path = Carthage/Build/iOS/Zip.framework; sourceTree = "<group>"; };
+		7632DBB923B6E3AF00B67A7E /* auth-sign_in-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_in-success.json"; sourceTree = "<group>"; };
+		7632DBBB23B6E6CD00B67A7E /* auth-sign_up-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_up-success.json"; sourceTree = "<group>"; };
+		7632DBBC23B6E78B00B67A7E /* auth-sign_in-failure.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_in-failure.json"; sourceTree = "<group>"; };
+		7632DBBF23B6ED1A00B67A7E /* TestDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataSource.swift; sourceTree = "<group>"; };
 		765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneOperations.swift; sourceTree = "<group>"; };
 		765BC1C823028F28005BD512 /* ServerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerScene.swift; sourceTree = "<group>"; };
 		765BC1CA23028FDB005BD512 /* UploadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadStatus.swift; sourceTree = "<group>"; };
@@ -79,12 +109,20 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		7632DB9C23B6C26500B67A7E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7632DBA423B6C26500B67A7E /* StandardCyborgNetworking.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		76E7E13921E95C140038C9E0 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */,
 				7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */,
+				7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -134,16 +172,40 @@
 		7623165921EDB0E5004D1AFB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				7632DBB723B6E03400B67A7E /* Zip.framework */,
 				7623166521EDBD2D004D1AFB /* PMKFoundation.framework */,
 				7623165B21EDB0E5004D1AFB /* PromiseKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		7632DBA023B6C26500B67A7E /* StandardCyborgNetworkingTests */ = {
+			isa = PBXGroup;
+			children = (
+				7632DBBF23B6ED1A00B67A7E /* TestDataSource.swift */,
+				7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */,
+				7632DBB223B6D83600B67A7E /* ResponseJSON */,
+				7632DBA323B6C26500B67A7E /* Info.plist */,
+			);
+			path = StandardCyborgNetworkingTests;
+			sourceTree = "<group>";
+		};
+		7632DBB223B6D83600B67A7E /* ResponseJSON */ = {
+			isa = PBXGroup;
+			children = (
+				7632DBB323B6D87F00B67A7E /* auth-generate_access_token-success.json */,
+				7632DBBB23B6E6CD00B67A7E /* auth-sign_up-success.json */,
+				7632DBB923B6E3AF00B67A7E /* auth-sign_in-success.json */,
+				7632DBBC23B6E78B00B67A7E /* auth-sign_in-failure.json */,
+			);
+			path = ResponseJSON;
+			sourceTree = "<group>";
+		};
 		76E7E13221E95C140038C9E0 = {
 			isa = PBXGroup;
 			children = (
 				76E7E13E21E95C140038C9E0 /* StandardCyborgNetworking */,
+				7632DBA023B6C26500B67A7E /* StandardCyborgNetworkingTests */,
 				76E7E13D21E95C140038C9E0 /* Products */,
 				7623165921EDB0E5004D1AFB /* Frameworks */,
 			);
@@ -153,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */,
+				7632DB9F23B6C26500B67A7E /* StandardCyborgNetworkingTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -161,6 +224,7 @@
 			isa = PBXGroup;
 			children = (
 				76E7E14921E95C5A0038C9E0 /* ServerAPIClient.swift */,
+				7632DB9923B6C05C00B67A7E /* TestAPIClient.swift */,
 				76E7E14B21E95C5A0038C9E0 /* DefaultServerAPIClient.swift */,
 				76122BEF21ED03CA00D887DF /* Model */,
 				76122BF021ED03F700D887DF /* Operations */,
@@ -185,6 +249,24 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		7632DB9E23B6C26500B67A7E /* StandardCyborgNetworkingTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7632DBA723B6C26500B67A7E /* Build configuration list for PBXNativeTarget "StandardCyborgNetworkingTests" */;
+			buildPhases = (
+				7632DB9B23B6C26500B67A7E /* Sources */,
+				7632DB9C23B6C26500B67A7E /* Frameworks */,
+				7632DB9D23B6C26500B67A7E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				7632DBA623B6C26500B67A7E /* PBXTargetDependency */,
+			);
+			name = StandardCyborgNetworkingTests;
+			productName = StandardCyborgNetworkingTests;
+			productReference = 7632DB9F23B6C26500B67A7E /* StandardCyborgNetworkingTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		76E7E13B21E95C140038C9E0 /* StandardCyborgNetworking */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 76E7E14421E95C140038C9E0 /* Build configuration list for PBXNativeTarget "StandardCyborgNetworking" */;
@@ -209,9 +291,13 @@
 		76E7E13321E95C140038C9E0 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftUpdateCheck = 1130;
 				LastUpgradeCheck = 1010;
 				ORGANIZATIONNAME = "Standard Cyborg";
 				TargetAttributes = {
+					7632DB9E23B6C26500B67A7E = {
+						CreatedOnToolsVersion = 11.3;
+					};
 					76E7E13B21E95C140038C9E0 = {
 						CreatedOnToolsVersion = 10.1;
 						LastSwiftMigration = 1020;
@@ -232,11 +318,35 @@
 			projectRoot = "";
 			targets = (
 				76E7E13B21E95C140038C9E0 /* StandardCyborgNetworking */,
+				7632DB9E23B6C26500B67A7E /* StandardCyborgNetworkingTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		7632DB9D23B6C26500B67A7E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7632DBBA23B6E3AF00B67A7E /* auth-sign_in-success.json in Resources */,
+				7632DBBD23B6E88600B67A7E /* auth-sign_in-failure.json in Resources */,
+				7632DBB423B6D87F00B67A7E /* auth-generate_access_token-success.json in Resources */,
+				7632DBBE23B6E88A00B67A7E /* auth-sign_up-success.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
+		7632DB9B23B6C26500B67A7E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7632DBC023B6ED1A00B67A7E /* TestDataSource.swift in Sources */,
+				7632DBA223B6C26500B67A7E /* ServerUserOperationsTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		76E7E13821E95C140038C9E0 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -262,12 +372,53 @@
 				76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */,
 				761FB76F2306062B004E48F3 /* ServerS3Support.swift in Sources */,
 				765BC1C7230288DB005BD512 /* ServerSceneOperations.swift in Sources */,
+				7632DBB623B6DB7300B67A7E /* TestAPIClient.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		7632DBA623B6C26500B67A7E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 76E7E13B21E95C140038C9E0 /* StandardCyborgNetworking */;
+			targetProxy = 7632DBA523B6C26500B67A7E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		7632DBA823B6C26500B67A7E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = KAW83335BG;
+				INFOPLIST_FILE = StandardCyborgNetworkingTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.StandardCyborgNetworkingTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7632DBA923B6C26500B67A7E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				DEVELOPMENT_TEAM = KAW83335BG;
+				INFOPLIST_FILE = StandardCyborgNetworkingTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.StandardCyborgNetworkingTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
 		76E7E14221E95C140038C9E0 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -449,6 +600,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		7632DBA723B6C26500B67A7E /* Build configuration list for PBXNativeTarget "StandardCyborgNetworkingTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7632DBA823B6C26500B67A7E /* Debug */,
+				7632DBA923B6C26500B67A7E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		76E7E13621E95C140038C9E0 /* Build configuration list for PBXProject "StandardCyborgNetworking" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
