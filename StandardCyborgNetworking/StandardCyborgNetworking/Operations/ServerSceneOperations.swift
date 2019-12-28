@@ -38,7 +38,7 @@ public class ServerAddSceneOperation: ServerOperation {
     }
     
     public func perform(uploadProgress: ((Double) -> Void)?,
-                        completion: @escaping (ServerOperationError?, ServerScene?) -> Void)
+                        completion: @escaping (Result<ServerScene>) -> Void)
     {
         var scene: ServerScene!
         var sceneUploadInfo: S3UploadInfo!
@@ -79,10 +79,10 @@ public class ServerAddSceneOperation: ServerOperation {
         }
         
         promise.done {
-            completion(nil, scene)
+            completion(.success(scene))
         }.catch { error in
             let serverError = error as? ServerOperationError ?? ServerOperationError.genericError(error)
-            completion(serverError, nil)
+            completion(.failure(serverError))
         }
     }
     
