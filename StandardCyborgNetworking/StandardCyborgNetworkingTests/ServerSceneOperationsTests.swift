@@ -1,4 +1,4 @@
-//  StandardCyborgNetworkingTests.swift
+//  ServerSceneOperationsTests.swift
 //
 //  Created by Aaron Thompson on 12/27/19.
 //
@@ -6,28 +6,35 @@
 import StandardCyborgNetworking
 import XCTest
 
-class ServerUserOperationsTests: XCTestCase {
+class ServerSceneOperationsTests: XCTestCase {
     
     let apiClient = TestAPIClient()
     let dataSource = TestDataSource()
     
     // override func setUp() {}
     
-    func testServerSignUpOperation() {
-        let expect = expectation(description: "ServerSignUpOperation")
+    func testServerAddSceneOperation() {
+        let expect = expectation(description: "ServerAddSceneOperation")
         
-        apiClient.setResponse(for: "auth", jsonPath: _fullTestFixturePath("auth-sign_up-success.json"))
+        apiClient.setResponse(for: "scenes", jsonPath: _fullTestFixturePath("scenes-success.json"))
+        apiClient.setResponse(for: "scenes/8UHPFfY7/versions/1", jsonPath: _fullTestFixturePath("scenes-uid-versions-success.json"))
+        apiClient.setResponse(for: "direct_uploads", jsonPath: _fullTestFixturePath("direct_uploads-success.json"))
         
-        ServerSignUpOperation(dataSource: dataSource, apiClient: apiClient, email: "test@example.com", password: "password")
-        .perform { result in
+        let gltfPath = _fullTestFixturePath("empty.gltf")
+        let thumbnailPath = _fullTestFixturePath("empty.jpeg")
+        
+        ServerAddSceneOperation(gltfURL: URL(fileURLWithPath: gltfPath),
+                                thumbnailURL: URL(fileURLWithPath: thumbnailPath),
+                                dataSource: dataSource,
+                                serverAPIClient: apiClient)
+        .perform(uploadProgress: nil) { result in
             switch result {
-            case let .success(user):
-                XCTAssertEqual(user.email, "test@example.com")
-                XCTAssertEqual(user.name, "John Doe")
-                XCTAssertEqual(user.key, user.email)
-                XCTAssertEqual(user.teams?.first?.name, "John Doe")
-                XCTAssertEqual(user.teams?.first?.personal, true)
-                XCTAssertEqual(user.teams?.first?.uid, "uMQrVFHx")
+            case let .success(scene):
+                XCTAssertEqual(scene.createdAt, DateTimeTransform.fromString("2019-11-20T21:13:24.607Z"))
+                XCTAssertEqual(scene.key, "8UHPFfY7")
+                XCTAssertNil(scene.teamUID)
+                XCTAssertEqual(scene.versions.first?.versionNumber, 3)
+                XCTAssertEqual(scene.versions.first?.key, "tSGUGGfp")
             case let .failure(error):
                 XCTFail("Failure: \(error)")
             }
@@ -47,13 +54,13 @@ class ServerUserOperationsTests: XCTestCase {
         ServerSignInOperation(dataSource: dataSource, apiClient: apiClient, email: "test@example.com", password: "password")
         .perform { result in
             switch result {
-            case let .success(user):
-                XCTAssertEqual(user.email, "test@example.com")
-                XCTAssertEqual(user.name, "John Doe")
-                XCTAssertEqual(user.key, "siuayACV")
-                XCTAssertEqual(user.teams?.first?.name, "John Doe")
-                XCTAssertEqual(user.teams?.first?.personal, true)
-                XCTAssertEqual(user.teams?.first?.uid, "uMQrVFHx")
+            case let .success(scene):
+                XCTAssertEqual(scene.email, "test@example.com")
+                XCTAssertEqual(scene.name, "John Doe")
+                XCTAssertEqual(scene.key, "siuayACV")
+                XCTAssertEqual(scene.teams?.first?.name, "John Doe")
+                XCTAssertEqual(scene.teams?.first?.personal, true)
+                XCTAssertEqual(scene.teams?.first?.uid, "uMQrVFHx")
             case let .failure(error):
                 XCTFail("Failure: \(error)")
             }
@@ -66,8 +73,8 @@ class ServerUserOperationsTests: XCTestCase {
         ServerSignInOperation(dataSource: dataSource, apiClient: apiClient, email: "test@example.com", password: "password")
         .perform { result in
             switch result {
-            case let .success(user):
-                XCTFail("Expected failure but got user \(user)")
+            case let .success(scene):
+                XCTFail("Expected failure but got scene \(scene)")
             case let .failure(error):
                 XCTAssertTrue(error is ServerOperationError)
                 XCTAssertEqual(error as! ServerOperationError, ServerOperationError.genericErrorString("Invalid login credentials. Please try again."))

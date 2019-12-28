@@ -21,10 +21,16 @@ public class TestAPIClient: ServerAPIClient {
     
     private let _queue = DispatchQueue(label: "TestAPIClient._queue")
     
-    public var responseJSONPath: String?
-    public var responseError: ServerOperationError?
+    private var _responseJSONPaths: [String: String] = [:]
+    private var _responseErrors: [String: ServerOperationError] = [:]
     
     public init() {}
+    
+    public func setResponse(for urlComponentString: String, jsonPath: String?, error: ServerOperationError? = nil) {
+        let url = buildAPIURL(for: urlComponentString)
+        _responseJSONPaths[url.path] = jsonPath
+        _responseErrors[url.path] = error
+    }
     
     // MARK: - ServerAPIClient
     
@@ -34,14 +40,14 @@ public class TestAPIClient: ServerAPIClient {
     }
     
     public func buildAPIURL(for urlComponentString: String) -> URL {
-        return URL(fileURLWithPath: responseJSONPath ?? urlComponentString, relativeTo: Bundle(for: TestAPIClient.self).resourceURL)
+        return URL(fileURLWithPath: urlComponentString, relativeTo: Bundle(for: TestAPIClient.self).resourceURL)
     }
     
     public func performBasicOperation(withURL url: URL,
                                       httpMethod: HTTPMethod,
                                       completion: @escaping (ServerOperationError?) -> Void)
     {
-        _queue.async { completion(self.responseError) }
+        _queue.async { completion(self._responseErrors[url.path]) }
     }
     
     public func performJSONOperation<T>(
@@ -51,7 +57,7 @@ public class TestAPIClient: ServerAPIClient {
         responseObjectRootKey: String? = nil,
         completion: @escaping (Result<T>) -> Void) where T: Codable
     {
-        let result: Result<T> = _loadResponseJSON(responseObjectRootKey: responseObjectRootKey)
+        let result: Result<T> = _loadResponseJSON(url: url, responseObjectRootKey: responseObjectRootKey)
         
         _queue.async { completion(result) }
     }
@@ -64,7 +70,7 @@ public class TestAPIClient: ServerAPIClient {
         progressHandler: ProgressHandler?,
         completion: @escaping (ServerOperationError?) -> Void)
     {
-        _queue.async { completion(self.responseError) }
+        _queue.async { completion(self._responseErrors[url.path]) }
     }
     
     public func performDataDownloadOperation(
@@ -75,7 +81,7 @@ public class TestAPIClient: ServerAPIClient {
         progressHandler: ProgressHandler?,
         completion: @escaping (ServerOperationError?) -> Void)
     {
-        _queue.async { completion(self.responseError) }
+        _queue.async { completion(self._responseErrors[url.path]) }
     }
     
     public var isValid: Bool { return _currentCredentials?.isValid ?? false }
@@ -88,8 +94,8 @@ public class TestAPIClient: ServerAPIClient {
     
     // MARK: - Private
     
-    private func _loadResponseJSON() -> Any {
-        guard let jsonPath = responseJSONPath else { fatalError("Must specify a responseJSONPath") }
+    private func _loadResponseJSON(url: URL) -> Any {
+        guard let jsonPath = _responseJSONPaths[url.path] else { fatalError("Must specify a responseJSONPath") }
         
         let jsonData = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
         
@@ -97,11 +103,11 @@ public class TestAPIClient: ServerAPIClient {
     }
     
     private func _errorFromJSONObject(_ jsonObject: Any) -> ServerOperationError? {
-        guard let jsonDict = jsonObject as? [String: Any] else { return nil }
-        
-        if let success = jsonDict["success"] as? Bool, success == true {
-            return nil
-        }
+        guard
+            let jsonDict = jsonObject as? [String: Any],
+            let success = jsonDict["success"] as? Bool,
+            success != true
+        else { return nil }
         
         if let messages = jsonDict["errors"] as? [String] {
             return ServerOperationError.genericErrorString(messages.joined(separator: ", "))
@@ -110,14 +116,14 @@ public class TestAPIClient: ServerAPIClient {
         }
     }
     
-    private func _loadResponseJSON<T>(responseObjectRootKey: String? = nil) -> Result<T> where T: Codable {
-        guard let jsonPath = responseJSONPath else { fatalError("Must specify a responseJSONPath") }
+    private func _loadResponseJSON<T>(url: URL, responseObjectRootKey: String? = nil) -> Result<T> where T: Codable {
+        guard let jsonPath = _responseJSONPaths[url.path] else { fatalError("Must specify a responseJSONPath") }
         
-        if let responseError = responseError {
+        if let responseError = _responseErrors[url.path] {
             return Result.failure(responseError)
         }
         
-        let jsonURL = buildAPIURL(for: jsonPath)
+        let jsonURL = URL(fileURLWithPath: jsonPath)
         let jsonData = try! Data(contentsOf: jsonURL)
         let jsonObject = try! JSONSerialization.jsonObject(with: jsonData, options: [])
         
@@ -125,10 +131,12 @@ public class TestAPIClient: ServerAPIClient {
             return .failure(error)
         }
         
-        guard
-            let key = responseObjectRootKey,
-            let unwrappedJSONObject = (jsonObject as? [String : Any])?[key]
-        else { return .success(jsonObject as! T) }
+        let unwrappedJSONObject: Any
+        if let key = responseObjectRootKey {
+            unwrappedJSONObject = (jsonObject as? [String : Any])?[key] ?? jsonObject
+        } else {
+            unwrappedJSONObject = jsonObject
+        }
         
         let data = try! JSONSerialization.data(withJSONObject: unwrappedJSONObject, options: [])
         
