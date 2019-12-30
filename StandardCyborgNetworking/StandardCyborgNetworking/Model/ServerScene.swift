@@ -23,6 +23,17 @@ public struct ServerScene: Codable {
     public let teamUID: String?
     public var versions: [ServerSceneVersion]
     
+    public init(createdAt: Date?,
+                key: String?,
+                teamUID: String?,
+                versions: [ServerSceneVersion])
+    {
+        self.createdAt = createdAt
+        self.key = key
+        self.teamUID = teamUID
+        self.versions = versions
+    }
+    
     // MARK: - Codable
     
     public init(from decoder: Decoder) {

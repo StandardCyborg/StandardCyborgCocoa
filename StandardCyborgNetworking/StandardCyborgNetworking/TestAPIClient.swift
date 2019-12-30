@@ -26,10 +26,15 @@ public class TestAPIClient: ServerAPIClient {
     
     public init() {}
     
-    public func setResponse(for urlComponentString: String, jsonPath: String?, error: ServerOperationError? = nil) {
+    public func setResponse(for urlComponentString: String,
+                            method: HTTPMethod,
+                            jsonPath: String?,
+                            error: ServerOperationError? = nil)
+    {
         let url = buildAPIURL(for: urlComponentString)
-        _responseJSONPaths[url.path] = jsonPath
-        _responseErrors[url.path] = error
+        let responseKey = _responseKey(for: url, method: method)
+        _responseJSONPaths[responseKey] = jsonPath
+        _responseErrors[responseKey] = error
     }
     
     // MARK: - ServerAPIClient
@@ -57,7 +62,7 @@ public class TestAPIClient: ServerAPIClient {
         responseObjectRootKey: String? = nil,
         completion: @escaping (Result<T>) -> Void) where T: Codable
     {
-        let result: Result<T> = _loadResponseJSON(url: url, responseObjectRootKey: responseObjectRootKey)
+        let result: Result<T> = _loadResponseJSON(url: url, method: httpMethod, responseObjectRootKey: responseObjectRootKey)
         
         _queue.async { completion(result) }
     }
@@ -94,8 +99,20 @@ public class TestAPIClient: ServerAPIClient {
     
     // MARK: - Private
     
-    private func _loadResponseJSON(url: URL) -> Any {
-        guard let jsonPath = _responseJSONPaths[url.path] else { fatalError("Must specify a responseJSONPath") }
+    private func _responseKey(for url: URL, method: HTTPMethod) -> String {
+        return url.path.appending(method.rawValue)
+    }
+    
+    private func _responseJSONPath(for url: URL, method: HTTPMethod) -> String? {
+        return _responseJSONPaths[_responseKey(for: url, method: method)]
+    }
+    
+    private func _responseError(for url: URL, method: HTTPMethod) -> ServerOperationError? {
+        return _responseErrors[_responseKey(for: url, method: method)]
+    }
+    
+    private func _loadResponseJSON(url: URL, method: HTTPMethod) -> Any {
+        guard let jsonPath = _responseJSONPath(for: url, method: method) else { fatalError("Must specify a responseJSONPath") }
         
         let jsonData = try! Data(contentsOf: URL(fileURLWithPath: jsonPath))
         
@@ -116,8 +133,8 @@ public class TestAPIClient: ServerAPIClient {
         }
     }
     
-    private func _loadResponseJSON<T>(url: URL, responseObjectRootKey: String? = nil) -> Result<T> where T: Codable {
-        guard let jsonPath = _responseJSONPaths[url.path] else { fatalError("Must specify a responseJSONPath") }
+    private func _loadResponseJSON<T>(url: URL, method: HTTPMethod, responseObjectRootKey: String? = nil) -> Result<T> where T: Codable {
+        guard let jsonPath = _responseJSONPath(for: url, method: method) else { fatalError("Must specify a responseJSONPath") }
         
         if let responseError = _responseErrors[url.path] {
             return Result.failure(responseError)

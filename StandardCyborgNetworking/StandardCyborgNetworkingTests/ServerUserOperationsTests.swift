@@ -16,7 +16,7 @@ class ServerUserOperationsTests: XCTestCase {
     func testServerSignUpOperation() {
         let expect = expectation(description: "ServerSignUpOperation")
         
-        apiClient.setResponse(for: "auth", jsonPath: _fullTestFixturePath("auth-sign_up-success.json"))
+        apiClient.setResponse(for: "auth", method: .POST, jsonPath: _fullTestFixturePath("auth-sign_up-post-success.json"))
         
         ServerSignUpOperation(dataSource: dataSource, apiClient: apiClient, email: "test@example.com", password: "password")
         .perform { result in
@@ -42,7 +42,7 @@ class ServerUserOperationsTests: XCTestCase {
         let successExpect = expectation(description: "ServerSignInOperation-success")
         let failureExpect = expectation(description: "ServerSignInOperation-failure")
         
-        apiClient.setResponse(for: "auth/sign_in", jsonPath: _fullTestFixturePath("auth-sign_in-success.json"))
+        apiClient.setResponse(for: "auth/sign_in", method: .POST, jsonPath: _fullTestFixturePath("auth-sign_in-post-success.json"))
         
         ServerSignInOperation(dataSource: dataSource, apiClient: apiClient, email: "test@example.com", password: "password")
         .perform { result in
@@ -61,7 +61,7 @@ class ServerUserOperationsTests: XCTestCase {
         }
         wait(for: [successExpect], timeout: 5)
         
-        apiClient.setResponse(for: "auth/sign_in", jsonPath: _fullTestFixturePath("auth-sign_in-failure.json"))
+        apiClient.setResponse(for: "auth/sign_in", method: .POST, jsonPath: _fullTestFixturePath("auth-sign_in-post-failure.json"))
         
         ServerSignInOperation(dataSource: dataSource, apiClient: apiClient, email: "test@example.com", password: "password")
         .perform { result in

@@ -14,8 +14,18 @@ private struct ClientAPIPath {
     static let scenesVersions = "scenes/:uid/versions/:version_number"
 }
 
+public class ServerFetchScenesOperation: ServerOperation {
+    public func perform(_ completion: @escaping (Result<[ServerScene]>) -> Void) {
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .GET,
+                                             httpBodyDict: nil,
+                                             responseObjectRootKey: "scenes",
+                                             completion: completion)
+    }
+}
+
 public class ServerAddSceneOperation: ServerOperation {
-    
     let gltfURL: URL
     let thumbnailURL: URL?
     let metadata: [String: Any]
@@ -168,6 +178,42 @@ public class ServerAddSceneOperation: ServerOperation {
                     print("Failed to get scene info from POST to \(url)")
                     seal.reject(error)
                 }
+            }
+        }
+    }
+}
+
+public class ServerDeleteSceneOperation: ServerOperation {
+    let scene: ServerScene
+    
+    public init(scene: ServerScene,
+                dataSource: ServerSyncEngineLocalDataSource,
+                serverAPIClient: ServerAPIClient)
+    {
+        self.scene = scene
+        super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
+    }
+    
+    public func perform(_ completion: @escaping (ServerOperationError?) -> Void)
+    {
+        guard let key = scene.key else {
+            completion(ServerOperationError.genericErrorString("Could not delete scene with no server key"))
+            return
+        }
+        
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+                .appendingPathComponent(key)
+        
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .DELETE,
+                                             httpBodyDict: nil,
+                                             responseObjectRootKey: nil)
+        { (result: Result<SuccessResponse>) in
+            switch result {
+            case .success(_):
+                completion(nil)
+            case .failure(let error):
+                completion(error as? ServerOperationError)
             }
         }
     }
