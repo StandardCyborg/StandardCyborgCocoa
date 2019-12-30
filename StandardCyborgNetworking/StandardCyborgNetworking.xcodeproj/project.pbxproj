@@ -18,19 +18,21 @@
 		7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7632DBA223B6C26500B67A7E /* ServerUserOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */; };
 		7632DBA423B6C26500B67A7E /* StandardCyborgNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */; };
-		7632DBB423B6D87F00B67A7E /* auth-generate_access_token-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBB323B6D87F00B67A7E /* auth-generate_access_token-success.json */; };
+		7632DBB423B6D87F00B67A7E /* auth-generate_access_token-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBB323B6D87F00B67A7E /* auth-generate_access_token-post-success.json */; };
 		7632DBB623B6DB7300B67A7E /* TestAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DB9923B6C05C00B67A7E /* TestAPIClient.swift */; };
 		7632DBB823B6E03400B67A7E /* Zip.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7632DBB723B6E03400B67A7E /* Zip.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		7632DBBA23B6E3AF00B67A7E /* auth-sign_in-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBB923B6E3AF00B67A7E /* auth-sign_in-success.json */; };
-		7632DBBD23B6E88600B67A7E /* auth-sign_in-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBBC23B6E78B00B67A7E /* auth-sign_in-failure.json */; };
-		7632DBBE23B6E88A00B67A7E /* auth-sign_up-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBBB23B6E6CD00B67A7E /* auth-sign_up-success.json */; };
+		7632DBBA23B6E3AF00B67A7E /* auth-sign_in-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBB923B6E3AF00B67A7E /* auth-sign_in-post-success.json */; };
+		7632DBBD23B6E88600B67A7E /* auth-sign_in-post-failure.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBBC23B6E78B00B67A7E /* auth-sign_in-post-failure.json */; };
+		7632DBBE23B6E88A00B67A7E /* auth-sign_up-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBBB23B6E6CD00B67A7E /* auth-sign_up-post-success.json */; };
 		7632DBC023B6ED1A00B67A7E /* TestDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DBBF23B6ED1A00B67A7E /* TestDataSource.swift */; };
 		7632DBC223B6F0CA00B67A7E /* ServerSceneOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DBC123B6F0CA00B67A7E /* ServerSceneOperationsTests.swift */; };
-		7632DBC423B6F17600B67A7E /* scenes-uid-versions-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBC323B6F17600B67A7E /* scenes-uid-versions-success.json */; };
-		7632DBC623B7A97100B67A7E /* scenes-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBC523B6F18600B67A7E /* scenes-success.json */; };
+		7632DBC423B6F17600B67A7E /* scenes-uid-versions-put-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBC323B6F17600B67A7E /* scenes-uid-versions-put-success.json */; };
+		7632DBC623B7A97100B67A7E /* scenes-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBC523B6F18600B67A7E /* scenes-post-success.json */; };
 		7632DBC823B7B13200B67A7E /* empty.gltf in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBC723B7B13200B67A7E /* empty.gltf */; };
 		7632DBCA23B7B17A00B67A7E /* empty.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBC923B7B17A00B67A7E /* empty.jpeg */; };
-		7632DBCC23B7B35F00B67A7E /* direct_uploads-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBCB23B7B27E00B67A7E /* direct_uploads-success.json */; };
+		7632DBCC23B7B35F00B67A7E /* direct_uploads-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBCB23B7B27E00B67A7E /* direct_uploads-post-success.json */; };
+		7632DBCE23B9040900B67A7E /* scenes-get-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBCD23B9040900B67A7E /* scenes-get-success.json */; };
+		7632DBD023B90A6200B67A7E /* scenes-uid-delete-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBCF23B90A6200B67A7E /* scenes-uid-delete-success.json */; };
 		765BC1C7230288DB005BD512 /* ServerSceneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */; };
 		765BC1C923028F28005BD512 /* ServerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C823028F28005BD512 /* ServerScene.swift */; };
 		765BC1CB23028FDB005BD512 /* UploadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1CA23028FDB005BD512 /* UploadStatus.swift */; };
@@ -87,18 +89,20 @@
 		7632DB9F23B6C26500B67A7E /* StandardCyborgNetworkingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StandardCyborgNetworkingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerUserOperationsTests.swift; sourceTree = "<group>"; };
 		7632DBA323B6C26500B67A7E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		7632DBB323B6D87F00B67A7E /* auth-generate_access_token-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-generate_access_token-success.json"; sourceTree = "<group>"; };
+		7632DBB323B6D87F00B67A7E /* auth-generate_access_token-post-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-generate_access_token-post-success.json"; sourceTree = "<group>"; };
 		7632DBB723B6E03400B67A7E /* Zip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Zip.framework; path = Carthage/Build/iOS/Zip.framework; sourceTree = "<group>"; };
-		7632DBB923B6E3AF00B67A7E /* auth-sign_in-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_in-success.json"; sourceTree = "<group>"; };
-		7632DBBB23B6E6CD00B67A7E /* auth-sign_up-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_up-success.json"; sourceTree = "<group>"; };
-		7632DBBC23B6E78B00B67A7E /* auth-sign_in-failure.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_in-failure.json"; sourceTree = "<group>"; };
+		7632DBB923B6E3AF00B67A7E /* auth-sign_in-post-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_in-post-success.json"; sourceTree = "<group>"; };
+		7632DBBB23B6E6CD00B67A7E /* auth-sign_up-post-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_up-post-success.json"; sourceTree = "<group>"; };
+		7632DBBC23B6E78B00B67A7E /* auth-sign_in-post-failure.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "auth-sign_in-post-failure.json"; sourceTree = "<group>"; };
 		7632DBBF23B6ED1A00B67A7E /* TestDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDataSource.swift; sourceTree = "<group>"; };
 		7632DBC123B6F0CA00B67A7E /* ServerSceneOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneOperationsTests.swift; sourceTree = "<group>"; };
-		7632DBC323B6F17600B67A7E /* scenes-uid-versions-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scenes-uid-versions-success.json"; sourceTree = "<group>"; };
-		7632DBC523B6F18600B67A7E /* scenes-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scenes-success.json"; sourceTree = "<group>"; };
+		7632DBC323B6F17600B67A7E /* scenes-uid-versions-put-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scenes-uid-versions-put-success.json"; sourceTree = "<group>"; };
+		7632DBC523B6F18600B67A7E /* scenes-post-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scenes-post-success.json"; sourceTree = "<group>"; };
 		7632DBC723B7B13200B67A7E /* empty.gltf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = empty.gltf; sourceTree = "<group>"; };
 		7632DBC923B7B17A00B67A7E /* empty.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = empty.jpeg; sourceTree = "<group>"; };
-		7632DBCB23B7B27E00B67A7E /* direct_uploads-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "direct_uploads-success.json"; sourceTree = "<group>"; };
+		7632DBCB23B7B27E00B67A7E /* direct_uploads-post-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "direct_uploads-post-success.json"; sourceTree = "<group>"; };
+		7632DBCD23B9040900B67A7E /* scenes-get-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scenes-get-success.json"; sourceTree = "<group>"; };
+		7632DBCF23B90A6200B67A7E /* scenes-uid-delete-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "scenes-uid-delete-success.json"; sourceTree = "<group>"; };
 		765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneOperations.swift; sourceTree = "<group>"; };
 		765BC1C823028F28005BD512 /* ServerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerScene.swift; sourceTree = "<group>"; };
 		765BC1CA23028FDB005BD512 /* UploadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadStatus.swift; sourceTree = "<group>"; };
@@ -206,13 +210,15 @@
 		7632DBB223B6D83600B67A7E /* ResponseJSON */ = {
 			isa = PBXGroup;
 			children = (
-				7632DBB323B6D87F00B67A7E /* auth-generate_access_token-success.json */,
-				7632DBBB23B6E6CD00B67A7E /* auth-sign_up-success.json */,
-				7632DBB923B6E3AF00B67A7E /* auth-sign_in-success.json */,
-				7632DBBC23B6E78B00B67A7E /* auth-sign_in-failure.json */,
-				7632DBCB23B7B27E00B67A7E /* direct_uploads-success.json */,
-				7632DBC523B6F18600B67A7E /* scenes-success.json */,
-				7632DBC323B6F17600B67A7E /* scenes-uid-versions-success.json */,
+				7632DBB323B6D87F00B67A7E /* auth-generate_access_token-post-success.json */,
+				7632DBBB23B6E6CD00B67A7E /* auth-sign_up-post-success.json */,
+				7632DBB923B6E3AF00B67A7E /* auth-sign_in-post-success.json */,
+				7632DBBC23B6E78B00B67A7E /* auth-sign_in-post-failure.json */,
+				7632DBCB23B7B27E00B67A7E /* direct_uploads-post-success.json */,
+				7632DBCD23B9040900B67A7E /* scenes-get-success.json */,
+				7632DBC523B6F18600B67A7E /* scenes-post-success.json */,
+				7632DBC323B6F17600B67A7E /* scenes-uid-versions-put-success.json */,
+				7632DBCF23B90A6200B67A7E /* scenes-uid-delete-success.json */,
 				7632DBC723B7B13200B67A7E /* empty.gltf */,
 				7632DBC923B7B17A00B67A7E /* empty.jpeg */,
 			);
@@ -346,15 +352,17 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7632DBBA23B6E3AF00B67A7E /* auth-sign_in-success.json in Resources */,
-				7632DBBD23B6E88600B67A7E /* auth-sign_in-failure.json in Resources */,
-				7632DBCC23B7B35F00B67A7E /* direct_uploads-success.json in Resources */,
-				7632DBC623B7A97100B67A7E /* scenes-success.json in Resources */,
-				7632DBB423B6D87F00B67A7E /* auth-generate_access_token-success.json in Resources */,
+				7632DBBA23B6E3AF00B67A7E /* auth-sign_in-post-success.json in Resources */,
+				7632DBD023B90A6200B67A7E /* scenes-uid-delete-success.json in Resources */,
+				7632DBBD23B6E88600B67A7E /* auth-sign_in-post-failure.json in Resources */,
+				7632DBCC23B7B35F00B67A7E /* direct_uploads-post-success.json in Resources */,
+				7632DBC623B7A97100B67A7E /* scenes-post-success.json in Resources */,
+				7632DBB423B6D87F00B67A7E /* auth-generate_access_token-post-success.json in Resources */,
+				7632DBCE23B9040900B67A7E /* scenes-get-success.json in Resources */,
 				7632DBC823B7B13200B67A7E /* empty.gltf in Resources */,
 				7632DBCA23B7B17A00B67A7E /* empty.jpeg in Resources */,
-				7632DBC423B6F17600B67A7E /* scenes-uid-versions-success.json in Resources */,
-				7632DBBE23B6E88A00B67A7E /* auth-sign_up-success.json in Resources */,
+				7632DBC423B6F17600B67A7E /* scenes-uid-versions-put-success.json in Resources */,
+				7632DBBE23B6E88A00B67A7E /* auth-sign_up-post-success.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
