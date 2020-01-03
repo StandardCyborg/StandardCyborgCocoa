@@ -36,6 +36,9 @@
 		765BC1C7230288DB005BD512 /* ServerSceneOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */; };
 		765BC1C923028F28005BD512 /* ServerScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1C823028F28005BD512 /* ServerScene.swift */; };
 		765BC1CB23028FDB005BD512 /* UploadStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 765BC1CA23028FDB005BD512 /* UploadStatus.swift */; };
+		7665165D23BFCD2400CDE1E5 /* teams-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7665165C23BFCD2400CDE1E5 /* teams-post-success.json */; };
+		7665165F23BFCD3E00CDE1E5 /* ServerTeamOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665165E23BFCD3E00CDE1E5 /* ServerTeamOperations.swift */; };
+		7665166123BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665166023BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift */; };
 		76E7E14121E95C140038C9E0 /* StandardCyborgNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */; };
 		76E7E15321E95C5B0038C9E0 /* ServerAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14921E95C5A0038C9E0 /* ServerAPIClient.swift */; };
@@ -106,6 +109,10 @@
 		765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerSceneOperations.swift; sourceTree = "<group>"; };
 		765BC1C823028F28005BD512 /* ServerScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerScene.swift; sourceTree = "<group>"; };
 		765BC1CA23028FDB005BD512 /* UploadStatus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadStatus.swift; sourceTree = "<group>"; };
+		7665165C23BFCD2400CDE1E5 /* teams-post-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "teams-post-success.json"; sourceTree = "<group>"; };
+		7665165E23BFCD3E00CDE1E5 /* ServerTeamOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTeamOperations.swift; sourceTree = "<group>"; };
+		7665166023BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTeamOperationsTests.swift; sourceTree = "<group>"; };
+		7665166223BFD0C700CDE1E5 /* teams-get-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "teams-get-success.json"; sourceTree = "<group>"; };
 		76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StandardCyborgNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StandardCyborgNetworking.h; sourceTree = "<group>"; };
 		76E7E14021E95C140038C9E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -170,6 +177,7 @@
 				76E7E14D21E95C5A0038C9E0 /* ServerScanOperations.swift */,
 				765BC1C6230288DB005BD512 /* ServerSceneOperations.swift */,
 				76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */,
+				7665165E23BFCD3E00CDE1E5 /* ServerTeamOperations.swift */,
 				761FB76E2306062B004E48F3 /* ServerS3Support.swift */,
 			);
 			path = Operations;
@@ -200,6 +208,7 @@
 			children = (
 				7632DBBF23B6ED1A00B67A7E /* TestDataSource.swift */,
 				7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */,
+				7665166023BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift */,
 				7632DBC123B6F0CA00B67A7E /* ServerSceneOperationsTests.swift */,
 				7632DBB223B6D83600B67A7E /* ResponseJSON */,
 				7632DBA323B6C26500B67A7E /* Info.plist */,
@@ -219,6 +228,8 @@
 				7632DBC523B6F18600B67A7E /* scenes-post-success.json */,
 				7632DBC323B6F17600B67A7E /* scenes-uid-versions-put-success.json */,
 				7632DBCF23B90A6200B67A7E /* scenes-uid-delete-success.json */,
+				7665165C23BFCD2400CDE1E5 /* teams-post-success.json */,
+				7665166223BFD0C700CDE1E5 /* teams-get-success.json */,
 				7632DBC723B7B13200B67A7E /* empty.gltf */,
 				7632DBC923B7B17A00B67A7E /* empty.jpeg */,
 			);
@@ -362,6 +373,7 @@
 				7632DBC823B7B13200B67A7E /* empty.gltf in Resources */,
 				7632DBCA23B7B17A00B67A7E /* empty.jpeg in Resources */,
 				7632DBC423B6F17600B67A7E /* scenes-uid-versions-put-success.json in Resources */,
+				7665165D23BFCD2400CDE1E5 /* teams-post-success.json in Resources */,
 				7632DBBE23B6E88A00B67A7E /* auth-sign_up-post-success.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -376,6 +388,7 @@
 				7632DBC223B6F0CA00B67A7E /* ServerSceneOperationsTests.swift in Sources */,
 				7632DBC023B6ED1A00B67A7E /* TestDataSource.swift in Sources */,
 				7632DBA223B6C26500B67A7E /* ServerUserOperationsTests.swift in Sources */,
+				7665166123BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -393,6 +406,7 @@
 				A0C582E522D553EC0090FF6A /* ServerScan.swift in Sources */,
 				A0C582E322D553E10090FF6A /* ServerTeam.swift in Sources */,
 				765BC1C923028F28005BD512 /* ServerScene.swift in Sources */,
+				7665165F23BFCD3E00CDE1E5 /* ServerTeamOperations.swift in Sources */,
 				A0C582E722D553F90090FF6A /* Coding+Util.swift in Sources */,
 				76E7E15921E95C5B0038C9E0 /* ServerCredentials.swift in Sources */,
 				76E7E15A21E95C5B0038C9E0 /* DateTimeTransform.swift in Sources */,
