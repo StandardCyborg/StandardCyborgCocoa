@@ -37,7 +37,7 @@ public class ServerCreateTeamOperation: ServerOperation {
         serverAPIClient.performJSONOperation(withURL: url,
                                              httpMethod: .POST,
                                              httpBodyDict: postDictionary,
-                                             responseObjectRootKey: "teams")
+                                             responseObjectRootKey: "team")
         { (result: Result<ServerTeam>) in
             completion(result)
         }

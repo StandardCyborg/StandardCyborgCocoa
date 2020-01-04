@@ -26,7 +26,6 @@ class ServerUserOperationsTests: XCTestCase {
                 XCTAssertEqual(user.name, "John Doe")
                 XCTAssertEqual(user.key, user.email)
                 XCTAssertEqual(user.teams?.first?.name, "John Doe")
-                XCTAssertEqual(user.teams?.first?.personal, true)
                 XCTAssertEqual(user.teams?.first?.uid, "uMQrVFHx")
             case let .failure(error):
                 XCTFail("Failure: \(error)")
@@ -52,7 +51,6 @@ class ServerUserOperationsTests: XCTestCase {
                 XCTAssertEqual(user.name, "John Doe")
                 XCTAssertEqual(user.key, "siuayACV")
                 XCTAssertEqual(user.teams?.first?.name, "John Doe")
-                XCTAssertEqual(user.teams?.first?.personal, true)
                 XCTAssertEqual(user.teams?.first?.uid, "uMQrVFHx")
             case let .failure(error):
                 XCTFail("Failure: \(error)")
