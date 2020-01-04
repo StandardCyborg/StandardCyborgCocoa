@@ -51,8 +51,8 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
         
         firstly {
             URLSession.shared.dataTask(.promise, with: try buildURLRequest(url: url, httpMethod: httpMethod, extraHeaders: nil))
-        }.map { _, urlResponse in
-            try self._validateURLResponse(urlResponse)
+        }.map { data, urlResponse in
+            try self._validateURLResponse(urlResponse, data)
         }.done { _ in
             completion(nil)
         }.ensure {
@@ -80,7 +80,7 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
                 try self._makeJSONURLRequest(url: url, httpMethod: httpMethod, httpBodyDict: httpBodyDict)
             )
         }.map { data, urlResponse in
-            try self._validateURLResponse(urlResponse)
+            try self._validateURLResponse(urlResponse, data)
             try self._updatePersonalCredentialsFromURLResponse(urlResponse)
 
             // Technically we don't always need deserialize the json object, but this
@@ -129,7 +129,7 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
                                with: try self.buildURLRequest(url: url, httpMethod: httpMethod, extraHeaders: extraHeaders),
                                fromFile: dataURL)
         }.map { (data, response) in
-            try self._validateURLResponse(response, data: data)
+            try self._validateURLResponse(response, data)
         }.done { _ in
             completion(nil)
         }.ensure {
@@ -212,7 +212,7 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
         return request
     }
     
-    private func _validateURLResponse(_ urlResponse: URLResponse, data: Data? = nil) throws {
+    private func _validateURLResponse(_ urlResponse: URLResponse, _ data: Data? = nil) throws {
         let httpResponse = urlResponse as! HTTPURLResponse
         
         switch httpResponse.statusCode {
@@ -230,8 +230,24 @@ public class DefaultServerAPIClient: NSObject, ServerAPIClient, URLSessionTaskDe
         case 404:
             throw ServerOperationError.invalidUsernamePassword
         default:
-            throw ServerOperationError.httpError(code: httpResponse.statusCode)
+            if let errorMessages = _errorMessagesFromData(data) {
+                throw ServerOperationError.httpErrorMessages(code: httpResponse.statusCode, messages: errorMessages)
+            } else {
+                throw ServerOperationError.httpError(code: httpResponse.statusCode)
+            }
         }
+    }
+    
+    private func _errorMessagesFromData(_ data: Data?) -> [String]? {
+        guard
+            let data = data,
+            let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
+            let jsonDict = jsonObject as? [String:Any],
+            let errors = jsonDict["errors"] as? [String:Any],
+            let fullMessages = errors["full_messages"] as? [String]
+        else { return nil }
+        
+        return fullMessages
     }
     
     private func _updatePersonalCredentialsFromURLResponse(_ urlResponse: URLResponse) throws {
