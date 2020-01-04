@@ -39,6 +39,7 @@
 		7665165D23BFCD2400CDE1E5 /* teams-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7665165C23BFCD2400CDE1E5 /* teams-post-success.json */; };
 		7665165F23BFCD3E00CDE1E5 /* ServerTeamOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665165E23BFCD3E00CDE1E5 /* ServerTeamOperations.swift */; };
 		7665166123BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665166023BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift */; };
+		7665166A23C012EF00CDE1E5 /* teams-get-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7665166223BFD0C700CDE1E5 /* teams-get-success.json */; };
 		76E7E14121E95C140038C9E0 /* StandardCyborgNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */; };
 		76E7E15321E95C5B0038C9E0 /* ServerAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14921E95C5A0038C9E0 /* ServerAPIClient.swift */; };
@@ -375,6 +376,7 @@
 				7632DBC423B6F17600B67A7E /* scenes-uid-versions-put-success.json in Resources */,
 				7665165D23BFCD2400CDE1E5 /* teams-post-success.json in Resources */,
 				7632DBBE23B6E88A00B67A7E /* auth-sign_up-post-success.json in Resources */,
+				7665166A23C012EF00CDE1E5 /* teams-get-success.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

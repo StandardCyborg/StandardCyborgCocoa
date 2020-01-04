@@ -20,7 +20,7 @@ class ServerTeamOperationsTests: XCTestCase {
         .perform { result in
             switch result {
             case let .success(team):
-                XCTAssertEqual(team.name, "John Doe")
+                XCTAssertEqual(team.name, "ACME Inc")
                 XCTAssertEqual(team.uid, "NrBQYaNm")
             case let .failure(error):
                 XCTFail("Failure: \(error)")
