@@ -114,6 +114,14 @@ import UIKit
         }
     }
     
+    @objc public var maxDepthResolution: Int = 320 {
+        didSet {
+            if isViewLoaded && oldValue != maxDepthResolution {
+                _cameraManager.configureCaptureSession(maxResolution: maxDepthResolution)
+            }
+        }
+    }
+    
     /** To manually pause the camera output, set this to true */
     @objc public var isCameraPaused: Bool = false {
         didSet {
@@ -143,7 +151,7 @@ import UIKit
         _setUpSubviews()
         
         _cameraManager.delegate = self
-        _cameraManager.configureCaptureSession()
+        _cameraManager.configureCaptureSession(maxResolution: maxDepthResolution)
         
         _reconstructionManager.delegate = self
         
