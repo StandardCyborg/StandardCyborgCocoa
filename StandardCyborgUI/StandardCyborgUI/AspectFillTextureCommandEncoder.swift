@@ -15,7 +15,7 @@ public class AspectFillTextureCommandEncoder {
     private struct Uniforms {
         var transform = simd_float3x3(0)
         var alpha: Float = 0.3
-        var __memoryPadding = simd_float4(0)
+        var __memoryPadding = simd_float4(repeating: 0)
     }
     
     private let _pipelineState: MTLComputePipelineState
@@ -79,13 +79,13 @@ public class AspectFillTextureCommandEncoder {
         
         // This enforces either fill (cover if you're into css) by comparing the space we're
         // aiming to fill with the aspect ratio of the input.
-        var imageScale: float2
+        var imageScale: simd_float2
         if sourceAspectRatio > resultAspectRatio {
             // The source data is wider than the display
-            imageScale = float2(sourceAspectRatio / resultAspectRatio, 1.0)
+            imageScale = simd_float2(sourceAspectRatio / resultAspectRatio, 1.0)
         } else {
             // The display is wider than the source data
-            imageScale = float2(1.0, resultAspectRatio / sourceAspectRatio)
+            imageScale = simd_float2(1.0, resultAspectRatio / sourceAspectRatio)
         }
         
         var transform = simd_float3x3(0)
