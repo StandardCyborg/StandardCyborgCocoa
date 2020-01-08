@@ -211,10 +211,10 @@ public class PointCloudCommandEncoder {
         }
         
         let projection = simd_float4x4([
-            float4([ 2 * fx / referenceSize * imageScale[0], 0, 0, 0]),
-            float4([ 0,  2 * fy / referenceSize * imageScale[1], 0, 0]),
-            float4([ 0,  0, (far + near) / (near - far), -1]),
-            float4([ 0,  0, 2 * far * near / (near - far), 0])
+            simd_float4([ 2 * fx / referenceSize * imageScale[0], 0, 0, 0]),
+            simd_float4([ 0,  2 * fy / referenceSize * imageScale[1], 0, 0]),
+            simd_float4([ 0,  0, (far + near) / (near - far), -1]),
+            simd_float4([ 0,  0, 2 * far * near / (near - far), 0])
         ])
         
         let viewInverse = viewMatrix.inverse
@@ -222,10 +222,10 @@ public class PointCloudCommandEncoder {
         // Construct an intrinsic matrix which flips the image vertically on the screen, swaps
         // the horizontal and vertical axes, and also performs a self-flip.
         var extrinsic = simd_float4x4([
-            float4([  1,  0,  0,  0 ]),
-            float4([  0,  1,  0,  0 ]),
-            float4([  0,  0,  -1,  0 ]),
-            float4([  0,  0,  0,  1 ]),
+            simd_float4([  1,  0,  0,  0 ]),
+            simd_float4([  0,  1,  0,  0 ]),
+            simd_float4([  0,  0,  -1,  0 ]),
+            simd_float4([  0,  0,  0,  1 ]),
         ])
         if flipsInputHorizontally {
             extrinsic.columns.1.x = -1
@@ -234,9 +234,9 @@ public class PointCloudCommandEncoder {
         let modelView = matrix_multiply(extrinsic, viewInverse)
         
         let truncatedModelView = simd_float3x3([
-            float3([modelView.columns.0[0], modelView.columns.0[1], modelView.columns.0[2]]),
-            float3([modelView.columns.1[0], modelView.columns.1[1], modelView.columns.1[2]]),
-            float3([modelView.columns.2[0], modelView.columns.2[1], modelView.columns.2[2]])
+            simd_float3([modelView.columns.0[0], modelView.columns.0[1], modelView.columns.0[2]]),
+            simd_float3([modelView.columns.1[0], modelView.columns.1[1], modelView.columns.1[2]]),
+            simd_float3([modelView.columns.2[0], modelView.columns.2[1], modelView.columns.2[2]])
         ])
         
         let normalMatrix = truncatedModelView.inverse.transpose
@@ -247,7 +247,7 @@ public class PointCloudCommandEncoder {
                                             normalMatrix: normalMatrix,
                                             modelViewProjection: modelViewProjection,
                                             pointSize: pointSize,
-                                            __memoryPadding: simd_float2(0))
+                                            __memoryPadding: simd_float2(repeating: 0))
         
         memcpy(_sharedUniformsBuffer.contents(), &sharedUniforms, MemoryLayout<SharedUniforms>.size)
     }

@@ -122,7 +122,7 @@ import UIKit
     
     // MARK: - SCNSceneRendererDelegate
     
-    private func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
+    public func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         // Experimentally determined
         // Default FOV: 55º
         // Min FOV: 10º
