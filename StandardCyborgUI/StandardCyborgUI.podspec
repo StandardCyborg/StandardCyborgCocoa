@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name              = "StandardCyborgUI"
-  s.version           = "1.4.1"
+  s.version           = "1.5.0"
   s.summary           = "Classes for driving and visualizing scanning using StandardCyborgFusion"
   s.homepage          = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url  = 'https://twitter.com/StandardCyborg'
@@ -24,7 +24,7 @@ Pod::Spec.new do |s|
   s.license           = { :type => 'Apache 2.0', :file => 'LICENSE' }
   s.author            = { 'Standard Cyborg' => 'sdk@standardcyborg.com' }
   s.platform          = :ios, "12.0"
-  s.swift_version     = '4.2'
+  s.swift_version     = '5.0'
   s.requires_arc      = true
   s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}-StandardCyborgUI" }
   s.source_files      = "StandardCyborgUI/**/*.{h,m,swift,metal}"
