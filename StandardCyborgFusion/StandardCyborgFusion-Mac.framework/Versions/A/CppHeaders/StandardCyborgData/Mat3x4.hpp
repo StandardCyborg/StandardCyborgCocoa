@@ -12,8 +12,14 @@
 #include <vector>
 
 #include <StandardCyborgData/Vec3.hpp>
+#include <StandardCyborgData/AssertHelper.hpp>
 
 namespace StandardCyborg {
+
+struct Quaternion;
+struct Mat3x3;
+struct Transform;
+struct Mat4x4;
 
 struct Mat3x4 {
     // note: we use row-major order for our matrices.
@@ -23,9 +29,13 @@ struct Mat3x4 {
     
     Mat3x4();
     
+    Mat3x4(const Mat4x4& matrix);
+    
     Mat3x4(float m00_, float m01_, float m02_, float m03_,
            float m10_, float m11_, float m12_, float m13_,
            float m20_, float m21_, float m22_, float m23_);
+
+    Mat3x4(Mat3x3 transform, Vec3 translation);
     
     static Mat3x4 Identity();
     static Mat3x4 Zeros();
@@ -36,7 +46,7 @@ struct Mat3x4 {
     std::vector<float> toColumnMajorVector() const;
     std::vector<float> toRowMajorVector() const;
     
-    /* Compute whether two matrices are equal to within floating point epsilon */
+    /** Compute whether two matrices are equal to within floating point epsilon */
     static inline bool almostEqual(
         const Mat3x4& lhs,
         const Mat3x4& rhs,
@@ -44,26 +54,32 @@ struct Mat3x4 {
         float absoluteTolerance = std::numeric_limits<float>::epsilon()
     );
     
-    /* Invert in-place */
+    /** Invert in-place */
     Mat3x4& invert();
     
-    /* Return an inverted copy */
+    /** Return an inverted copy */
     Mat3x4 inverse() const;
 
-    /* Rotate the matrix about the x-axis by an angle in radians */
+    /** Rotate the matrix about the x-axis by an angle in radians */
     static Mat3x4 fromRotationX(float radians);
     
-    /* Rotate the matrix about the y-axis by an angle in radians */
+    /** Rotate the matrix about the y-axis by an angle in radians */
     static Mat3x4 fromRotationY(float radians);
     
-    /* Rotate the matrix about the z-axis by an angle in radians */
+    /** Rotate the matrix about the z-axis by an angle in radians */
     static Mat3x4 fromRotationZ(float radians);
     
-    /* Rotate the matrix about the z-axis by an angle in radians */
+    /** Rotate the matrix about the z-axis by an angle in radians */
     static Mat3x4 fromTranslation(Vec3 xyz);
     
-    /* Rotate the matrix about the z-axis by an angle in radians */
+    /** Rotate the matrix about the z-axis by an angle in radians */
     static Mat3x4 fromScale(Vec3 xyz);
+    
+    /** Expand a Mat3x3 to a Mat3x4 with zero translation */
+    static Mat3x4 fromMat3x3(const Mat3x3& matrix);
+    
+    /** Compute a Transform to Mat3x4 */
+    static Mat3x4 fromTransform(const Transform& transform);
 };
 
 inline Mat3x4 operator*(const Mat3x4& lhs, const Mat3x4& rhs)
@@ -127,6 +143,7 @@ inline bool Mat3x4::almostEqual(const Mat3x4& lhs, const Mat3x4& rhs, float rela
 
 inline Mat3x4 Mat3x4::fromRowMajorVector(const std::vector<float>& data)
 {
+    SCASSERT(data.size() == 12, "Expected length of data to be 12");
     return Mat3x4{
         data[0], data[1], data[2], data[3],
         data[4], data[5], data[6], data[7],
@@ -136,6 +153,7 @@ inline Mat3x4 Mat3x4::fromRowMajorVector(const std::vector<float>& data)
 
 inline Mat3x4 Mat3x4::fromColumnMajorVector(const std::vector<float>& data)
 {
+    SCASSERT(data.size() == 12, "Expected length of data to be 12");
     return Mat3x4{
         data[0], data[3], data[6], data[9],
         data[1], data[4], data[7], data[10],

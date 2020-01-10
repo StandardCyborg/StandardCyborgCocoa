@@ -37,28 +37,27 @@ public:
 
     Vec3(float a, Vec2 b) : x(a), y(b.x), z(b.y) {}
     // clang-format on
-    
-    
+
     /* Vec3 methods */
     
-    /* Normalize a vector in-place and return (by reference) the vector itself */
+    /** Normalize a vector in-place and return (by reference) the vector itself */
     inline Vec3& normalize();
     
-    /* Compute a normalized copy of the vector */
+    /** Compute a normalized copy of the vector */
     static inline Vec3 normalize(const Vec3& a);
     
-    /* Compute the squared norm of a vector */
+    /** Compute the squared norm of a vector */
     inline float squaredNorm() const;
     
-    /* Compute the Euclidean norm (length) of a vector */
+    /** Compute the Euclidean norm (length) of a vector */
     inline float norm() const;
     
-    /* Get the first two components (x, y) as a Vec2 */
+    /** Get the first two components (x, y) as a Vec2 */
     inline Vec2 xy() const;
     
     /* Static functions namespaced under Vec3:: */
     
-    /* Compute whether two vectors are equal to within floating point epsilon */
+    /** Compute whether two vectors are equal to within floating point epsilon */
     static inline bool almostEqual(
         const Vec3& lhs,
         const Vec3& rhs,
@@ -66,22 +65,22 @@ public:
         float absoluteTolerance = std::numeric_limits<float>::epsilon()
     );
     
-    /* Compute the dot product of two vectors */
+    /** Compute the dot product of two vectors */
     static inline float dot(const Vec3& lhs, const Vec3& rhs);
     
-    /* Compute the cross product of two vectors */
+    /** Compute the cross product of two vectors */
     static inline Vec3 cross(const Vec3& lhs, const Vec3& rhs);
     
-    /* Linearly iterpolate between vectors a and b */
+    /** Linearly iterpolate between vectors a and b */
     static inline Vec3 lerp(const Vec3& a, const Vec3& b, float interpolant);
     
-    /* Compute the per-component maximum of two vectors */
+    /** Compute the per-component maximum of two vectors */
     static inline Vec3 min(const Vec3& a, const Vec3& b);
     
-    /* Compute the per-component minimum of two vectors */
+    /** Compute the per-component minimum of two vectors */
     static inline Vec3 max(const Vec3& a, const Vec3& b);
     
-    /* Compute the angle between two vectors, in radians */
+    /** Compute the angle between two vectors, in radians */
     static inline float angleBetween(const Vec3& a, const Vec3& b);
     
     /** Compute the cartesian distance between two vectors */
@@ -90,7 +89,7 @@ public:
     /** Compute the square of the cartesian distance between two vectors */
     static inline float squaredDistanceBetween(const Vec3& lhs, const Vec3& rhs);
     
-    /* Raise the vector to a component-wise power */
+    /** Raise the vector to a component-wise power */
     static inline Vec3 pow(const Vec3& a, float exponent);
     
     inline float operator[](int i) const;

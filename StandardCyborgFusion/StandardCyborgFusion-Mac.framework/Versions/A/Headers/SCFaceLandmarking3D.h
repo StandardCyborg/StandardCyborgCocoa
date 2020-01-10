@@ -23,11 +23,21 @@ NS_ASSUME_NONNULL_BEGIN
 - (instancetype)init NS_UNAVAILABLE;
 
 /**
- Both URLs are local file URLs to mlmodelc directories provided by Standard Cyborg.
+ All model URLs are local file URLs to mlmodelc directories provided by Standard Cyborg.
  Please contact sdk@standardcyborg.com for these models.
  */
 - (instancetype)initWithFaceTrackingModelURL:(NSURL *)faceTrackingModelURL
                          landmarkingModelURL:(NSURL *)faceLandmarkingModelURL;
+
+/**
+ Use this variant for highly accurate ear landmarks.
+ All model URLs are local file URLs to mlmodelc directories provided by Standard Cyborg.
+ Please contact sdk@standardcyborg.com for these models.
+*/
+- (instancetype)initWithFaceTrackingModelURL:(NSURL *)faceTrackingModelURL
+                     faceLandmarkingModelURL:(NSURL *)faceLandmarkingModelURL
+                         earTrackingModelURL:(NSURL * _Nullable)earTrackingModelURL
+                      earLandmarkingModelURL:(NSURL * _Nullable)earLandmarkingModelURL;
 
 - (instancetype)initWithLandmarkProvider:(id<SCLandmarking2D>)landmarkProvider;
 
