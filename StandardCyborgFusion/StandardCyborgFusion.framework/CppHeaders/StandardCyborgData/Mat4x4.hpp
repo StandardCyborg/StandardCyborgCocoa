@@ -12,6 +12,7 @@
 #include <vector>
 
 #include <StandardCyborgData/Vec3.hpp>
+#include <StandardCyborgData/AssertHelper.hpp>
 
 namespace StandardCyborg {
 
@@ -43,7 +44,7 @@ struct Mat4x4
     std::vector<float> toColumnMajorVector() const;
     std::vector<float> toRowMajorVector() const;
     
-    /* Compute whether two matrices are equal to within floating point epsilon */
+    /** Compute whether two matrices are equal to within floating point epsilon */
     static inline bool almostEqual(
         const Mat4x4& lhs,
         const Mat4x4& rhs,
@@ -51,10 +52,10 @@ struct Mat4x4
         float absoluteTolerance = std::numeric_limits<float>::epsilon()
     );
 
-    /* Invert in-place */
+    /** Invert the matrix in-place, returning a reference to the inverted matrix */
     Mat4x4& invert();
     
-    /* Return an inverted copy */
+    /** Return an inverted copy of the matrix */
     Mat4x4 inverse() const;
 };
 
@@ -132,6 +133,7 @@ inline bool Mat4x4::almostEqual(const Mat4x4& lhs, const Mat4x4& rhs, float rela
 
 inline Mat4x4 Mat4x4::fromRowMajorVector(const std::vector<float>& data)
 {
+    SCASSERT(data.size() == 16, "Expected length of data to be 16");
     return Mat4x4{
         data[0], data[1], data[2], data[3],
         data[4], data[5], data[6], data[7],
@@ -142,6 +144,7 @@ inline Mat4x4 Mat4x4::fromRowMajorVector(const std::vector<float>& data)
 
 inline Mat4x4 Mat4x4::fromColumnMajorVector(const std::vector<float>& data)
 {
+    SCASSERT(data.size() == 16, "Expected length of data to be 16");
     return Mat4x4{
         data[0], data[4], data[8], data[12],
         data[1], data[5], data[9], data[13],

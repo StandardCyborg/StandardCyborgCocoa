@@ -24,6 +24,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (BOOL)writeToOBJZipAtPath:(NSString *)OBJZipPath;
 
+- (BOOL)writeToUSDCAtPath:(NSString *)USDZPath;
+
+- (BOOL)writeToUSDZAtPath:(NSString *)USDZPath;
+
 @end
 
 NS_ASSUME_NONNULL_END
