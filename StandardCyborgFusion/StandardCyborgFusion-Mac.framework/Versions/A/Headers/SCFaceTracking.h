@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @protocol SCFaceTrackingDelegate <NSObject>
 
+/** @param normalizedRect The bounding box of the face, normalized from (0, 0) to (1, 1) */
 - (void)faceTracking:(id<SCFaceTracking>)faceTracking
      didDetectFaceAt:(CGRect)normalizedRect
         observations:(NSArray<VNFaceObservation *> *)observations;
@@ -53,9 +54,10 @@ NS_SWIFT_NAME(faceTrackingDidLoseTracking(_:));
 @interface SCRobustFaceTracking : NSObject <SCFaceTracking>
 
 - (instancetype)initWithFaceTrackingModelURL:(NSURL *)faceTrackingModelURL
-                                     delegate:(id<SCFaceTrackingDelegate>)delegate;
+                                    delegate:(id<SCFaceTrackingDelegate>)delegate;
 
-/** The amount of smoothing between iterations, from [0..1). 0 is no smoothing, 1 is infinite smoothing. Defaults to 0.5 */
+/** The amount of smoothing between frames, from [0..1). 0 is no smoothing, 1 is infinite smoothing. Defaults to 0.5.
+    Smoothing reduces the amount of jitter between subsequent calls by applying a moving average. */
 @property (nonatomic) float smoothing;
 
 @end

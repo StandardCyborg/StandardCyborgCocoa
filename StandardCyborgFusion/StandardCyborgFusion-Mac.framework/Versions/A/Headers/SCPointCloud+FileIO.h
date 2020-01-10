@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface SCPointCloud (FileIO)
 
 - (nullable instancetype)initWithPLYPath:(NSString *)PLYPath;
+- (nullable instancetype)initWithPLYPath:(NSString *)PLYPath normalizeNormals:(BOOL)normalizeNormals;
 
 - (nullable instancetype)initWithOBJPath:(NSString *)OBJPath;
 
