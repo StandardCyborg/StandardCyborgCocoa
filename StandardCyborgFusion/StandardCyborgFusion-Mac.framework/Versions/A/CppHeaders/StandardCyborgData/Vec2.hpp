@@ -12,6 +12,7 @@
 #include <limits>
 
 #include <StandardCyborgData/MathHelpers.hpp>
+#include <StandardCyborgData/Size2D.hpp>
 
 namespace StandardCyborg {
 
@@ -23,6 +24,8 @@ struct Vec2 {
     Vec2(float value) : x(value), y(value) {}
 
     Vec2() : x(0), y(0) {}
+    
+    Vec2(Size2D size) : x(size.width), y(size.height) {}
     
     /* Vec2 methods */
     

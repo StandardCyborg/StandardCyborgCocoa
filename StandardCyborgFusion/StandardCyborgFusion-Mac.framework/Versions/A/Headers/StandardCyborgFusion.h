@@ -40,3 +40,4 @@ FOUNDATION_EXPORT const unsigned char StandardCyborgFusionVersionString[];
 #import <StandardCyborgFusion/SCPointCloud+SceneKit.h>
 #import <StandardCyborgFusion/SCReconstructionManager.h>
 #import <StandardCyborgFusion/SCReconstructionManagerParameters.h>
+#import <StandardCyborgFusion/SCScene.h>

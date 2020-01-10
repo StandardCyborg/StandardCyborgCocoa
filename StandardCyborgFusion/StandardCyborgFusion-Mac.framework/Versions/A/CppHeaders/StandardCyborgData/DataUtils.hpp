@@ -11,41 +11,53 @@
 #include <map>
 #include <vector>
 
-#include <StandardCyborgData/Face3.hpp>
 #include <StandardCyborgData/IncludeEigen.hpp>
-#include <StandardCyborgData/Vec3.hpp>
 #include <StandardCyborgData/VertexSelection.hpp>
 
 
 namespace StandardCyborg {
 
+struct Vec3;
+struct Mat3x3;
+struct Mat3x4;
+struct Mat4x4;
+struct Face3;
+
 /*
  * Map data to either a 3Xf or X3f Eigen array. For use in particular when interfacing with
  * libigl, which requires X3f. You may construct a no-copy matrix view as:
  *
- *   auto matrixView { Vec3ToEigenX3f(geometry.getPositions()) }
+ *   auto matrixView { toMatrixX3f(geometry.getPositions()) }
  *
  * (Of course you may spell out the full type, but that is rather burdensome.)
  */
-Eigen::Ref<Eigen::Matrix<float, 3, Eigen::Dynamic, Eigen::ColMajor>> Vec3ToEigen3Xf(std::vector<Vec3>& data);
-Eigen::Ref<Eigen::Matrix<float, Eigen::Dynamic, 3, Eigen::RowMajor>> Vec3ToEigenX3f(std::vector<Vec3>& data);
+Eigen::Ref<Eigen::Matrix<float, 3, Eigen::Dynamic, Eigen::ColMajor>> toMatrix3Xf(std::vector<Vec3>& data);
+Eigen::Ref<Eigen::Matrix<float, Eigen::Dynamic, 3, Eigen::RowMajor>> toMatrixX3f(std::vector<Vec3>& data);
 
 /* Const versions of the above */
-const Eigen::Ref<const Eigen::Matrix<float, 3, Eigen::Dynamic, Eigen::ColMajor>> Vec3ToEigen3Xf(const std::vector<Vec3>& data);
-const Eigen::Ref<const Eigen::Matrix<float, Eigen::Dynamic, 3, Eigen::RowMajor>> Vec3ToEigenX3f(const std::vector<Vec3>& data);
+const Eigen::Ref<const Eigen::Matrix<float, 3, Eigen::Dynamic, Eigen::ColMajor>> toMatrix3Xf(const std::vector<Vec3>& data);
+const Eigen::Ref<const Eigen::Matrix<float, Eigen::Dynamic, 3, Eigen::RowMajor>> toMatrixX3f(const std::vector<Vec3>& data);
 
 /* Non-const Face3 adaptors */
-Eigen::Ref<Eigen::Matrix<int, 3, Eigen::Dynamic, Eigen::ColMajor>> Face3ToEigen3Xi(std::vector<Face3>& data);
-Eigen::Ref<Eigen::Matrix<int, Eigen::Dynamic, 3, Eigen::RowMajor>> Face3ToEigenX3i(std::vector<Face3>& data);
+Eigen::Ref<Eigen::Matrix<int, 3, Eigen::Dynamic, Eigen::ColMajor>> toMatrix3Xi(std::vector<Face3>& data);
+Eigen::Ref<Eigen::Matrix<int, Eigen::Dynamic, 3, Eigen::RowMajor>> toMatrixX3i(std::vector<Face3>& data);
 
 /* Const versions of the above */
-const Eigen::Ref<const Eigen::Matrix<int, 3, Eigen::Dynamic, Eigen::ColMajor>> Face3ToEigen3Xi(const std::vector<Face3>& data);
-const Eigen::Ref<const Eigen::Matrix<int, Eigen::Dynamic, 3, Eigen::RowMajor>> Face3ToEigenX3i(const std::vector<Face3>& data);
+const Eigen::Ref<const Eigen::Matrix<int, 3, Eigen::Dynamic, Eigen::ColMajor>> toMatrix3Xi(const std::vector<Face3>& data);
+const Eigen::Ref<const Eigen::Matrix<int, Eigen::Dynamic, 3, Eigen::RowMajor>> toMatrixX3i(const std::vector<Face3>& data);
 
+Eigen::Vector3f toVector3f(Vec3 data);
+Eigen::Matrix3f toMatrix3f(Mat3x3 matrix);
+Eigen::Matrix4f toMatrix4f(Mat3x4 matrix);
+Eigen::Matrix4f toMatrix4f(Mat4x4 matrix);
 
-Eigen::Vector3f Vec3ToEigen(Vec3 data);
+Vec3 toVec3(Eigen::Vector3f vector);
+Mat3x3 toMat3x3(Eigen::Matrix3f matrix);
+Mat3x4 toMat3x4(Eigen::Matrix4f matrix);
+Mat4x4 toMat4x4(Eigen::Matrix4f matrix);
 
-Vec3 EigenToVec3(Eigen::Vector3f vector);
+Eigen::Matrix3f columnMajorToMatrix3f(const std::vector<float>& vector);
+Eigen::Matrix4f columnMajorToMatrix4f(const std::vector<float>& vector);
 
 template <class T>
 void deleteEntriesFromVector(std::vector<T>& dataArray, const VertexSelection& indicesToDelete)
