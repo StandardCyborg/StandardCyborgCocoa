@@ -132,6 +132,8 @@ import UIKit
     /** To manually pause the camera output, set this to true */
     @objc public var isCameraPaused: Bool = false {
         didSet {
+            guard oldValue != isCameraPaused else { return }
+            
             if isCameraPaused {
                 _cameraManager.stopSession()
             } else {
