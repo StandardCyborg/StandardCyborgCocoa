@@ -16,6 +16,7 @@
 		761FB79623073BEB004E48F3 /* PromiseKit.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		7623165D21EDB0E5004D1AFB /* PromiseKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623165B21EDB0E5004D1AFB /* PromiseKit.framework */; };
 		7623166621EDBD2D004D1AFB /* PMKFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623166521EDBD2D004D1AFB /* PMKFoundation.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
+		76276A6B23CE12C900D22538 /* me-get-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 76276A6A23CE114500D22538 /* me-get-success.json */; };
 		7632DBA223B6C26500B67A7E /* ServerUserOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */; };
 		7632DBA423B6C26500B67A7E /* StandardCyborgNetworking.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */; };
 		7632DBB423B6D87F00B67A7E /* auth-generate_access_token-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7632DBB323B6D87F00B67A7E /* auth-generate_access_token-post-success.json */; };
@@ -39,7 +40,6 @@
 		7665165D23BFCD2400CDE1E5 /* teams-post-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7665165C23BFCD2400CDE1E5 /* teams-post-success.json */; };
 		7665165F23BFCD3E00CDE1E5 /* ServerTeamOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665165E23BFCD3E00CDE1E5 /* ServerTeamOperations.swift */; };
 		7665166123BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7665166023BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift */; };
-		7665166A23C012EF00CDE1E5 /* teams-get-success.json in Resources */ = {isa = PBXBuildFile; fileRef = 7665166223BFD0C700CDE1E5 /* teams-get-success.json */; };
 		76E7E14121E95C140038C9E0 /* StandardCyborgNetworking.h in Headers */ = {isa = PBXBuildFile; fileRef = 76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		76E7E15121E95C5B0038C9E0 /* ServerUserOperations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14721E95C590038C9E0 /* ServerUserOperations.swift */; };
 		76E7E15321E95C5B0038C9E0 /* ServerAPIClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E7E14921E95C5A0038C9E0 /* ServerAPIClient.swift */; };
@@ -89,6 +89,7 @@
 		761FB770230608AA004E48F3 /* ServerOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerOperation.swift; sourceTree = "<group>"; };
 		7623165B21EDB0E5004D1AFB /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 		7623166521EDBD2D004D1AFB /* PMKFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PMKFoundation.framework; path = Carthage/Build/iOS/PMKFoundation.framework; sourceTree = "<group>"; };
+		76276A6A23CE114500D22538 /* me-get-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "me-get-success.json"; sourceTree = "<group>"; };
 		7632DB9923B6C05C00B67A7E /* TestAPIClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAPIClient.swift; sourceTree = "<group>"; };
 		7632DB9F23B6C26500B67A7E /* StandardCyborgNetworkingTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StandardCyborgNetworkingTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		7632DBA123B6C26500B67A7E /* ServerUserOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerUserOperationsTests.swift; sourceTree = "<group>"; };
@@ -113,7 +114,6 @@
 		7665165C23BFCD2400CDE1E5 /* teams-post-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "teams-post-success.json"; sourceTree = "<group>"; };
 		7665165E23BFCD3E00CDE1E5 /* ServerTeamOperations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTeamOperations.swift; sourceTree = "<group>"; };
 		7665166023BFCDB500CDE1E5 /* ServerTeamOperationsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerTeamOperationsTests.swift; sourceTree = "<group>"; };
-		7665166223BFD0C700CDE1E5 /* teams-get-success.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "teams-get-success.json"; sourceTree = "<group>"; };
 		76E7E13C21E95C140038C9E0 /* StandardCyborgNetworking.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StandardCyborgNetworking.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		76E7E13F21E95C140038C9E0 /* StandardCyborgNetworking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StandardCyborgNetworking.h; sourceTree = "<group>"; };
 		76E7E14021E95C140038C9E0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -225,12 +225,12 @@
 				7632DBB923B6E3AF00B67A7E /* auth-sign_in-post-success.json */,
 				7632DBBC23B6E78B00B67A7E /* auth-sign_in-post-failure.json */,
 				7632DBCB23B7B27E00B67A7E /* direct_uploads-post-success.json */,
+				76276A6A23CE114500D22538 /* me-get-success.json */,
 				7632DBCD23B9040900B67A7E /* scenes-get-success.json */,
 				7632DBC523B6F18600B67A7E /* scenes-post-success.json */,
 				7632DBC323B6F17600B67A7E /* scenes-uid-versions-put-success.json */,
 				7632DBCF23B90A6200B67A7E /* scenes-uid-delete-success.json */,
 				7665165C23BFCD2400CDE1E5 /* teams-post-success.json */,
-				7665166223BFD0C700CDE1E5 /* teams-get-success.json */,
 				7632DBC723B7B13200B67A7E /* empty.gltf */,
 				7632DBC923B7B17A00B67A7E /* empty.jpeg */,
 			);
@@ -370,13 +370,13 @@
 				7632DBCC23B7B35F00B67A7E /* direct_uploads-post-success.json in Resources */,
 				7632DBC623B7A97100B67A7E /* scenes-post-success.json in Resources */,
 				7632DBB423B6D87F00B67A7E /* auth-generate_access_token-post-success.json in Resources */,
+				76276A6B23CE12C900D22538 /* me-get-success.json in Resources */,
 				7632DBCE23B9040900B67A7E /* scenes-get-success.json in Resources */,
 				7632DBC823B7B13200B67A7E /* empty.gltf in Resources */,
 				7632DBCA23B7B17A00B67A7E /* empty.jpeg in Resources */,
 				7632DBC423B6F17600B67A7E /* scenes-uid-versions-put-success.json in Resources */,
 				7665165D23BFCD2400CDE1E5 /* teams-post-success.json in Resources */,
 				7632DBBE23B6E88A00B67A7E /* auth-sign_up-post-success.json in Resources */,
-				7665166A23C012EF00CDE1E5 /* teams-get-success.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
