@@ -75,6 +75,34 @@ class ServerUserOperationsTests: XCTestCase {
         wait(for: [failureExpect], timeout: 5)
     }
     
+    func testServerGetSignedInUserInfoOperation() {
+        let expect = expectation(description: "ServerGetSignedInUserInfoOperation")
+        
+        apiClient.setResponse(for: "me", method: .GET, jsonPath: _fullTestFixturePath("me-get-success.json"))
+        
+        ServerGetSignedInUserInfoOperation(dataSource: dataSource, serverAPIClient: apiClient)
+        .perform { result in
+            switch result {
+            case let .success(user):
+                XCTAssertEqual(user.email, "test@example.com")
+                XCTAssertEqual(user.name, "John Doe")
+                XCTAssertEqual(user.key, "5dPrR3Wx")
+                XCTAssertEqual(user.teams?.first?.name, "John Doe")
+                XCTAssertEqual(user.teams?.first?.uid, "1ixt9n6W")
+                XCTAssertEqual(user.teams?.first?.role, .admin)
+                XCTAssertEqual(user.teams?.last?.name, "foo")
+                XCTAssertEqual(user.teams?.last?.uid, "oet1NuQB")
+                XCTAssertEqual(user.teams?.last?.role, .default)
+            case let .failure(error):
+                XCTFail("Failure: \(error)")
+            }
+            
+            expect.fulfill()
+        }
+        
+        wait(for: [expect], timeout: 5)
+    }
+    
     private func _fullTestFixturePath(_ relativePath: String) -> String {
         let baseUrl = Bundle(for: TestDataSource.self).resourceURL!
         return baseUrl.appendingPathComponent(relativePath).path

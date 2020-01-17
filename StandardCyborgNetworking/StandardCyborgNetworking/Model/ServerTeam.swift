@@ -8,8 +8,12 @@
 import Foundation
 
 public struct ServerTeam: Codable {
-
+    public enum Role: String, Codable {
+        case `default`
+        case admin
+    }
+    
     public let name: String
     public let uid: String
-    
+    public let role: Role
 }
