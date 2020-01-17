@@ -11,6 +11,7 @@ import PromiseKit
 
 private struct ClientAPIPath {
     static let scenes = "scenes"
+    static let teamScenes = "teams/:uid/scenes"
     static let scenesVersions = "scenes/:uid/versions/:version_number"
 }
 
@@ -28,16 +29,19 @@ public class ServerFetchScenesOperation: ServerOperation {
 public class ServerAddSceneOperation: ServerOperation {
     let gltfURL: URL
     let thumbnailURL: URL?
+    let teamKey: String?
     let metadata: [String: Any]
     
     public init(gltfURL: URL,
                 thumbnailURL: URL? = nil,
+                teamKey: String? = nil,
                 metadata: [String: Any] = [:],
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
         self.gltfURL = gltfURL
         self.thumbnailURL = thumbnailURL
+        self.teamKey = teamKey
         self.metadata = metadata
         
         for value in metadata.values {
@@ -98,7 +102,14 @@ public class ServerAddSceneOperation: ServerOperation {
     
     private func _createEmptyScene() -> Promise<ServerScene> {
         return Promise { seal in
-            let url: URL = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+            let url: URL
+            if let teamKey = teamKey {
+                var tempURLString = serverAPIClient.buildAPIURL(for: ClientAPIPath.teamScenes).absoluteString
+                tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: teamKey)
+                url = URL(string: tempURLString)!
+            } else {
+                url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+            }
             
             serverAPIClient.performJSONOperation(withURL: url,
                                                  httpMethod: HTTPMethod.POST,
