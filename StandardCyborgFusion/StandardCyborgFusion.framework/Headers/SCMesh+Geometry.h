@@ -18,7 +18,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (SCMesh * _Nullable)meshFromGeometry:(const StandardCyborg::Geometry &)geometry
                            textureData:(const std::vector<float> &)textureData
-                          flipTextureY:(BOOL)flipTextureY
                      textureResolution:(NSInteger)textureResolution;
 
 + (SCMesh * _Nullable)meshFromGeometry:(const StandardCyborg::Geometry &)geometry

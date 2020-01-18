@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <StandardCyborgData/guid.hpp>
+#include <StandardCyborgData/Transform.hpp>
 #include <StandardCyborgData/Mat3x4.hpp>
 #include <StandardCyborgData/Vec3.hpp>
 
@@ -75,7 +76,7 @@ private:
 
 protected:
     std::vector<std::shared_ptr<Node>> children;
-    Mat3x4 transform;
+    Transform transform;
     std::string name;
     Material material;
 
@@ -165,8 +166,19 @@ public:
     std::string getName() const;
 
     /** Set the transform of this node. Does not modify revision counters up to the root nodeif rootNode is not specified. */
+    Node& setTransform(const Transform& transform, std::shared_ptr<Node> rootNode = nullptr);
     Node& setTransform(const Mat3x4& transform, std::shared_ptr<Node> rootNode = nullptr);
-    Mat3x4 getTransform() const;
+    Transform getTransform() const;
+
+    Node& setRotation(Quaternion rotation, std::shared_ptr<Node> rootNode = nullptr);
+    Node& setTranslation(Vec3 translation, std::shared_ptr<Node> rootNode = nullptr);
+    Node& setScale(Vec3 scale, std::shared_ptr<Node> rootNode = nullptr);
+    Node& setShear(Vec3 shear, std::shared_ptr<Node> rootNode = nullptr);
+
+    Quaternion setRotation(Quaternion rotation);
+    Vec3 setTranslation(Vec3 translation);
+    Vec3 setScale(Vec3 scale);
+    Vec3 setShear(Vec3 shear);
 
     /** Set the visibility of the node */
     Node& setVisibility(bool newVisibility, std::shared_ptr<Node> rootNode = nullptr);

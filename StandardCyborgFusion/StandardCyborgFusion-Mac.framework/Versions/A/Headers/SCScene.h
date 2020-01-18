@@ -4,6 +4,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <simd/simd.h>
 
 @class SCMesh;
 @class SCNNode;
@@ -17,7 +18,16 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly, nullable) SCMesh *mesh;
 @property (nonatomic, readonly) SCNNode *rootNode;
 
-- (instancetype)initWithPointCloud:(SCPointCloud * _Nullable)pointCloud mesh:(SCMesh * _Nullable)mesh;
+- (instancetype)init NS_UNAVAILABLE;
+
+- (instancetype)initWithPointCloud:(SCPointCloud * _Nullable)pointCloud
+                              mesh:(SCMesh * _Nullable)mesh;
+
+/// Useful for migrating scans generated with StandardCyborgFusion versions < 1.6.4
+/// into the new standard orientation
+- (instancetype)initWithPointCloud:(SCPointCloud * _Nullable)pointCloud
+                              mesh:(SCMesh * _Nullable)mesh
+                         transform:(simd_float4x4)transform;
 
 - (instancetype)initWithGLTFAtPath:(NSString *)GLTFPath;
 
