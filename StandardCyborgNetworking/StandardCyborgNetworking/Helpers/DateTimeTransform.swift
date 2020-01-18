@@ -7,7 +7,7 @@
 
 import Foundation
 
-class DateTimeTransform {
+public class DateTimeTransform {
     
     // DEV: Due to inconsistencies in the server, the server sends us
     //      a couple different date/time formats, so we have to support both
@@ -26,11 +26,11 @@ class DateTimeTransform {
     
     private init() {}
     
-    static func fromString(_ value: String) -> Date? {
+    public static func fromString(_ value: String) -> Date? {
         return _Formatter.date(from: value) ?? _FallbackFormatter.date(from: value)
     }
     
-    static func toString(_ value: Date) -> String {
+    public static func toString(_ value: Date) -> String {
         return _Formatter.string(from: value)
     }
 }

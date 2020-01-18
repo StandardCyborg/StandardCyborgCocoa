@@ -23,6 +23,17 @@ public struct ServerScene: Codable {
     public let teamUID: String?
     public var versions: [ServerSceneVersion]
     
+    public init(createdAt: Date?,
+                key: String?,
+                teamUID: String?,
+                versions: [ServerSceneVersion])
+    {
+        self.createdAt = createdAt
+        self.key = key
+        self.teamUID = teamUID
+        self.versions = versions
+    }
+    
     // MARK: - Codable
     
     public init(from decoder: Decoder) {
@@ -67,6 +78,23 @@ public struct ServerSceneVersion: Codable {
     public var sceneUID: String?
     public var sceneURL: URL?
     public var thumbnailURL: URL?
+    
+    public init(createdAt: Date?,
+                versionNumber: Int,
+                parentVersionNumber: Int,
+                key: String?,
+                sceneUID: String?,
+                sceneURL: URL?,
+                thumbnailURL: URL?)
+    {
+        self.createdAt = createdAt
+        self.versionNumber = versionNumber
+        self.parentVersionNumber = parentVersionNumber
+        self.key = key
+        self.sceneUID = sceneUID
+        self.sceneURL = sceneURL
+        self.thumbnailURL = thumbnailURL
+    }
     
     // MARK: - Codable
     
