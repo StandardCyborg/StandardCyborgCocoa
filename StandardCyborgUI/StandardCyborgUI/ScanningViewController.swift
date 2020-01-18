@@ -82,6 +82,8 @@ import UIKit
         ScanningHapticFeedbackEngine.shared.scanningBegan()
         
         _state = .scanning
+        _assimilatedFrameIndex = 0
+        meshTexturing.reset()
     }
     
     /** Stops scanning immediately */
@@ -100,6 +102,10 @@ import UIKit
         if reason == .finished {
             _cameraManager.stopSession()
             
+            meshTexturing.cameraCalibrationData = _reconstructionManager.latestCameraCalibrationData
+            meshTexturing.cameraCalibrationFrameWidth = _reconstructionManager.latestCameraCalibrationFrameWidth
+            meshTexturing.cameraCalibrationFrameHeight = _reconstructionManager.latestCameraCalibrationFrameHeight
+            
             // Do final cleanup on the scan
             _reconstructionManager.finalize {
                 let pointCloud = self._reconstructionManager.buildPointCloud()
@@ -111,6 +117,7 @@ import UIKit
             }
         } else {
             _reconstructionManager.reset()
+            meshTexturing.reset()
         }
     }
     
@@ -125,6 +132,8 @@ import UIKit
     /** To manually pause the camera output, set this to true */
     @objc public var isCameraPaused: Bool = false {
         didSet {
+            guard oldValue != isCameraPaused else { return }
+            
             if isCameraPaused {
                 _cameraManager.stopSession()
             } else {
@@ -140,8 +149,17 @@ import UIKit
     
     @objc public var mirrorModeEnabled: Bool {
         get { return _mirrorModeButton.isSelected }
-        set { _mirrorModeButton.isSelected = newValue }
+        set {
+            _mirrorModeButton.isSelected = newValue
+            meshTexturing.flipsInputHorizontally = newValue
+        }
     }
+    
+    @objc public var generatesTexturedMeshes: Bool = false {
+        didSet { _reconstructionManager.includesColorBuffersInMetadata = generatesTexturedMeshes }
+    }
+    @objc public var texturedMeshColorBufferSaveInterval: Int = 8
+    @objc public lazy var meshTexturing = SCMeshTexturing()
     
     // MARK: - UIViewController
     
@@ -274,10 +292,29 @@ import UIKit
         
         _latestViewMatrix = metadata.viewMatrix
         
-        if metadata.result == .failed {
-            let assimilatedTooFewFrames = statistics.succeededCount < self._failedScanShowPreviewMinFrameCount
+        switch metadata.result {
+        case .succeeded, .poorTracking:
+            // Save off every nth frame
+            if
+                generatesTexturedMeshes
+                && _assimilatedFrameIndex % texturedMeshColorBufferSaveInterval == 0,
+                let colorBuffer = metadata.colorBuffer?.takeUnretainedValue()
+            {
+                meshTexturing.saveColorBufferForReconstruction(colorBuffer,
+                                                               withViewMatrix: metadata.viewMatrix,
+                                                               projectionMatrix: metadata.projectionMatrix)
+            }
+            _assimilatedFrameIndex += 1
             
-            self.stopScanning(reason: assimilatedTooFewFrames ? .canceled : .finished)
+        case .failed:
+            let assimilatedTooFewFrames = statistics.succeededCount < _failedScanShowPreviewMinFrameCount
+            
+            stopScanning(reason: assimilatedTooFewFrames ? .canceled : .finished)
+            
+        case .lostTracking:
+            break
+        @unknown default:
+            break
         }
     }
     
@@ -294,6 +331,7 @@ import UIKit
     private lazy var _reconstructionManager = SCReconstructionManager(device: _metalDevice, commandQueue: _algorithmCommandQueue, maxThreadCount: _maxReconstructionThreadCount)
     private let _cameraManager = CameraManager()
     private var _latestViewMatrix = matrix_identity_float4x4
+    private var _assimilatedFrameIndex = 0
     
     private let _metalContainerView = UIView()
     private let _metalLayer = CAMetalLayer()
