@@ -1,0 +1,19 @@
+{
+  "scene_version": {
+    "created_at": "2019-11-20T21:13:21.800Z",
+    "updated_at": "2019-11-20T21:13:21.800Z",
+    "version_number": 3,
+    "parent_version_number": 1,
+    "metadata": {
+      "anIntValue": 2,
+      "aFloatValue": 2.4,
+      "aStringValue": "value",
+      "aBooleanValue": true
+    },
+    "uid": "tSGUGGfp",
+    "scene_uid": "bXdc5VnV",
+    "scenegraph_url": "http://platform.standardcyborg.com/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbFlUIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--02f7f960e167b9a9ef1471caf186bbc77e283569/test.gltf",
+    "thumbnail_url": "http://platform.standardcyborg.com/blobs/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBbFVUIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--e0e6551f5525ed50c32f2053e3b71e50d5680b60/test.jpeg"
+  },
+  "success": true
+}

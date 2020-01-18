@@ -1,0 +1,52 @@
+{
+  "accessors": null,
+  "asset": {
+    "copyright": "Standard Cyborg",
+    "generator": "StandardCyborgSceneGraph",
+    "version": "2.0"
+  },
+  "bufferViews": null,
+  "buffers": null,
+  "nodes": [
+    {
+      "extras": {
+        "material": {
+          "materialModel": "unlit",
+          "objectColor": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "visible": true
+      },
+      "matrix": [
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        1.0
+      ],
+      "name": "Empty"
+    }
+  ],
+  "scene": 9565056,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}
