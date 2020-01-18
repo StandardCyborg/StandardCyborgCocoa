@@ -13,8 +13,8 @@ private struct ClientAPIPath {
     static let authSignIn = "auth/sign_in"
     static let authSignOut = "auth/sign_out"
     static let authGenerateAccessToken = "auth/generate_access_token"
+    static let me = "me"
 }
-
 
 
 public class ServerSignUpOperation: ServerOperation {
@@ -115,6 +115,24 @@ public class ServerSignOutOperation: ServerOperation {
         }
     }
     
+}
+
+public class ServerGetSignedInUserInfoOperation: ServerOperation {
+    
+    public func perform(_ completion: @escaping (Result<ServerUser>) -> Void) {
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.me)
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .GET,
+                                             httpBodyDict: nil,
+                                             responseObjectRootKey: "user")
+        { (result: Result<ServerUser>) in
+            if case let .success(user) = result {
+                self.dataSource.updateUser(user)
+            }
+            
+            completion(result)
+        }
+    }
 }
 
 public class ServerGenerateAccessTokenOperation: ServerOperation {
@@ -224,7 +242,3 @@ public class ServerTeamSignInOperation: ServerOperation {
         }
     }
 }
-
-
-
-
