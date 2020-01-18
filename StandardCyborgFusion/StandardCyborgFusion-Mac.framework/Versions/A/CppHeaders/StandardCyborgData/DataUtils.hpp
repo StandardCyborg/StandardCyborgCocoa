@@ -14,7 +14,6 @@
 #include <StandardCyborgData/IncludeEigen.hpp>
 #include <StandardCyborgData/VertexSelection.hpp>
 
-
 namespace StandardCyborg {
 
 struct Vec3;
