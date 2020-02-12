@@ -18,6 +18,8 @@
 #include <StandardCyborgData/Mat3x4.hpp>
 #include <StandardCyborgData/Vec3.hpp>
 
+#include <StandardCyborgData/Pybind11Defs.hpp>
+
 namespace StandardCyborg {
 
 class Geometry;
@@ -168,6 +170,7 @@ public:
     /** Set the transform of this node. Does not modify revision counters up to the root nodeif rootNode is not specified. */
     Node& setTransform(const Transform& transform, std::shared_ptr<Node> rootNode = nullptr);
     Node& setTransform(const Mat3x4& transform, std::shared_ptr<Node> rootNode = nullptr);
+    
     Transform getTransform() const;
 
     Node& setRotation(Quaternion rotation, std::shared_ptr<Node> rootNode = nullptr);
@@ -236,7 +239,13 @@ public:
     /** Gets child #i */
     Node* getChild(int i) const;
     std::shared_ptr<Node> getChildSharedPtr(int i) const;
-
+    
+#ifdef PYBIND11_ONLY
+    decltype(children.begin()) begin() { return children.begin(); }
+    decltype(children.end()) end() { return children.end(); }
+#endif // PYBIND11_ONLY
+    
+    
     /** Returns the index of the specified child node of this parent node, or -1 if not found */
     int indexOfChild(std::shared_ptr<Node> childNode) const;
 
@@ -259,9 +268,10 @@ public:
         return nullptr;
     }
 
+    
     /** Adds a child node under this node. Modifies revision counters up to the root node if rootNode is specified. */
     bool appendChild(std::shared_ptr<Node> child, std::shared_ptr<Node> rootNode = nullptr);
-
+    
     /** Adds a list of children under this node. Modifies revision counters up to the root node if if rootNode is specified. */
     bool appendChildren(std::vector<std::shared_ptr<Node>> children,
                         std::shared_ptr<Node> rootNode = nullptr);
@@ -383,7 +393,7 @@ public:
 struct ColorImageNode : public Node {
 private:
     std::shared_ptr<ColorImage> image;
-
+    
 public:
     virtual SGNodeType getType() const;
     virtual int approximateSizeInBytes() const;
