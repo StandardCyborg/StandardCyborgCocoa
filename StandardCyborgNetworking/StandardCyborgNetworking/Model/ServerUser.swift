@@ -13,11 +13,11 @@ public struct ServerUser: Codable {
     public var email: String?
     public var name: String?
     public var teams: [ServerTeam]?
-
+    
     enum CodingKeys: String, CodingKey {
         case key = "uid", email, name, teams
     }
-
+    
     public init(key: String? = nil, email: String? = nil, name: String? = nil, teams: [ServerTeam]? = nil) {
         self.key = key
         self.email = email

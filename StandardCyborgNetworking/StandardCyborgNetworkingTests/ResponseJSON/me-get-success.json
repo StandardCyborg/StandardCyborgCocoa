@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "user": {
+    "email": "test@example.com",
+    "name": "John Doe",
+    "uid": "5dPrR3Wx",
+    "teams": [
+      {
+        "name": "John Doe",
+        "personal": true,
+        "uid": "1ixt9n6W",
+        "creator_uid": "5dPrR3Wx",
+        "role": "admin"
+      },
+      {
+        "name": "foo",
+        "personal": false,
+        "uid": "oet1NuQB",
+        "creator_uid": null,
+        "role": "default"
+      }
+    ]
+  }
+}

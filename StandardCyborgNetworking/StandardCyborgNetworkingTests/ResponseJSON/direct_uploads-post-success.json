@@ -1,0 +1,18 @@
+{
+  "id": 4936,
+  "key": "sJ6QHpj7y2NXNrXTGMGjPKCr",
+  "filename": "test.obj",
+  "content_type": "text/plain",
+  "metadata": {
+  },
+  "byte_size": 1024,
+  "checksum": "ah59gycxlQLQuD7UA4GblA==",
+  "created_at": "2019-11-20T21:13:19.189Z",
+  "signed_id": "eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaHBBa2dUIiwiZXhwIjpudWxsLCJwdXIiOiJibG9iX2lkIn19--0eab6bd51109c5cb97c03dfee9d96e0412c64b66",
+  "direct_upload": {
+    "url": "https://localhost/eyJfcmFpbHMiOnsibWVzc2FnZSI6IkJBaDdDVG9JYTJWNVNTSWRjMG8yVVVod2FqZDVNazVZVG5KWVZFZE5SMnBRUzBOeUJqb0dSVlE2RVdOdmJuUmxiblJmZEhsd1pVa2lEM1JsZUhRdmNHeGhhVzRHT3daVU9oTmpiMjUwWlc1MFgyeGxibWQwYUdrQ0FBUTZEV05vWldOcmMzVnRTU0lkWVdnMU9XZDVZM2hzVVV4UmRVUTNWVUUwUjJKc1FUMDlCanNHVkE9PSIsImV4cCI6IjIwMTktMTEtMjBUMjE6MTg6MTkuMTkwWiIsInB1ciI6ImJsb2JfdG9rZW4ifX0=--220a312cd1204a9420da5ee51f4f607206732be6",
+    "headers": {
+      "Content-Type": "text/plain"
+    }
+  }
+}

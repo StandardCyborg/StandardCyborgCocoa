@@ -8,17 +8,17 @@
 import Foundation
 
 public enum ServerOperationError: Error {
-    
     case networkOffline
     case sessionExpired
     case sessionInvalid
     case genericError(Error)
     case genericErrorString(String)
     case httpError(code: Int)
+    case httpErrorMessages(code: Int, messages: [String])
     case invalidUsernamePassword
     case invalidInput(message: String)
     
-    var localizedDescription: String {
+    public var localizedDescription: String {
         switch self {
         case .networkOffline:
             return "Network Offline"
@@ -32,6 +32,8 @@ public enum ServerOperationError: Error {
             return errorString
         case .httpError(let code):
             return "HTTP Error \(code)"
+        case .httpErrorMessages(_, let messages):
+            return messages.joined(separator: "\n")
         case .invalidUsernamePassword:
             return "Invalid username or password"
         case .invalidInput(let message):
@@ -41,7 +43,6 @@ public enum ServerOperationError: Error {
 }
 
 extension ServerOperationError: Equatable {
-    
     public static func == (left: ServerOperationError, right: ServerOperationError) -> Bool {
         switch (left, right) {
         case (.networkOffline, .networkOffline):
@@ -62,6 +63,4 @@ extension ServerOperationError: Equatable {
             return false
         }
     }
-    
 }
-

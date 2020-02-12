@@ -324,6 +324,10 @@ public extension Notification.Name {
             print("Could not find any video device")
             return .configurationFailed
         }
+        
+        if let input = _videoDeviceInput {
+            _captureSession.removeInput(input)
+        }
         do {
             _videoDeviceInput = try AVCaptureDeviceInput(device: videoDevice)
         } catch {
@@ -334,11 +338,15 @@ public extension Notification.Name {
             print("Could not add video device input to the session")
             return .configurationFailed
         }
-        guard _captureSession.canAddOutput(_videoDataOutput) else {
+        guard _captureSession.outputs.contains(_videoDataOutput)
+           || _captureSession.canAddOutput(_videoDataOutput)
+        else {
             print("Could not add video data output to the session")
             return .configurationFailed
         }
-        guard _captureSession.canAddOutput(_depthDataOutput) else {
+        guard _captureSession.outputs.contains(_depthDataOutput)
+           || _captureSession.canAddOutput(_depthDataOutput)
+        else {
             print("Could not add depth data output to the session")
             return .configurationFailed
         }
@@ -346,8 +354,12 @@ public extension Notification.Name {
         _captureSession.beginConfiguration()
         _captureSession.sessionPreset = colorCaptureSessionPreset
         _captureSession.addInput(_videoDeviceInput!)
-        _captureSession.addOutput(_videoDataOutput)
-        _captureSession.addOutput(_depthDataOutput)
+        if !_captureSession.outputs.contains(_videoDataOutput) {
+            _captureSession.addOutput(_videoDataOutput)
+        }
+        if !_captureSession.outputs.contains(_depthDataOutput) {
+            _captureSession.addOutput(_depthDataOutput)
+        }
         _videoDataOutput.videoSettings = [kCVPixelBufferPixelFormatTypeKey as String: Int(kCVPixelFormatType_32BGRA)]
         _videoDataOutput.alwaysDiscardsLateVideoFrames = true
         _depthDataOutput.isFilteringEnabled = false

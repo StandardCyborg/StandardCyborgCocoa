@@ -1,0 +1,22 @@
+{
+  "scene": {
+    "created_at": "2019-11-20T21:13:24.607Z",
+    "updated_at": "2019-11-20T21:13:24.607Z",
+    "uid": "8UHPFfY7",
+    "team_uid": "EiCMVGEK",
+    "scene_versions": [
+      {
+        "created_at": "2019-11-20T21:13:24.608Z",
+        "updated_at": "2019-11-20T21:13:24.608Z",
+        "version_number": 1,
+        "parent_version_number": -1,
+        "metadata": null,
+        "uid": "qWFVgRPY",
+        "scene_uid": "8UHPFfY7",
+        "scenegraph_url": null,
+        "thumbnail_url": null
+      }
+    ]
+  },
+  "success": true
+}

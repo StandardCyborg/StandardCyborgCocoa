@@ -1,0 +1,43 @@
+{
+  "scenes": [
+    {
+      "created_at": "2019-12-29T15:41:29.783Z",
+      "updated_at": "2019-12-29T15:41:29.783Z",
+      "uid": "bGaWFVR7",
+      "team_uid": "mWD982Bo",
+      "scene_versions": [
+        {
+          "created_at": "2019-12-29T15:41:29.791Z",
+          "updated_at": "2019-12-29T15:41:29.791Z",
+          "version_number": 1,
+          "parent_version_number": -1,
+          "metadata": null,
+          "uid": "UWcv2KmW",
+          "scene_uid": "bGaWFVR7",
+          "scenegraph_url": null,
+          "thumbnail_url": null
+        }
+      ]
+    },
+    {
+      "created_at": "2019-12-29T15:41:29.780Z",
+      "updated_at": "2019-12-29T15:41:29.780Z",
+      "uid": "SPXnbYyw",
+      "team_uid": "mWD982Bo",
+      "scene_versions": [
+        {
+          "created_at": "2019-12-29T15:41:29.786Z",
+          "updated_at": "2019-12-29T15:41:29.786Z",
+          "version_number": 1,
+          "parent_version_number": -1,
+          "metadata": null,
+          "uid": "n84wHyhd",
+          "scene_uid": "SPXnbYyw",
+          "scenegraph_url": null,
+          "thumbnail_url": null
+        }
+      ]
+    }
+  ],
+  "success": true
+}
