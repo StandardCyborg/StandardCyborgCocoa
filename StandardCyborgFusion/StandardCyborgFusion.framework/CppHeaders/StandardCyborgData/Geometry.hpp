@@ -16,6 +16,8 @@
 #include <StandardCyborgData/VertexSelection.hpp>
 #include <StandardCyborgData/ColorImage.hpp>
 
+#include <StandardCyborgData/Pybind11Defs.hpp>
+
 namespace StandardCyborg {
 
 struct RayTraceResult {
