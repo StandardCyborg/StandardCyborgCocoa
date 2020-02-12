@@ -11,23 +11,37 @@ import PromiseKit
 
 private struct ClientAPIPath {
     static let scenes = "scenes"
+    static let teamScenes = "teams/:uid/scenes"
     static let scenesVersions = "scenes/:uid/versions/:version_number"
 }
 
+public class ServerFetchScenesOperation: ServerOperation {
+    public func perform(_ completion: @escaping (Result<[ServerScene]>) -> Void) {
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .GET,
+                                             httpBodyDict: nil,
+                                             responseObjectRootKey: "scenes",
+                                             completion: completion)
+    }
+}
+
 public class ServerAddSceneOperation: ServerOperation {
-    
     let gltfURL: URL
     let thumbnailURL: URL?
+    let teamKey: String?
     let metadata: [String: Any]
     
     public init(gltfURL: URL,
                 thumbnailURL: URL? = nil,
+                teamKey: String? = nil,
                 metadata: [String: Any] = [:],
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
         self.gltfURL = gltfURL
         self.thumbnailURL = thumbnailURL
+        self.teamKey = teamKey
         self.metadata = metadata
         
         for value in metadata.values {
@@ -38,7 +52,7 @@ public class ServerAddSceneOperation: ServerOperation {
     }
     
     public func perform(uploadProgress: ((Double) -> Void)?,
-                        completion: @escaping (ServerOperationError?, ServerScene?) -> Void)
+                        completion: @escaping (Result<ServerScene>) -> Void)
     {
         var scene: ServerScene!
         var sceneUploadInfo: S3UploadInfo!
@@ -79,16 +93,23 @@ public class ServerAddSceneOperation: ServerOperation {
         }
         
         promise.done {
-            completion(nil, scene)
+            completion(.success(scene))
         }.catch { error in
             let serverError = error as? ServerOperationError ?? ServerOperationError.genericError(error)
-            completion(serverError, nil)
+            completion(.failure(serverError))
         }
     }
     
     private func _createEmptyScene() -> Promise<ServerScene> {
         return Promise { seal in
-            let url: URL = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+            let url: URL
+            if let teamKey = teamKey {
+                var tempURLString = serverAPIClient.buildAPIURL(for: ClientAPIPath.teamScenes).absoluteString
+                tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: teamKey)
+                url = URL(string: tempURLString)!
+            } else {
+                url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+            }
             
             serverAPIClient.performJSONOperation(withURL: url,
                                                  httpMethod: HTTPMethod.POST,
@@ -168,6 +189,42 @@ public class ServerAddSceneOperation: ServerOperation {
                     print("Failed to get scene info from POST to \(url)")
                     seal.reject(error)
                 }
+            }
+        }
+    }
+}
+
+public class ServerDeleteSceneOperation: ServerOperation {
+    let scene: ServerScene
+    
+    public init(scene: ServerScene,
+                dataSource: ServerSyncEngineLocalDataSource,
+                serverAPIClient: ServerAPIClient)
+    {
+        self.scene = scene
+        super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
+    }
+    
+    public func perform(_ completion: @escaping (ServerOperationError?) -> Void)
+    {
+        guard let key = scene.key else {
+            completion(ServerOperationError.genericErrorString("Could not delete scene with no server key"))
+            return
+        }
+        
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
+                .appendingPathComponent(key)
+        
+        serverAPIClient.performJSONOperation(withURL: url,
+                                             httpMethod: .DELETE,
+                                             httpBodyDict: nil,
+                                             responseObjectRootKey: nil)
+        { (result: Result<SuccessResponse>) in
+            switch result {
+            case .success(_):
+                completion(nil)
+            case .failure(let error):
+                completion(error as? ServerOperationError)
             }
         }
     }

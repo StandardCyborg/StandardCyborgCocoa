@@ -29,7 +29,7 @@ func MD5File(url: URL) -> Data? {
             let data = file.readData(ofLength: bufferSize)
             if data.count > 0 {
                 data.withUnsafeBytes {
-                    _ = CC_MD5_Update(&context, $0, numericCast(data.count))
+                    _ = CC_MD5_Update(&context, $0.baseAddress, numericCast(data.count))
                 }
                 return true // Continue
             } else {
@@ -38,12 +38,10 @@ func MD5File(url: URL) -> Data? {
         }) { }
         
         // Compute the MD5 digest:
-        var digest = Data(count: Int(CC_MD5_DIGEST_LENGTH))
-        digest.withUnsafeMutableBytes {
-            _ = CC_MD5_Final($0, &context)
-        }
+        var digest: [UInt8] = Array(repeating: 0, count: Int(CC_MD5_DIGEST_LENGTH))
+        _ = CC_MD5_Final(&digest, &context)
         
-        return digest
+        return Data(digest)
     } catch {
         print("Cannot open file:", error.localizedDescription)
         return nil

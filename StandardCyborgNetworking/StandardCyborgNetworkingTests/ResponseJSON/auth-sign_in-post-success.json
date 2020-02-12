@@ -1,0 +1,17 @@
+{
+  "user": {
+    "email": "test@example.com",
+    "name": "John Doe",
+    "uid": "siuayACV",
+    "teams": [
+      {
+        "name": "John Doe",
+        "personal": true,
+        "uid": "uMQrVFHx",
+        "creator_uid": "aJuGQzGd",
+        "role": "admin"
+      }
+    ]
+  },
+  "success": true
+}
