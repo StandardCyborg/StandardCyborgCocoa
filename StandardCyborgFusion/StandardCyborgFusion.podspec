@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name                    = 'StandardCyborgFusion'
-  s.version                 = '2.0.2'
+  s.version                 = '2.0.3'
   s.summary                 = 'A framework that performs real time 3D reconstruction using the TrueDepth camera'
   s.homepage                = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url        = 'https://twitter.com/StandardCyborg'
