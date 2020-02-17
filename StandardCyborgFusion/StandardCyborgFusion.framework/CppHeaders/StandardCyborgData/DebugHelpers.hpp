@@ -9,6 +9,7 @@
 #pragma once
 
 #include <ostream>
+#include <memory>
 
 namespace StandardCyborg {
 
@@ -36,6 +37,20 @@ struct Point2D;
 struct Size2D;
 struct Rect2D;
 class VertexSelection;
+class PerspectiveCamera;
+
+struct Node;
+struct GeometryNode;
+struct ColorImageNode;
+struct DepthImageNode;
+struct PerspectiveCameraNode;
+struct LabelsNode;
+struct LandmarkNode;
+struct PlaneNode;
+struct PolylineNode;
+struct ValueFieldNode;
+struct CoordinateFrameNode;
+struct PointNode;
 
 std::ostream& operator<<(std::ostream& os, const Point2D& v);
 std::ostream& operator<<(std::ostream& os, const Size2D& v);
@@ -57,6 +72,10 @@ std::ostream& operator<<(std::ostream& os, const MeshTopology::Edge& edge);
 std::ostream& operator<<(std::ostream& os, const MeshTopology::FaceEdges& edge);
 std::ostream& operator<<(std::ostream& os, const MeshTopology::MeshTopology& topology);
 std::ostream& operator<<(std::ostream& os, const Polyline& polyline);
-std::ostream& operator<<(std::ostream& os, const BoundingBox3& polyline);
+std::ostream& operator<<(std::ostream& os, const BoundingBox3& bbox);
+std::ostream& operator<<(std::ostream& os, const PerspectiveCamera& camera);
+
+// Scene graph debugging
+std::ostream& operator<<(std::ostream& os, const Node& v);
 
 } // using namespace StandardCyborg

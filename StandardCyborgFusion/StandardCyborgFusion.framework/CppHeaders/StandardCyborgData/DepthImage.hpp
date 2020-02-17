@@ -14,6 +14,8 @@
 #include <StandardCyborgData/AssertHelper.hpp>
 #include <StandardCyborgData/Vec2.hpp>
 
+#include <StandardCyborgData/Pybind11Defs.hpp>
+
 namespace StandardCyborg {
 
 class DepthImage {
@@ -27,6 +29,10 @@ public:
 
     /** Construct an image with size and data */
     DepthImage(int width, int height, const std::vector<float>& depth);
+    
+    #ifdef PYBIND11_ONLY
+    DepthImage(int width, int height, const NPFloat& depth_);
+    #endif // PYBIND11_ONLY
     
     // Delete evil constructors in favor of explicitly needing to copy the geometry
     DepthImage(DepthImage&&) = delete;
@@ -51,6 +57,9 @@ public:
     
     /** Resize a source image into this image's current shape */
     void resizeFrom(const DepthImage& src);
+    
+    /** Resize an image in-place using nearest-neighbor sampling */
+    void resize (int width, int height);
     
     /** Get a constant vector of linear-colorspace floating point RGBA data in the range [0-1] */
     const std::vector<float>& getData() const;

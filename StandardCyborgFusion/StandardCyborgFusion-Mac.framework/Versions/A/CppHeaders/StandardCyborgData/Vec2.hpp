@@ -236,7 +236,7 @@ inline float Vec2::squaredNorm() const
 
 inline float Vec2::norm() const
 {
-    return std::sqrtf(x * x + y * y);
+    return std::sqrt(x * x + y * y);
 }
 
 inline float Vec2::dot(const Vec2& lhs, const Vec2& rhs)
@@ -289,7 +289,7 @@ inline float Vec2::angleBetween(const Vec2& a, const Vec2& b)
     if (arg > 1.0f) arg = 1.0;
     if (arg < -1.0f) arg = -1.0;
     
-    return std::acosf(arg);
+    return std::acos(arg);
 }
 
 inline Vec2 Vec2::pow(const Vec2& a, float exponent)

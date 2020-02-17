@@ -12,6 +12,7 @@
 #include <initializer_list>
 #include <set>
 #include <vector>
+#include <memory>
 
 #include <StandardCyborgData/Vec3.hpp>
 

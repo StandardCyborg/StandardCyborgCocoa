@@ -23,6 +23,18 @@ namespace StandardCyborg {
 class PerspectiveCamera {
 public:
     PerspectiveCamera();
+    
+    /** This specialized constructor is provided for convenience so that the output of DebugHelpers
+      * may return a representation that may be used as valid input.
+      */
+    PerspectiveCamera(Mat3x3 nominalIntrinsicMatrix,
+                      Vec2 intrinsicMatrixReferenceSize,
+                      float focalLengthScaleFactor,
+                      Mat3x4 extrinsicMatrix,
+                      Mat3x4 orientationMatrix,
+                      std::vector<float> lensDistortionCalibration,
+                      std::vector<float> inverseLensDistortionCalibration
+                      );
 
     /** Copy another camera into this camera */
     void copy(const PerspectiveCamera& src);

@@ -244,7 +244,7 @@ inline float Quaternion::squaredNorm() const
 
 inline float Quaternion::norm() const
 {
-    return std::sqrtf(x * x + y * y + z * z + w * w);
+    return std::sqrt(x * x + y * y + z * z + w * w);
 }
 
 inline float Quaternion::dot(const Quaternion& lhs, const Quaternion& rhs)
