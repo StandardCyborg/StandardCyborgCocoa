@@ -274,7 +274,7 @@ inline float Vec3::squaredNorm() const
 
 inline float Vec3::norm() const
 {
-    return std::sqrtf(x * x + y * y + z * z);
+    return std::sqrt(x * x + y * y + z * z);
 }
 
 inline float Vec3::dot(const Vec3& lhs, const Vec3& rhs)
@@ -332,7 +332,7 @@ inline float Vec3::angleBetween(const Vec3& a, const Vec3& b)
     float arg = (a.x * b.x + a.y * b.y + a.z * b.z) / std::sqrt(lengthProduct);
     if (arg > 1.0f) arg = 1.0;
     if (arg < -1.0f) arg = -1.0;
-    return std::acosf(arg);
+    return std::acos(arg);
 }
 
 inline float Vec3::distanceBetween(const Vec3& lhs, const Vec3& rhs)

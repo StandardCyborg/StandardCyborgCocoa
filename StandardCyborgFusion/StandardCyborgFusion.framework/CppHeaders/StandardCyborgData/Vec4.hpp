@@ -268,7 +268,7 @@ inline float Vec4::squaredNorm() const
 
 inline float Vec4::norm() const
 {
-    return std::sqrtf(x * x + y * y + z * z + w * w);
+    return std::sqrt(x * x + y * y + z * z + w * w);
 }
 
 inline float Vec4::dot(const Vec4& lhs, const Vec4& rhs)

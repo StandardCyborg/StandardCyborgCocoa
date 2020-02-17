@@ -27,4 +27,15 @@ struct Transform {
     static Transform fromMat3x4(const Mat3x4& matrix);
 };
 
+inline bool operator==(const Transform& lhs, const Transform& rhs) {
+    return lhs.rotation == rhs.rotation &&
+    lhs.translation == rhs.translation &&
+    lhs.scale == rhs.scale &&
+    lhs.shear == rhs.shear;
+}
+
+inline bool operator!=(const Transform& lhs, const Transform& rhs) {
+    return !(lhs == rhs);
+}
+
 } // namespace StandardCyborg

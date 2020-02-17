@@ -15,6 +15,8 @@
 #include <StandardCyborgData/Vec2.hpp>
 #include <StandardCyborgData/Vec4.hpp>
 
+#include <StandardCyborgData/Pybind11Defs.hpp>
+
 namespace StandardCyborg {
 
 class ColorImage {
@@ -28,6 +30,12 @@ public:
 
     /** Construct an image with size and data */
     ColorImage(int width, int height, const std::vector<Vec4>& rgba);
+    
+    #ifdef PYBIND11_ONLY
+    ColorImage(int width, int height, const NPFloat& rgba_);
+    #endif // PYBIND11_ONLY
+    
+
     
     // Delete evil constructors in favor of explicitly needing to copy the geometry
     ColorImage(ColorImage&&) = delete;
