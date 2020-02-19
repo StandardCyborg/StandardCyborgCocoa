@@ -1,0 +1,15 @@
+#pragma arguments
+
+float3 u_fadeDirection = float3(0, 0, 1);
+float u_fadePosition = 0.03;
+float u_fadeDistance = 0.03;
+
+#pragma transparent
+#pragma body
+
+float4 position = scn_node.inverseModelViewTransform * float4(_surface.position, 1.0);
+float positionAlongDirection = dot(position.xyz, u_fadeDirection);
+
+// Fade out transparency when the position is fadeOutPosition meters back, away from the camera
+float transparency = (positionAlongDirection + u_fadePosition) / u_fadeDistance;
+_surface.transparent = float4(clamp(transparency, 0.0f, 1.0f));
