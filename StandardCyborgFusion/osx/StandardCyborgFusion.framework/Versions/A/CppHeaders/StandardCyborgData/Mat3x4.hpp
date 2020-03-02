@@ -43,6 +43,12 @@ struct Mat3x4 {
     static Mat3x4 fromColumnMajorVector(const std::vector<float>& data);
     static Mat3x4 fromRowMajorVector(const std::vector<float>& data);
     
+    /** Construct a Mat3x4 by truncating the last row from a Mat4x4—which has been presumably been used
+     * to store a 3D affine transform. This performs no check that the last row of the Mat4x4 is the
+     * identity, though it ought to be if truncation is meaningful.
+     */
+    static Mat3x4 fromMat4x4(const Mat4x4 transform);
+    
     std::vector<float> toColumnMajorVector() const;
     std::vector<float> toRowMajorVector() const;
     
