@@ -13,6 +13,7 @@ private struct ClientAPIPath {
     static let scenes = "scenes"
     static let teamScenes = "teams/:uid/scenes"
     static let scenesVersions = "scenes/:uid/versions/:version_number"
+    static let scenesAssets = "scenes/:uid/assets"
 }
 
 public class ServerFetchScenesOperation: ServerOperation {
@@ -192,6 +193,108 @@ public class ServerAddSceneOperation: ServerOperation {
             }
         }
     }
+}
+
+public class ServerAddSceneAssetOperation: ServerOperation {
+    let fileAssetURL: URL
+    let teamKey: String?
+    let sceneKey: String?
+    let remoteFileName: String?
+    
+    public init(fileAssetURL: URL,
+                teamKey: String? = nil,
+                sceneKey: String? = nil,
+                remoteFileName: String,
+                dataSource: ServerSyncEngineLocalDataSource,
+                serverAPIClient: ServerAPIClient)
+    {
+        self.fileAssetURL = fileAssetURL
+        self.teamKey = teamKey
+        self.sceneKey = sceneKey
+        self.remoteFileName = remoteFileName
+        
+        super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
+    }
+
+    public func perform(uploadProgress: ((Double) -> Void)?,
+                        completion: @escaping (Result<ServerSceneAsset>?) -> Void)
+    {
+        // fetch the scene id
+        var sceneAsset: ServerSceneAsset!
+        var sceneAssetUploadInfo: S3UploadInfo!
+        
+        //1. fetch scene by key to make sure it's valid
+        //2. create direct upload
+        //3. upload to direct upload
+        //4. post to scenes/:uid/assets with direct upload key and scene uid to link as asset
+        
+        var promise =
+        firstly {
+            self._createS3FileReference(for: self.fileAssetURL, remoteFilename: (self.remoteFileName!))
+        }.then { localURL, uploadInfo in
+            self._uploadFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
+        }.map { uploadInfo in
+            sceneAssetUploadInfo = uploadInfo
+        }
+        
+        promise = promise.then { _ in
+            self._updateScene(self.sceneKey!, sceneUploadInfo: sceneAssetUploadInfo)
+        }.map { newSceneAsset in
+            sceneAsset = newSceneAsset
+        }
+        
+        promise.done {
+            completion(.success(sceneAsset))
+        }.catch { error in
+            let serverError = error as? ServerOperationError ?? ServerOperationError.genericError(error)
+            completion(.failure(serverError))
+        }
+
+    }
+    
+    private func _updateScene(_ sceneKey: String, sceneUploadInfo: S3UploadInfo) -> Promise<ServerSceneAsset> {
+        return Promise { seal in
+
+            var tempURLString = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenesAssets).absoluteString
+            tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: sceneKey)
+            let url = URL(string: tempURLString)!
+
+            serverAPIClient.performJSONOperation(withURL: url,
+                                                 httpMethod: .POST,
+                                                 httpBodyDict: ["scene_asset" : ["asset_key": sceneUploadInfo.directUploadFileKey]],
+                                                 responseObjectRootKey: "scene_asset")
+            { (result: Result<ServerSceneAsset>) in
+                print(result)
+                switch result {
+                case .success(var sceneAsset):
+                    print("Successfully created scene asset with for scene with uid \(sceneAsset.scene_uid ?? "unknown")")
+                    seal.fulfill(sceneAsset)
+                    
+                case .failure(let error):
+                    print("Failed to get scene info from POST to \(url)")
+                    seal.reject(error)
+                }
+            }
+        }
+    }
+    
+    private func _uploadFileToS3(localURL: URL, uploadInfo: S3UploadInfo, progressHandler: ((Double) -> Void)?) -> Promise<S3UploadInfo> {
+        return Promise<S3UploadInfo> { seal in
+            print("Uploading file to S3 for \(uploadInfo.directUploadFileKey) from local path \(localURL.path)")
+            serverAPIClient.performDataUploadOperation(withURL: uploadInfo.url,
+                                                       httpMethod: HTTPMethod.PUT,
+                                                       dataURL: localURL,
+                                                       extraHeaders: uploadInfo.uploadHeaders,
+                                                       progressHandler: progressHandler)
+            { error in
+                guard error == nil else { return seal.reject(error!) }
+                
+                print("Successfully uploaded scene file to S3")
+                seal.fulfill(uploadInfo)
+            }
+        }
+    }
+
 }
 
 public class ServerDeleteSceneOperation: ServerOperation {

@@ -123,6 +123,49 @@ public struct ServerSceneVersion: Codable {
     }
 }
 
+public struct ServerSceneAsset: Codable {
+    
+    private enum CodingKeys: String, CodingKey {
+        case createdAt
+        case asset_key = "uid"
+        case scene_uid
+    }
+    
+    public var localUUID = UUID()
+    public var uploadStatus: UploadStatus?
+    
+    public var createdAt: Date?
+    public let asset_key: String?
+    public var scene_uid: String?
+    
+    public init(createdAt: Date?,
+                asset_key: String?,
+                scene_uid: String?)
+    {
+        self.createdAt = createdAt
+        self.asset_key = asset_key
+        self.scene_uid = scene_uid
+    }
+    
+    // MARK: - Codable
+    
+    public init(from decoder: Decoder) {
+        let container = try! decoder.container(keyedBy: CodingKeys.self)
+        
+        createdAt = try! container.decodeDateStringIfPresent(forKey: CodingKeys.createdAt)
+        asset_key = try! container.decodeIfPresent(String.self, forKey: .asset_key)
+        scene_uid = try! container.decodeIfPresent(String.self, forKey: CodingKeys.scene_uid)
+    }
+    
+    public func encode(to encoder: Encoder) {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        
+        try? container.encodeDateAsStringIfPresent(createdAt, forKey: CodingKeys.createdAt)
+        try? container.encodeIfPresent(asset_key, forKey: .asset_key)
+        try? container.encodeIfPresent(scene_uid, forKey: .scene_uid)
+    }
+}
+
 private extension KeyedDecodingContainer where Key : CodingKey {
     func decodeDateStringIfPresent(forKey key: Key) throws -> Date? {
         if let dateString = try! decodeIfPresent(String.self, forKey: key) {
