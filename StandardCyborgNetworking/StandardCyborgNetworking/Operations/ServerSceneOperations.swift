@@ -204,7 +204,7 @@ public class ServerAddSceneAssetOperation: ServerOperation {
     public init(fileAssetURL: URL,
                 teamKey: String? = nil,
                 sceneKey: String? = nil,
-                remoteFileName: String? = nil,
+                remoteFileName: String,
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
@@ -230,22 +230,18 @@ public class ServerAddSceneAssetOperation: ServerOperation {
         
         var promise =
         firstly {
-            // 4. Upload files to S3 via the POST `/direct_uploads` endpoint
-            self._createS3FileReference(for: self.fileAssetURL, remoteFilename: (self.remoteFileName ?? "asset.zip")) // todo: should be settable..
+            self._createS3FileReference(for: self.fileAssetURL, remoteFilename: (self.remoteFileName!))
         }.then { localURL, uploadInfo in
             self._uploadFileToS3(localURL: localURL, uploadInfo: uploadInfo, progressHandler: uploadProgress)
         }.map { uploadInfo in
             sceneAssetUploadInfo = uploadInfo
         }
         
-        
         promise = promise.then { _ in
             self._updateScene(self.sceneKey!, sceneUploadInfo: sceneAssetUploadInfo)
         }.map { newSceneAsset in
             sceneAsset = newSceneAsset
         }
-        print("sceneAsset")
-        print(sceneAsset)
         
         promise.done {
             completion(.success(sceneAsset))
