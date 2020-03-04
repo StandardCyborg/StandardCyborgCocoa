@@ -266,7 +266,7 @@ public class ServerAddSceneAssetOperation: ServerOperation {
             { (result: Result<ServerSceneAsset>) in
                 print(result)
                 switch result {
-                case .success(var sceneAsset):
+                case .success(let sceneAsset):
                     print("Successfully created scene asset with for scene with uid \(sceneAsset.scene_uid ?? "unknown")")
                     seal.fulfill(sceneAsset)
                     
