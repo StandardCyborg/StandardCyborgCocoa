@@ -1,7 +1,7 @@
 Pod::Spec.new do |s|
 
   s.name              = "StandardCyborgNetworking"
-  s.version           = "2.1.1"
+  s.version           = "2.1.2"
   s.summary           = "Classes for interacting with the Standard Cyborg Platform networking APIs"
   s.homepage          = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url  = 'https://twitter.com/StandardCyborg'
@@ -13,6 +13,7 @@ Pod::Spec.new do |s|
   s.requires_arc      = true
   s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}-StandardCyborgNetworking" }
   s.source_files      = "StandardCyborgNetworking/**/*.{swift}"
+  s.exclude_files     = "StandardCyborgNetworking/StandardCyborgNetworkingTests/*.{swift}"
   s.dependency          "PromiseKit", "~> 6.0"
   s.dependency          "PromiseKit/Foundation", "~> 6.0"
   s.dependency          "Zip", "~> 1.1"
