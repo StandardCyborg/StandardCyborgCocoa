@@ -5,8 +5,8 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-import StandardCyborgFusion
 import StandardCyborgUI
+import StandardCyborgFusion
 import UIKit
 
 class ViewController: UIViewController, ScanningViewControllerDelegate {
