@@ -20,6 +20,13 @@ The quickest way to get started is to clone this repository, then follow the [iO
 - **StandardCyborgExample**<br>
   An iOS app that provides a very simple example of using StandardCyborgUI
 
+## Run included demo app
+
+1. `cd StandardCyborgExample`
+2. Drop your API token into `Info.plist` (from your platform.standardcyborg.com account)
+3. `pod install`
+4. Run on a device with TrueDepth
+
 ## Documentation
 
 All documentation is hosted at https://standardcyborg.com/docs/ios-quickstart/
