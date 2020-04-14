@@ -1,0 +1,9 @@
+target 'StandardCyborgExample' do
+  platform :ios, '13.0'
+  use_frameworks!
+
+  # Pods for sdc
+  pod 'StandardCyborgFusion'
+  pod 'StandardCyborgUI'
+  pod 'StandardCyborgNetworking'
+end
