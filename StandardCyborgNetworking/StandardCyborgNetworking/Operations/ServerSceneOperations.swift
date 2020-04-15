@@ -27,12 +27,37 @@ public class ServerFetchScenesOperation: ServerOperation {
     }
 }
 
+public class ServerFetchTeamScenesOperation: ServerOperation {
+    public let teamUID: String
+    
+    public init(teamUID: String, dataSource: ServerSyncEngineLocalDataSource, serverAPIClient: ServerAPIClient) {
+        self.teamUID = teamUID
+        super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
+    }
+    
+    public func perform(_ completion: @escaping (Result<[ServerScene]>) -> Void) {
+        let path = ClientAPIPath.teamScenes.replacingOccurrences(of: ":uid", with: teamUID)
+        let url = serverAPIClient.buildAPIURL(for: path)
+        serverAPIClient.performJSONOperation(
+            withURL: url,
+            httpMethod: .GET,
+            httpBodyDict: nil,
+            responseObjectRootKey: "scenes",
+            completion: { (result: Result<[ServerScene]>) in
+                if case Result.success(let scenes) = result {
+                    scenes.forEach { self.dataSource.upsert($0) }
+                }
+                completion(result)
+        })
+    }
+}
+
 public class ServerAddSceneOperation: ServerOperation {
     let gltfURL: URL
     let thumbnailURL: URL?
     let teamKey: String?
     let metadata: [String: Any]
-    
+        
     public init(gltfURL: URL,
                 thumbnailURL: URL? = nil,
                 teamKey: String? = nil,
@@ -119,7 +144,7 @@ public class ServerAddSceneOperation: ServerOperation {
             { (result: Result<ServerScene>) in
                 switch result {
                 case .success(let scene):
-                    print("Successfully created server scene with uid \(scene.key ?? "unknown")")
+                    print("Successfully created server scene with uid \(scene.key)")
                     seal.fulfill(scene)
                     
                 case .failure(let error):
@@ -149,17 +174,13 @@ public class ServerAddSceneOperation: ServerOperation {
     
     private func _updateScene(_ scene: ServerScene, sceneUploadInfo: S3UploadInfo, thumbnailUploadInfo: S3UploadInfo?) -> Promise<ServerScene> {
         return Promise { seal in
-            guard let sceneKey = scene.key else {
-                seal.reject(ServerOperationError.genericErrorString("This ServerScene has no server key: \(scene)"))
-                return
-            }
             guard let sceneVersion = scene.versions.first else {
                 seal.reject(ServerOperationError.genericErrorString("This ServerScene has no versions: \(scene)"))
                 return
             }
             
             var tempURLString = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenesVersions).absoluteString
-            tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: sceneKey)
+            tempURLString = tempURLString.replacingOccurrences(of: ":uid", with: scene.key)
             tempURLString = tempURLString.replacingOccurrences(of: ":version_number", with: "\(sceneVersion.versionNumber)")
             let url = URL(string: tempURLString)!
             
@@ -308,15 +329,9 @@ public class ServerDeleteSceneOperation: ServerOperation {
         super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
     }
     
-    public func perform(_ completion: @escaping (ServerOperationError?) -> Void)
-    {
-        guard let key = scene.key else {
-            completion(ServerOperationError.genericErrorString("Could not delete scene with no server key"))
-            return
-        }
-        
+    public func perform(_ completion: @escaping (ServerOperationError?) -> Void) {
         let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
-                .appendingPathComponent(key)
+            .appendingPathComponent(scene.key)
         
         serverAPIClient.performJSONOperation(withURL: url,
                                              httpMethod: .DELETE,

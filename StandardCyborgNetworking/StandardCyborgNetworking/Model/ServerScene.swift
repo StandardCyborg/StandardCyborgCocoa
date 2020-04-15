@@ -12,26 +12,32 @@ public struct ServerScene: Codable {
     private enum CodingKeys: String, CodingKey {
         case createdAt
         case key = "uid"
-        case teamUID = "team_uid"
+        case teamUID = "teamUid" // Necessary format to support JSONDecoder.keyDecodingStrategy.convertFromSnakeCase
         case sceneVersions
+        case sceneAssets
     }
-    
-    public var localUUID = UUID()
-    
-    public let createdAt: Date?
-    public let key: String?
-    public let teamUID: String?
+        
+    public let createdAt: Date
+    public let key: String
+    public let teamUID: String
     public var versions: [ServerSceneVersion]
+    public var assets: [ServerSceneAsset]
     
-    public init(createdAt: Date?,
-                key: String?,
-                teamUID: String?,
-                versions: [ServerSceneVersion])
+    public var uploadStatus: UploadStatus?
+    
+    public init(createdAt: Date,
+                key: String,
+                teamUID: String,
+                versions: [ServerSceneVersion],
+                assets: [ServerSceneAsset],
+                uploadStatus: UploadStatus?)
     {
         self.createdAt = createdAt
         self.key = key
         self.teamUID = teamUID
         self.versions = versions
+        self.assets = assets
+        self.uploadStatus = uploadStatus
     }
     
     // MARK: - Codable
@@ -39,10 +45,11 @@ public struct ServerScene: Codable {
     public init(from decoder: Decoder) {
         let container = try! decoder.container(keyedBy: CodingKeys.self)
         
-        createdAt = try! container.decodeDateStringIfPresent(forKey: .createdAt)
-        key = try! container.decodeIfPresent(String.self, forKey: .key)
-        teamUID = try! container.decodeIfPresent(String.self, forKey: .teamUID)
+        createdAt = try! container.decodeDateStringIfPresent(forKey: .createdAt)!
+        key = try! container.decode(String.self, forKey: .key)
+        teamUID = try! container.decode(String.self, forKey: .teamUID)
         versions = try! container.decodeIfPresent([ServerSceneVersion].self, forKey: .sceneVersions) ?? []
+        assets = try! container.decodeIfPresent([ServerSceneAsset].self, forKey: .sceneAssets) ?? []
     }
     
     public func encode(to encoder: Encoder) {
@@ -52,6 +59,7 @@ public struct ServerScene: Codable {
         try? container.encodeIfPresent(key, forKey: .key)
         try? container.encodeIfPresent(teamUID, forKey: .teamUID)
         try? container.encodeIfPresent(versions, forKey: .sceneVersions)
+        try? container.encodeIfPresent(assets, forKey: .sceneAssets)
     }
 }
 

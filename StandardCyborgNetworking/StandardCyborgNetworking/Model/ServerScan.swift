@@ -75,8 +75,8 @@ public struct ServerScan: Codable {
             uploadedAt = nil
         }
         
-        self.tagList = try! container.decodeIfPresent([String].self, forKey: .tagList) ?? []
-        self.attachments = try! container.decodeIfPresent([ServerScanAttachment].self, forKey: .attachments) ?? [ServerScanAttachment]()
+        self.tagList = (try? container.decodeIfPresent([String].self, forKey: .tagList)) ?? []
+        self.attachments = (try? container.decodeIfPresent([ServerScanAttachment].self, forKey: .attachments)) ?? []
     }
     
     public func encode(to encoder: Encoder) {
