@@ -7,7 +7,7 @@
 
 import Foundation
 
-public enum ServerOperationError: Error {
+public enum ServerOperationError: LocalizedError {
     case networkOffline
     case sessionExpired
     case sessionInvalid
@@ -18,7 +18,7 @@ public enum ServerOperationError: Error {
     case invalidUsernamePassword
     case invalidInput(message: String)
     
-    public var localizedDescription: String {
+    public var errorDescription: String? {
         switch self {
         case .networkOffline:
             return "Network Offline"

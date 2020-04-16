@@ -25,31 +25,66 @@ public protocol ServerSyncEngineLocalDataSource {
     /** Called when signing out */
     func resetUser()
     
-    /** Gotta fetch em' all! Return an array of your local scans, mapped to
-        ServerScan instances. */
-    func allServerScans() -> [ServerScan]
+    /** Return an array of scene files that have not yet been uploaded
+        to the server. */
+    func localSceneFiles() -> [LocalSceneFile]
     
     /** Create a record of this scan using your own model's representation */
-    func add(_ scan: ServerScan)
+    func add(_ scene: ServerScene)
     
     /** Update your own model's representation using the given scan */
-    func update(_ scan: ServerScan)
+    func upsert(_ scene: ServerScene)
     
-    /** Called when a PLY file finishes downloading to the given local file URL */
-    func didDownloadPLYFile(for scan: ServerScan, to url: URL)
+    /** Called when a GLTF file finishes downloading to the given local file URL */
+//    func didDownloadGLTFFile(for scene: ServerScene, to url: URL)
     
     /** Delete the your own model's representation of the given scan */
-    func delete(_ scan: ServerScan)
+    func delete(_ scene: ServerScene)
     
-    /** Return the full local file URL of where the scan's PLY file should be
+    /** Return the full local file URL of where the scan's GLTF file should be
         expected on disk. If the file does not exist yet, return a URL of where
         it should be downloaded to. */
-    func localPLYURL(for scan: ServerScan) -> URL?
+    func localGLTFURL(for scene: ServerScene) -> URL?
     
-    /** Return the full local file URL of where the scan's thumbnail file should
+    /** Return the full local file URL of where the scenes's thumbnail file should
         be expected on disk. If the file does not exist yet, return a URL of where
         it should be downloaded to. */
-    func localThumbnailURL(for scan: ServerScan) -> URL?
+    func localThumbnailURL(for scene: ServerScene) -> URL?
+}
+
+/** Represents the data necessary to upload a new scene to the server. */
+public struct LocalSceneFile {
+    public enum Path: Equatable {
+        case empty
+        case stored(gltfURL: URL, thumbnailURL: URL?)
+    }
+
+    /// Unique identifier for this particular scene file. Won't be synced to the server.
+    public let localId: String
+    public let path: Path
+    public let teamKey: String
+    public let serverKey: String?
+    
+    public var gltfURL: URL? {
+        switch path {
+        case .stored(let gltfURL, _): return gltfURL
+        case .empty: return nil
+        }
+    }
+    
+    public var thumbnailURL: URL? {
+        switch path {
+        case .stored(_, let thumbnailURL): return thumbnailURL
+        case .empty: return nil
+        }
+    }
+    
+    public init(localId: String, path: Path, teamKey: String, serverKey: String?) {
+        self.localId = localId
+        self.path = path
+        self.teamKey = teamKey
+        self.serverKey = serverKey
+    }
 }
 
 public class ServerSyncEngine {
@@ -81,15 +116,14 @@ public class ServerSyncEngine {
         
         isSyncing = true
         
-        ServerFetchScansOperation(dataSource: _dataSource, serverAPIClient: _serverAPIClient)
+        ServerFetchScenesOperation(dataSource: _dataSource, serverAPIClient: _serverAPIClient)
         .perform { result in
             switch result {
-            case .success(let scans):
-                var scansToUpload: [ServerScan] = []
-                var scansToDownload: [ServerScan] = []
-                try? self._reconcileRemoteScansWithLocal(scans, scansToUpload: &scansToUpload, scansToDownload: &scansToDownload)
+            case .success(let scenes):
+                var sceneFilesToUpload: [LocalSceneFile] = []
+                try? self._reconcileRemoteScenesWithLocal(scenes, scenesToUpload: &sceneFilesToUpload)
 
-                self._upload(scansToUpload, download: scansToDownload) { error in
+                self._upload(sceneFilesToUpload) { error in
                     self.isSyncing = false
                     completion(error)
                 }
@@ -118,10 +152,10 @@ public class ServerSyncEngine {
     }
     
     /** Provides the current upload status for a given scan */
-    public func uploadStatus(for scan: ServerScan) -> UploadStatus {
-        if let uploadStatus = _uploadStatusPerScanUUID[scan.localUUID] {
+    public func uploadStatus(for scene: ServerScene) -> UploadStatus {
+        if let uploadStatus = _uploadStatusPerSceneUUID[scene.key] {
             return uploadStatus
-        } else if let status = scan.uploadStatus {
+        } else if let status = scene.uploadStatus {
             return status
         } else {
             return .notUploaded
@@ -130,7 +164,7 @@ public class ServerSyncEngine {
     
     // MARK: - Private
     
-    private var _uploadStatusPerScanUUID: [UUID: UploadStatus] = [:]
+    private var _uploadStatusPerSceneUUID: [String: UploadStatus] = [:]
     
     private func _setSyncStatus(_ status: UploadStatus, for scan: ServerScan) {
         DispatchQueue.main.async {
@@ -138,112 +172,83 @@ public class ServerSyncEngine {
         }
     }
     
-    private func _reconcileRemoteScansWithLocal(_ remoteScans: [ServerScan],
-                                                scansToUpload: inout [ServerScan],
-                                                scansToDownload: inout [ServerScan])
-    throws
-    {
-        let localScans = _dataSource.allServerScans()
+    private func _reconcileRemoteScenesWithLocal(_ remoteScenes: [ServerScene], scenesToUpload: inout [LocalSceneFile]) throws {
+        let localSceneFiles = _dataSource.localSceneFiles().filter { $0.path != .empty }
         
-        let remoteScansByServerKey: [String:ServerScan] = remoteScans.reduce(into: [:]) { result, scan in
-            if let key = scan.key {
-                result[key] = scan
-            }
-        }
+        let remoteScenesByServerKey: [String : ServerScene] = remoteScenes.reduce(into: [:]) { (result, scene) in result[scene.key] = scene }
         
-        // Scans available locally but not remotely should be uploaded
-        //  -> scan has a documentsRelativePLYPath, but no uid
-        // Scans available remotely but not locally should be downloaded
-        //  -> scan has a uid, but no documentsRelativePLYPath
-        // Scans available both locally and remotely should be updated from the server
+        // Scenes available locally but not remotely should be uploaded
+        //  -> scene has a documentsRelativeGLTFPath, but no uid
+        // Scenes available both locally and remotely should be updated from the server
         // Deleting locally nor remotely should not happen during a sync
+        var unvisitedServerKeys = Set(remoteScenesByServerKey.keys)
         
-        let fileManager = FileManager.default
-        var unvisitedServerKeys = Set(remoteScansByServerKey.keys)
-        
-        for localScan in localScans {
-            guard let key = localScan.key else {
+        for localSceneFile in localSceneFiles {
+            guard let key = localSceneFile.serverKey else {
                 // Available locally, but not remotely
-                scansToUpload.append(localScan)
+                scenesToUpload.append(localSceneFile)
                 continue
             }
             
             unvisitedServerKeys.remove(key)
             
-            // if let remoteScan = remoteScansByServerKey[key] {
+            // if let remoteScene = remoteScenesByServerKey[key] {
             //     Available both locally and locally, but there's nothing to update
             // }
-            
-            // Known about locally, but scan data doesn't exist (e.g. failed to download earlier)
-            if let localPLYURL = _dataSource.localPLYURL(for: localScan),
-                fileManager.fileExists(atPath: localPLYURL.path)
-            {
-                // File exists locally, all good
-            } else {
-                scansToDownload.append(localScan)
-            }
         }
         
         _dataSource.beginWriteTransaction()
         
         for key in unvisitedServerKeys {
             // Available remotely but not locally
-            let scan = remoteScansByServerKey[key]!
-            _dataSource.add(scan)
-            scansToDownload.append(scan)
+            let scene = remoteScenesByServerKey[key]!
+            _dataSource.add(scene)
         }
         
         _dataSource.endWriteTransaction()
     }
     
-    private func _upload(_ scansToUpload: [ServerScan], download scansToDownload: [ServerScan], completion: @escaping (ServerOperationError?) -> Void) {
-        let uploadOperations: [ServerAddScanOperation] = scansToUpload.map {
-            ServerAddScanOperation(scan: $0, dataSource: self._dataSource, serverAPIClient: self._serverAPIClient)
-        }
-        
-        let downloadOperations: [ServerDownloadScanOperation] = scansToDownload.map {
-            ServerDownloadScanOperation(scan: $0, dataSource: self._dataSource, serverAPIClient: self._serverAPIClient)
-        }
-        
-        let uploadPromises: [Promise<Void>] = uploadOperations.map { operation in
+    private func _upload(_ sceneFilesToUpload: [LocalSceneFile], completion: @escaping (ServerOperationError?) -> Void) {
+        let uploadPromises: [Promise<Void>] = sceneFilesToUpload
+            .compactMap { $0.gltfURL != nil ? $0 : nil }
+            .map {
+                (sceneFile: $0,
+                 operation: ServerAddSceneOperation(
+                    gltfURL: $0.gltfURL!,
+                    thumbnailURL: $0.thumbnailURL,
+                    teamKey: $0.teamKey,
+                    metadata: [:],
+                    dataSource: self._dataSource,
+                    serverAPIClient: self._serverAPIClient)
+                )
+        }.map { (sceneFile, operation) in
             Promise<Void> { seal in
-                let plyURL = self._dataSource.localPLYURL(for: operation.scan)
-                print("Uploading scan from \(plyURL?.path ?? "unset PLY URL")")
+                print("Uploading scan from \(operation.gltfURL.path)")
                 
-                self._uploadStatusPerScanUUID[operation.scan.localUUID] = .uploading(percentComplete: 0)
+                let gltfURL = operation.gltfURL
+                self._uploadStatusPerSceneUUID[sceneFile.localId] = .uploading(percentComplete: 0)
                 
                 operation.perform(uploadProgress: { percentComplete in
-                    self._uploadStatusPerScanUUID[operation.scan.localUUID] = .uploading(percentComplete: percentComplete)
-                }, completion: { error in
-                    if let error = error { print("Error uploading scan from \(plyURL?.path ?? "unkown PLY path"): \(error)") }
-                    else { print("Uploaded scan from \(plyURL!.path)") }
-                    
-                    self._uploadStatusPerScanUUID[operation.scan.localUUID] = .uploaded
+                    self._uploadStatusPerSceneUUID[sceneFile.localId] = .uploading(percentComplete: percentComplete)
+                }, completion: { result in
+                    self._uploadStatusPerSceneUUID[sceneFile.localId] = .uploaded
                     self.syncingCount -= 1
-                    seal.resolve(error)
+                    
+                    switch result {
+                    case .success:
+                        print("Uploaded scan from \(gltfURL.path)")
+                        seal.resolve(nil)
+                        
+                    case .failure(let error):
+                        print("Error uploading scan from \(gltfURL.path): \(error)")
+                        seal.resolve(error)
+                    }
                 })
             }
         }
-        
-        let downloadPromises: [Promise<Void>] = downloadOperations.map { operation in
-            Promise<Void> { seal in
-                print("Downloading scan \(operation.scan.key ?? "unkown server key")")
                 
-                operation.perform(downloadProgress: { percentComplete in
-                    self._uploadStatusPerScanUUID[operation.scan.localUUID] = .uploading(percentComplete: percentComplete)
-                }, completion: { error in
-                    if let error = error { print("Error downloading scan from \(operation.scan.key ?? "unkown server key"): \(error)") }
-                    else { print("Downloaded scan to \(self._dataSource.localPLYURL(for: operation.scan)!.path)") }
-                    
-                    self._uploadStatusPerScanUUID[operation.scan.localUUID] = nil
-                    self.syncingCount -= 1
-                    seal.resolve(error)
-                })
-            }
-        }
-        
-        print("Uploading \(uploadPromises.count) scans and downloading \(downloadPromises.count) scans")
-        let allPromises = uploadPromises + downloadPromises
+        print("Uploading \(uploadPromises.count) scenes")
+        let allPromises = uploadPromises
         self.syncingCount = allPromises.count
         
         var chainedPromise = Promise()
@@ -256,5 +261,4 @@ public class ServerSyncEngine {
             completion(serverError)
         }
     }
-    
 }
