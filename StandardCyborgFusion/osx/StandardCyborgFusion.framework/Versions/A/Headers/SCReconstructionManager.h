@@ -83,14 +83,14 @@ typedef NS_ENUM(NSUInteger, SCReconstructionManagerAPIError) {
                 maxThreadCount:(int)maxThreadCount;
 
 /** Useful for un-projecting a single depth frame into a 3D point cloud,
-    such as for live pre-scan visualization */
+ such as for live pre-scan visualization */
 - (SCPointCloud *)reconstructSingleDepthBuffer:(CVPixelBufferRef)depthBuffer
                                    colorBuffer:(_Nullable CVPixelBufferRef)colorBuffer
                            withCalibrationData:(AVCameraCalibrationData *)calibrationData
                                smoothingPoints:(BOOL)smoothPoints;
 
 /** Pass in synchronized color and depth buffers as fast as they are made available by the system.
-    Automatically drops frames if more are accumulated than can be processed in real time. */
+ Automatically drops frames if more are accumulated than can be processed in real time. */
 - (void)accumulateDepthBuffer:(CVPixelBufferRef)depthBuffer
                   colorBuffer:(CVPixelBufferRef)colorBuffer
               calibrationData:(AVCameraCalibrationData *)calibrationData
@@ -103,8 +103,14 @@ NS_SWIFT_NAME(accumulate(depthBuffer:colorBuffer:calibrationData:));
 - (void)finalize:(dispatch_block_t)completion;
 
 /** Resets the state of reconstruction, such as for another reconstruction attempt.
-    Must call -finalize: first. */
+ Must call -finalize: first. */
 - (void)reset;
+
+/** Sets a manual clipping distance in meters. */
+- (void)setMaxDepth:(float)maxDepth;
+
+/** Resets manual clipping distance back to center-weighted strategy */
+- (void)clearMaxDepth;
 
 /** May be called at any point during or after scanning to build a copy of the currently reconstructed point cloud */
 - (SCPointCloud *)buildPointCloud;
