@@ -139,10 +139,7 @@ public:
       * -------------------------------------------------------------------------------------------
       */
     Mat4x4 getProjectionViewMatrix(float near = 0.001f, float far = 100.0f) const;
-    
-    /** Get the inverse projection view matrix */
-    Mat4x4 getProjectionViewMatrixInverse(float near = 0.001f, float far = 100.0f) const;
-    
+
     /** Get the view matrix, defined as `extrinsic * orientation` */
     Mat3x4 getViewMatrix() const;
     
