@@ -21,7 +21,7 @@ import UIKit
     Rendering can be customized by setting the scanningViewRenderer
     to your own object conforming to that protocol.
  */
-@objc public class ScanningViewController: UIViewController,
+@objc open class ScanningViewController: UIViewController,
     CameraManagerDelegate,
     SCReconstructionManagerDelegate
 {
@@ -163,9 +163,9 @@ import UIKit
     
     // MARK: - UIViewController
     
-    override public func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
-        
+    
         _setUpSubviews()
         
         _cameraManager.delegate = self
@@ -176,7 +176,7 @@ import UIKit
         NotificationCenter.default.addObserver(self, selector: #selector(_thermalStateChanged), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
     }
     
-    override public func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         guard CameraManager.isDepthCameraAvailable else { return }
@@ -184,7 +184,7 @@ import UIKit
         _startCameraSession()
     }
     
-    override public func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         
         stopScanning(reason: ScanningViewController.ScanningTerminationReason.canceled)
@@ -192,7 +192,7 @@ import UIKit
         _cameraManager.stopSession()
     }
     
-    override public func viewDidLayoutSubviews() {
+    override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         _metalContainerView.frame = view.bounds
@@ -225,7 +225,7 @@ import UIKit
                                        y: view.bounds.maxY - 5 - 0.5 * shutterButton.frame.size.height - view.safeAreaInsets.bottom)
     }
     
-    override public func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         print("Received low memory warning; stopping scanning")
         stopScanning(reason: .finished)
     }
