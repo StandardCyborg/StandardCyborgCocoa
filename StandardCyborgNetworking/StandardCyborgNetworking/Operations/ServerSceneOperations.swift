@@ -319,19 +319,18 @@ public class ServerAddSceneAssetOperation: ServerOperation {
 }
 
 public class ServerDeleteSceneOperation: ServerOperation {
-    let scene: ServerScene
+    let sceneKey: String
     
-    public init(scene: ServerScene,
+    public init(sceneKey: String,
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
-        self.scene = scene
+        self.sceneKey = sceneKey
         super.init(dataSource: dataSource, serverAPIClient: serverAPIClient)
     }
     
     public func perform(_ completion: @escaping (ServerOperationError?) -> Void) {
-        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes)
-            .appendingPathComponent(scene.key)
+        let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.scenes).appendingPathComponent(sceneKey)
         
         serverAPIClient.performJSONOperation(withURL: url,
                                              httpMethod: .DELETE,
