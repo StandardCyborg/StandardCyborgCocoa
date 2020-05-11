@@ -161,6 +161,8 @@ public extension Notification.Name {
     /** Fixes the RGB camera's focus at the current focal distance when true */
     @objc public var isFocusLocked: Bool = false {
         didSet {
+            guard isFocusLocked != oldValue else { return }
+            
             _focus(mode: isFocusLocked ? .locked : .continuousAutoFocus,
                    exposureMode: isFocusLocked ? .locked : .continuousAutoExposure,
                    at: CGPoint(x: 0.5, y: 0.5))
@@ -179,7 +181,7 @@ public extension Notification.Name {
     
     private var _hasAddedObservers = false
     private var _sessionQueue_setupResult: SessionSetupResult = .success
-    private let _captureSession = AVCaptureSession()
+    let _captureSession = AVCaptureSession()
     private var _sessionQueue_isSessionRunning = false
     private let _sessionQueue = DispatchQueue(label: "Session", qos: DispatchQoS.userInitiated, attributes: [], autoreleaseFrequency: .workItem)
     private let _videoDeviceDiscoverySession = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInTrueDepthCamera],
