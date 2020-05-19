@@ -29,8 +29,10 @@ public class ServerCreateTeamOperation: ServerOperation {
     
     public func perform(_ completion: @escaping (Result<ServerTeam>) -> Void) {
         let postDictionary: [String:Any] = [
-            "name": name,
-            "agrees_to_terms_of_service": agreesToTermsOfService
+            "team" : [
+                "name": name,
+                "agrees_to_terms_of_service": agreesToTermsOfService
+            ]
         ]
         let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.teams)
         
