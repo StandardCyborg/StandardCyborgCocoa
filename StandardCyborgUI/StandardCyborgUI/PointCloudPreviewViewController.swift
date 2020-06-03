@@ -220,6 +220,8 @@ import UIKit
     private func _buildMeshNodeWithMesh(mesh: SCMesh) {
         let node = mesh.buildMeshNode()
         node.name = "SCMesh"
+        node.position = _pointCloudNode!.position
+        node.scale = _pointCloudNode!.scale
         _containerNode.addChildNode(node)
     }
     
