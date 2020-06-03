@@ -13,9 +13,10 @@ import UIKit
 @objc public class PointCloudPreviewViewController: UIViewController, SCNSceneRendererDelegate {
     
     /** A convenience initializer that simply calls init and sets the point cloud */
-    @objc public convenience init(pointCloud: SCPointCloud, landmarks: Set<SCLandmark3D>?) {
+    @objc public convenience init(pointCloud: SCPointCloud, meshTexturing: SCMeshTexturing, landmarks: Set<SCLandmark3D>?) {
         self.init()
         self.pointCloud = pointCloud
+        self.meshTexturing = meshTexturing
         self.landmarks = landmarks
         _buildNodeFromPointCloud()
     }
@@ -56,10 +57,31 @@ import UIKit
         return button
     }()
     
+    @objc public let meshToggle: UISwitch = {
+        let toggle = UISwitch()
+        toggle.isOn = false
+        toggle.addTarget(self, action: #selector(_toggleMeshVisibility), for: .valueChanged)
+        return toggle
+    }()
+    
+    @objc public let meshingProgressView: UIProgressView = {
+        let progressView = UIProgressView()
+        progressView.progress = 0
+        return progressView
+    }()
+    
     // MARK: - Public
     
     /** Set this or call the convenience initializer before presenting this view controller */
     @objc public var pointCloud: SCPointCloud?
+    
+    /**
+     Set this before presenting this view controller if you wnat to render a mesh.
+     
+     You can get the correct instance of this object from `ScanningViewController.meshTexturing`
+     after scanning has completed in the delegate callback `ScanningViewController(_ controller:didScan pointCloud)`
+     */
+    @objc public var meshTexturing: SCMeshTexturing?
     
     /** Set this or call the convenience initializer before presenting this view controller */
     @objc public var landmarks: Set<SCLandmark3D>?
@@ -83,6 +105,8 @@ import UIKit
         view.addSubview(sceneView)
         view.addSubview(leftButton)
         view.addSubview(rightButton)
+        view.addSubview(meshToggle)
+        view.addSubview(meshingProgressView)
     }
     
     override public func viewWillAppear(_ animated: Bool) {
@@ -90,6 +114,12 @@ import UIKit
         
         if _pointCloudNode == nil && pointCloud != nil {
             _buildNodeFromPointCloud()
+        }
+        
+        meshToggle.isHidden = true
+        meshingProgressView.isHidden = true
+        if _meshNode == nil && pointCloud != nil, meshTexturing != nil {
+            _processMesh()
         }
         
         leftButton.isHidden = leftButton.title(for: UIControl.State.normal)?.isEmpty ?? true
@@ -118,6 +148,10 @@ import UIKit
             leftButton.frame = buttonFrame
             rightButton.frame = leftButton.isHidden ? buttonFrame : buttonFrame.offsetBy(dx: buttonFrame.width + buttonSpacing, dy: 0)
         }
+        
+        meshToggle.sizeToFit()
+        meshToggle.center = CGPoint(x: view.center.x, y: view.safeAreaInsets.top + meshToggle.frame.height)
+        meshingProgressView.frame = CGRect(x: meshToggle.frame.origin.x, y: meshToggle.frame.maxY + 10, width: meshToggle.frame.width, height: 8)
     }
     
     // MARK: - SCNSceneRendererDelegate
@@ -143,6 +177,8 @@ import UIKit
     private var _initialPointOfView = SCNMatrix4Identity
     private var _containerNode = SCNNode()
     private var _pointCloudNode: SCNNode?
+    private var _meshNode: SCNNode?
+    private var _meshingHelper: MeshingHelper?
     
     private func _buildNodeFromPointCloud() {
         for child in _containerNode.childNodes {
@@ -157,4 +193,83 @@ import UIKit
         }
     }
     
+    private func _processMesh() {
+        guard let pointCloud = pointCloud, let meshTexturing = meshTexturing else { return }
+        
+        meshingProgressView.isHidden = false
+        meshingProgressView.setProgress(0, animated: false)
+        
+        _meshingHelper = MeshingHelper(pointCloud: pointCloud, meshTexturing: meshTexturing)
+        _meshingHelper?.processMesh { meshingStatus in
+            DispatchQueue.main.async {
+                switch meshingStatus {
+                case .inProgress(let progress):
+                    self.meshingProgressView.setProgress(progress, animated: false)
+                case .failure(let error):
+                    print("Error processing mesh: \(String(describing: error?.localizedDescription))")
+                case .success(let mesh):
+                    self._buildMeshNodeWithMesh(mesh: mesh)
+                    self.meshingProgressView.isHidden = true
+                    self.meshToggle.isHidden = false
+                    self.meshToggle.isOn = true
+                }
+            }
+        }
+    }
+    
+    private func _buildMeshNodeWithMesh(mesh: SCMesh) {
+        let node = mesh.buildMeshNode()
+        node.name = "SCMesh"
+        _containerNode.addChildNode(node)
+    }
+    
+    @objc private func _toggleMeshVisibility() {
+        _containerNode.childNode(withName: "SCMesh", recursively: true)?.isHidden = !meshToggle.isOn
+    }
+}
+
+
+private class MeshingHelper {
+    enum Status {
+        case inProgress(Float)
+        case success(SCMesh)
+        case failure(Error?)
+    }
+
+    private static var defaultMeshingParameters: SCMeshingParameters {
+        let meshingParameters = SCMeshingParameters()
+        meshingParameters.resolution = 5
+        meshingParameters.smoothness = 2
+        meshingParameters.surfaceTrimmingAmount = 6
+        meshingParameters.closed = true
+        return meshingParameters
+    }
+    
+    let pointCloud: SCPointCloud
+    let meshTexturing: SCMeshTexturing
+    let meshingParameters: SCMeshingParameters
+    
+    init(pointCloud: SCPointCloud, meshTexturing: SCMeshTexturing, meshingParameters: SCMeshingParameters? = nil) {
+        self.pointCloud = pointCloud
+        self.meshTexturing = meshTexturing
+        self.meshingParameters = meshingParameters ?? Self.defaultMeshingParameters
+    }
+     
+    func processMesh(onMeshStatusUpdate: @escaping ((Status) -> Void)) {
+        meshTexturing.reconstructMesh(
+            pointCloud: pointCloud,
+            textureResolution: 2048,
+            meshingParameters: meshingParameters,
+            progress: { (progress, stop) in
+                onMeshStatusUpdate(.inProgress(progress))
+            },
+            completion: { (error, mesh) in
+                if let mesh = mesh {
+                    onMeshStatusUpdate(.success(mesh))
+                    return
+                }
+                
+                onMeshStatusUpdate(.failure(error))
+        })
+    }
 }

@@ -23,6 +23,7 @@ class ViewController: UIViewController, ScanningViewControllerDelegate {
         #else
         let scanningVC = ScanningViewController()
         scanningVC.delegate = self
+        scanningVC.generatesTexturedMeshes = true
         scanningVC.modalPresentationStyle = .fullScreen
         present(scanningVC, animated: true)
         #endif
@@ -62,6 +63,7 @@ class ViewController: UIViewController, ScanningViewControllerDelegate {
     
     func scanningViewController(_ controller: ScanningViewController, didScan pointCloud: SCPointCloud) {
         pointCloudPreviewVC.pointCloud = pointCloud
+        pointCloudPreviewVC.meshTexturing = controller.meshTexturing
         pointCloudPreviewVC.leftButton.setTitle("Rescan", for: UIControl.State.normal)
         pointCloudPreviewVC.rightButton.setTitle("Save", for: UIControl.State.normal)
         pointCloudPreviewVC.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
