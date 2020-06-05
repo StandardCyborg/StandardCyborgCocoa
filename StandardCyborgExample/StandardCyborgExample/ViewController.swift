@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     private var lastScene: SCScene?
     private var lastSceneDate: Date?
     private var lastSceneThumbnail: UIImage?
-    private var pointCloudPreviewVC: ScenePreviewViewController?
+    private var scenePreviewVC: ScenePreviewViewController?
     
     private lazy var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     private lazy var sceneGltfURL = documentsURL.appendingPathComponent("scene.gltf")
@@ -69,7 +69,7 @@ class ViewController: UIViewController {
         vc.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
         vc.rightButton.backgroundColor = UIColor(named: "DefaultAction")
         vc.modalPresentationStyle = .fullScreen
-        pointCloudPreviewVC = vc
+        scenePreviewVC = vc
         present(vc, animated: true)
     }
         
@@ -83,7 +83,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func savePreviewedSceneTapped() {
-        saveScene(scene: pointCloudPreviewVC!.scScene, thumbnail: pointCloudPreviewVC?.renderedSceneImage)
+        saveScene(scene: scenePreviewVC!.scScene, thumbnail: scenePreviewVC?.renderedSceneImage)
         dismiss(animated: true)
     }
     
@@ -163,7 +163,7 @@ extension ViewController: ScanningViewControllerDelegate {
         vc.rightButton.setTitle("Save", for: UIControl.State.normal)
         vc.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
         vc.rightButton.backgroundColor = UIColor(named: "SaveAction")
-        pointCloudPreviewVC = vc
+        scenePreviewVC = vc
         controller.present(vc, animated: false)
     }
 
