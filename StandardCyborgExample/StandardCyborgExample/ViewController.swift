@@ -9,11 +9,38 @@ import StandardCyborgUI
 import StandardCyborgFusion
 import UIKit
 
-class ViewController: UIViewController, ScanningViewControllerDelegate {
-    
-    // MARK: - IBOutlets and IBActions
-    
+class ViewController: UIViewController {
     @IBOutlet private weak var showScanButton: UIButton!
+        
+    private var lastScene: SCScene?
+    private var lastSceneDate: Date?
+    private var lastSceneThumbnail: UIImage?
+    private var pointCloudPreviewVC: ScenePreviewViewController?
+    
+    private lazy var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+    private lazy var sceneGltfURL = documentsURL.appendingPathComponent("scene.gltf")
+    private lazy var sceneThumbnailURL = documentsURL.appendingPathComponent("scene.jpeg")
+
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
+        return formatter
+    }()
+    
+
+    
+    // MARK: - Lifecycle
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        showScanButton.layer.borderColor = UIColor.white.cgColor
+        showScanButton.imageView?.contentMode = .scaleAspectFill
+
+        loadScene()
+    }
+    
+    // MARK: - User Interaction
     
     @IBAction private func startScanning(_ sender: UIButton) {
         #if targetEnvironment(simulator)
@@ -30,102 +57,86 @@ class ViewController: UIViewController, ScanningViewControllerDelegate {
     }
     
     @IBAction private func showScan(_ sender: UIButton) {
-        guard let pointCloud = lastScanPointCloud else { return }
+        guard let scScene = lastScene else { return }
         
-        pointCloudPreviewVC.pointCloud = pointCloud
-        pointCloudPreviewVC.leftButton.setTitle("Delete", for: UIControl.State.normal)
-        pointCloudPreviewVC.rightButton.setTitle("Dismiss", for: UIControl.State.normal)
-        pointCloudPreviewVC.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
-        pointCloudPreviewVC.rightButton.backgroundColor = UIColor(named: "DefaultAction")
-        pointCloudPreviewVC.modalPresentationStyle = .fullScreen
+        let vc = ScenePreviewViewController(scScene: scScene)
+        vc.leftButton.addTarget(self, action: #selector(deletePreviewedSceneTapped), for: UIControl.Event.touchUpInside)
+        vc.rightButton.addTarget(self, action: #selector(dismissPreviewedScanTapped), for: UIControl.Event.touchUpInside)
+        vc.leftButton.setTitle("Delete", for: UIControl.State.normal)
+        vc.rightButton.setTitle("Dismiss", for: UIControl.State.normal)
+        vc.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
+        vc.rightButton.backgroundColor = UIColor(named: "DefaultAction")
+        vc.modalPresentationStyle = .fullScreen
+        pointCloudPreviewVC = vc
+        present(vc, animated: true)
+    }
         
-        present(pointCloudPreviewVC, animated: true)
-    }
-    
-    // MARK: - UIViewController
-    
-    override func loadView() {
-        super.loadView()
-        
-        showScanButton.layer.borderColor = UIColor.white.cgColor
-        showScanButton.imageView?.contentMode = .scaleAspectFill
-    }
-    
-    override func viewDidLoad() {
-        loadScan()
-    }
-    
-    // MARK: - ScanningViewControllerDelegate
-    
-    func scanningViewControllerDidCancel(_ controller: ScanningViewController) {
+    @objc private func deletePreviewedSceneTapped() {
+        deleteScene()
         dismiss(animated: true)
     }
     
-    func scanningViewController(_ controller: ScanningViewController, didScan pointCloud: SCPointCloud) {
-        pointCloudPreviewVC.pointCloud = pointCloud
-        pointCloudPreviewVC.meshTexturing = controller.meshTexturing
-        pointCloudPreviewVC.leftButton.setTitle("Rescan", for: UIControl.State.normal)
-        pointCloudPreviewVC.rightButton.setTitle("Save", for: UIControl.State.normal)
-        pointCloudPreviewVC.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
-        pointCloudPreviewVC.rightButton.backgroundColor = UIColor(named: "SaveAction")
-        
-        controller.present(pointCloudPreviewVC, animated: false)
+    @objc private func dismissPreviewedScanTapped() {
+        dismiss(animated: false)
     }
     
-    @objc private func previewLeftButtonTapped(_ sender: UIButton) {
-        let isExistingScan = pointCloudPreviewVC.pointCloud == lastScanPointCloud
-        
-        if isExistingScan {
-            // Delete
-            deleteScan()
-            dismiss(animated: true)
-        } else {
-            // Retake
-            dismiss(animated: false)
+    @objc private func savePreviewedSceneTapped() {
+        saveScene(scene: pointCloudPreviewVC!.scScene, thumbnail: pointCloudPreviewVC?.renderedPointCloudImage)
+        dismiss(animated: true)
+    }
+    
+    // MARK: - Scene I/O
+    
+    private func loadScene() {
+        if
+            FileManager.default.fileExists(atPath: sceneGltfURL.path),
+            let gltfAttributes = try? FileManager.default.attributesOfItem(atPath: sceneGltfURL.path),
+            let dateCreated = gltfAttributes[FileAttributeKey.creationDate] as? Date
+        {
+            lastScene = SCScene(gltfAtPath: sceneGltfURL.path)
+            lastSceneDate = dateCreated
+            lastSceneThumbnail = UIImage(contentsOfFile: sceneThumbnailURL.path)
         }
-    }
-    
-    @objc private func previewRightButtonTapped(_ sender: UIButton) {
-        let isExistingScan = pointCloudPreviewVC.pointCloud == lastScanPointCloud
         
-        if isExistingScan {
-            // Dismiss
-            dismiss(animated: true)
-        } else {
-            // Save
-            saveScan(pointCloud: pointCloudPreviewVC.pointCloud!, thumbnail: pointCloudPreviewVC.renderedPointCloudImage)
-            dismiss(animated: true)
-        }
+        updateUI()
     }
     
-    // MARK: - Private
+    private func saveScene(scene: SCScene, thumbnail: UIImage?) {
+        scene.writeToGLTF(atPath: sceneGltfURL.path)
+        
+        if let thumbnail = thumbnail, let jpegData = thumbnail.jpegData(compressionQuality: 0.8) {
+            try? jpegData.write(to: sceneThumbnailURL)
+        }
+        
+        lastScene = scene
+        lastSceneThumbnail = thumbnail
+        lastSceneDate = Date()
+        
+        updateUI()
+    }
     
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter
-    }()
+    private func deleteScene() {
+        let fileManager = FileManager.default
+        
+        if fileManager.fileExists(atPath: sceneGltfURL.path) {
+            try? fileManager.removeItem(at: sceneGltfURL)
+        }
+        
+        if fileManager.fileExists(atPath: sceneThumbnailURL.path) {
+            try? fileManager.removeItem(at: sceneThumbnailURL)
+        }
+        
+        lastScene = nil
+        lastSceneThumbnail = nil
+        lastSceneDate = nil
+        
+        updateUI()
+    }
     
-    private lazy var pointCloudPreviewVC: PointCloudPreviewViewController = {
-        let previewVC: PointCloudPreviewViewController = PointCloudPreviewViewController()
-        previewVC.leftButton.addTarget(self, action: #selector(previewLeftButtonTapped(_:)), for: UIControl.Event.touchUpInside)
-        previewVC.rightButton.addTarget(self, action: #selector(previewRightButtonTapped(_:)), for: UIControl.Event.touchUpInside)
-        return previewVC
-    }()
-    
-    private var lastScanPointCloud: SCPointCloud?
-    private var lastScanDate: Date?
-    private var lastScanThumbnail: UIImage?
-    
-    private lazy var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-    private lazy var scanPLYURL = documentsURL.appendingPathComponent("Cat.ply")
-    private lazy var scanThumbnailURL = documentsURL.appendingPathComponent("Cat.jpeg")
-    
-    // MARK: -
-    
+    // MARK: - Helpers
+        
     private func updateUI() {
-        if lastScanThumbnail == nil {
+        if lastSceneThumbnail == nil {
             showScanButton.layer.borderWidth = 0
             showScanButton.setTitle("no scan yet", for: UIControl.State.normal)
         } else {
@@ -133,61 +144,38 @@ class ViewController: UIViewController, ScanningViewControllerDelegate {
             showScanButton.setTitle(nil, for: UIControl.State.normal)
         }
         
-        showScanButton.setImage(lastScanThumbnail, for: UIControl.State.normal)
+        showScanButton.setImage(lastSceneThumbnail, for: UIControl.State.normal)
     }
-    
-    private func loadScan() {
-        let scanPLYPath = scanPLYURL.path
-        let scanThumbnailPath = scanThumbnailURL.path
-        let fileManager = FileManager.default
-        
-        if
-            fileManager.fileExists(atPath: scanPLYPath),
-            let plyAttributes = try? fileManager.attributesOfItem(atPath: scanPLYPath),
-            let dateCreated = plyAttributes[FileAttributeKey.creationDate] as? Date,
-            let pointCloud = SCPointCloud(plyPath: scanPLYPath),
-            pointCloud.pointCount > 0
-        {
-            lastScanPointCloud = pointCloud
-            lastScanDate = dateCreated
-            lastScanThumbnail = UIImage(contentsOfFile: scanThumbnailPath)
-        }
-        
-        updateUI()
-    }
-    
-    private func saveScan(pointCloud: SCPointCloud, thumbnail: UIImage?) {
-        pointCloud.writeToPLY(atPath: scanPLYURL.path)
-        
-        if  let thumbnail = thumbnail,
-            let jpegData = thumbnail.jpegData(compressionQuality: 0.8)
-        {
-            try? jpegData.write(to: scanThumbnailURL)
-        }
-        
-        lastScanPointCloud = pointCloud
-        lastScanThumbnail = thumbnail
-        lastScanDate = Date()
-        
-        updateUI()
-    }
-    
-    private func deleteScan() {
-        let fileManager = FileManager.default
-        
-        if fileManager.fileExists(atPath: scanPLYURL.path) {
-            try? fileManager.removeItem(at: scanPLYURL)
-        }
-        
-        if fileManager.fileExists(atPath: scanThumbnailURL.path) {
-            try? fileManager.removeItem(at: scanThumbnailURL)
-        }
-        
-        lastScanPointCloud = nil
-        lastScanThumbnail = nil
-        lastScanDate = nil
-        
-        updateUI()
-    }
-    
 }
+
+extension ViewController: ScanningViewControllerDelegate {
+    func scanningViewControllerDidCancel(_ controller: ScanningViewController) {
+        dismiss(animated: true)
+    }
+    
+    func scanningViewController(_ controller: ScanningViewController, didScan pointCloud: SCPointCloud) {
+        let vc = ScenePreviewViewController(pointCloud: pointCloud, meshTexturing: controller.meshTexturing, landmarks: nil)
+        vc.leftButton.addTarget(self, action: #selector(dismissPreviewedScanTapped), for: UIControl.Event.touchUpInside)
+        vc.rightButton.addTarget(self, action: #selector(savePreviewedSceneTapped), for: UIControl.Event.touchUpInside)
+        vc.leftButton.setTitle("Rescan", for: UIControl.State.normal)
+        vc.rightButton.setTitle("Save", for: UIControl.State.normal)
+        vc.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
+        vc.rightButton.backgroundColor = UIColor(named: "SaveAction")
+        pointCloudPreviewVC = vc
+        controller.present(vc, animated: false)
+    }
+
+}
+
+private extension URL {
+    static let documentsURL: URL = {
+        guard let documentsDirectory = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, false).first
+            else { fatalError("Failed to find the documents directory") }
+        
+        // Annoyingly, this gives us the directory path with a ~ in it, so we have to expand it
+        let tildeExpandedDocumentsDirectory = (documentsDirectory as NSString).expandingTildeInPath
+        
+        return URL(fileURLWithPath: tildeExpandedDocumentsDirectory)
+    }()
+}
+
