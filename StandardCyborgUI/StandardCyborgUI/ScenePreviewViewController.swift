@@ -1,5 +1,5 @@
 //
-//  PointCloudPreviewViewController.swift
+//  ScenePreviewViewController.swift
 //  Capture
 //
 //  Copyright © 2018 Apple. All rights reserved.
@@ -10,21 +10,53 @@ import SceneKit
 import StandardCyborgFusion
 import UIKit
 
-@objc public class PointCloudPreviewViewController: UIViewController, SCNSceneRendererDelegate {
+@objc public class ScenePreviewViewController: UIViewController, SCNSceneRendererDelegate {
+    @objc public private(set) var scScene: SCScene
+    @objc private var meshTexturing: SCMeshTexturing?
+    @objc private var landmarks: Set<SCLandmark3D>?
     
-    /** A convenience initializer that simply calls init and sets the point cloud */
-    @objc public convenience init(pointCloud: SCPointCloud, meshTexturing: SCMeshTexturing, landmarks: Set<SCLandmark3D>?) {
-        self.init()
-        self.pointCloud = pointCloud
+    /** A snapshot of the point cloud as rendered, which becomes available
+        as soon as the view controller's view appears */
+    @objc public private(set) var renderedPointCloudImage: UIImage?
+
+    /** Gives us a hook to capture the renderedPointCloudImage separate from when it may be set. */
+    @objc public var onRenderedPointCloudImageReady: ((UIImage) -> Void)?
+
+    private struct const {
+        static let pointCloudNodeName = "Point cloud"
+        static let meshNodeName = "Mesh"
+    }
+    
+    /**
+     Create an instance of ScenePreviewViewController with a pointCloud, optional meshTexturing instance (if
+     you wish to render a mesh), and landmarks.
+     
+     You can get the correct instance of `meshTexturing` from `ScanningViewController.meshTexturing`
+     after scanning has completed in the delegate callback `ScanningViewController(_ controller:didScan pointCloud)`
+     */
+    @objc public init(pointCloud: SCPointCloud, meshTexturing: SCMeshTexturing?, landmarks: Set<SCLandmark3D>?) {
+        self.scScene = SCScene(pointCloud: pointCloud, mesh: nil)
         self.meshTexturing = meshTexturing
         self.landmarks = landmarks
-        _buildNodeFromPointCloud()
+        
+        super.init(nibName: nil, bundle: nil)
     }
+    
+    @objc public init(scScene: SCScene) {
+        self.scScene = scScene
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        self.scScene = SCScene(pointCloud: nil, mesh: nil)
+        super.init(coder: coder)
+    }
+        
     
     /** Owners may mutate this view to change its appearance and add nodes to its scene */
     @objc public let sceneView: SCNView = {
-        guard let sceneURL = Bundle(for: PointCloudPreviewViewController.self).url(forResource: "PointCloudPreviewViewController", withExtension: "scn") else {
-            fatalError("Could not find scene file for PointCloudPreviewViewController")
+        guard let sceneURL = Bundle(for: ScenePreviewViewController.self).url(forResource: "ScenePreviewViewController", withExtension: "scn") else {
+            fatalError("Could not find scene file for ScenePreviewViewController")
         }
         
         let scene = try! SCNScene(url: sceneURL, options: nil)
@@ -56,14 +88,8 @@ import UIKit
         button.layer.cornerRadius = 10
         return button
     }()
-    
-    @objc public let meshToggle: UISwitch = {
-        let toggle = UISwitch()
-        toggle.isOn = false
-        toggle.addTarget(self, action: #selector(_toggleMeshVisibility), for: .valueChanged)
-        return toggle
-    }()
-    
+        
+    /** Appears while a mesh is being processed. Owners may mutate this to customize its appearance */
     @objc public let meshingProgressView: UIProgressView = {
         let progressView = UIProgressView()
         progressView.progress = 0
@@ -72,26 +98,6 @@ import UIKit
     
     // MARK: - Public
     
-    /** Set this or call the convenience initializer before presenting this view controller */
-    @objc public var pointCloud: SCPointCloud?
-    
-    /**
-     Set this before presenting this view controller if you wnat to render a mesh.
-     
-     You can get the correct instance of this object from `ScanningViewController.meshTexturing`
-     after scanning has completed in the delegate callback `ScanningViewController(_ controller:didScan pointCloud)`
-     */
-    @objc public var meshTexturing: SCMeshTexturing?
-    
-    /** Set this or call the convenience initializer before presenting this view controller */
-    @objc public var landmarks: Set<SCLandmark3D>?
-    
-    /** A snapshot of the point cloud as rendered, which becomes available
-        as soon as the view controller's view appears */
-    @objc public private(set) var renderedPointCloudImage: UIImage?
-
-    /** Gives us a hook to capture the renderedPointCloudImage separate from when it may be set. */
-    @objc public var onRenderedPointCloudImageReady: ((UIImage) -> Void)?
 
     // MARK: - UIViewController
     
@@ -101,35 +107,31 @@ import UIKit
         sceneView.delegate = self
         _initialPointOfView = sceneView.pointOfView!.transform
         
+        meshingProgressView.isHidden = true
+
         view.backgroundColor = UIColor.white
         view.addSubview(sceneView)
         view.addSubview(leftButton)
         view.addSubview(rightButton)
-        view.addSubview(meshToggle)
         view.addSubview(meshingProgressView)
     }
     
     override public func viewWillAppear(_ animated: Bool) {
         sceneView.pointOfView!.transform = _initialPointOfView
         
-        if _pointCloudNode == nil && pointCloud != nil {
-            _buildNodeFromPointCloud()
-        }
-        
-        meshToggle.isHidden = true
-        meshingProgressView.isHidden = true
-        if _meshNode == nil && pointCloud != nil, meshTexturing != nil {
-            _processMesh()
-        }
-        
         leftButton.isHidden = leftButton.title(for: UIControl.State.normal)?.isEmpty ?? true
         rightButton.isHidden = rightButton.title(for: UIControl.State.normal)?.isEmpty ?? true
+        
+        _constructScene(withSCScene: scScene)
     }
     
     override public func viewDidAppear(_ animated: Bool) {
         self.renderedPointCloudImage = self.sceneView.snapshot()
         onRenderedPointCloudImageReady?(self.renderedPointCloudImage!)
     }
+    
+    
+    // MARK: - Layout
     
     override public func viewDidLayoutSubviews() {
         sceneView.frame = view.bounds
@@ -149,9 +151,9 @@ import UIKit
             rightButton.frame = leftButton.isHidden ? buttonFrame : buttonFrame.offsetBy(dx: buttonFrame.width + buttonSpacing, dy: 0)
         }
         
-        meshToggle.sizeToFit()
-        meshToggle.center = CGPoint(x: view.center.x, y: view.safeAreaInsets.top + meshToggle.frame.height)
-        meshingProgressView.frame = CGRect(x: meshToggle.frame.origin.x, y: meshToggle.frame.maxY + 10, width: meshToggle.frame.width, height: 8)
+        let progressViewCenter = CGPoint(x: view.center.x, y: view.safeAreaInsets.top + (meshingProgressView.frame.height / 2) + 12)
+        meshingProgressView.bounds = CGRect(x: 0, y: 0, width: 40, height: 8)
+        meshingProgressView.center = progressViewCenter
     }
     
     // MARK: - SCNSceneRendererDelegate
@@ -178,100 +180,79 @@ import UIKit
     private var _containerNode = SCNNode()
     private var _pointCloudNode: SCNNode?
     private var _meshNode: SCNNode?
-    private var _meshingHelper: MeshingHelper?
+    private var _meshingHelper: SCMeshingHelper?
     
-    private func _buildNodeFromPointCloud() {
-        for child in _containerNode.childNodes {
-            child.removeFromParentNode()
+    private func _constructScene(withSCScene scScene: SCScene) {
+        _containerNode.removeChildren(named: const.pointCloudNodeName)
+        _containerNode.removeChildren(named: const.meshNodeName)
+
+        if let pointCloud = scScene.pointCloud {
+            _buildNodeFromPointCloud(pointCloud)
         }
         
-        _pointCloudNode = pointCloud?.buildNode(with: landmarks)
-        _pointCloudNode?.name = "Point cloud"
+        if let mesh = scScene.mesh {
+            _buildNodeFromMesh(mesh)
+        } else if let pointCloud = scScene.pointCloud, let meshTexturing = meshTexturing {
+            _processMeshTexturingIntoMesh(withPointCloud: pointCloud, meshTexturing: meshTexturing) { result in
+                switch result {
+                case .success(let mesh):
+                    self.scScene = SCScene(pointCloud: pointCloud, mesh: mesh)
+                    self._constructScene(withSCScene: self.scScene)
+                    
+                case .failure(let error):
+                    print("Error processing mesh: \(String(describing: error.localizedDescription))")
+                }
+            }
+        }
+    }
+    
+    private func _buildNodeFromPointCloud(_ pointCloud: SCPointCloud) {
+        _pointCloudNode = pointCloud.buildNode(with: landmarks)
+        _pointCloudNode?.name = const.pointCloudNodeName
         
         if let node = _pointCloudNode {
             _containerNode.addChildNode(node)
         }
     }
     
-    private func _processMesh() {
-        guard let pointCloud = pointCloud, let meshTexturing = meshTexturing else { return }
-        
+    private func _processMeshTexturingIntoMesh(withPointCloud pointCloud: SCPointCloud,
+                                               meshTexturing: SCMeshTexturing,
+                                               completion: @escaping ((Result<SCMesh, Error>) -> Void)) {
         meshingProgressView.isHidden = false
         meshingProgressView.setProgress(0, animated: false)
         
-        _meshingHelper = MeshingHelper(pointCloud: pointCloud, meshTexturing: meshTexturing)
+        _meshingHelper = SCMeshingHelper(pointCloud: pointCloud, meshTexturing: meshTexturing)
         _meshingHelper?.processMesh { meshingStatus in
             DispatchQueue.main.async {
                 switch meshingStatus {
                 case .inProgress(let progress):
                     self.meshingProgressView.setProgress(progress, animated: false)
                 case .failure(let error):
-                    print("Error processing mesh: \(String(describing: error?.localizedDescription))")
-                case .success(let mesh):
-                    self._buildMeshNodeWithMesh(mesh: mesh)
                     self.meshingProgressView.isHidden = true
-                    self.meshToggle.isHidden = false
-                    self.meshToggle.isOn = true
+                    completion(.failure(error))    // Error is guaranteed to be set for the failure case
+                    
+                case .success(let mesh):
+                    self.meshingProgressView.isHidden = true
+                    completion(.success(mesh))
                 }
             }
         }
     }
     
-    private func _buildMeshNodeWithMesh(mesh: SCMesh) {
+    private func _buildNodeFromMesh(_ mesh: SCMesh) {
+        _containerNode.removeChildren(named: const.meshNodeName)
+        
         let node = mesh.buildMeshNode()
-        node.name = "SCMesh"
+        node.name = const.meshNodeName
         node.position = _pointCloudNode!.position
         node.scale = _pointCloudNode!.scale
         _containerNode.addChildNode(node)
     }
-    
-    @objc private func _toggleMeshVisibility() {
-        _containerNode.childNode(withName: "SCMesh", recursively: true)?.isHidden = !meshToggle.isOn
-    }
 }
 
 
-private class MeshingHelper {
-    enum Status {
-        case inProgress(Float)
-        case success(SCMesh)
-        case failure(Error?)
-    }
-
-    private static var defaultMeshingParameters: SCMeshingParameters {
-        let meshingParameters = SCMeshingParameters()
-        meshingParameters.resolution = 5
-        meshingParameters.smoothness = 2
-        meshingParameters.surfaceTrimmingAmount = 6
-        meshingParameters.closed = true
-        return meshingParameters
-    }
-    
-    let pointCloud: SCPointCloud
-    let meshTexturing: SCMeshTexturing
-    let meshingParameters: SCMeshingParameters
-    
-    init(pointCloud: SCPointCloud, meshTexturing: SCMeshTexturing, meshingParameters: SCMeshingParameters? = nil) {
-        self.pointCloud = pointCloud
-        self.meshTexturing = meshTexturing
-        self.meshingParameters = meshingParameters ?? Self.defaultMeshingParameters
-    }
-     
-    func processMesh(onMeshStatusUpdate: @escaping ((Status) -> Void)) {
-        meshTexturing.reconstructMesh(
-            pointCloud: pointCloud,
-            textureResolution: 2048,
-            meshingParameters: meshingParameters,
-            progress: { (progress, stop) in
-                onMeshStatusUpdate(.inProgress(progress))
-            },
-            completion: { (error, mesh) in
-                if let mesh = mesh {
-                    onMeshStatusUpdate(.success(mesh))
-                    return
-                }
-                
-                onMeshStatusUpdate(.failure(error))
-        })
+private extension SCNNode {
+    func removeChildren(named name: String) {
+        childNodes.filter { $0.name == name }.forEach { $0.removeFromParentNode() }
     }
 }
