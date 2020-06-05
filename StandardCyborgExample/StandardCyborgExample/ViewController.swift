@@ -21,6 +21,8 @@ class ViewController: UIViewController {
     private lazy var sceneGltfURL = documentsURL.appendingPathComponent("scene.gltf")
     private lazy var sceneThumbnailURL = documentsURL.appendingPathComponent("scene.png")
 
+    override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
+    
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .medium
@@ -36,7 +38,7 @@ class ViewController: UIViewController {
         super.viewDidLoad()
         showScanButton.layer.borderColor = UIColor.white.cgColor
         showScanButton.imageView?.contentMode = .scaleAspectFill
-
+        
         loadScene()
     }
     
