@@ -15,17 +15,21 @@ import UIKit
     @objc private var meshTexturing: SCMeshTexturing?
     @objc private var landmarks: Set<SCLandmark3D>?
     
-    /** A snapshot of the point cloud as rendered, which becomes available
-        as soon as the view controller's view appears */
-    @objc public private(set) var renderedPointCloudImage: UIImage?
+    /** A snapshot of the scene as-rendered, which becomes available
+        as soon as the view controller's view appears. If meshing is enabled this
+        property will be updated once the mesh has rendered.
+     */
+    @objc public private(set) var renderedSceneImage: UIImage? {
+        didSet {
+            guard let renderedSceneImage = renderedSceneImage else { return }
+            onRenderedSceneImageUpdated?(renderedSceneImage)
+        }
+    }
 
     /** Gives us a hook to capture the renderedPointCloudImage separate from when it may be set. */
-    @objc public var onRenderedPointCloudImageReady: ((UIImage) -> Void)?
-
-    private struct const {
-        static let pointCloudNodeName = "Point cloud"
-        static let meshNodeName = "Mesh"
-    }
+    @objc public var onRenderedSceneImageUpdated: ((UIImage) -> Void)?
+    
+    override public var preferredStatusBarStyle: UIStatusBarStyle { .default }
     
     /**
      Create an instance of ScenePreviewViewController with a pointCloud, optional meshTexturing instance (if
@@ -95,13 +99,12 @@ import UIKit
         progressView.progress = 0
         return progressView
     }()
-    
-    // MARK: - Public
-    
 
     // MARK: - UIViewController
     
     override public func viewDidLoad() {
+        super.viewDidLoad()
+        
         _containerNode.name = "Container"
         sceneView.scene?.rootNode.addChildNode(_containerNode)
         sceneView.delegate = self
@@ -117,6 +120,8 @@ import UIKit
     }
     
     override public func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
         sceneView.pointOfView!.transform = _initialPointOfView
         
         leftButton.isHidden = leftButton.title(for: UIControl.State.normal)?.isEmpty ?? true
@@ -124,12 +129,7 @@ import UIKit
         
         _constructScene(withSCScene: scScene)
     }
-    
-    override public func viewDidAppear(_ animated: Bool) {
-        self.renderedPointCloudImage = self.sceneView.snapshot()
-        onRenderedPointCloudImageReady?(self.renderedPointCloudImage!)
-    }
-    
+        
     
     // MARK: - Layout
     
@@ -167,32 +167,25 @@ import UIKit
         let currentFOV = sceneView.pointOfView!.camera!.fieldOfView
         let pointSize = 10.0 - 0.078 * currentFOV
         
-        if let pointsElement = _pointCloudNode?.geometry?.elements.first {
+        if let pointsElement = _containerNode.childNode(withName: "SCPointCloud", recursively: true)?.geometry?.elements.first {
             pointsElement.pointSize = pointSize
             pointsElement.minimumPointScreenSpaceRadius = pointSize
             pointsElement.maximumPointScreenSpaceRadius = pointSize
         }
     }
-    
+        
     // MARK: - Private
     
     private var _initialPointOfView = SCNMatrix4Identity
     private var _containerNode = SCNNode()
-    private var _pointCloudNode: SCNNode?
-    private var _meshNode: SCNNode?
     private var _meshingHelper: SCMeshingHelper?
     
     private func _constructScene(withSCScene scScene: SCScene) {
-        _containerNode.removeChildren(named: const.pointCloudNodeName)
-        _containerNode.removeChildren(named: const.meshNodeName)
-
-        if let pointCloud = scScene.pointCloud {
-            _buildNodeFromPointCloud(pointCloud)
-        }
+        _containerNode.childNodes.forEach { $0.removeFromParentNode() }
         
-        if let mesh = scScene.mesh {
-            _buildNodeFromMesh(mesh)
-        } else if let pointCloud = scScene.pointCloud, let meshTexturing = meshTexturing {
+        _containerNode.addChildNode(scScene.rootNode)
+        
+        if let pointCloud = scScene.pointCloud, let meshTexturing = meshTexturing, _containerNode.childNode(withName: "SCMesh", recursively: true) == nil {
             _processMeshTexturingIntoMesh(withPointCloud: pointCloud, meshTexturing: meshTexturing) { result in
                 switch result {
                 case .success(let mesh):
@@ -204,17 +197,14 @@ import UIKit
                 }
             }
         }
-    }
-    
-    private func _buildNodeFromPointCloud(_ pointCloud: SCPointCloud) {
-        _pointCloudNode = pointCloud.buildNode(with: landmarks)
-        _pointCloudNode?.name = const.pointCloudNodeName
         
-        if let node = _pointCloudNode {
-            _containerNode.addChildNode(node)
+        // This is a bit of a hack. There doesn't appear to be a good way to determine when a sceneView has finished
+        // rendering nodes. Delaying half a second before grabbing a snapshot seems to work.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.renderedSceneImage = self.sceneView.snapshot()
         }
     }
-    
+        
     private func _processMeshTexturingIntoMesh(withPointCloud pointCloud: SCPointCloud,
                                                meshTexturing: SCMeshTexturing,
                                                completion: @escaping ((Result<SCMesh, Error>) -> Void)) {
@@ -237,22 +227,5 @@ import UIKit
                 }
             }
         }
-    }
-    
-    private func _buildNodeFromMesh(_ mesh: SCMesh) {
-        _containerNode.removeChildren(named: const.meshNodeName)
-        
-        let node = mesh.buildMeshNode()
-        node.name = const.meshNodeName
-        node.position = _pointCloudNode!.position
-        node.scale = _pointCloudNode!.scale
-        _containerNode.addChildNode(node)
-    }
-}
-
-
-private extension SCNNode {
-    func removeChildren(named name: String) {
-        childNodes.filter { $0.name == name }.forEach { $0.removeFromParentNode() }
     }
 }

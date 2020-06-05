@@ -19,7 +19,7 @@ class ViewController: UIViewController {
     
     private lazy var documentsURL = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
     private lazy var sceneGltfURL = documentsURL.appendingPathComponent("scene.gltf")
-    private lazy var sceneThumbnailURL = documentsURL.appendingPathComponent("scene.jpeg")
+    private lazy var sceneThumbnailURL = documentsURL.appendingPathComponent("scene.png")
 
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -81,7 +81,7 @@ class ViewController: UIViewController {
     }
     
     @objc private func savePreviewedSceneTapped() {
-        saveScene(scene: pointCloudPreviewVC!.scScene, thumbnail: pointCloudPreviewVC?.renderedPointCloudImage)
+        saveScene(scene: pointCloudPreviewVC!.scScene, thumbnail: pointCloudPreviewVC?.renderedSceneImage)
         dismiss(animated: true)
     }
     
@@ -104,8 +104,8 @@ class ViewController: UIViewController {
     private func saveScene(scene: SCScene, thumbnail: UIImage?) {
         scene.writeToGLTF(atPath: sceneGltfURL.path)
         
-        if let thumbnail = thumbnail, let jpegData = thumbnail.jpegData(compressionQuality: 0.8) {
-            try? jpegData.write(to: sceneThumbnailURL)
+        if let thumbnail = thumbnail, let pngData = thumbnail.pngData() {
+            try? pngData.write(to: sceneThumbnailURL)
         }
         
         lastScene = scene
