@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name              = "StandardCyborgUI"
-  s.version           = "1.6.0"
+  s.version           = "1.7.0"
   s.summary           = "Classes for driving and visualizing scanning using StandardCyborgFusion"
   s.homepage          = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url  = 'https://twitter.com/StandardCyborg'
