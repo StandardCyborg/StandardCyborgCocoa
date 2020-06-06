@@ -161,6 +161,7 @@ import UIKit
     @objc public lazy var meshTexturing = SCMeshTexturing()
     
     // MARK: - UIViewController
+    open override var preferredStatusBarStyle: UIStatusBarStyle { .lightContent }
     
     override open func viewDidLoad() {
         super.viewDidLoad()
