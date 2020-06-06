@@ -27,6 +27,7 @@
 		76751A6522DD9E4E00482EC4 /* NodeToNodeLineNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */; };
 		767B3C0D2359034300138B1E /* SCMetalSimulatorStubs.m in Sources */ = {isa = PBXBuildFile; fileRef = 767B3C0C2359034300138B1E /* SCMetalSimulatorStubs.m */; };
 		767B3C0F2359034E00138B1E /* SCMetalSimulatorStubs.h in Headers */ = {isa = PBXBuildFile; fileRef = 767B3C0E2359034E00138B1E /* SCMetalSimulatorStubs.h */; };
+		A005B14B2489F16F00165638 /* SCMeshingHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A005B14A2489F16F00165638 /* SCMeshingHelper.swift */; };
 		A080752F22D3B3FF00D1CFD8 /* Bundle+SCUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +54,7 @@
 		76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeToNodeLineNode.swift; sourceTree = "<group>"; };
 		767B3C0C2359034300138B1E /* SCMetalSimulatorStubs.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SCMetalSimulatorStubs.m; sourceTree = "<group>"; };
 		767B3C0E2359034E00138B1E /* SCMetalSimulatorStubs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SCMetalSimulatorStubs.h; sourceTree = "<group>"; };
+		A005B14A2489F16F00165638 /* SCMeshingHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SCMeshingHelper.swift; sourceTree = "<group>"; };
 		A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+SCUI.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -107,6 +109,7 @@
 				7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */,
 				A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */,
 				76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */,
+				A005B14A2489F16F00165638 /* SCMeshingHelper.swift */,
 				767B3C0E2359034E00138B1E /* SCMetalSimulatorStubs.h */,
 				767B3C0C2359034300138B1E /* SCMetalSimulatorStubs.m */,
 			);
@@ -207,6 +210,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				767B3C0D2359034300138B1E /* SCMetalSimulatorStubs.m in Sources */,
+				A005B14B2489F16F00165638 /* SCMeshingHelper.swift in Sources */,
 				7642B7D321E455AB00BC45C7 /* ShutterButton.swift in Sources */,
 				A080752F22D3B3FF00D1CFD8 /* Bundle+SCUI.swift in Sources */,
 				7620D26421CDADA5008D0095 /* ScanningViewRenderer.swift in Sources */,
