@@ -16,4 +16,6 @@ public struct ServerTeam: Codable {
     public let name: String
     public let uid: String
     public let role: Role = .default
+    public let scenesLimit: Int
+    public let scenesCount: Int
 }
