@@ -160,9 +160,7 @@ public extension Notification.Name {
     
     /** Fixes the RGB camera's focus at the current focal distance when true */
     @objc public var isFocusLocked: Bool = false {
-        didSet {
-            guard isFocusLocked != oldValue else { return }
-            
+        didSet {            
             _focus(mode: isFocusLocked ? .locked : .continuousAutoFocus,
                    exposureMode: isFocusLocked ? .locked : .continuousAutoExposure,
                    at: CGPoint(x: 0.5, y: 0.5))
