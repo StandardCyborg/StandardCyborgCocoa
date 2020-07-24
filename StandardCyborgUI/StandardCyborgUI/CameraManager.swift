@@ -13,6 +13,7 @@ import UIKit
 @objc public protocol CameraManagerDelegate: AnyObject {
     func cameraDidOutput(colorBuffer: CVPixelBuffer, depthBuffer: CVPixelBuffer, depthCalibrationData: AVCameraCalibrationData)
     @objc optional func cameraManagerDidStartSession(_ manager: CameraManager)
+    @objc optional func cameraManagerDidNotStartSession(_ manager: CameraManager, result: CameraManager.SessionSetupResult)
 }
 
 public extension Notification.Name {
@@ -39,6 +40,10 @@ public extension Notification.Name {
      */
     @objc public class var isDepthCameraAvailable: Bool {
         return ARFaceTrackingConfiguration.isSupported
+    }
+    
+    @objc public class var isCameraPermissionDenied: Bool {
+        AVCaptureDevice.authorizationStatus(for: .video) == .denied
     }
     
     deinit {
@@ -114,6 +119,7 @@ public extension Notification.Name {
                     NotificationCenter.default.post(name: .CameraManagerDidStartSession, object: nil)
                 }
             case .notAuthorized, .configurationFailed:
+                self.delegate?.cameraManagerDidNotStartSession?(self, result: result)
                 break
             }
             
