@@ -57,11 +57,13 @@ public class ServerAddSceneOperation: ServerOperation {
     let thumbnailURL: URL?
     let teamKey: String?
     let metadata: [String: Any]
+    let additionalSceneParameters: [String: Any]
         
     public init(gltfURL: URL,
                 thumbnailURL: URL? = nil,
                 teamKey: String? = nil,
                 metadata: [String: Any] = [:],
+                additionalSceneParameters: [String: Any] = [:],
                 dataSource: ServerSyncEngineLocalDataSource,
                 serverAPIClient: ServerAPIClient)
     {
@@ -69,8 +71,9 @@ public class ServerAddSceneOperation: ServerOperation {
         self.thumbnailURL = thumbnailURL
         self.teamKey = teamKey
         self.metadata = metadata
+        self.additionalSceneParameters = additionalSceneParameters
         
-        for value in metadata.values {
+        for value in Array(metadata.values) + Array(additionalSceneParameters.values) {
             assert(value is Bool || value is Int || value is Float || value is Double || value is String)
         }
         
@@ -189,6 +192,9 @@ public class ServerAddSceneOperation: ServerOperation {
             var sceneVersionDict: [String: Any] = ["scenegraph_key": sceneUploadInfo.directUploadFileKey]
             sceneVersionDict["thumbnail_key"] = thumbnailUploadInfo?.directUploadFileKey
             sceneVersionDict["metadata"] = metadata
+            
+            // Merge the additional body parameters, but let those already defined take precedent.
+            sceneVersionDict.merge(additionalSceneParameters, uniquingKeysWith: { (current, _) in current })
             
             serverAPIClient.performJSONOperation(withURL: url,
                                                  httpMethod: .PUT,
