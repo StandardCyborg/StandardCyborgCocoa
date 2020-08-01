@@ -21,14 +21,17 @@ public class ServerSignUpOperation: ServerOperation {
     
     let email: String
     let password: String
+    let additionalBodyParameters: [String : Any]
     
     public init(dataSource: ServerSyncEngineLocalDataSource,
                 apiClient: ServerAPIClient,
                 email: String,
-                password: String)
+                password: String,
+                additionalBodyParameters: [String : Any] = [:])
     {
         self.email = email
         self.password = password
+        self.additionalBodyParameters = additionalBodyParameters
         super.init(dataSource: dataSource, serverAPIClient: apiClient)
     }
     
@@ -36,7 +39,8 @@ public class ServerSignUpOperation: ServerOperation {
         let postDictionary = [
             "email": email,
             "password": password
-        ]
+        ].merging(additionalBodyParameters, uniquingKeysWith: { (current, _) in current })
+        
         let url = serverAPIClient.buildAPIURL(for: ClientAPIPath.authSignUp)
 
         serverAPIClient.performJSONOperation(withURL: url,
