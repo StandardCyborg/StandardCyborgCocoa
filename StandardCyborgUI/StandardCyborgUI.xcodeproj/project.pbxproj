@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1F2CD14E24E5AF3C00E05416 /* ScenePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F2CD14C24E5AF3C00E05416 /* ScenePreviewViewController.swift */; };
+		1F2CD14F24E5AF3C00E05416 /* ScenePreviewViewController.scn in Resources */ = {isa = PBXBuildFile; fileRef = 1F2CD14D24E5AF3C00E05416 /* ScenePreviewViewController.scn */; };
 		7620D24C21CDACEA008D0095 /* StandardCyborgUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 7620D24A21CDACEA008D0095 /* StandardCyborgUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		7620D25321CDAD40008D0095 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7620D25221CDAD40008D0095 /* CameraManager.swift */; };
 		7620D25B21CDAD69008D0095 /* ScanningHapticFeedbackEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7620D25A21CDAD69008D0095 /* ScanningHapticFeedbackEngine.swift */; };
@@ -19,8 +21,6 @@
 		7623164421EDA5F1004D1AFB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623164321EDA5F1004D1AFB /* CoreVideo.framework */; };
 		7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D021E4558200BC45C7 /* ScanningViewController.swift */; };
 		7642B7D321E455AB00BC45C7 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D221E455AB00BC45C7 /* ShutterButton.swift */; };
-		7642B7E221E55E6100BC45C7 /* PointCloudPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */; };
-		7642B7E321E55E6100BC45C7 /* PointCloudPreviewViewController.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */; };
 		7642B7E521E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */; };
 		7642B82721E69FC900BC45C7 /* StandardCyborgFusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7620D26B21CE0A89008D0095 /* StandardCyborgFusion.framework */; };
 		7642B82F21E6BA6C00BC45C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */; };
@@ -32,6 +32,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1F2CD14C24E5AF3C00E05416 /* ScenePreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenePreviewViewController.swift; sourceTree = "<group>"; };
+		1F2CD14D24E5AF3C00E05416 /* ScenePreviewViewController.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ScenePreviewViewController.scn; sourceTree = "<group>"; };
 		7620D24721CDACEA008D0095 /* StandardCyborgUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = StandardCyborgUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7620D24A21CDACEA008D0095 /* StandardCyborgUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = StandardCyborgUI.h; sourceTree = "<group>"; };
 		7620D24B21CDACEA008D0095 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -47,8 +49,6 @@
 		7623164321EDA5F1004D1AFB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		7642B7D021E4558200BC45C7 /* ScanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningViewController.swift; sourceTree = "<group>"; };
 		7642B7D221E455AB00BC45C7 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
-		7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudPreviewViewController.swift; sourceTree = "<group>"; };
-		7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = PointCloudPreviewViewController.scn; sourceTree = "<group>"; };
 		7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultScanningViewRenderer.swift; sourceTree = "<group>"; };
 		7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeToNodeLineNode.swift; sourceTree = "<group>"; };
@@ -97,6 +97,8 @@
 				7620D24A21CDACEA008D0095 /* StandardCyborgUI.h */,
 				7642B7D021E4558200BC45C7 /* ScanningViewController.swift */,
 				7620D25221CDAD40008D0095 /* CameraManager.swift */,
+				1F2CD14D24E5AF3C00E05416 /* ScenePreviewViewController.scn */,
+				1F2CD14C24E5AF3C00E05416 /* ScenePreviewViewController.swift */,
 				7642B7D221E455AB00BC45C7 /* ShutterButton.swift */,
 				7620D25A21CDAD69008D0095 /* ScanningHapticFeedbackEngine.swift */,
 				7620D25E21CDADA5008D0095 /* ScanningViewRenderer.swift */,
@@ -105,8 +107,6 @@
 				7620D25D21CDADA5008D0095 /* AspectFillTextureCommandEncoder.swift */,
 				7620D26121CDADA5008D0095 /* PointCloudCommandEncoder.swift */,
 				7620D25F21CDADA5008D0095 /* PointCloudCommandEncoder.metal */,
-				7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */,
-				7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */,
 				A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */,
 				76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */,
 				A005B14A2489F16F00165638 /* SCMeshingHelper.swift */,
@@ -197,8 +197,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7642B7E321E55E6100BC45C7 /* PointCloudPreviewViewController.scn in Resources */,
 				7642B82F21E6BA6C00BC45C7 /* Assets.xcassets in Resources */,
+				1F2CD14F24E5AF3C00E05416 /* ScenePreviewViewController.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -221,7 +221,7 @@
 				7620D26721CDADA5008D0095 /* PointCloudCommandEncoder.swift in Sources */,
 				7620D26221CDADA5008D0095 /* DrawColorTexture.metal in Sources */,
 				7620D25321CDAD40008D0095 /* CameraManager.swift in Sources */,
-				7642B7E221E55E6100BC45C7 /* PointCloudPreviewViewController.swift in Sources */,
+				1F2CD14E24E5AF3C00E05416 /* ScenePreviewViewController.swift in Sources */,
 				76751A6522DD9E4E00482EC4 /* NodeToNodeLineNode.swift in Sources */,
 				7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */,
 			);
