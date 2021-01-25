@@ -21,7 +21,7 @@ public class DefaultScanningViewRenderer: ScanningViewRenderer {
     required public init(device: MTLDevice, commandQueue: MTLCommandQueue) {
         _commandQueue = commandQueue
         
-        let library = try! device.makeDefaultLibrary(bundle: Bundle(for: DefaultScanningViewRenderer.self))
+        let library = try! device.makeDefaultLibrary(bundle: Bundle.scuiResourcesBundle)
         
         _drawTextureCommandEncoder = AspectFillTextureCommandEncoder(device: device, library: library)
         _pointCloudRenderer = PointCloudCommandEncoder(device: device, library: library)

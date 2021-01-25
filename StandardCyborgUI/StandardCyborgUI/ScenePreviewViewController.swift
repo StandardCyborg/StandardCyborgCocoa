@@ -59,7 +59,7 @@ import UIKit
     
     /** Owners may mutate this view to change its appearance and add nodes to its scene */
     @objc public let sceneView: SCNView = {
-        guard let sceneURL = Bundle(for: ScenePreviewViewController.self).url(forResource: "ScenePreviewViewController", withExtension: "scn") else {
+        guard let sceneURL = Bundle.scuiResourcesBundle.url(forResource: "ScenePreviewViewController", withExtension: "scn") else {
             fatalError("Could not find scene file for ScenePreviewViewController")
         }
         
