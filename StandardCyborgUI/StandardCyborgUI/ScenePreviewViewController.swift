@@ -29,6 +29,9 @@ import UIKit
     /** Gives us a hook to capture the renderedPointCloudImage separate from when it may be set. */
     @objc public var onRenderedSceneImageUpdated: ((UIImage) -> Void)?
     
+    /** Gives us a hook to know the textured mesh is generated. */
+    @objc public var onTexturedMeshGenerated: ((SCMesh) -> Void)?
+    
     override public var preferredStatusBarStyle: UIStatusBarStyle { .default }
     
     /**
@@ -191,6 +194,7 @@ import UIKit
                 case .success(let mesh):
                     self.scScene = SCScene(pointCloud: pointCloud, mesh: mesh)
                     self._constructScene(withSCScene: self.scScene)
+                    self.onTexturedMeshGenerated?(mesh)
                     
                 case .failure(let error):
                     print("Error processing mesh: \(String(describing: error.localizedDescription))")
