@@ -152,7 +152,7 @@ import UIKit
         }
         
         let progressViewCenter = CGPoint(x: view.center.x, y: view.safeAreaInsets.top + (meshingProgressView.frame.height / 2) + 12)
-        meshingProgressView.bounds = CGRect(x: 0, y: 0, width: 40, height: 8)
+        meshingProgressView.bounds = CGRect(x: 0, y: 0, width: view.bounds.width - 2 * buttonSpacing, height: 8)
         meshingProgressView.center = progressViewCenter
     }
     
