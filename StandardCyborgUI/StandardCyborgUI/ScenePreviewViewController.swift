@@ -29,6 +29,9 @@ import UIKit
     /** Gives us a hook to capture the renderedPointCloudImage separate from when it may be set. */
     @objc public var onRenderedSceneImageUpdated: ((UIImage) -> Void)?
     
+    /** Gives us a hook to know the textured mesh is generated. */
+    @objc public var onTexturedMeshGenerated: ((SCMesh) -> Void)?
+    
     override public var preferredStatusBarStyle: UIStatusBarStyle { .default }
     
     /**
@@ -59,7 +62,7 @@ import UIKit
     
     /** Owners may mutate this view to change its appearance and add nodes to its scene */
     @objc public let sceneView: SCNView = {
-        guard let sceneURL = Bundle(for: ScenePreviewViewController.self).url(forResource: "ScenePreviewViewController", withExtension: "scn") else {
+        guard let sceneURL = Bundle.scuiResourcesBundle.url(forResource: "ScenePreviewViewController", withExtension: "scn") else {
             fatalError("Could not find scene file for ScenePreviewViewController")
         }
         
@@ -152,7 +155,7 @@ import UIKit
         }
         
         let progressViewCenter = CGPoint(x: view.center.x, y: view.safeAreaInsets.top + (meshingProgressView.frame.height / 2) + 12)
-        meshingProgressView.bounds = CGRect(x: 0, y: 0, width: 40, height: 8)
+        meshingProgressView.bounds = CGRect(x: 0, y: 0, width: view.bounds.width - 2 * buttonSpacing, height: 8)
         meshingProgressView.center = progressViewCenter
     }
     
@@ -191,6 +194,7 @@ import UIKit
                 case .success(let mesh):
                     self.scScene = SCScene(pointCloud: pointCloud, mesh: mesh)
                     self._constructScene(withSCScene: self.scScene)
+                    self.onTexturedMeshGenerated?(mesh)
                     
                 case .failure(let error):
                     print("Error processing mesh: \(String(describing: error.localizedDescription))")

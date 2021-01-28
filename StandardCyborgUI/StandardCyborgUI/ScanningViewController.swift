@@ -388,7 +388,7 @@ import UIKit
         _mirrorModeLabel.textAlignment = NSTextAlignment.center
         _mirrorModeLabel.numberOfLines = 2
         _mirrorModeButton.addTarget(self, action: #selector(toggleMirrorMode(_:)), for: UIControl.Event.touchUpInside)
-        _mirrorModeButton.setImage(UIImage(named: "FlipCamera", in: Bundle(for: ScanningViewController.self), compatibleWith: nil)!, for: UIControl.State.normal)
+        _mirrorModeButton.setImage(UIImage(named: "FlipCamera", in: Bundle.scuiResourcesBundle, compatibleWith: nil)!, for: UIControl.State.normal)
         
         _countdownLabel.textColor = UIColor.white
         _countdownLabel.textAlignment = NSTextAlignment.center
@@ -401,7 +401,7 @@ import UIKit
         _scanFailedLabel.backgroundColor = UIColor(white: 1.0, alpha: 0.8)
         _scanFailedLabel.isHidden = true
         
-        dismissButton.setImage(UIImage(named: "Dismiss", in: Bundle.scuiBundle, compatibleWith: nil), for: UIControl.State.normal)
+        dismissButton.setImage(UIImage(named: "Dismiss", in: Bundle.scuiResourcesBundle, compatibleWith: nil), for: UIControl.State.normal)
         dismissButton.addTarget(self, action: #selector(dismissTapped(_:)), for: UIControl.Event.touchUpInside)
         shutterButton.addTarget(self, action: #selector(shutterTapped(_:)), for: UIControl.Event.touchUpInside)
         
