@@ -31,5 +31,7 @@ Pod::Spec.new do |s|
   s.resource_bundles  = { "StandardCyborgUI" => ["StandardCyborgUI/**/*.{scn,xcassets,metal}"] }
   s.weak_frameworks   = "StandardCyborgFusion", "QuartzCore", "CoreVideo"
   s.dependency          "StandardCyborgFusion"
+  s.pod_target_xcconfig = { 'VALID_ARCHS' => 'arm64', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
+  s.user_target_xcconfig = { 'VALID_ARCHS' => 'arm64', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
 end
