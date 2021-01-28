@@ -19,8 +19,6 @@
 		7623164421EDA5F1004D1AFB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623164321EDA5F1004D1AFB /* CoreVideo.framework */; };
 		7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D021E4558200BC45C7 /* ScanningViewController.swift */; };
 		7642B7D321E455AB00BC45C7 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D221E455AB00BC45C7 /* ShutterButton.swift */; };
-		7642B7E221E55E6100BC45C7 /* PointCloudPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */; };
-		7642B7E321E55E6100BC45C7 /* PointCloudPreviewViewController.scn in Resources */ = {isa = PBXBuildFile; fileRef = 7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */; };
 		7642B7E521E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */; };
 		7642B82721E69FC900BC45C7 /* StandardCyborgFusion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7620D26B21CE0A89008D0095 /* StandardCyborgFusion.framework */; };
 		7642B82F21E6BA6C00BC45C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */; };
@@ -47,8 +45,6 @@
 		7623164321EDA5F1004D1AFB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		7642B7D021E4558200BC45C7 /* ScanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningViewController.swift; sourceTree = "<group>"; };
 		7642B7D221E455AB00BC45C7 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
-		7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudPreviewViewController.swift; sourceTree = "<group>"; };
-		7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = PointCloudPreviewViewController.scn; sourceTree = "<group>"; };
 		7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultScanningViewRenderer.swift; sourceTree = "<group>"; };
 		7642B82E21E6BA6C00BC45C7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NodeToNodeLineNode.swift; sourceTree = "<group>"; };
@@ -105,8 +101,6 @@
 				7620D25D21CDADA5008D0095 /* AspectFillTextureCommandEncoder.swift */,
 				7620D26121CDADA5008D0095 /* PointCloudCommandEncoder.swift */,
 				7620D25F21CDADA5008D0095 /* PointCloudCommandEncoder.metal */,
-				7642B7E021E55E6100BC45C7 /* PointCloudPreviewViewController.scn */,
-				7642B7DF21E55E6100BC45C7 /* PointCloudPreviewViewController.swift */,
 				A080752E22D3B3FF00D1CFD8 /* Bundle+SCUI.swift */,
 				76751A6422DD9E4E00482EC4 /* NodeToNodeLineNode.swift */,
 				A005B14A2489F16F00165638 /* SCMeshingHelper.swift */,
@@ -165,7 +159,7 @@
 		7620D23E21CDACEA008D0095 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1230;
 				ORGANIZATIONNAME = "Standard Cyborg";
 				TargetAttributes = {
 					7620D24621CDACEA008D0095 = {
@@ -197,7 +191,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7642B7E321E55E6100BC45C7 /* PointCloudPreviewViewController.scn in Resources */,
 				7642B82F21E6BA6C00BC45C7 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -221,7 +214,6 @@
 				7620D26721CDADA5008D0095 /* PointCloudCommandEncoder.swift in Sources */,
 				7620D26221CDADA5008D0095 /* DrawColorTexture.metal in Sources */,
 				7620D25321CDAD40008D0095 /* CameraManager.swift in Sources */,
-				7642B7E221E55E6100BC45C7 /* PointCloudPreviewViewController.swift in Sources */,
 				76751A6522DD9E4E00482EC4 /* NodeToNodeLineNode.swift in Sources */,
 				7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */,
 			);
@@ -256,6 +248,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -319,6 +312,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
