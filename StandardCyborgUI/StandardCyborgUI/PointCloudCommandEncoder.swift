@@ -55,7 +55,7 @@ public class PointCloudCommandEncoder {
         _device = device
         
         let textureLoader = MTKTextureLoader(device: _device)
-        let bundle = Bundle(for: PointCloudCommandEncoder.self)
+        let bundle = Bundle.scuiResourcesBundle
         /*
         guard let matcapURL = bundle.url(forResource: "matcap", withExtension: "png") else {
             fatalError("Couldn't find matcap.png in \(bundle)")

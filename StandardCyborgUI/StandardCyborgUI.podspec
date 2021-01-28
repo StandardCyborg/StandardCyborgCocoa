@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
   s.requires_arc      = true
   s.source            = { :git => 'https://github.com/StandardCyborg/StandardCyborgCocoa.git', :tag => "v#{s.version}-StandardCyborgUI" }
   s.source_files      = "StandardCyborgUI/**/*.{h,m,swift,metal}"
-  s.resources         = "StandardCyborgUI/**/*.{scn,xcassets}"
+  s.resource_bundles  = { "StandardCyborgUI" => ["StandardCyborgUI/**/*.{scn,xcassets,metal}"] }
   s.weak_frameworks   = "StandardCyborgFusion", "QuartzCore", "CoreVideo"
   s.dependency          "StandardCyborgFusion"
 
