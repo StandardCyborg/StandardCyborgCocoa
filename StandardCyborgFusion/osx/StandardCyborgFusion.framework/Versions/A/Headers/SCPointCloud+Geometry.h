@@ -10,13 +10,15 @@
 #import <StandardCyborgFusion/SCPointCloud.h>
 
 #ifdef __cplusplus
-#import <StandardCyborgData/Geometry.hpp>
+#import <standard_cyborg/sc3d/Geometry.hpp>
 
 NS_ASSUME_NONNULL_BEGIN
 
+using namespace standard_cyborg;
+
 @interface SCPointCloud (Geometry)
 
-- (void)toGeometry:(StandardCyborg::Geometry&)geometry;
+- (void)toGeometry:(sc3d::Geometry&)geometry;
 
 @end
 

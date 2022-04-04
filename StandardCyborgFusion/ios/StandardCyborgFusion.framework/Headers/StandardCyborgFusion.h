@@ -14,8 +14,6 @@ FOUNDATION_EXPORT double StandardCyborgFusionVersionNumber;
 //! Project version string for StandardCyborgFusion.
 FOUNDATION_EXPORT const unsigned char StandardCyborgFusionVersionString[];
 
-// In this header, you should import all the public headers of your framework using statements like #import <StandardCyborgFusion/PublicHeader.h>
-
 #import <StandardCyborgFusion/CVPixelBufferHelpers.h>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
 #import <StandardCyborgFusion/SCEyewearNode.h>
@@ -33,11 +31,13 @@ FOUNDATION_EXPORT const unsigned char StandardCyborgFusionVersionString[];
 #import <StandardCyborgFusion/SCMeshingOperation.h>
 #import <StandardCyborgFusion/SCMeshTexturing.h>
 #import <StandardCyborgFusion/SCMetalSimulatorStubs.h>
+#import <StandardCyborgFusion/SCPerceptionRecorder.h>
 #import <StandardCyborgFusion/SCPointCloud.h>
 #import <StandardCyborgFusion/SCPointCloud+FileIO.h>
 #import <StandardCyborgFusion/SCPointCloud+Geometry.h>
 #import <StandardCyborgFusion/SCPointCloud+Metal.h>
 #import <StandardCyborgFusion/SCPointCloud+SceneKit.h>
+#import <StandardCyborgFusion/SCPerceptionRecorder.h>
 #import <StandardCyborgFusion/SCReconstructionManager.h>
 #import <StandardCyborgFusion/SCReconstructionManagerParameters.h>
 #import <StandardCyborgFusion/SCScene.h>

@@ -33,18 +33,6 @@ typedef struct {
     NSInteger droppedFrameCount;
 } SCReconstructionManagerStatistics;
 
-
-extern NSString * const SCReconstructionManagerAPIErrorDomain;
-
-/**
- Error codes within SCReconstructionManagerAPIErrorDomain
- These are only reported for Standard Cyborg API usage
- */
-typedef NS_ENUM(NSUInteger, SCReconstructionManagerAPIError) {
-    SCReconstructionManagerAPIErrorInvalidAPIKey = 1,
-    SCReconstructionManagerAPIErrorExceededScanCountLimit = 2
-};
-
 /**
  Performs 3D reconstruction by assimilating color, depth, and IMU data.
  All calls are threadsafe.
