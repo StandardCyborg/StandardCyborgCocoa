@@ -22,4 +22,6 @@ xcuserdata/
 
 ## Dependencies
 Carthage/
+StandardCyborgExample/Pods/
+StandardCyborgExample/*.xcworkspace
 
