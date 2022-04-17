@@ -22,18 +22,5 @@ Pod::Spec.new do |s|
     'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/StandardCyborgFusion/osx/StandardCyborgFusion.framework/Versions/Current/CppHeaders"',
     'ONLY_ACTIVE_ARCH' => 'YES',
   }
-  # The primary purpose of the Mac OS SDK is to develop command line applications for testing. If
-  # the framework is not in ~/Library/Frameworks though, it won't run, period. So this step, though
-  # not the most pleasant, sets up a script to install (or replace) the framework locally so that
-  # you may run local applications.
-  s.osx.script_phase = {
-    :name => 'Copy Framework to Library path',
-    :execution_position => :before_compile,
-    :script => <<-CMD
-      mkdir -p "$HOME/Library/Frameworks"
-      rm -rf "$HOME/Library/Frameworks/StandardCyborgFusion.framework"
-      cp -R "$PODS_ROOT/StandardCyborgFusion/osx/StandardCyborgFusion.framework" "$HOME/Library/Frameworks/"
-    CMD
-  }
 end
 
