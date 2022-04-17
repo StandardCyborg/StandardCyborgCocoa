@@ -12,13 +12,15 @@ Pod::Spec.new do |s|
   s.ios.deployment_target   = '13.0'
   s.ios.vendored_frameworks = 'ios/StandardCyborgFusion.framework'
   s.ios.xcconfig = {
-    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/StandardCyborgFusion/ios/StandardCyborgFusion.framework/CppHeaders"'
+    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/StandardCyborgFusion/ios/StandardCyborgFusion.framework/CppHeaders"',
+    'ONLY_ACTIVE_ARCH' => 'YES',
   }
 
   s.osx.deployment_target   = '11.0'
   s.osx.vendored_frameworks = 'osx/StandardCyborgFusion.framework'
   s.osx.xcconfig = {
-    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/StandardCyborgFusion/osx/StandardCyborgFusion.framework/Versions/Current/CppHeaders"'
+    'HEADER_SEARCH_PATHS' => '"${PODS_ROOT}/StandardCyborgFusion/osx/StandardCyborgFusion.framework/Versions/Current/CppHeaders"',
+    'ONLY_ACTIVE_ARCH' => 'YES',
   }
   # The primary purpose of the Mac OS SDK is to develop command line applications for testing. If
   # the framework is not in ~/Library/Frameworks though, it won't run, period. So this step, though
