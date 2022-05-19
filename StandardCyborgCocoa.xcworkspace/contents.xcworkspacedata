@@ -5,9 +5,6 @@
       location = "group:StandardCyborgUI/StandardCyborgUI.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:StandardCyborgNetworking/StandardCyborgNetworking.xcodeproj">
-   </FileRef>
-   <FileRef
       location = "group:StandardCyborgExample/StandardCyborgExample.xcodeproj">
    </FileRef>
 </Workspace>
