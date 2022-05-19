@@ -17,12 +17,6 @@ This repo depends on Standard Cyborg's Cocoapods: StandardCyborgFusion, Standard
 git clone git@github.com:StandardCyborg/StandardCyborgCocoa.git
 cd StandardCyborgCocoa/StandardCyborgExample
 
-# Sign Up/Sign In into your SC Platform account to get your API Keys
-open https://platform.standardcyborg.com
-
-# Add your API keys to your Info.plist
-plutil -replace SC_API_KEY -string YOUR_KEY StandardCyborgExample/Info.plist
-
 # install pods
 pod install
 

@@ -40,7 +40,7 @@
 		7620D25E21CDADA5008D0095 /* ScanningViewRenderer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningViewRenderer.swift; sourceTree = "<group>"; };
 		7620D25F21CDADA5008D0095 /* PointCloudCommandEncoder.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = PointCloudCommandEncoder.metal; sourceTree = "<group>"; };
 		7620D26121CDADA5008D0095 /* PointCloudCommandEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointCloudCommandEncoder.swift; sourceTree = "<group>"; };
-		7620D26B21CE0A89008D0095 /* StandardCyborgFusion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StandardCyborgFusion.framework; path = ../StandardCyborgFusion/StandardCyborgFusion.framework; sourceTree = SOURCE_ROOT; };
+		7620D26B21CE0A89008D0095 /* StandardCyborgFusion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StandardCyborgFusion.framework; path = ../StandardCyborgFusion/ios/StandardCyborgFusion.framework; sourceTree = SOURCE_ROOT; };
 		7623164121EDA5D2004D1AFB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7623164321EDA5F1004D1AFB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		7642B7D021E4558200BC45C7 /* ScanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningViewController.swift; sourceTree = "<group>"; };
@@ -353,8 +353,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion/ios";
 				INFOPLIST_FILE = StandardCyborgUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -380,8 +381,9 @@
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
-				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion/ios";
 				INFOPLIST_FILE = StandardCyborgUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

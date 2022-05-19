@@ -1,42 +1,21 @@
 PODS:
-  - PromiseKit (6.17.0):
-    - PromiseKit/CorePromise (= 6.17.0)
-    - PromiseKit/Foundation (= 6.17.0)
-    - PromiseKit/UIKit (= 6.17.0)
-  - PromiseKit/CorePromise (6.17.0)
-  - PromiseKit/Foundation (6.17.0):
-    - PromiseKit/CorePromise
-  - PromiseKit/UIKit (6.17.0):
-    - PromiseKit/CorePromise
-  - StandardCyborgFusion (2.1.2)
-  - StandardCyborgNetworking (2.1.2):
-    - PromiseKit (~> 6.0)
-    - PromiseKit/Foundation (~> 6.0)
-    - Zip (~> 1.1)
+  - StandardCyborgFusion (2.3.1)
   - StandardCyborgUI (1.7.1):
     - StandardCyborgFusion
-  - Zip (1.1.0)
 
 DEPENDENCIES:
   - StandardCyborgFusion
-  - StandardCyborgNetworking
   - StandardCyborgUI
 
 SPEC REPOS:
   trunk:
-    - PromiseKit
     - StandardCyborgFusion
-    - StandardCyborgNetworking
     - StandardCyborgUI
-    - Zip
 
 SPEC CHECKSUMS:
-  PromiseKit: 996202d4cae72b7801b312abef4cd2f995b2978a
-  StandardCyborgFusion: c5d03288bd71efe06105dc943bc10d28c0b6fcce
-  StandardCyborgNetworking: 6c68d9d10faa85932d5fbf6441a4e9664a83dd12
+  StandardCyborgFusion: addf61950fe03b35e6a0a512e6f796b23962772a
   StandardCyborgUI: ab2fcc42898f4e16e782e2922dab273f97348164
-  Zip: 8877eede3dda76bcac281225c20e71c25270774c
 
-PODFILE CHECKSUM: 959d387426a2c77af4d7b0733d861eaffd4a4bc0
+PODFILE CHECKSUM: c744a9dafb0a548ac93e30bd38c9cfa7f7d72b35
 
 COCOAPODS: 1.11.3

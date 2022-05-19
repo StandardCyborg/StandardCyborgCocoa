@@ -5,5 +5,5 @@ target 'StandardCyborgExample' do
   # Pods for standard cyborg
   pod 'StandardCyborgFusion'
   pod 'StandardCyborgUI'
-  pod 'StandardCyborgNetworking'
 end
+
