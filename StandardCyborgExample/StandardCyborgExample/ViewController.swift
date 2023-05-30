@@ -68,7 +68,7 @@ class ViewController: UIViewController {
         vc.rightButton.setTitle("Dismiss", for: UIControl.State.normal)
         vc.leftButton.backgroundColor = UIColor(named: "DestructiveAction")
         vc.rightButton.backgroundColor = UIColor(named: "DefaultAction")
-        vc.modalPresentationStyle = .fullScreen
+        vc.modalPresentationStyle = UIModalPresentationStyle.fullScreen
         scenePreviewVC = vc
         present(vc, animated: true)
     }

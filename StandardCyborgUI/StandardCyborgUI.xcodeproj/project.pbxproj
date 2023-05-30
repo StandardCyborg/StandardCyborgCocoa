@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 53;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -17,6 +17,8 @@
 		7620D26721CDADA5008D0095 /* PointCloudCommandEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7620D26121CDADA5008D0095 /* PointCloudCommandEncoder.swift */; };
 		7623164221EDA5D2004D1AFB /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623164121EDA5D2004D1AFB /* QuartzCore.framework */; };
 		7623164421EDA5F1004D1AFB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623164321EDA5F1004D1AFB /* CoreVideo.framework */; };
+		762D925D2A25AE7700399490 /* ScenePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762D925B2A25AE7700399490 /* ScenePreviewViewController.swift */; };
+		762D925E2A25AE7700399490 /* ScenePreviewViewController.scn in Resources */ = {isa = PBXBuildFile; fileRef = 762D925C2A25AE7700399490 /* ScenePreviewViewController.scn */; };
 		7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D021E4558200BC45C7 /* ScanningViewController.swift */; };
 		7642B7D321E455AB00BC45C7 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D221E455AB00BC45C7 /* ShutterButton.swift */; };
 		7642B7E521E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */; };
@@ -43,6 +45,8 @@
 		7620D26B21CE0A89008D0095 /* StandardCyborgFusion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StandardCyborgFusion.framework; path = ../StandardCyborgFusion/ios/StandardCyborgFusion.framework; sourceTree = SOURCE_ROOT; };
 		7623164121EDA5D2004D1AFB /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		7623164321EDA5F1004D1AFB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		762D925B2A25AE7700399490 /* ScenePreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScenePreviewViewController.swift; sourceTree = "<group>"; };
+		762D925C2A25AE7700399490 /* ScenePreviewViewController.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ScenePreviewViewController.scn; sourceTree = "<group>"; };
 		7642B7D021E4558200BC45C7 /* ScanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningViewController.swift; sourceTree = "<group>"; };
 		7642B7D221E455AB00BC45C7 /* ShutterButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShutterButton.swift; sourceTree = "<group>"; };
 		7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultScanningViewRenderer.swift; sourceTree = "<group>"; };
@@ -97,6 +101,8 @@
 				7620D25A21CDAD69008D0095 /* ScanningHapticFeedbackEngine.swift */,
 				7620D25E21CDADA5008D0095 /* ScanningViewRenderer.swift */,
 				7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */,
+				762D925C2A25AE7700399490 /* ScenePreviewViewController.scn */,
+				762D925B2A25AE7700399490 /* ScenePreviewViewController.swift */,
 				7620D25C21CDADA5008D0095 /* DrawColorTexture.metal */,
 				7620D25D21CDADA5008D0095 /* AspectFillTextureCommandEncoder.swift */,
 				7620D26121CDADA5008D0095 /* PointCloudCommandEncoder.swift */,
@@ -159,7 +165,8 @@
 		7620D23E21CDACEA008D0095 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1230;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				ORGANIZATIONNAME = "Standard Cyborg";
 				TargetAttributes = {
 					7620D24621CDACEA008D0095 = {
@@ -192,6 +199,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7642B82F21E6BA6C00BC45C7 /* Assets.xcassets in Resources */,
+				762D925E2A25AE7700399490 /* ScenePreviewViewController.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -214,6 +222,7 @@
 				7620D26721CDADA5008D0095 /* PointCloudCommandEncoder.swift in Sources */,
 				7620D26221CDADA5008D0095 /* DrawColorTexture.metal in Sources */,
 				7620D25321CDAD40008D0095 /* CameraManager.swift in Sources */,
+				762D925D2A25AE7700399490 /* ScenePreviewViewController.swift in Sources */,
 				76751A6522DD9E4E00482EC4 /* NodeToNodeLineNode.swift in Sources */,
 				7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */,
 			);
@@ -273,7 +282,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -332,7 +341,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -349,19 +358,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
+				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion/ios";
 				INFOPLIST_FILE = StandardCyborgUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.4.1;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.StandardCyborgUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
@@ -377,19 +389,22 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				BITCODE_GENERATION_MODE = bitcode;
+				CODE_SIGN_IDENTITY = "";
 				DEFINES_MODULE = YES;
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion/ios";
 				INFOPLIST_FILE = StandardCyborgUI/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.4.1;
+				MODULE_VERIFIER_SUPPORTED_LANGUAGES = "objective-c objective-c++";
+				MODULE_VERIFIER_SUPPORTED_LANGUAGE_STANDARDS = "gnu11 gnu++14";
 				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.StandardCyborgUI;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
 				SKIP_INSTALL = YES;
