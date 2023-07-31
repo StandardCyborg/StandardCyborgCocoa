@@ -1,6 +1,6 @@
 //
 //  SCLandmark2D.h
-//  FaceLandmarking
+//  
 //
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //

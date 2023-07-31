@@ -16,8 +16,6 @@ FOUNDATION_EXPORT const unsigned char StandardCyborgFusionVersionString[];
 
 #import <StandardCyborgFusion/CVPixelBufferHelpers.h>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
-#import <StandardCyborgFusion/SCFaceLandmarking3D.h>
-#import <StandardCyborgFusion/SCFaceTracking.h>
 #import <StandardCyborgFusion/SCFootTracking.h>
 #import <StandardCyborgFusion/SCLandmark2D.h>
 #import <StandardCyborgFusion/SCLandmark3D.h>
