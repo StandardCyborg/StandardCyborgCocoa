@@ -260,21 +260,13 @@
 		<data>
 		Rb3pgVmB6it25Vg1I4R0DH6/xno=
 		</data>
-		<key>Headers/SCFaceLandmarking3D.h</key>
-		<data>
-		8IiEZ+wReiMi7ArnLr6A3h7RBQ0=
-		</data>
-		<key>Headers/SCFaceTracking.h</key>
-		<data>
-		dAO1+9j9a7rwxhOvLICxu7udWSw=
-		</data>
 		<key>Headers/SCFootTracking.h</key>
 		<data>
-		yxC/dZoTVOj4a/yufcM1JBZaipc=
+		3EpyEQObYZ3j9bmd6W4uBM/XBpI=
 		</data>
 		<key>Headers/SCLandmark2D.h</key>
 		<data>
-		NHrObvz8hoUByszg9oWtabhZkOw=
+		bHd902pjUeWeANyLHv6Ny+gWKZA=
 		</data>
 		<key>Headers/SCLandmark3D.h</key>
 		<data>
@@ -306,7 +298,7 @@
 		</data>
 		<key>Headers/SCMeshingOperation.h</key>
 		<data>
-		UcLf4O+PmwE0F2zPs4ObeLoR20k=
+		jCYecSiWZPuQlWFEzIbE70UxCw8=
 		</data>
 		<key>Headers/SCPointCloud+FileIO.h</key>
 		<data>
@@ -342,11 +334,11 @@
 		</data>
 		<key>Headers/StandardCyborgFusion.h</key>
 		<data>
-		fx/JdGJBWFL2yiWD+MLTk41ibcg=
+		vpXgbbWmT1qOMwtD8/td5rFCwPA=
 		</data>
 		<key>Info.plist</key>
 		<data>
-		OlvARt0/oKdSda/OyOgKQHamXPU=
+		OoOCjRTq3Ldgc9QJDssVcHQOeEA=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -354,7 +346,7 @@
 		</data>
 		<key>default.metallib</key>
 		<data>
-		qKhFuov2jDyJXJQqAxxVA8+eLeg=
+		RyFRIRdiF1xxyPseYg6Eg70EiSo=
 		</data>
 	</dict>
 	<key>files2</key>
@@ -807,32 +799,18 @@
 			NdyqqttFow2Oth153IPbyDE5YXIqmPY6IJgMh5VIizc=
 			</data>
 		</dict>
-		<key>Headers/SCFaceLandmarking3D.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			REFmlXIRV03Rs7bxqUa5jbmcvMLJfoZLUWcERQHSVeQ=
-			</data>
-		</dict>
-		<key>Headers/SCFaceTracking.h</key>
-		<dict>
-			<key>hash2</key>
-			<data>
-			WubnvuKAl5SzwZ9zcJFXkDDvttaTfQKzg4JBxsrBbhk=
-			</data>
-		</dict>
 		<key>Headers/SCFootTracking.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			Fti0OjKdZ9QIRVwqvG+IGGZHAv9U4he8hgSc6CTg8oE=
+			OdwBdHYj2e9UGJYqwPgleXNMuB9aI/Vuaqo9MGkHCAA=
 			</data>
 		</dict>
 		<key>Headers/SCLandmark2D.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			K/Hy0iA+aepdy9Tse40LNIigyXkLOSp6ovDSn+90XiI=
+			4wRhgthqjUBpoSa54K3cIhXByZ/xmgxRR+E4GhLng3I=
 			</data>
 		</dict>
 		<key>Headers/SCLandmark3D.h</key>
@@ -888,7 +866,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Q2kxi8XsaM9nKqXXvVzjyKHU9i4/jNlTgUeAXR+b48Y=
+			b+umOlE8Hh5PXzDV5UUAyMBd9M9vM+tQ2Hba5yB3uWQ=
 			</data>
 		</dict>
 		<key>Headers/SCPointCloud+FileIO.h</key>
@@ -951,7 +929,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			dkzTezSXIn9DBCnrYR+rSQSlcKdX3g99KVmaWsj2mgM=
+			2X+p3/To0GtIkyj2KDq1Hpn8Hi8w8aSUCyuvPSeZ9S4=
 			</data>
 		</dict>
 		<key>Modules/module.modulemap</key>
@@ -965,7 +943,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			moc0S7O+xOko0NEHAtIVGOWbj7Vjefhnj42+WCzoFS0=
+			FiOVrJnXGUYwSiM2GVcGwLrVWrVVtBb6R2kbnkc8C58=
 			</data>
 		</dict>
 	</dict>

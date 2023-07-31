@@ -9,17 +9,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-extern NSString * const SCMeshingAPIErrorDomain;
-
-/**
- Error codes within SCMeshingAPIErrorDomain
- These are only reported for Standard Cyborg API usage
- */
-typedef NS_ENUM(NSUInteger, SCMeshingAPIError) {
-    SCMeshingAPIErrorInvalidAPIKey = 1,
-    SCMeshingAPIErrorExceededMeshingCountLimit = 2
-};
-
 @interface SCMeshingParameters : NSObject
 
 /**
@@ -65,11 +54,6 @@ typedef NS_ENUM(NSUInteger, SCMeshingAPIError) {
  @param progress From 0.0-1.0
  */
 @property (nonatomic, copy) void (^progressHandler)(float progress);
-
-/**
- If non-nil, the error that occurred when performing this operation.
- */
-@property (nonatomic, nullable) NSError *error;
 
 @end
 
