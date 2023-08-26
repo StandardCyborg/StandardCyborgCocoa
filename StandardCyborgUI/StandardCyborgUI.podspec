@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name              = "StandardCyborgUI"
-  s.version           = "1.7.1"
+  s.version           = "1.7.2"
   s.summary           = "Classes for driving and visualizing scanning using StandardCyborgFusion"
   s.homepage          = 'https://github.com/StandardCyborg/StandardCyborgCocoa'
   s.social_media_url  = 'https://twitter.com/StandardCyborg'
@@ -31,7 +31,5 @@ Pod::Spec.new do |s|
   s.resource_bundles  = { "StandardCyborgUI" => ["StandardCyborgUI/**/*.{scn,xcassets,metal}"] }
   s.weak_frameworks   = "StandardCyborgFusion", "QuartzCore", "CoreVideo"
   s.dependency          "StandardCyborgFusion"
-  s.pod_target_xcconfig = { 'VALID_ARCHS' => 'arm64', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
-  s.user_target_xcconfig = { 'VALID_ARCHS' => 'arm64', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'arm64' }
 
 end
