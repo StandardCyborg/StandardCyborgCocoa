@@ -9,7 +9,7 @@ This simple app demonstrates how to integrate our SDK for 3D scanning and meshin
 </p>
 
 ## Getting Started
-This repo depends on Standard Cyborg's Cocoapods: StandardCyborgFusion, StandardCyborgUI, and StandardCyborgNetworking. You'll need to have [Cocoapods](https://cocoapods.org/) set up first. You'll also need to have Git and Xcode installed. As well as a device with TrueDepth/FaceID camera.
+This repo depends on Standard Cyborg's Cocoapods: StandardCyborgFusion and StandardCyborgUI. You'll need to have [Cocoapods](https://cocoapods.org/) set up first. You'll also need to have Git and Xcode installed. As well as a device with TrueDepth/FaceID camera.
 
 
 ```
