@@ -29,6 +29,14 @@ typedef NS_ENUM(NSUInteger, SCMeshTexturingAPIError) {
 };
 
 /**
+ Use this to select a coloring strategy when generating the textured mesh
+ */
+typedef NS_ENUM(NSUInteger, SCMeshColoringStrategy) {
+    SCMeshColoringStrategyVertex = 1,
+    SCMeshColoringStrategyUVMap = 2
+};
+
+/**
  Use this class during and at the end of scanning to generate a textured mesh from a SCPointCloud.
  */
 @interface SCMeshTexturing : NSObject
@@ -89,9 +97,10 @@ typedef NS_ENUM(NSUInteger, SCMeshTexturingAPIError) {
 - (void)reconstructMeshWithWithPointCloud:(SCPointCloud *)pointCloud
                         textureResolution:(NSInteger)textureResolution
                         meshingParameters:(SCMeshingParameters *)meshingParameters
+                         coloringStrategy:(SCMeshColoringStrategy)coloringStrategy
                                  progress:(void (^)(float progress, BOOL *shouldStop))progress
                                completion:(void (^)(NSError * _Nullable, SCMesh * _Nullable))completion
-NS_SWIFT_NAME(reconstructMesh(pointCloud:textureResolution:meshingParameters:progress:completion:));
+NS_SWIFT_NAME(reconstructMesh(pointCloud:textureResolution:meshingParameters:coloringStrategy:progress:completion:));
 
 /**
  Call this to reset the internal state for a new scan after performing or abandoning a reconstruction.

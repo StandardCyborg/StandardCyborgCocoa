@@ -282,7 +282,7 @@
 		</data>
 		<key>Headers/SCMesh+Geometry.h</key>
 		<data>
-		9q0PB4H6s9w1hoSQe6QHQl4UFb8=
+		KpPu0WIgXESpPI+SXkNexjkOtt0=
 		</data>
 		<key>Headers/SCMesh+SceneKit.h</key>
 		<data>
@@ -290,11 +290,11 @@
 		</data>
 		<key>Headers/SCMesh.h</key>
 		<data>
-		DhgpxosWp4311TmeD6zMOWMQLBU=
+		yD76EiIdz4qhgDQG7VpMyL3MkT0=
 		</data>
 		<key>Headers/SCMeshTexturing.h</key>
 		<data>
-		3dU9B8dV+IML5asO5TThtrYdt+E=
+		gpzQPE8KuhZw85tuUmWePr3W4BY=
 		</data>
 		<key>Headers/SCMeshingOperation.h</key>
 		<data>
@@ -338,7 +338,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		uymPXZJt+G7iiKg7JeRPqqV5IcI=
+		P31VXcm6cxkaJVq0nX3vCODRAHs=
 		</data>
 		<key>Modules/module.modulemap</key>
 		<data>
@@ -838,7 +838,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			UBAsppJB+YfyIB9fmTCfd6HdpCtJALIrdKEOGPP1b5Q=
+			EoYW7HDMuS/YO3nmKP+vjq+W4yKCeCpYjDOH+ZLssc0=
 			</data>
 		</dict>
 		<key>Headers/SCMesh+SceneKit.h</key>
@@ -852,14 +852,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			vpP/JDX7+Zr61qkhpp2TybrKQfgxGJ9TV74TqA46EXw=
+			Hlp/OffA/S+lmuFAxfAn414iI1MDAGIKQBLDvxEZbH4=
 			</data>
 		</dict>
 		<key>Headers/SCMeshTexturing.h</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			CvJ2Q8z88AUDknxh+BkOiezGilETjgnzJv9Rcz/1NfQ=
+			o60xIe5MArv9kMrX/F1HySWtZsEgTo8oJt0rbcbFMXA=
 			</data>
 		</dict>
 		<key>Headers/SCMeshingOperation.h</key>
