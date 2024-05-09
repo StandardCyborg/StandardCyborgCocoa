@@ -28,10 +28,15 @@ public class SCMeshingHelper {
     }
      
     func processMesh(onMeshStatusUpdate: @escaping ((Status) -> Void)) {
+        processMesh(coloringStrategy: .vertex, onMeshStatusUpdate: onMeshStatusUpdate)
+    }
+    
+    func processMesh(coloringStrategy: SCMeshColoringStrategy, onMeshStatusUpdate: @escaping ((Status) -> Void)) {
         meshTexturing.reconstructMesh(
             pointCloud: pointCloud,
             textureResolution: 2048,
             meshingParameters: meshingParameters,
+            coloringStrategy: coloringStrategy,
             progress: { (progress, stop) in
                 onMeshStatusUpdate(.inProgress(progress))
             },
