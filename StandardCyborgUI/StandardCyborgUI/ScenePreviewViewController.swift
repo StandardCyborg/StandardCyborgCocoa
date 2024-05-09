@@ -14,6 +14,7 @@ import UIKit
     @objc public private(set) var scScene: SCScene
     @objc private var meshTexturing: SCMeshTexturing?
     @objc private var landmarks: Set<SCLandmark3D>?
+    @objc private var coloringStrategy: SCMeshColoringStrategy = .vertex
     
     /** A snapshot of the scene as-rendered, which becomes available
         as soon as the view controller's view appears. If meshing is enabled this
@@ -43,6 +44,21 @@ import UIKit
      */
     @objc public init(pointCloud: SCPointCloud, meshTexturing: SCMeshTexturing?, landmarks: Set<SCLandmark3D>?) {
         self.scScene = SCScene(pointCloud: pointCloud, mesh: nil)
+        self.meshTexturing = meshTexturing
+        self.landmarks = landmarks
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    /**
+     Create an instance of ScenePreviewViewController with a pointCloud, meshColoringStrategy, meshTexturing instance, and landmarks.
+     
+     You can get the correct instance of `meshTexturing` from `ScanningViewController.meshTexturing`
+     after scanning has completed in the delegate callback `ScanningViewController(_ controller:didScan pointCloud)`
+     */
+    @objc public init(pointCloud: SCPointCloud, meshColoringStrategy: SCMeshColoringStrategy, meshTexturing: SCMeshTexturing, landmarks: Set<SCLandmark3D>?) {
+        self.scScene = SCScene(pointCloud: pointCloud, mesh: nil)
+        self.coloringStrategy = meshColoringStrategy
         self.meshTexturing = meshTexturing
         self.landmarks = landmarks
         
@@ -216,7 +232,7 @@ import UIKit
         meshingProgressView.setProgress(0, animated: false)
         
         _meshingHelper = SCMeshingHelper(pointCloud: pointCloud, meshTexturing: meshTexturing)
-        _meshingHelper?.processMesh { meshingStatus in
+        _meshingHelper?.processMesh(coloringStrategy: coloringStrategy) { meshingStatus in
             DispatchQueue.main.async {
                 switch meshingStatus {
                 case .inProgress(let progress):
