@@ -1,0 +1,77 @@
+PODS:
+  - EigenCPPCocoa (3.4.0)
+  - PoissonRecon (9.011)
+  - SSZipArchive (2.4.3)
+  - StandardCyborgFusion (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+    - StandardCyborgFusion/happly (= 2.3.7)
+    - StandardCyborgFusion/json (= 2.3.7)
+    - StandardCyborgFusion/nanoflann (= 2.3.7)
+    - StandardCyborgFusion/scsdk (= 2.3.7)
+    - StandardCyborgFusion/SparseICP (= 2.3.7)
+    - StandardCyborgFusion/stb (= 2.3.7)
+    - StandardCyborgFusion/tinygltf (= 2.3.7)
+  - StandardCyborgFusion/happly (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/json (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/nanoflann (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/scsdk (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/SparseICP (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/stb (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/tinygltf (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+
+DEPENDENCIES:
+  - PoissonRecon (from `PoissonRecon.podspec`)
+  - SSZipArchive
+  - StandardCyborgFusion (from `StandardCyborgFusion/StandardCyborgFusion.podspec`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - EigenCPPCocoa
+    - SSZipArchive
+
+EXTERNAL SOURCES:
+  PoissonRecon:
+    :podspec: PoissonRecon.podspec
+  StandardCyborgFusion:
+    :podspec: StandardCyborgFusion/StandardCyborgFusion.podspec
+
+CHECKOUT OPTIONS:
+  PoissonRecon:
+    :commit: 9f30316c1b247736654652c72e06b3f0db2e79ed
+    :git: "git@github.com:StandardCyborg/PoissonRecon.git"
+  StandardCyborgFusion:
+    :commit: 41600114eff8098ecf13d00a47ccd8bd2ee6b6ae
+    :git: "git@github.com:StandardCyborg/StandardCyborgCocoa.git"
+
+SPEC CHECKSUMS:
+  EigenCPPCocoa: c00f1c93edc3728d58580f347980f3fcef20ef9a
+  PoissonRecon: 6729586f7536693314a5dc83cb243cbb70cc969d
+  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
+  StandardCyborgFusion: e75ad8606f99cc5f8ab70d33f92d0e7fe9a0821f
+
+PODFILE CHECKSUM: bc8071c9d0a0f9d3f880f146e392c20cb26a8d74
+
+COCOAPODS: 1.16.2

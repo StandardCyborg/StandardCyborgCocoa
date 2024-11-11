@@ -1,21 +1,77 @@
 PODS:
-  - StandardCyborgFusion (2.3.2)
-  - StandardCyborgUI (1.7.1):
+  - EigenCPPCocoa (3.4.0)
+  - PoissonRecon (9.011)
+  - SSZipArchive (2.4.3)
+  - StandardCyborgFusion (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+    - StandardCyborgFusion/happly (= 2.3.7)
+    - StandardCyborgFusion/json (= 2.3.7)
+    - StandardCyborgFusion/nanoflann (= 2.3.7)
+    - StandardCyborgFusion/scsdk (= 2.3.7)
+    - StandardCyborgFusion/SparseICP (= 2.3.7)
+    - StandardCyborgFusion/stb (= 2.3.7)
+    - StandardCyborgFusion/tinygltf (= 2.3.7)
+  - StandardCyborgFusion/happly (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/json (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/nanoflann (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/scsdk (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/SparseICP (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/stb (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgFusion/tinygltf (2.3.7):
+    - EigenCPPCocoa (~> 3.4.0)
+    - PoissonRecon (~> 9.011)
+    - SSZipArchive
+  - StandardCyborgUI (1.7.3):
     - StandardCyborgFusion
 
 DEPENDENCIES:
-  - StandardCyborgFusion
-  - StandardCyborgUI
+  - StandardCyborgFusion (from `../StandardCyborgFusion/StandardCyborgFusion.podspec`)
+  - StandardCyborgUI (from `../StandardCyborgUI/StandardCyborgUI.podspec`)
 
 SPEC REPOS:
   trunk:
-    - StandardCyborgFusion
-    - StandardCyborgUI
+    - EigenCPPCocoa
+    - PoissonRecon
+    - SSZipArchive
+
+EXTERNAL SOURCES:
+  StandardCyborgFusion:
+    :podspec: "../StandardCyborgFusion/StandardCyborgFusion.podspec"
+  StandardCyborgUI:
+    :podspec: "../StandardCyborgUI/StandardCyborgUI.podspec"
+
+CHECKOUT OPTIONS:
+  StandardCyborgFusion:
+    :commit: 41600114eff8098ecf13d00a47ccd8bd2ee6b6ae
+    :git: "git@github.com:StandardCyborg/StandardCyborgCocoa.git"
 
 SPEC CHECKSUMS:
-  StandardCyborgFusion: f5c03dbf55f6c899924f887c76a424785c084513
-  StandardCyborgUI: ab2fcc42898f4e16e782e2922dab273f97348164
+  EigenCPPCocoa: 4b79c92db8d6e634c34e28e3cf5e97ba1ab100b5
+  PoissonRecon: 279df793b9c97e0b125e397039ed6a77264da4e3
+  SSZipArchive: fe6a26b2a54d5a0890f2567b5cc6de5caa600aef
+  StandardCyborgFusion: e75ad8606f99cc5f8ab70d33f92d0e7fe9a0821f
+  StandardCyborgUI: 5a1efccc77f3f802bfa545945357cb2fbcbe56a9
 
-PODFILE CHECKSUM: c744a9dafb0a548ac93e30bd38c9cfa7f7d72b35
+PODFILE CHECKSUM: b55c45ffd249d7095ba6e87387b16a765d02b8e9
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.16.2

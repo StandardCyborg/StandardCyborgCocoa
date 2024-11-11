@@ -3,7 +3,7 @@ target 'StandardCyborgExample' do
   use_frameworks!
 
   # Pods for standard cyborg
-  pod 'StandardCyborgFusion'
-  pod 'StandardCyborgUI'
+  pod 'StandardCyborgFusion', :podspec => '../StandardCyborgFusion/StandardCyborgFusion.podspec'
+  pod 'StandardCyborgUI', :podspec => '../StandardCyborgUI/StandardCyborgUI.podspec'
 end
 

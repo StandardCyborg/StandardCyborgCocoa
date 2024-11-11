@@ -16,17 +16,17 @@ Pod::Spec.new do |s|
   s.license = { :type => 'MIT', :file => 'LICENSE' }
   s.author = { 'Standard Cyborg' => 'sdk@standardcyborg.com' }
   s.homepage = "https://github.com/StandardCyborg/StandardCyborgCocoa"
-  # s.ios.deployment_target = '13.0'
-  # s.osx.deployment_target = '11.0'
+  s.ios.deployment_target = '13.0'
+  s.osx.deployment_target = '11.0'
 
   # s.source = { :path => libsc_root }
-  s.source = { :git => 'git@github.com:StandardCyborg/StandardCyborgCocoa.git#aaptho/merge-scsdk' }
+  s.source = { :git => 'git@github.com:StandardCyborg/StandardCyborgCocoa.git', :branch => 'aaptho/merge-scsdk' }
   s.source_files = "scsdk/c++/scsdk/**/*.{h,hpp,cc,cpp}"
   s.public_header_files = "scsdk/c++/scsdk/**/*.{hpp,h}"
   s.header_mappings_dir = "scsdk/c++/scsdk"
   
   # Public Dependencies
-  s.dependency 'EigenCPPCocoa'
+  s.dependency 'EigenCPPCocoa', '~> 3.4.0'
 
   # Dependencies - For simplicity, we just forward these via
   # compiler settings NB: Eigen needs to be added differently

@@ -1,0 +1,1324 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		07C6A882227382030091B1BD /* EarToEarTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07C6A881227382030091B1BD /* EarToEarTests.mm */; };
+		07F4A70924E496D70059D80E /* MeshUvMapTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 07F4A70824E496D70059D80E /* MeshUvMapTests.mm */; };
+		7609B71B21190F0500C0C8D2 /* EigenHelperTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7609B71A21190F0500C0C8D2 /* EigenHelperTests.mm */; };
+		760D410B214332D300AB99FA /* CameraControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D410A214332D300AB99FA /* CameraControl.m */; };
+		762D840F2123ADB800BB941B /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7649BF54210A490A006030E0 /* Metal.framework */; };
+		7636487520F7F1150046E9A7 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7636487420F7F1150046E9A7 /* ViewController.mm */; };
+		76385562212F390500C7DA06 /* DepthColoringFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76385561212F390500C7DA06 /* DepthColoringFilter.swift */; };
+		7639967A212E360D000E5D3D /* DepthColoringFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = 76399679212E360D000E5D3D /* DepthColoringFilter.metal */; };
+		76539CA620F5B1FE009C332E /* PointBasedFusionTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 76539CA520F5B1FE009C332E /* PointBasedFusionTests.mm */; };
+		76539CB920F5BBC0009C332E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76539CB820F5BBC0009C332E /* AppDelegate.m */; };
+		76539CBE20F5BBC1009C332E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76539CBD20F5BBC1009C332E /* Assets.xcassets */; };
+		76539CC120F5BBC1009C332E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76539CBF20F5BBC1009C332E /* Main.storyboard */; };
+		76539CC420F5BBC1009C332E /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 76539CC320F5BBC1009C332E /* main.mm */; };
+		7654220C22ACC445001DEA22 /* CoreML.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76BBFD49229B3E990004F9EE /* CoreML.framework */; };
+		76558BA52135FE2B005AECFE /* ScanningContinued.wav in Resources */ = {isa = PBXBuildFile; fileRef = 76558BA12135FE2B005AECFE /* ScanningContinued.wav */; };
+		76558BA72135FF86005AECFE /* ScanningCanceled.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 76558BA62135FF6D005AECFE /* ScanningCanceled.m4a */; };
+		7665CBC22A49E944006ED69D /* DrawRawDepths.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7665CBC12A49E944006ED69D /* DrawRawDepths.mm */; };
+		7665CBC52A49E96C006ED69D /* DrawRawDepths.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7665CBC42A49E96C006ED69D /* DrawRawDepths.metal */; };
+		7667811221CD77F8005BFAA2 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667810E21CD77F7005BFAA2 /* UIImageHelpers.swift */; };
+		767001C3227B82580037210E /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A52430AE213F482D00A39A38 /* MetalKit.framework */; };
+		767001C4227B827C0037210E /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7649BF54210A490A006030E0 /* Metal.framework */; };
+		767CD70F235C340B00E894C2 /* SCMeshTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = 767CD70E235C340B00E894C2 /* SCMeshTests.mm */; };
+		767CD711235C382400E894C2 /* SquareRedImage.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 767CD710235C382400E894C2 /* SquareRedImage.jpeg */; };
+		767F074F2177E75700764A33 /* DrawSurfelIndexMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 767F074E2177E75700764A33 /* DrawSurfelIndexMap.mm */; };
+		767F07542177E76300764A33 /* DrawSurfelIndexMap.metal in Sources */ = {isa = PBXBuildFile; fileRef = 767F07532177E76300764A33 /* DrawSurfelIndexMap.metal */; };
+		767F31EB227B4E9B00D75BC3 /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7649BF54210A490A006030E0 /* Metal.framework */; };
+		767F31ED227B4EA400D75BC3 /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 767F31EC227B4EA400D75BC3 /* AppKit.framework */; };
+		767F31EE227B4EB200D75BC3 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53A598D21B0B2DC00CD4638 /* QuartzCore.framework */; };
+		7685718B222CCB4000066B6E /* BPLYScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76857187222CCB4000066B6E /* BPLYScanningViewController.swift */; };
+		7685718E222CCB8500066B6E /* BPLYDepthDataAccumulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7685718D222CCB8500066B6E /* BPLYDepthDataAccumulator.mm */; };
+		76871D032193AB9D00C1ABA0 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76871D022193AB9D00C1ABA0 /* InitialViewController.swift */; };
+		768967F023943068007179B2 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768967EE2394305D007179B2 /* SceneKit.framework */; };
+		768967F123943068007179B2 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768967EE2394305D007179B2 /* SceneKit.framework */; };
+		768967F42394306D007179B2 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768967EE2394305D007179B2 /* SceneKit.framework */; };
+		768C70982BF0794361E6EDFD /* libPods-StandardCyborgFusionTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6BA7DCB706A86532C3F884E6 /* libPods-StandardCyborgFusionTests.a */; };
+		768F64F42121570600C1B1DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 768F64F22121570600C1B1DA /* Main.storyboard */; };
+		768F64F62121570700C1B1DA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 768F64F52121570700C1B1DA /* Assets.xcassets */; };
+		768F64F92121570700C1B1DA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 768F64F72121570700C1B1DA /* LaunchScreen.storyboard */; };
+		768F65052121591F00C1B1DA /* ScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768F65042121591F00C1B1DA /* ScanningViewController.swift */; };
+		768F650821215A6100C1B1DA /* ScanPreviewViewController.scn in Resources */ = {isa = PBXBuildFile; fileRef = 768F650621215A6000C1B1DA /* ScanPreviewViewController.scn */; };
+		768F650921215A6100C1B1DA /* ScanPreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768F650721215A6100C1B1DA /* ScanPreviewViewController.swift */; };
+		768F650B21215B3C00C1B1DA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 768F650A21215B3C00C1B1DA /* AppDelegate.swift */; };
+		768F650E21215BD500C1B1DA /* Scan.mm in Sources */ = {isa = PBXBuildFile; fileRef = 768F650D21215BD500C1B1DA /* Scan.mm */; };
+		7693C45621587EAA005A4772 /* ScanningViewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7693C45521587EAA005A4772 /* ScanningViewRenderer.swift */; };
+		7693C45F215886D4005A4772 /* SCPointCloudRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 7693C45E215886D4005A4772 /* SCPointCloudRenderer.m */; };
+		7693C461215886FC005A4772 /* SCPointCloudRenderer.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7693C460215886FC005A4772 /* SCPointCloudRenderer.metal */; };
+		76999472215C9FF0007CF275 /* PaddedLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76999471215C9FF0007CF275 /* PaddedLabel.swift */; };
+		76B242D321506FB9001A0E57 /* DrawCorrespondences.mm in Sources */ = {isa = PBXBuildFile; fileRef = 76B242D221506FB9001A0E57 /* DrawCorrespondences.mm */; };
+		76B242D521507874001A0E57 /* DrawCorrespondences.metal in Sources */ = {isa = PBXBuildFile; fileRef = 76B242D421507874001A0E57 /* DrawCorrespondences.metal */; };
+		76BBFD53229B40400004F9EE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53A598721B0AD6900CD4638 /* CoreGraphics.framework */; };
+		76BBFD54229B404F0004F9EE /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53A598B21B0B2D600CD4638 /* ImageIO.framework */; };
+		76BBFD55229B406D0004F9EE /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76E88D4521C040AE008793AB /* CoreVideo.framework */; };
+		76BBFD56229B40710004F9EE /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76BBFD51229B3F730004F9EE /* CoreImage.framework */; };
+		76BBFD57229B40860004F9EE /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53A598921B0B2CE00CD4638 /* CoreServices.framework */; };
+		76C7C6B221759CC3000941E7 /* CameraManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76C7C6B121759CC3000941E7 /* CameraManager.swift */; };
+		76E2E7E3212BC452006BEAC6 /* ScansViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76E2E7E2212BC452006BEAC6 /* ScansViewController.swift */; };
+		76EE33CD212DDD9300D62C3D /* AudioAndHapticEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76EE33CC212DDD9300D62C3D /* AudioAndHapticEngine.swift */; };
+		76EE33D3212E0D9000D62C3D /* SoundEffect.m in Sources */ = {isa = PBXBuildFile; fileRef = 76EE33D2212E0D9000D62C3D /* SoundEffect.m */; };
+		76EE33D9212E131800D62C3D /* ScanningBegan.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 76EE33D5212E131700D62C3D /* ScanningBegan.m4a */; };
+		76EE33DA212E131800D62C3D /* Countdown.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 76EE33D6212E131700D62C3D /* Countdown.m4a */; };
+		76EE33DB212E131800D62C3D /* ScanningFinished.m4a in Resources */ = {isa = PBXBuildFile; fileRef = 76EE33D7212E131800D62C3D /* ScanningFinished.m4a */; };
+		76FFDF122150559300500A84 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 76FFDF112150559300500A84 /* Settings.bundle */; };
+		A4130292EC0C27E692B9EF84 /* libPods-VisualTesterMac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 542369A8C29974799FD116A8 /* libPods-VisualTesterMac.a */; };
+		A52430B2213F482D00A39A38 /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A52430AE213F482D00A39A38 /* MetalKit.framework */; };
+		A52430B4213F4CD500A39A38 /* DrawPointCloud.metal in Sources */ = {isa = PBXBuildFile; fileRef = A52430B3213F4CD500A39A38 /* DrawPointCloud.metal */; };
+		A53C1BDC2139E5F200CBC63A /* DrawPointCloud.mm in Sources */ = {isa = PBXBuildFile; fileRef = A53C1BDA2139E5F200CBC63A /* DrawPointCloud.mm */; };
+		A55BFF79230313FD0052DA08 /* OutlierDetectorTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = A55BFF78230313FD0052DA08 /* OutlierDetectorTests.mm */; };
+		A567309C2139F96D001A81DA /* MetalVisualizationEngine.mm in Sources */ = {isa = PBXBuildFile; fileRef = A567309A2139F96D001A81DA /* MetalVisualizationEngine.mm */; };
+		A56EC4F1227A3E8500207FE0 /* PathHelpers.m in Sources */ = {isa = PBXBuildFile; fileRef = A56EC4F0227A3E8500207FE0 /* PathHelpers.m */; };
+		A56EC4F4227A4AA900207FE0 /* ReconstructionHelpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = A56EC4F3227A4AA900207FE0 /* ReconstructionHelpers.mm */; };
+		A584B618214B1D1600BEF8EE /* ClearPass.mm in Sources */ = {isa = PBXBuildFile; fileRef = A584B617214B1D1600BEF8EE /* ClearPass.mm */; };
+		A584B61F214B1D3900BEF8EE /* ClearPass.metal in Sources */ = {isa = PBXBuildFile; fileRef = A584B61E214B1D3900BEF8EE /* ClearPass.metal */; };
+		A584B62D214B2DE200BEF8EE /* DrawAxes.mm in Sources */ = {isa = PBXBuildFile; fileRef = A584B627214B2DE100BEF8EE /* DrawAxes.mm */; };
+		A584B62E214B2DE200BEF8EE /* DrawAxes.metal in Sources */ = {isa = PBXBuildFile; fileRef = A584B62C214B2DE100BEF8EE /* DrawAxes.metal */; };
+		A599F03B2134840E0032A65A /* GeometryHelpersTests.mm in Sources */ = {isa = PBXBuildFile; fileRef = A599F03A2134840E0032A65A /* GeometryHelpersTests.mm */; };
+		A59FB563226E49AA00B1E369 /* SparseSurfelLandmarksIndexTest.mm in Sources */ = {isa = PBXBuildFile; fileRef = A59FB562226E49AA00B1E369 /* SparseSurfelLandmarksIndexTest.mm */; };
+		D3E611F8D755108530FFF107 /* libPods-TrueDepthFusion.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE23DD5FF5A397EC09D443D /* libPods-TrueDepthFusion.a */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7636487120F7F08C0046E9A7 /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+		76558B982134E0AE005AECFE /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		768F6513212168E100C1B1DA /* Copy Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Copy Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		0707F5A724928EB516F1BF3C /* libPods-StandardCyborgFusion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StandardCyborgFusion.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		07317DCD240F0090006EAB2B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		07317DCF240F0096006EAB2B /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		07317DD1240F009C006EAB2B /* OpenCL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenCL.framework; path = System/Library/Frameworks/OpenCL.framework; sourceTree = SDKROOT; };
+		07C6A881227382030091B1BD /* EarToEarTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EarToEarTests.mm; sourceTree = "<group>"; };
+		07E25C62241155F500ED1EE7 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		07E25C66241157E300ED1EE7 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		07F4A70824E496D70059D80E /* MeshUvMapTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MeshUvMapTests.mm; sourceTree = "<group>"; };
+		127B640E07CD3829D52F87BA /* Pods-StandardCyborgFusionTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardCyborgFusionTests.release.xcconfig"; path = "Target Support Files/Pods-StandardCyborgFusionTests/Pods-StandardCyborgFusionTests.release.xcconfig"; sourceTree = "<group>"; };
+		2061932908399EE22C9AFE48 /* Pods-StandardCyborgFusionOSX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardCyborgFusionOSX.debug.xcconfig"; path = "Target Support Files/Pods-StandardCyborgFusionOSX/Pods-StandardCyborgFusionOSX.debug.xcconfig"; sourceTree = "<group>"; };
+		24AB3219AD18613BCD891673 /* Pods-VisualTesterMac.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VisualTesterMac.debug.xcconfig"; path = "Target Support Files/Pods-VisualTesterMac/Pods-VisualTesterMac.debug.xcconfig"; sourceTree = "<group>"; };
+		24D3338D00CB49BE1B7CC35E /* libPods-StandardCyborgFusionOSX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StandardCyborgFusionOSX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		2F5B1DA7375E5B9BE3D137F7 /* Pods-VisualTesterMac.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-VisualTesterMac.release.xcconfig"; path = "Target Support Files/Pods-VisualTesterMac/Pods-VisualTesterMac.release.xcconfig"; sourceTree = "<group>"; };
+		393601E903C325BFB12CF074 /* Pods-StandardCyborgFusion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardCyborgFusion.release.xcconfig"; path = "Target Support Files/Pods-StandardCyborgFusion/Pods-StandardCyborgFusion.release.xcconfig"; sourceTree = "<group>"; };
+		47146284F4E2ED08D4BCBA37 /* Pods-TrueDepthFusion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrueDepthFusion.release.xcconfig"; path = "Target Support Files/Pods-TrueDepthFusion/Pods-TrueDepthFusion.release.xcconfig"; sourceTree = "<group>"; };
+		542369A8C29974799FD116A8 /* libPods-VisualTesterMac.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-VisualTesterMac.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		6BA7DCB706A86532C3F884E6 /* libPods-StandardCyborgFusionTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-StandardCyborgFusionTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7609B71A21190F0500C0C8D2 /* EigenHelperTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = EigenHelperTests.mm; sourceTree = "<group>"; };
+		760D4109214332D300AB99FA /* CameraControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CameraControl.h; sourceTree = "<group>"; };
+		760D410A214332D300AB99FA /* CameraControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CameraControl.m; sourceTree = "<group>"; };
+		76272C0F210BF32300D46B20 /* IOSurface.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOSurface.framework; path = System/Library/Frameworks/IOSurface.framework; sourceTree = SDKROOT; };
+		7636486A20F7EE4D0046E9A7 /* VisualTesterMac-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "VisualTesterMac-Bridging-Header.h"; sourceTree = "<group>"; };
+		7636487320F7F1150046E9A7 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		7636487420F7F1150046E9A7 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		7636489320FA9C070046E9A7 /* EigenSceneKitHelpers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EigenSceneKitHelpers.hpp; sourceTree = "<group>"; };
+		76385561212F390500C7DA06 /* DepthColoringFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepthColoringFilter.swift; sourceTree = "<group>"; };
+		76399679212E360D000E5D3D /* DepthColoringFilter.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DepthColoringFilter.metal; sourceTree = "<group>"; };
+		7649BF54210A490A006030E0 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		7652F65C2339551400103299 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		76539CA020F5B1FE009C332E /* StandardCyborgFusionTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StandardCyborgFusionTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		76539CA520F5B1FE009C332E /* PointBasedFusionTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = PointBasedFusionTests.mm; sourceTree = "<group>"; };
+		76539CA720F5B1FE009C332E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		76539CB520F5BBC0009C332E /* VisualTesterMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualTesterMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		76539CB720F5BBC0009C332E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		76539CB820F5BBC0009C332E /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		76539CBD20F5BBC1009C332E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		76539CC020F5BBC1009C332E /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		76539CC220F5BBC1009C332E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		76539CC320F5BBC1009C332E /* main.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
+		76539CC520F5BBC1009C332E /* VisualTesterMac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = VisualTesterMac.entitlements; sourceTree = "<group>"; };
+		7654220D22AD7577001DEA22 /* MetalPerformanceShaders.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalPerformanceShaders.framework; path = System/Library/Frameworks/MetalPerformanceShaders.framework; sourceTree = SDKROOT; };
+		76558BA12135FE2B005AECFE /* ScanningContinued.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ScanningContinued.wav; sourceTree = "<group>"; };
+		76558BA62135FF6D005AECFE /* ScanningCanceled.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScanningCanceled.m4a; sourceTree = "<group>"; };
+		7665CBC12A49E944006ED69D /* DrawRawDepths.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawRawDepths.mm; sourceTree = "<group>"; };
+		7665CBC32A49E96C006ED69D /* DrawRawDepths.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DrawRawDepths.hpp; sourceTree = "<group>"; };
+		7665CBC42A49E96C006ED69D /* DrawRawDepths.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DrawRawDepths.metal; sourceTree = "<group>"; };
+		7667810E21CD77F7005BFAA2 /* UIImageHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIImageHelpers.swift; sourceTree = "<group>"; };
+		767CD70E235C340B00E894C2 /* SCMeshTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; name = SCMeshTests.mm; path = StandardCyborgFusionTests/SCMeshTests.mm; sourceTree = SOURCE_ROOT; };
+		767CD710235C382400E894C2 /* SquareRedImage.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = SquareRedImage.jpeg; sourceTree = "<group>"; };
+		767F074D2177E75700764A33 /* DrawSurfelIndexMap.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DrawSurfelIndexMap.hpp; sourceTree = "<group>"; };
+		767F074E2177E75700764A33 /* DrawSurfelIndexMap.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawSurfelIndexMap.mm; sourceTree = "<group>"; };
+		767F07532177E76300764A33 /* DrawSurfelIndexMap.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DrawSurfelIndexMap.metal; sourceTree = "<group>"; };
+		767F31EC227B4EA400D75BC3 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		76857187222CCB4000066B6E /* BPLYScanningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BPLYScanningViewController.swift; sourceTree = "<group>"; };
+		7685718C222CCB8500066B6E /* BPLYDepthDataAccumulator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BPLYDepthDataAccumulator.h; sourceTree = "<group>"; };
+		7685718D222CCB8500066B6E /* BPLYDepthDataAccumulator.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = BPLYDepthDataAccumulator.mm; sourceTree = "<group>"; };
+		76871D022193AB9D00C1ABA0 /* InitialViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InitialViewController.swift; sourceTree = "<group>"; };
+		768967EE2394305D007179B2 /* SceneKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SceneKit.framework; path = System/Library/Frameworks/SceneKit.framework; sourceTree = SDKROOT; };
+		768F64E82121570600C1B1DA /* TrueDepthFusion.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TrueDepthFusion.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		768F64F32121570600C1B1DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		768F64F52121570700C1B1DA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		768F64F82121570700C1B1DA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		768F64FA2121570700C1B1DA /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		768F65032121591E00C1B1DA /* TrueDepthFusion-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TrueDepthFusion-Bridging-Header.h"; sourceTree = "<group>"; };
+		768F65042121591F00C1B1DA /* ScanningViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanningViewController.swift; sourceTree = "<group>"; };
+		768F650621215A6000C1B1DA /* ScanPreviewViewController.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = ScanPreviewViewController.scn; sourceTree = "<group>"; };
+		768F650721215A6100C1B1DA /* ScanPreviewViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScanPreviewViewController.swift; sourceTree = "<group>"; };
+		768F650A21215B3C00C1B1DA /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		768F650C21215BD500C1B1DA /* Scan.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scan.h; sourceTree = "<group>"; };
+		768F650D21215BD500C1B1DA /* Scan.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = Scan.mm; sourceTree = "<group>"; };
+		7693C45521587EAA005A4772 /* ScanningViewRenderer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanningViewRenderer.swift; sourceTree = "<group>"; };
+		7693C45D215886D4005A4772 /* SCPointCloudRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SCPointCloudRenderer.h; sourceTree = "<group>"; };
+		7693C45E215886D4005A4772 /* SCPointCloudRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SCPointCloudRenderer.m; sourceTree = "<group>"; };
+		7693C460215886FC005A4772 /* SCPointCloudRenderer.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = SCPointCloudRenderer.metal; sourceTree = "<group>"; };
+		76999471215C9FF0007CF275 /* PaddedLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaddedLabel.swift; sourceTree = "<group>"; };
+		76A6366E2134DE8B0008546D /* VisualTesteriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualTesteriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		76AF88D121CB3D98007C47E6 /* ModelIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ModelIO.framework; path = System/Library/Frameworks/ModelIO.framework; sourceTree = SDKROOT; };
+		76B0788322937904005CA179 /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
+		76B242D121506FB9001A0E57 /* DrawCorrespondences.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DrawCorrespondences.hpp; sourceTree = "<group>"; };
+		76B242D221506FB9001A0E57 /* DrawCorrespondences.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawCorrespondences.mm; sourceTree = "<group>"; };
+		76B242D421507874001A0E57 /* DrawCorrespondences.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DrawCorrespondences.metal; sourceTree = "<group>"; };
+		76BBFD49229B3E990004F9EE /* CoreML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreML.framework; path = System/Library/Frameworks/CoreML.framework; sourceTree = SDKROOT; };
+		76BBFD51229B3F730004F9EE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		76C7C6B121759CC3000941E7 /* CameraManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CameraManager.swift; path = TrueDepthFusion/CameraManager.swift; sourceTree = SOURCE_ROOT; };
+		76E2E7E2212BC452006BEAC6 /* ScansViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ScansViewController.swift; sourceTree = "<group>"; };
+		76E88D4521C040AE008793AB /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		76EE33CC212DDD9300D62C3D /* AudioAndHapticEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioAndHapticEngine.swift; sourceTree = "<group>"; };
+		76EE33D1212E0D9000D62C3D /* SoundEffect.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SoundEffect.h; sourceTree = "<group>"; };
+		76EE33D2212E0D9000D62C3D /* SoundEffect.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SoundEffect.m; sourceTree = "<group>"; };
+		76EE33D5212E131700D62C3D /* ScanningBegan.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScanningBegan.m4a; sourceTree = "<group>"; };
+		76EE33D6212E131700D62C3D /* Countdown.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = Countdown.m4a; sourceTree = "<group>"; };
+		76EE33D7212E131800D62C3D /* ScanningFinished.m4a */ = {isa = PBXFileReference; lastKnownFileType = file; path = ScanningFinished.m4a; sourceTree = "<group>"; };
+		76FFDF112150559300500A84 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		7DE545049E45E18955D27995 /* Pods-StandardCyborgFusionOSX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardCyborgFusionOSX.release.xcconfig"; path = "Target Support Files/Pods-StandardCyborgFusionOSX/Pods-StandardCyborgFusionOSX.release.xcconfig"; sourceTree = "<group>"; };
+		927CBAD83870E97BE0537CAB /* Pods-StandardCyborgFusion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardCyborgFusion.debug.xcconfig"; path = "Target Support Files/Pods-StandardCyborgFusion/Pods-StandardCyborgFusion.debug.xcconfig"; sourceTree = "<group>"; };
+		A52430AE213F482D00A39A38 /* MetalKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MetalKit.framework; path = System/Library/Frameworks/MetalKit.framework; sourceTree = SDKROOT; };
+		A52430B3213F4CD500A39A38 /* DrawPointCloud.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DrawPointCloud.metal; sourceTree = "<group>"; };
+		A53A598721B0AD6900CD4638 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		A53A598921B0B2CE00CD4638 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		A53A598B21B0B2D600CD4638 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
+		A53A598D21B0B2DC00CD4638 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		A53C1BDA2139E5F200CBC63A /* DrawPointCloud.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawPointCloud.mm; sourceTree = "<group>"; };
+		A53C1BDB2139E5F200CBC63A /* DrawPointCloud.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DrawPointCloud.hpp; sourceTree = "<group>"; };
+		A55BFF78230313FD0052DA08 /* OutlierDetectorTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = OutlierDetectorTests.mm; sourceTree = "<group>"; };
+		A55BFF8A23062BCB0052DA08 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		A567309A2139F96D001A81DA /* MetalVisualizationEngine.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = MetalVisualizationEngine.mm; sourceTree = "<group>"; };
+		A567309B2139F96D001A81DA /* MetalVisualizationEngine.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MetalVisualizationEngine.hpp; sourceTree = "<group>"; };
+		A56EC4F0227A3E8500207FE0 /* PathHelpers.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PathHelpers.m; sourceTree = "<group>"; };
+		A56EC4F2227A3E9400207FE0 /* PathHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PathHelpers.h; sourceTree = "<group>"; };
+		A56EC4F3227A4AA900207FE0 /* ReconstructionHelpers.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ReconstructionHelpers.mm; sourceTree = "<group>"; };
+		A56EC4F5227A4B2600207FE0 /* ReconstructionHelpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReconstructionHelpers.h; sourceTree = "<group>"; };
+		A584B617214B1D1600BEF8EE /* ClearPass.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ClearPass.mm; sourceTree = "<group>"; };
+		A584B61E214B1D3900BEF8EE /* ClearPass.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = ClearPass.metal; sourceTree = "<group>"; };
+		A584B620214B1FB700BEF8EE /* ClearPass.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ClearPass.hpp; sourceTree = "<group>"; };
+		A584B627214B2DE100BEF8EE /* DrawAxes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawAxes.mm; sourceTree = "<group>"; };
+		A584B62B214B2DE100BEF8EE /* DrawAxes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DrawAxes.hpp; sourceTree = "<group>"; };
+		A584B62C214B2DE100BEF8EE /* DrawAxes.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DrawAxes.metal; sourceTree = "<group>"; };
+		A599F03A2134840E0032A65A /* GeometryHelpersTests.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = GeometryHelpersTests.mm; sourceTree = "<group>"; };
+		A59FB562226E49AA00B1E369 /* SparseSurfelLandmarksIndexTest.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = SparseSurfelLandmarksIndexTest.mm; sourceTree = "<group>"; };
+		A5DADA619DFD99A82DB95052 /* Pods-StandardCyborgFusionTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-StandardCyborgFusionTests.debug.xcconfig"; path = "Target Support Files/Pods-StandardCyborgFusionTests/Pods-StandardCyborgFusionTests.debug.xcconfig"; sourceTree = "<group>"; };
+		E6689CCA27ED6C9280FE8C2A /* Pods-TrueDepthFusion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TrueDepthFusion.debug.xcconfig"; path = "Target Support Files/Pods-TrueDepthFusion/Pods-TrueDepthFusion.debug.xcconfig"; sourceTree = "<group>"; };
+		FAE23DD5FF5A397EC09D443D /* libPods-TrueDepthFusion.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TrueDepthFusion.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		76539C9D20F5B1FE009C332E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76BBFD53229B40400004F9EE /* CoreGraphics.framework in Frameworks */,
+				76BBFD56229B40710004F9EE /* CoreImage.framework in Frameworks */,
+				7654220C22ACC445001DEA22 /* CoreML.framework in Frameworks */,
+				76BBFD57229B40860004F9EE /* CoreServices.framework in Frameworks */,
+				76BBFD55229B406D0004F9EE /* CoreVideo.framework in Frameworks */,
+				76BBFD54229B404F0004F9EE /* ImageIO.framework in Frameworks */,
+				762D840F2123ADB800BB941B /* Metal.framework in Frameworks */,
+				768C70982BF0794361E6EDFD /* libPods-StandardCyborgFusionTests.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76539CB220F5BBC0009C332E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				767F31ED227B4EA400D75BC3 /* AppKit.framework in Frameworks */,
+				767F31EB227B4E9B00D75BC3 /* Metal.framework in Frameworks */,
+				A52430B2213F482D00A39A38 /* MetalKit.framework in Frameworks */,
+				767F31EE227B4EB200D75BC3 /* QuartzCore.framework in Frameworks */,
+				768967F023943068007179B2 /* SceneKit.framework in Frameworks */,
+				A4130292EC0C27E692B9EF84 /* libPods-VisualTesterMac.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		768F64E52121570600C1B1DA /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				767001C3227B82580037210E /* MetalKit.framework in Frameworks */,
+				768967F42394306D007179B2 /* SceneKit.framework in Frameworks */,
+				D3E611F8D755108530FFF107 /* libPods-TrueDepthFusion.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76A6366B2134DE8B0008546D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				767001C4227B827C0037210E /* Metal.framework in Frameworks */,
+				768967F123943068007179B2 /* SceneKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		3ABB72D98D8717B89DD61411 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				07317DCD240F0090006EAB2B /* Accelerate.framework */,
+				767F31EC227B4EA400D75BC3 /* AppKit.framework */,
+				07E25C62241155F500ED1EE7 /* AVFoundation.framework */,
+				A55BFF8A23062BCB0052DA08 /* CoreFoundation.framework */,
+				A53A598721B0AD6900CD4638 /* CoreGraphics.framework */,
+				76BBFD51229B3F730004F9EE /* CoreImage.framework */,
+				07E25C66241157E300ED1EE7 /* CoreMedia.framework */,
+				76BBFD49229B3E990004F9EE /* CoreML.framework */,
+				A53A598921B0B2CE00CD4638 /* CoreServices.framework */,
+				76E88D4521C040AE008793AB /* CoreVideo.framework */,
+				A53A598B21B0B2D600CD4638 /* ImageIO.framework */,
+				76272C0F210BF32300D46B20 /* IOSurface.framework */,
+				7652F65C2339551400103299 /* libiconv.tbd */,
+				7649BF54210A490A006030E0 /* Metal.framework */,
+				A52430AE213F482D00A39A38 /* MetalKit.framework */,
+				7654220D22AD7577001DEA22 /* MetalPerformanceShaders.framework */,
+				76AF88D121CB3D98007C47E6 /* ModelIO.framework */,
+				07317DD1240F009C006EAB2B /* OpenCL.framework */,
+				07317DCF240F0096006EAB2B /* OpenGL.framework */,
+				A53A598D21B0B2DC00CD4638 /* QuartzCore.framework */,
+				768967EE2394305D007179B2 /* SceneKit.framework */,
+				76B0788322937904005CA179 /* Vision.framework */,
+				24D3338D00CB49BE1B7CC35E /* libPods-StandardCyborgFusionOSX.a */,
+				6BA7DCB706A86532C3F884E6 /* libPods-StandardCyborgFusionTests.a */,
+				0707F5A724928EB516F1BF3C /* libPods-StandardCyborgFusion.a */,
+				FAE23DD5FF5A397EC09D443D /* libPods-TrueDepthFusion.a */,
+				542369A8C29974799FD116A8 /* libPods-VisualTesterMac.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		76539C8D20F5B1FE009C332E = {
+			isa = PBXGroup;
+			children = (
+				76539CA420F5B1FE009C332E /* StandardCyborgFusionTests */,
+				76539CB620F5BBC0009C332E /* VisualTesterMac */,
+				768F64E92121570600C1B1DA /* TrueDepthFusion */,
+				76539C9820F5B1FE009C332E /* Products */,
+				3ABB72D98D8717B89DD61411 /* Frameworks */,
+				D4BAB590CAEC601056B0C070 /* Pods */,
+			);
+			sourceTree = "<group>";
+		};
+		76539C9820F5B1FE009C332E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				76539CA020F5B1FE009C332E /* StandardCyborgFusionTests.xctest */,
+				76539CB520F5BBC0009C332E /* VisualTesterMac.app */,
+				768F64E82121570600C1B1DA /* TrueDepthFusion.app */,
+				76A6366E2134DE8B0008546D /* VisualTesteriOS.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		76539CA420F5B1FE009C332E /* StandardCyborgFusionTests */ = {
+			isa = PBXGroup;
+			children = (
+				A56EC4EF227A3E6C00207FE0 /* Helpers */,
+				76539CA520F5B1FE009C332E /* PointBasedFusionTests.mm */,
+				7609B71A21190F0500C0C8D2 /* EigenHelperTests.mm */,
+				A599F03A2134840E0032A65A /* GeometryHelpersTests.mm */,
+				A59FB562226E49AA00B1E369 /* SparseSurfelLandmarksIndexTest.mm */,
+				76539CA720F5B1FE009C332E /* Info.plist */,
+				07C6A881227382030091B1BD /* EarToEarTests.mm */,
+				767CD710235C382400E894C2 /* SquareRedImage.jpeg */,
+				A55BFF78230313FD0052DA08 /* OutlierDetectorTests.mm */,
+				767CD70E235C340B00E894C2 /* SCMeshTests.mm */,
+				07F4A70824E496D70059D80E /* MeshUvMapTests.mm */,
+			);
+			path = StandardCyborgFusionTests;
+			sourceTree = "<group>";
+		};
+		76539CB620F5BBC0009C332E /* VisualTesterMac */ = {
+			isa = PBXGroup;
+			children = (
+				76539CB720F5BBC0009C332E /* AppDelegate.h */,
+				76539CB820F5BBC0009C332E /* AppDelegate.m */,
+				7636487320F7F1150046E9A7 /* ViewController.h */,
+				7636487420F7F1150046E9A7 /* ViewController.mm */,
+				7636489320FA9C070046E9A7 /* EigenSceneKitHelpers.hpp */,
+				76D4FA3A214740660013CED9 /* Visualization */,
+				76539CC320F5BBC1009C332E /* main.mm */,
+				7636486A20F7EE4D0046E9A7 /* VisualTesterMac-Bridging-Header.h */,
+				76539CBD20F5BBC1009C332E /* Assets.xcassets */,
+				76539CBF20F5BBC1009C332E /* Main.storyboard */,
+				76539CC220F5BBC1009C332E /* Info.plist */,
+				76539CC520F5BBC1009C332E /* VisualTesterMac.entitlements */,
+			);
+			path = VisualTesterMac;
+			sourceTree = "<group>";
+		};
+		768F64E92121570600C1B1DA /* TrueDepthFusion */ = {
+			isa = PBXGroup;
+			children = (
+				7693C45421587E30005A4772 /* ScanningViewRendering */,
+				768F650A21215B3C00C1B1DA /* AppDelegate.swift */,
+				76871D022193AB9D00C1ABA0 /* InitialViewController.swift */,
+				768F65042121591F00C1B1DA /* ScanningViewController.swift */,
+				76857187222CCB4000066B6E /* BPLYScanningViewController.swift */,
+				768F650621215A6000C1B1DA /* ScanPreviewViewController.scn */,
+				768F650721215A6100C1B1DA /* ScanPreviewViewController.swift */,
+				76E2E7E2212BC452006BEAC6 /* ScansViewController.swift */,
+				768F650C21215BD500C1B1DA /* Scan.h */,
+				768F650D21215BD500C1B1DA /* Scan.mm */,
+				76C7C6B121759CC3000941E7 /* CameraManager.swift */,
+				76EE33CC212DDD9300D62C3D /* AudioAndHapticEngine.swift */,
+				76EE33D1212E0D9000D62C3D /* SoundEffect.h */,
+				76EE33D2212E0D9000D62C3D /* SoundEffect.m */,
+				7667810E21CD77F7005BFAA2 /* UIImageHelpers.swift */,
+				76999471215C9FF0007CF275 /* PaddedLabel.swift */,
+				7685718C222CCB8500066B6E /* BPLYDepthDataAccumulator.h */,
+				7685718D222CCB8500066B6E /* BPLYDepthDataAccumulator.mm */,
+				768F65032121591E00C1B1DA /* TrueDepthFusion-Bridging-Header.h */,
+				76EE33D4212E10A800D62C3D /* SoundEffects */,
+				768F64F22121570600C1B1DA /* Main.storyboard */,
+				768F64F72121570700C1B1DA /* LaunchScreen.storyboard */,
+				768F64F52121570700C1B1DA /* Assets.xcassets */,
+				768F64FA2121570700C1B1DA /* Info.plist */,
+				76FFDF112150559300500A84 /* Settings.bundle */,
+			);
+			path = TrueDepthFusion;
+			sourceTree = "<group>";
+		};
+		7693C45421587E30005A4772 /* ScanningViewRendering */ = {
+			isa = PBXGroup;
+			children = (
+				7693C45521587EAA005A4772 /* ScanningViewRenderer.swift */,
+				76385561212F390500C7DA06 /* DepthColoringFilter.swift */,
+				76399679212E360D000E5D3D /* DepthColoringFilter.metal */,
+				7693C45D215886D4005A4772 /* SCPointCloudRenderer.h */,
+				7693C45E215886D4005A4772 /* SCPointCloudRenderer.m */,
+				7693C460215886FC005A4772 /* SCPointCloudRenderer.metal */,
+			);
+			path = ScanningViewRendering;
+			sourceTree = "<group>";
+		};
+		76D4FA3A214740660013CED9 /* Visualization */ = {
+			isa = PBXGroup;
+			children = (
+				760D4109214332D300AB99FA /* CameraControl.h */,
+				760D410A214332D300AB99FA /* CameraControl.m */,
+				A567309B2139F96D001A81DA /* MetalVisualizationEngine.hpp */,
+				A567309A2139F96D001A81DA /* MetalVisualizationEngine.mm */,
+				A584B620214B1FB700BEF8EE /* ClearPass.hpp */,
+				A584B617214B1D1600BEF8EE /* ClearPass.mm */,
+				A584B61E214B1D3900BEF8EE /* ClearPass.metal */,
+				A53C1BDB2139E5F200CBC63A /* DrawPointCloud.hpp */,
+				A53C1BDA2139E5F200CBC63A /* DrawPointCloud.mm */,
+				A52430B3213F4CD500A39A38 /* DrawPointCloud.metal */,
+				76B242D121506FB9001A0E57 /* DrawCorrespondences.hpp */,
+				76B242D221506FB9001A0E57 /* DrawCorrespondences.mm */,
+				76B242D421507874001A0E57 /* DrawCorrespondences.metal */,
+				A584B62B214B2DE100BEF8EE /* DrawAxes.hpp */,
+				A584B627214B2DE100BEF8EE /* DrawAxes.mm */,
+				A584B62C214B2DE100BEF8EE /* DrawAxes.metal */,
+				767F074D2177E75700764A33 /* DrawSurfelIndexMap.hpp */,
+				7665CBC32A49E96C006ED69D /* DrawRawDepths.hpp */,
+				7665CBC12A49E944006ED69D /* DrawRawDepths.mm */,
+				7665CBC42A49E96C006ED69D /* DrawRawDepths.metal */,
+				767F074E2177E75700764A33 /* DrawSurfelIndexMap.mm */,
+				767F07532177E76300764A33 /* DrawSurfelIndexMap.metal */,
+			);
+			path = Visualization;
+			sourceTree = "<group>";
+		};
+		76EE33D4212E10A800D62C3D /* SoundEffects */ = {
+			isa = PBXGroup;
+			children = (
+				76EE33D6212E131700D62C3D /* Countdown.m4a */,
+				76EE33D5212E131700D62C3D /* ScanningBegan.m4a */,
+				76558BA62135FF6D005AECFE /* ScanningCanceled.m4a */,
+				76558BA12135FE2B005AECFE /* ScanningContinued.wav */,
+				76EE33D7212E131800D62C3D /* ScanningFinished.m4a */,
+			);
+			path = SoundEffects;
+			sourceTree = "<group>";
+		};
+		A56EC4EF227A3E6C00207FE0 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				A56EC4F2227A3E9400207FE0 /* PathHelpers.h */,
+				A56EC4F0227A3E8500207FE0 /* PathHelpers.m */,
+				A56EC4F5227A4B2600207FE0 /* ReconstructionHelpers.h */,
+				A56EC4F3227A4AA900207FE0 /* ReconstructionHelpers.mm */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		D4BAB590CAEC601056B0C070 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				927CBAD83870E97BE0537CAB /* Pods-StandardCyborgFusion.debug.xcconfig */,
+				393601E903C325BFB12CF074 /* Pods-StandardCyborgFusion.release.xcconfig */,
+				E6689CCA27ED6C9280FE8C2A /* Pods-TrueDepthFusion.debug.xcconfig */,
+				47146284F4E2ED08D4BCBA37 /* Pods-TrueDepthFusion.release.xcconfig */,
+				2061932908399EE22C9AFE48 /* Pods-StandardCyborgFusionOSX.debug.xcconfig */,
+				7DE545049E45E18955D27995 /* Pods-StandardCyborgFusionOSX.release.xcconfig */,
+				A5DADA619DFD99A82DB95052 /* Pods-StandardCyborgFusionTests.debug.xcconfig */,
+				127B640E07CD3829D52F87BA /* Pods-StandardCyborgFusionTests.release.xcconfig */,
+				24AB3219AD18613BCD891673 /* Pods-VisualTesterMac.debug.xcconfig */,
+				2F5B1DA7375E5B9BE3D137F7 /* Pods-VisualTesterMac.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		76539C9F20F5B1FE009C332E /* StandardCyborgFusionTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76539CAE20F5B1FE009C332E /* Build configuration list for PBXNativeTarget "StandardCyborgFusionTests" */;
+			buildPhases = (
+				573D2E226CC1AA45D411328C /* [CP] Check Pods Manifest.lock */,
+				76539C9C20F5B1FE009C332E /* Sources */,
+				76539C9D20F5B1FE009C332E /* Frameworks */,
+				76539C9E20F5B1FE009C332E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StandardCyborgFusionTests;
+			productName = PointBasedFusionTests;
+			productReference = 76539CA020F5B1FE009C332E /* StandardCyborgFusionTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+		76539CB420F5BBC0009C332E /* VisualTesterMac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76539CC820F5BBC1009C332E /* Build configuration list for PBXNativeTarget "VisualTesterMac" */;
+			buildPhases = (
+				6505943AA9D61C94C94A4E78 /* [CP] Check Pods Manifest.lock */,
+				76539CB120F5BBC0009C332E /* Sources */,
+				7636487120F7F08C0046E9A7 /* Copy Frameworks */,
+				76539CB220F5BBC0009C332E /* Frameworks */,
+				76539CB320F5BBC0009C332E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VisualTesterMac;
+			productName = VisualTesterMac;
+			productReference = 76539CB520F5BBC0009C332E /* VisualTesterMac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		768F64E72121570600C1B1DA /* TrueDepthFusion */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 768F64FF2121570700C1B1DA /* Build configuration list for PBXNativeTarget "TrueDepthFusion" */;
+			buildPhases = (
+				66945805F965F27F2E68F29B /* [CP] Check Pods Manifest.lock */,
+				768F64E42121570600C1B1DA /* Sources */,
+				76FDB62C2220CEBE00DE8B43 /* SwiftLint */,
+				768F64E52121570600C1B1DA /* Frameworks */,
+				768F64E62121570600C1B1DA /* Resources */,
+				768F6513212168E100C1B1DA /* Copy Frameworks */,
+				7649B80522BC08BF009F07D5 /* Strip Simulator Architectures */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TrueDepthFusion;
+			productName = TrueDepthFusion;
+			productReference = 768F64E82121570600C1B1DA /* TrueDepthFusion.app */;
+			productType = "com.apple.product-type.application";
+		};
+		76A6366D2134DE8B0008546D /* VisualTesteriOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 76A636812134DE8C0008546D /* Build configuration list for PBXNativeTarget "VisualTesteriOS" */;
+			buildPhases = (
+				76A6366A2134DE8B0008546D /* Sources */,
+				76A6366B2134DE8B0008546D /* Frameworks */,
+				76A6366C2134DE8B0008546D /* Resources */,
+				76558B982134E0AE005AECFE /* Copy Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = VisualTesteriOS;
+			productName = VisualTesteriOS;
+			productReference = 76A6366E2134DE8B0008546D /* VisualTesteriOS.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		76539C8E20F5B1FE009C332E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1610;
+				ORGANIZATIONNAME = "Standard Cyborg";
+				TargetAttributes = {
+					76539C9F20F5B1FE009C332E = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+					76539CB420F5BBC0009C332E = {
+						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 0940;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 0;
+							};
+						};
+					};
+					768F64E72121570600C1B1DA = {
+						CreatedOnToolsVersion = 9.4.1;
+						LastSwiftMigration = 1020;
+					};
+					76A6366D2134DE8B0008546D = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 76539C9120F5B1FE009C332E /* Build configuration list for PBXProject "StandardCyborgSDK" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 76539C8D20F5B1FE009C332E;
+			productRefGroup = 76539C9820F5B1FE009C332E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				76539C9F20F5B1FE009C332E /* StandardCyborgFusionTests */,
+				76539CB420F5BBC0009C332E /* VisualTesterMac */,
+				76A6366D2134DE8B0008546D /* VisualTesteriOS */,
+				768F64E72121570600C1B1DA /* TrueDepthFusion */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		76539C9E20F5B1FE009C332E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				767CD711235C382400E894C2 /* SquareRedImage.jpeg in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76539CB320F5BBC0009C332E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76539CBE20F5BBC1009C332E /* Assets.xcassets in Resources */,
+				76539CC120F5BBC1009C332E /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		768F64E62121570600C1B1DA /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				76EE33D9212E131800D62C3D /* ScanningBegan.m4a in Resources */,
+				76EE33DB212E131800D62C3D /* ScanningFinished.m4a in Resources */,
+				768F650821215A6100C1B1DA /* ScanPreviewViewController.scn in Resources */,
+				76FFDF122150559300500A84 /* Settings.bundle in Resources */,
+				768F64F92121570700C1B1DA /* LaunchScreen.storyboard in Resources */,
+				768F64F62121570700C1B1DA /* Assets.xcassets in Resources */,
+				76558BA72135FF86005AECFE /* ScanningCanceled.m4a in Resources */,
+				76EE33DA212E131800D62C3D /* Countdown.m4a in Resources */,
+				768F64F42121570600C1B1DA /* Main.storyboard in Resources */,
+				76558BA52135FE2B005AECFE /* ScanningContinued.wav in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76A6366C2134DE8B0008546D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		573D2E226CC1AA45D411328C /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-StandardCyborgFusionTests-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		6505943AA9D61C94C94A4E78 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-VisualTesterMac-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		66945805F965F27F2E68F29B /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TrueDepthFusion-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		7649B80522BC08BF009F07D5 /* Strip Simulator Architectures */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Strip Simulator Architectures";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [[ $ACTION = \"install\" ]]; then\n  echo \"Stripping simulator architectures from ZipArchive framework…\"\n  cd \"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/ZipArchive.framework\"\n  lipo -thin arm64 ZipArchive -output ZipArchive-thin\n  rm ZipArchive\n  mv ZipArchive-thin ZipArchive\nfi\n";
+		};
+		76FDB62C2220CEBE00DE8B43 /* SwiftLint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = SwiftLint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint not installed, install via `pod install swiftlint`\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		76539C9C20F5B1FE009C332E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7609B71B21190F0500C0C8D2 /* EigenHelperTests.mm in Sources */,
+				A56EC4F1227A3E8500207FE0 /* PathHelpers.m in Sources */,
+				07F4A70924E496D70059D80E /* MeshUvMapTests.mm in Sources */,
+				A599F03B2134840E0032A65A /* GeometryHelpersTests.mm in Sources */,
+				A59FB563226E49AA00B1E369 /* SparseSurfelLandmarksIndexTest.mm in Sources */,
+				76539CA620F5B1FE009C332E /* PointBasedFusionTests.mm in Sources */,
+				07C6A882227382030091B1BD /* EarToEarTests.mm in Sources */,
+				767CD70F235C340B00E894C2 /* SCMeshTests.mm in Sources */,
+				A56EC4F4227A4AA900207FE0 /* ReconstructionHelpers.mm in Sources */,
+				A55BFF79230313FD0052DA08 /* OutlierDetectorTests.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76539CB120F5BBC0009C332E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				767F074F2177E75700764A33 /* DrawSurfelIndexMap.mm in Sources */,
+				A584B618214B1D1600BEF8EE /* ClearPass.mm in Sources */,
+				7665CBC52A49E96C006ED69D /* DrawRawDepths.metal in Sources */,
+				7636487520F7F1150046E9A7 /* ViewController.mm in Sources */,
+				A567309C2139F96D001A81DA /* MetalVisualizationEngine.mm in Sources */,
+				76539CC420F5BBC1009C332E /* main.mm in Sources */,
+				760D410B214332D300AB99FA /* CameraControl.m in Sources */,
+				A584B62D214B2DE200BEF8EE /* DrawAxes.mm in Sources */,
+				A584B62E214B2DE200BEF8EE /* DrawAxes.metal in Sources */,
+				76B242D321506FB9001A0E57 /* DrawCorrespondences.mm in Sources */,
+				767F07542177E76300764A33 /* DrawSurfelIndexMap.metal in Sources */,
+				7665CBC22A49E944006ED69D /* DrawRawDepths.mm in Sources */,
+				A53C1BDC2139E5F200CBC63A /* DrawPointCloud.mm in Sources */,
+				A584B61F214B1D3900BEF8EE /* ClearPass.metal in Sources */,
+				76B242D521507874001A0E57 /* DrawCorrespondences.metal in Sources */,
+				A52430B4213F4CD500A39A38 /* DrawPointCloud.metal in Sources */,
+				76539CB920F5BBC0009C332E /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		768F64E42121570600C1B1DA /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7685718B222CCB4000066B6E /* BPLYScanningViewController.swift in Sources */,
+				7693C45621587EAA005A4772 /* ScanningViewRenderer.swift in Sources */,
+				768F65052121591F00C1B1DA /* ScanningViewController.swift in Sources */,
+				76C7C6B221759CC3000941E7 /* CameraManager.swift in Sources */,
+				7693C461215886FC005A4772 /* SCPointCloudRenderer.metal in Sources */,
+				76EE33D3212E0D9000D62C3D /* SoundEffect.m in Sources */,
+				7667811221CD77F8005BFAA2 /* UIImageHelpers.swift in Sources */,
+				76EE33CD212DDD9300D62C3D /* AudioAndHapticEngine.swift in Sources */,
+				7693C45F215886D4005A4772 /* SCPointCloudRenderer.m in Sources */,
+				76E2E7E3212BC452006BEAC6 /* ScansViewController.swift in Sources */,
+				768F650921215A6100C1B1DA /* ScanPreviewViewController.swift in Sources */,
+				7639967A212E360D000E5D3D /* DepthColoringFilter.metal in Sources */,
+				7685718E222CCB8500066B6E /* BPLYDepthDataAccumulator.mm in Sources */,
+				76999472215C9FF0007CF275 /* PaddedLabel.swift in Sources */,
+				76385562212F390500C7DA06 /* DepthColoringFilter.swift in Sources */,
+				76871D032193AB9D00C1ABA0 /* InitialViewController.swift in Sources */,
+				768F650E21215BD500C1B1DA /* Scan.mm in Sources */,
+				768F650B21215B3C00C1B1DA /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		76A6366A2134DE8B0008546D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		76539CBF20F5BBC1009C332E /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				76539CC020F5BBC1009C332E /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		768F64F22121570600C1B1DA /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				768F64F32121570600C1B1DA /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		768F64F72121570700C1B1DA /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				768F64F82121570700C1B1DA /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		76539CA920F5B1FE009C332E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_FRAMEWORK_INCLUDE_PRIVATE_FROM_PUBLIC = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SEMICOLON_BEFORE_METHOD_BODY = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = KAW83335BG;
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"PROJECT_DIR=\\\"$(PROJECT_DIR)\\\"",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LLVM_LTO = NO;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_LANGUAGE_REVISION = Metal20;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				VALID_ARCHS = "x86_64 arm64";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 arm64";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		76539CAA20F5B1FE009C332E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "c++17";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_FRAMEWORK_INCLUDE_PRIVATE_FROM_PUBLIC = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = NO;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_SEMICOLON_BEFORE_METHOD_BODY = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "Mac Developer";
+				COPY_PHASE_STRIP = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEAD_CODE_STRIPPING = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = KAW83335BG;
+				ENABLE_MODULE_VERIFIER = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"XCODE_ACTION_${ACTION}=1",
+					"PROJECT_DIR=\\\"$(PROJECT_DIR)\\\"",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_HIDDEN_VIRTUAL_FUNCTIONS = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				LLVM_LTO = YES;
+				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_LANGUAGE_REVISION = Metal20;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_VERSION = 5.0;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = "x86_64 arm64";
+				"VALID_ARCHS[sdk=iphoneos*]" = arm64;
+				"VALID_ARCHS[sdk=iphonesimulator*]" = "x86_64 arm64";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		76539CAF20F5B1FE009C332E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = A5DADA619DFD99A82DB95052 /* Pods-StandardCyborgFusionTests.debug.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				DEVELOPMENT_TEAM = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"PROJECT_DIR=\\\"$(PROJECT_DIR)\\\"",
+					"$(inherited)",
+				);
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion/**",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+				);
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion/**",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+				);
+				"HEADER_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion/**",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+					"$(PROJECT_DIR)/deps/json/include",
+				);
+				INFOPLIST_FILE = StandardCyborgFusion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.PointBasedFusionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		76539CB020F5B1FE009C332E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 127B640E07CD3829D52F87BA /* Pods-StandardCyborgFusionTests.release.xcconfig */;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				DEVELOPMENT_TEAM = "";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"PROJECT_DIR=\\\"$(PROJECT_DIR)\\\"",
+					"$(inherited)",
+				);
+				"HEADER_SEARCH_PATHS[sdk=iphoneos*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion/**",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+				);
+				"HEADER_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion/**",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+				);
+				"HEADER_SEARCH_PATHS[sdk=macosx*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion/**",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+				);
+				INFOPLIST_FILE = StandardCyborgFusion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.PointBasedFusionTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		76539CC620F5BBC1009C332E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 24AB3219AD18613BCD891673 /* Pods-VisualTesterMac.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
+				INFOPLIST_FILE = VisualTesterMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MTL_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.VisualTesterMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VisualTesterMac/VisualTesterMac-Bridging-Header.h";
+			};
+			name = Debug;
+		};
+		76539CC720F5BBC1009C332E /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 2F5B1DA7375E5B9BE3D137F7 /* Pods-VisualTesterMac.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "-";
+				COMBINE_HIDPI_IMAGES = YES;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
+				INFOPLIST_FILE = VisualTesterMac/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MTL_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-all_load",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.VisualTesterMac;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "VisualTesterMac/VisualTesterMac-Bridging-Header.h";
+			};
+			name = Release;
+		};
+		768F64FD2121570700C1B1DA /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = E6689CCA27ED6C9280FE8C2A /* Pods-TrueDepthFusion.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FZU7U4ED2K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/deps/json/include",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+				);
+				INFOPLIST_FILE = TrueDepthFusion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.TrueDepthFusion;
+				PRODUCT_NAME = TrueDepthFusion;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "TrueDepthFusion/TrueDepthFusion-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		768F64FE2121570700C1B1DA /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 47146284F4E2ED08D4BCBA37 /* Pods-TrueDepthFusion.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = FZU7U4ED2K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/StandardCyborgFusion",
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/deps/json/include",
+					"$(PROJECT_DIR)/deps/nanoflann/include",
+				);
+				INFOPLIST_FILE = TrueDepthFusion/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 2.4;
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.TrueDepthFusion;
+				PRODUCT_NAME = TrueDepthFusion;
+				SDKROOT = iphoneos;
+				SWIFT_OBJC_BRIDGING_HEADER = "TrueDepthFusion/TrueDepthFusion-Bridging-Header.h";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		76A636822134DE8C0008546D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FZU7U4ED2K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = VisualTesteriOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.VisualTesteriOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		76A636832134DE8C0008546D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = FZU7U4ED2K;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
+				INFOPLIST_FILE = VisualTesteriOS/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.VisualTesteriOS;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		76539C9120F5B1FE009C332E /* Build configuration list for PBXProject "StandardCyborgSDK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76539CA920F5B1FE009C332E /* Debug */,
+				76539CAA20F5B1FE009C332E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76539CAE20F5B1FE009C332E /* Build configuration list for PBXNativeTarget "StandardCyborgFusionTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76539CAF20F5B1FE009C332E /* Debug */,
+				76539CB020F5B1FE009C332E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76539CC820F5BBC1009C332E /* Build configuration list for PBXNativeTarget "VisualTesterMac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76539CC620F5BBC1009C332E /* Debug */,
+				76539CC720F5BBC1009C332E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		768F64FF2121570700C1B1DA /* Build configuration list for PBXNativeTarget "TrueDepthFusion" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				768F64FD2121570700C1B1DA /* Debug */,
+				768F64FE2121570700C1B1DA /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		76A636812134DE8C0008546D /* Build configuration list for PBXNativeTarget "VisualTesteriOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				76A636822134DE8C0008546D /* Debug */,
+				76A636832134DE8C0008546D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 76539C8E20F5B1FE009C332E /* Project object */;
+}

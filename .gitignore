@@ -24,4 +24,7 @@ xcuserdata/
 Carthage/
 StandardCyborgExample/Pods/
 StandardCyborgExample/*.xcworkspace
+StandardCyborgSDK.xcworkspace
+Pods
 
+CppDependencies/**/*
