@@ -14,7 +14,7 @@ let package = Package(
     ],
     dependencies: [
         // .package(url: "https://github.com/StandardCyborg/StandardCyborgFusion.git", from: "1.7.3")
-        .package(path: "../../StandardCyborgSDK/StandardCyborgFusion")
+        .package(path: "../StandardCyborgFusion")
     ],
     targets: [
         .target(
