@@ -19,9 +19,5 @@ xcuserdata/
 *.xccheckout
 *.xcscmblueprint
 .DS_Store
-
-## Dependencies
-Carthage/
-StandardCyborgExample/Pods/
-StandardCyborgExample/*.xcworkspace
+.build
 
