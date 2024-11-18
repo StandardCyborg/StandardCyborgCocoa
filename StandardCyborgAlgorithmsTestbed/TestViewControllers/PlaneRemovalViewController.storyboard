@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="4ML-IX-dvL">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Plane Removal View Controller-->
+        <scene sceneID="g5K-rG-Fyd">
+            <objects>
+                <viewController id="4ML-IX-dvL" customClass="PlaneRemovalViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="K8j-CK-ahQ">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <sceneKitView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" sceneName="TestViewController.scn" allowsCameraControl="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Bxw-H8-IrT">
+                                <rect key="frame" x="0.0" y="44" width="414" height="518"/>
+                            </sceneKitView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q3c-ku-QDv">
+                                <rect key="frame" x="164.5" y="732" width="85" height="30"/>
+                                <state key="normal" title="Select Plane"/>
+                                <connections>
+                                    <action selector="selectPlane:" destination="4ML-IX-dvL" eventType="touchUpInside" id="04n-Dn-SCW"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="Bxw-H8-IrT" firstAttribute="leading" secondItem="ADs-M1-MR5" secondAttribute="leading" id="1vq-rb-M1g"/>
+                            <constraint firstItem="Q3c-ku-QDv" firstAttribute="centerX" secondItem="K8j-CK-ahQ" secondAttribute="centerX" id="9Mh-E3-Xmq"/>
+                            <constraint firstItem="ADs-M1-MR5" firstAttribute="bottom" secondItem="Q3c-ku-QDv" secondAttribute="bottom" constant="100" id="AlY-Yl-kSb"/>
+                            <constraint firstItem="Bxw-H8-IrT" firstAttribute="top" secondItem="K8j-CK-ahQ" secondAttribute="top" constant="44" id="BDn-UW-60f"/>
+                            <constraint firstItem="ADs-M1-MR5" firstAttribute="bottom" secondItem="Bxw-H8-IrT" secondAttribute="bottom" constant="300" id="Efo-Ej-hZZ"/>
+                            <constraint firstItem="ADs-M1-MR5" firstAttribute="trailing" secondItem="Bxw-H8-IrT" secondAttribute="trailing" id="KXu-Ny-K6m"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="ADs-M1-MR5"/>
+                    </view>
+                    <connections>
+                        <outlet property="sceneView" destination="Bxw-H8-IrT" id="ghS-Mg-fgI"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="wOu-7i-SmK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="165" y="215"/>
+        </scene>
+    </scenes>
+</document>
