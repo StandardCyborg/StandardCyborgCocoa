@@ -1,0 +1,1 @@
+static const int HACK_TINYGLTF_GENERATE_OBJECT_FILE = 1;
