@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 53;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		7623164421EDA5F1004D1AFB /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7623164321EDA5F1004D1AFB /* CoreVideo.framework */; };
 		762D925D2A25AE7700399490 /* ScenePreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 762D925B2A25AE7700399490 /* ScenePreviewViewController.swift */; };
 		762D925E2A25AE7700399490 /* ScenePreviewViewController.scn in Resources */ = {isa = PBXBuildFile; fileRef = 762D925C2A25AE7700399490 /* ScenePreviewViewController.scn */; };
+		763CA4D12CE3C277000A0214 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 763CA4D02CE3C277000A0214 /* StandardCyborgFusion */; };
 		7642B7D121E4558200BC45C7 /* ScanningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D021E4558200BC45C7 /* ScanningViewController.swift */; };
 		7642B7D321E455AB00BC45C7 /* ShutterButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7D221E455AB00BC45C7 /* ShutterButton.swift */; };
 		7642B7E521E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7642B7E421E55E9A00BC45C7 /* DefaultScanningViewRenderer.swift */; };
@@ -66,6 +67,7 @@
 				7623164421EDA5F1004D1AFB /* CoreVideo.framework in Frameworks */,
 				7623164221EDA5D2004D1AFB /* QuartzCore.framework in Frameworks */,
 				7642B82721E69FC900BC45C7 /* StandardCyborgFusion.framework in Frameworks */,
+				763CA4D12CE3C277000A0214 /* StandardCyborgFusion in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -153,6 +155,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				763CA4D52CE3C417000A0214 /* PBXTargetDependency */,
 			);
 			name = StandardCyborgUI;
 			productName = StandardCyborgUI;
@@ -166,7 +169,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 1430;
+				LastUpgradeCheck = 1610;
 				ORGANIZATIONNAME = "Standard Cyborg";
 				TargetAttributes = {
 					7620D24621CDACEA008D0095 = {
@@ -184,6 +187,9 @@
 				Base,
 			);
 			mainGroup = 7620D23D21CDACEA008D0095;
+			packageReferences = (
+				763CA4CF2CE3C277000A0214 /* XCLocalSwiftPackageReference "../../StandardCyborgSDK/StandardCyborgFusion" */,
+			);
 			productRefGroup = 7620D24821CDACEA008D0095 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -230,6 +236,13 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		763CA4D52CE3C417000A0214 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 763CA4D42CE3C417000A0214 /* StandardCyborgFusion */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
 		7620D24D21CDACEA008D0095 /* Debug */ = {
 			isa = XCBuildConfiguration;
@@ -269,6 +282,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -282,7 +296,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -333,6 +347,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -341,7 +356,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -366,6 +381,7 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion/ios";
 				INFOPLIST_FILE = StandardCyborgUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -397,6 +413,7 @@
 				ENABLE_MODULE_VERIFIER = YES;
 				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)/../StandardCyborgFusion/ios";
 				INFOPLIST_FILE = StandardCyborgUI/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -438,6 +455,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		763CA4CF2CE3C277000A0214 /* XCLocalSwiftPackageReference "../../StandardCyborgSDK/StandardCyborgFusion" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../StandardCyborgSDK/StandardCyborgFusion;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		763CA4D02CE3C277000A0214 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StandardCyborgFusion;
+		};
+		763CA4D42CE3C417000A0214 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 763CA4CF2CE3C277000A0214 /* XCLocalSwiftPackageReference "../../StandardCyborgSDK/StandardCyborgFusion" */;
+			productName = StandardCyborgFusion;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 7620D23E21CDACEA008D0095 /* Project object */;
 }

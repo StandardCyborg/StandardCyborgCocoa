@@ -130,7 +130,7 @@ public extension Notification.Name {
     }
     
     /** Stops streaming to the delegate */
-    @objc public func stopSession( _ completion: (() -> Void)? = nil) {
+    @objc public func stopSession(_ completion: (() -> Void)? = nil) {
         _dataOutputQueue.async {
             self._dataOutputQueue_renderingEnabled = false
         }

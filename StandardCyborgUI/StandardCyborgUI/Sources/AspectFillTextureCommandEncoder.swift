@@ -5,6 +5,7 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+import CoreVideo
 import Foundation
 import Metal
 import simd
