@@ -1,0 +1,24 @@
+{
+  "originHash" : "7bab1c56eeb3785bfb4dc766886a95045acd22a7acb530c02221fb84d4f32022",
+  "pins" : [
+    {
+      "identity" : "json",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/nlohmann/json.git",
+      "state" : {
+        "revision" : "9cca280a4d0ccf0c08f47a99aa71d1b0e52f8d03",
+        "version" : "3.11.3"
+      }
+    },
+    {
+      "identity" : "ziparchive",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ZipArchive/ZipArchive.git",
+      "state" : {
+        "revision" : "df35718ea19a94e015b91dc4881dee028ce4cdba",
+        "version" : "2.6.0"
+      }
+    }
+  ],
+  "version" : 3
+}
