@@ -1,9 +1,0 @@
-target 'StandardCyborgExample' do
-  platform :ios, '13.0'
-  use_frameworks!
-
-  # Pods for standard cyborg
-  pod 'StandardCyborgFusion'
-  pod 'StandardCyborgUI'
-end
-
