@@ -6,5 +6,5 @@ extension Bundle {
     public static let scuiBundle = Bundle(for: ShutterButton.self)
     
     public static let scuiResourcesBundle =
-        Bundle(url: scuiBundle.resourceURL!.appendingPathComponent("StandardCyborgUI.bundle"))!
+    Bundle(url: Bundle.main.url(forResource: "StandardCyborgUI_StandardCyborgUI", withExtension: "bundle", subdirectory: nil)!)!
 }

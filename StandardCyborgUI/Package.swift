@@ -9,6 +9,7 @@ let package = Package(
     products: [
         .library(
             name: "StandardCyborgUI",
+            type: .dynamic,
             targets: ["StandardCyborgUI"]
         )
     ],
