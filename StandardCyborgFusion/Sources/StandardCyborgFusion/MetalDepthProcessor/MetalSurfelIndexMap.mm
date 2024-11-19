@@ -65,8 +65,10 @@ MetalSurfelIndexMap::MetalSurfelIndexMap(id<MTLDevice> device, id<MTLCommandQueu
     _device(device),
     _commandQueue(commandQueue)
 {
+    NSString *mainBundlePath = [[NSBundle mainBundle] bundlePath];
+    NSBundle *scFusionBundle = [NSBundle bundleWithPath:[mainBundlePath stringByAppendingString:@"/StandardCyborgFusion_StandardCyborgFusion.bundle"]];
     NSError *error;
-    _library = [_device newDefaultLibraryWithBundle:[NSBundle bundleWithIdentifier:@"com.standardcyborg.StandardCyborgFusion"] error:&error];
+    _library = [_device newDefaultLibraryWithBundle:scFusionBundle error:&error];
     if (_library == nil) { NSLog(@"Unable to create library: %@", error); }
     
     id<MTLFunction> vertexFunction = [_library newFunctionWithName:forColor ? @"SurfelIndexMapForColorVertex" : @"SurfelIndexMapVertex"];

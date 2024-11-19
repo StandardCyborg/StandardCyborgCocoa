@@ -26,7 +26,9 @@
 
 MetalDepthProcessor::MetalDepthProcessor(id<MTLDevice> device, id<MTLCommandQueue> commandQueue) {
     assert(device != nil);
-    id<MTLLibrary> library = [device newDefaultLibraryWithBundle:[NSBundle bundleWithIdentifier:@"com.standardcyborg.StandardCyborgFusion"] error:NULL];
+    NSString *mainBundlePath = [[NSBundle mainBundle] bundlePath];
+    NSBundle *scFusionBundle = [NSBundle bundleWithPath:[mainBundlePath stringByAppendingString:@"/StandardCyborgFusion_StandardCyborgFusion.bundle"]];
+    id<MTLLibrary> library = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
 
     NSArray *kernels = @[
                          [[InitializeDepthConfidenceKernel alloc] initWithDevice:device library:library],

@@ -15,9 +15,10 @@ MetalTextureProjection::MetalTextureProjection(id<MTLDevice> device,
 {
     _device = device;
 
-    NSError* error;
-
-    _library = [_device newDefaultLibraryWithBundle:[NSBundle bundleWithIdentifier:@"com.standardcyborg.StandardCyborgFusion"] error:&error];
+    NSError *error;
+    NSString *mainBundlePath = [[NSBundle mainBundle] bundlePath];
+    NSBundle *scFusionBundle = [NSBundle bundleWithPath:[mainBundlePath stringByAppendingString:@"/StandardCyborgFusion_StandardCyborgFusion.bundle"]];
+    _library = [device newDefaultLibraryWithBundle:scFusionBundle error:&error];
     if (_library == nil) { NSLog(@"Unable to create library: %@", error); }
 
     _textureResolution = textureResolution;

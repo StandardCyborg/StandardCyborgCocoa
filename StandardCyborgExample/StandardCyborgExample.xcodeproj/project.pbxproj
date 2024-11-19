@@ -14,7 +14,24 @@
 		7642B80621E679E900BC45C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7642B80421E679E900BC45C7 /* LaunchScreen.storyboard */; };
 		766314042CEB185300CC7AF3 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 766314032CEB185300CC7AF3 /* StandardCyborgFusion */; };
 		766314072CEB186300CC7AF3 /* StandardCyborgUI in Frameworks */ = {isa = PBXBuildFile; productRef = 766314062CEB186300CC7AF3 /* StandardCyborgUI */; };
+		7663140D2CECFCDD00CC7AF3 /* StandardCyborgFusion in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 766314032CEB185300CC7AF3 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		7663140F2CECFCDE00CC7AF3 /* StandardCyborgUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 766314062CEB186300CC7AF3 /* StandardCyborgUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		7663140E2CECFCDD00CC7AF3 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				7663140D2CECFCDD00CC7AF3 /* StandardCyborgFusion in Embed Frameworks */,
+				7663140F2CECFCDE00CC7AF3 /* StandardCyborgUI in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		7642B7F821E679E800BC45C7 /* StandardCyborgExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StandardCyborgExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -86,10 +103,13 @@
 				7642B7F421E679E800BC45C7 /* Sources */,
 				7642B7F521E679E800BC45C7 /* Frameworks */,
 				7642B7F621E679E800BC45C7 /* Resources */,
+				7663140E2CECFCDD00CC7AF3 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				7663140A2CECF41100CC7AF3 /* PBXTargetDependency */,
+				7663140C2CECF41100CC7AF3 /* PBXTargetDependency */,
 			);
 			name = StandardCyborgExample;
 			productName = CatScan;
@@ -159,6 +179,17 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		7663140A2CECF41100CC7AF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 766314092CECF41100CC7AF3 /* StandardCyborgFusion */;
+		};
+		7663140C2CECF41100CC7AF3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 7663140B2CECF41100CC7AF3 /* StandardCyborgUI */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7642B7FF21E679E800BC45C7 /* Main.storyboard */ = {
@@ -394,6 +425,16 @@
 		};
 		766314062CEB186300CC7AF3 /* StandardCyborgUI */ = {
 			isa = XCSwiftPackageProductDependency;
+			productName = StandardCyborgUI;
+		};
+		766314092CECF41100CC7AF3 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 766314022CEB185300CC7AF3 /* XCLocalSwiftPackageReference "../StandardCyborgFusion" */;
+			productName = StandardCyborgFusion;
+		};
+		7663140B2CECF41100CC7AF3 /* StandardCyborgUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 766314052CEB186300CC7AF3 /* XCLocalSwiftPackageReference "../StandardCyborgUI" */;
 			productName = StandardCyborgUI;
 		};
 /* End XCSwiftPackageProductDependency section */
