@@ -11,8 +11,7 @@
 #import <CoreVideo/CoreVideo.h>
 #import <Foundation/Foundation.h>
 #import <SceneKit/SceneKit.h>
-
-#import <StandardCyborgFusion/StandardCyborgFusion.h>
+#import <StandardCyborgFusion/SCPointCloud.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

@@ -10,6 +10,13 @@
 		0738A79C22935E7800F33186 /* ScenekitTestbedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0738A79922935E7800F33186 /* ScenekitTestbedViewController.storyboard */; };
 		0738A79D22935E7800F33186 /* ScenekitTestbedViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0738A79B22935E7800F33186 /* ScenekitTestbedViewController.mm */; };
 		760D410B214332D300AB99FA /* CameraControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D410A214332D300AB99FA /* CameraControl.m */; };
+		76296F1B2CFE0EAA003EE037 /* scsdk in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F1A2CFE0EAA003EE037 /* scsdk */; };
+		76296F222CFE0ECF003EE037 /* StandardCyborgFusion in Copy Frameworks */ = {isa = PBXBuildFile; productRef = 76296F202CFE0ECF003EE037 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		76296F242CFE0F5D003EE037 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F232CFE0F5D003EE037 /* StandardCyborgFusion */; };
+		76296F252CFE0F5D003EE037 /* StandardCyborgFusion in Copy Frameworks */ = {isa = PBXBuildFile; productRef = 76296F232CFE0F5D003EE037 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		76296F272CFE10AB003EE037 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F262CFE10AB003EE037 /* StandardCyborgFusion */; };
+		76296F282CFE10AB003EE037 /* StandardCyborgFusion in Copy Frameworks */ = {isa = PBXBuildFile; productRef = 76296F262CFE10AB003EE037 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		76296F2B2CFE1317003EE037 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F2A2CFE1317003EE037 /* ZipArchive */; };
 		7636487520F7F1150046E9A7 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7636487420F7F1150046E9A7 /* ViewController.mm */; };
 		76385562212F390500C7DA06 /* DepthColoringFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76385561212F390500C7DA06 /* DepthColoringFilter.swift */; };
 		7639967A212E360D000E5D3D /* DepthColoringFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = 76399679212E360D000E5D3D /* DepthColoringFilter.metal */; };
@@ -31,7 +38,6 @@
 		7665CBC52A49E96C006ED69D /* DrawRawDepths.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7665CBC42A49E96C006ED69D /* DrawRawDepths.metal */; };
 		7667811221CD77F8005BFAA2 /* UIImageHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7667810E21CD77F7005BFAA2 /* UIImageHelpers.swift */; };
 		767001C3227B82580037210E /* MetalKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A52430AE213F482D00A39A38 /* MetalKit.framework */; };
-		767001C4227B827C0037210E /* Metal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7649BF54210A490A006030E0 /* Metal.framework */; };
 		767001C8227B8C830037210E /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A53A598D21B0B2DC00CD4638 /* QuartzCore.framework */; };
 		767F074F2177E75700764A33 /* DrawSurfelIndexMap.mm in Sources */ = {isa = PBXBuildFile; fileRef = 767F074E2177E75700764A33 /* DrawSurfelIndexMap.mm */; };
 		767F07542177E76300764A33 /* DrawSurfelIndexMap.metal in Sources */ = {isa = PBXBuildFile; fileRef = 767F07532177E76300764A33 /* DrawSurfelIndexMap.metal */; };
@@ -42,7 +48,6 @@
 		7685718E222CCB8500066B6E /* BPLYDepthDataAccumulator.mm in Sources */ = {isa = PBXBuildFile; fileRef = 7685718D222CCB8500066B6E /* BPLYDepthDataAccumulator.mm */; };
 		76871D032193AB9D00C1ABA0 /* InitialViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76871D022193AB9D00C1ABA0 /* InitialViewController.swift */; };
 		768967F023943068007179B2 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768967EE2394305D007179B2 /* SceneKit.framework */; };
-		768967F123943068007179B2 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768967EE2394305D007179B2 /* SceneKit.framework */; };
 		768967F223943069007179B2 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768967EE2394305D007179B2 /* SceneKit.framework */; };
 		768967F42394306D007179B2 /* SceneKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 768967EE2394305D007179B2 /* SceneKit.framework */; };
 		768F64F42121570600C1B1DA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 768F64F22121570600C1B1DA /* Main.storyboard */; };
@@ -91,6 +96,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				76296F222CFE0ECF003EE037 /* StandardCyborgFusion in Copy Frameworks */,
+				76296F252CFE0F5D003EE037 /* StandardCyborgFusion in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -105,22 +112,13 @@
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 1;
 		};
-		76558B982134E0AE005AECFE /* Copy Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-			);
-			name = "Copy Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		768F6513212168E100C1B1DA /* Copy Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				76296F282CFE10AB003EE037 /* StandardCyborgFusion in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -202,7 +200,6 @@
 		769DE0E1224D7D6400ACAD89 /* DistanceAngleViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DistanceAngleViewController.h; sourceTree = "<group>"; };
 		769DE0E2224D7D6400ACAD89 /* DistanceAngleViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = DistanceAngleViewController.mm; sourceTree = "<group>"; };
 		769DE0E5224D7DB800ACAD89 /* DistanceAngleViewController.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DistanceAngleViewController.storyboard; sourceTree = "<group>"; };
-		76A6366E2134DE8B0008546D /* VisualTesteriOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualTesteriOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76AF88D121CB3D98007C47E6 /* ModelIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ModelIO.framework; path = System/Library/Frameworks/ModelIO.framework; sourceTree = SDKROOT; };
 		76B0788322937904005CA179 /* Vision.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Vision.framework; path = System/Library/Frameworks/Vision.framework; sourceTree = SDKROOT; };
 		76B242D121506FB9001A0E57 /* DrawCorrespondences.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DrawCorrespondences.hpp; sourceTree = "<group>"; };
@@ -265,8 +262,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76296F1B2CFE0EAA003EE037 /* scsdk in Frameworks */,
 				767001C8227B8C830037210E /* QuartzCore.framework in Frameworks */,
 				768967F223943069007179B2 /* SceneKit.framework in Frameworks */,
+				76296F242CFE0F5D003EE037 /* StandardCyborgFusion in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -276,15 +275,8 @@
 			files = (
 				767001C3227B82580037210E /* MetalKit.framework in Frameworks */,
 				768967F42394306D007179B2 /* SceneKit.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		76A6366B2134DE8B0008546D /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				767001C4227B827C0037210E /* Metal.framework in Frameworks */,
-				768967F123943068007179B2 /* SceneKit.framework in Frameworks */,
+				76296F272CFE10AB003EE037 /* StandardCyborgFusion in Frameworks */,
+				76296F2B2CFE1317003EE037 /* ZipArchive in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -336,7 +328,6 @@
 			children = (
 				76539CB520F5BBC0009C332E /* VisualTesterMac.app */,
 				768F64E82121570600C1B1DA /* TrueDepthFusion.app */,
-				76A6366E2134DE8B0008546D /* VisualTesteriOS.app */,
 				76603F5C224D749B00C4C0C4 /* StandardCyborgAlgorithmsTestbed.app */,
 			);
 			name = Products;
@@ -519,6 +510,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				76296F1F2CFE0EC3003EE037 /* PBXTargetDependency */,
 			);
 			name = StandardCyborgAlgorithmsTestbed;
 			productName = StandardCyborgAlgorithmsTestbed;
@@ -530,37 +522,18 @@
 			buildConfigurationList = 768F64FF2121570700C1B1DA /* Build configuration list for PBXNativeTarget "TrueDepthFusion" */;
 			buildPhases = (
 				768F64E42121570600C1B1DA /* Sources */,
-				76FDB62C2220CEBE00DE8B43 /* SwiftLint */,
 				768F64E52121570600C1B1DA /* Frameworks */,
 				768F64E62121570600C1B1DA /* Resources */,
 				768F6513212168E100C1B1DA /* Copy Frameworks */,
-				7649B80522BC08BF009F07D5 /* Strip Simulator Architectures */,
 			);
 			buildRules = (
 			);
 			dependencies = (
+				76296F2D2CFE13EC003EE037 /* PBXTargetDependency */,
 			);
 			name = TrueDepthFusion;
 			productName = TrueDepthFusion;
 			productReference = 768F64E82121570600C1B1DA /* TrueDepthFusion.app */;
-			productType = "com.apple.product-type.application";
-		};
-		76A6366D2134DE8B0008546D /* VisualTesteriOS */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 76A636812134DE8C0008546D /* Build configuration list for PBXNativeTarget "VisualTesteriOS" */;
-			buildPhases = (
-				76A6366A2134DE8B0008546D /* Sources */,
-				76A6366B2134DE8B0008546D /* Frameworks */,
-				76A6366C2134DE8B0008546D /* Resources */,
-				76558B982134E0AE005AECFE /* Copy Frameworks */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = VisualTesteriOS;
-			productName = VisualTesteriOS;
-			productReference = 76A6366E2134DE8B0008546D /* VisualTesteriOS.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -589,9 +562,6 @@
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1020;
 					};
-					76A6366D2134DE8B0008546D = {
-						CreatedOnToolsVersion = 9.4.1;
-					};
 				};
 			};
 			buildConfigurationList = 76539C9120F5B1FE009C332E /* Build configuration list for PBXProject "StandardCyborgSDK" */;
@@ -605,6 +575,8 @@
 			mainGroup = 76539C8D20F5B1FE009C332E;
 			packageReferences = (
 				763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */,
+				76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */,
+				76296F292CFE1317003EE037 /* XCRemoteSwiftPackageReference "ZipArchive" */,
 			);
 			productRefGroup = 76539C9820F5B1FE009C332E /* Products */;
 			projectDirPath = "";
@@ -612,7 +584,6 @@
 			targets = (
 				76603F5B224D749B00C4C0C4 /* StandardCyborgAlgorithmsTestbed */,
 				76539CB420F5BBC0009C332E /* VisualTesterMac */,
-				76A6366D2134DE8B0008546D /* VisualTesteriOS */,
 				768F64E72121570600C1B1DA /* TrueDepthFusion */,
 			);
 		};
@@ -660,55 +631,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		76A6366C2134DE8B0008546D /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		7649B80522BC08BF009F07D5 /* Strip Simulator Architectures */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Strip Simulator Architectures";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [[ $ACTION = \"install\" ]]; then\n  echo \"Stripping simulator architectures from ZipArchive framework…\"\n  cd \"$BUILT_PRODUCTS_DIR/$FRAMEWORKS_FOLDER_PATH/ZipArchive.framework\"\n  lipo -thin arm64 ZipArchive -output ZipArchive-thin\n  rm ZipArchive\n  mv ZipArchive-thin ZipArchive\nfi\n";
-		};
-		76FDB62C2220CEBE00DE8B43 /* SwiftLint */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = SwiftLint;
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if which swiftlint >/dev/null; then\n    swiftlint\nelse\n    echo \"SwiftLint not installed, install via `pod install swiftlint`\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		76539CB120F5BBC0009C332E /* Sources */ = {
@@ -775,14 +698,18 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		76A6366A2134DE8B0008546D /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		76296F1F2CFE0EC3003EE037 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 76296F1E2CFE0EC3003EE037 /* scsdk */;
+		};
+		76296F2D2CFE13EC003EE037 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 76296F2C2CFE13EC003EE037 /* ZipArchive */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		76539CBF20F5BBC1009C332E /* Main.storyboard */ = {
@@ -887,9 +814,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LLVM_LTO = NO;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_LANGUAGE_REVISION = Metal20;
 				ONLY_ACTIVE_ARCH = YES;
@@ -960,9 +887,9 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LLVM_LTO = YES;
-				MACOSX_DEPLOYMENT_TARGET = 11.0;
+				MACOSX_DEPLOYMENT_TARGET = 13.5;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_LANGUAGE_REVISION = Metal20;
 				SDKROOT = macosx;
@@ -988,7 +915,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MTL_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-all_load",
@@ -1011,7 +937,6 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MTL_HEADER_SEARCH_PATHS = "$(PROJECT_DIR)";
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-all_load",
@@ -1028,7 +953,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = StandardCyborgAlgorithmsTestbed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1055,7 +979,6 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
-				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
 				INFOPLIST_FILE = StandardCyborgAlgorithmsTestbed/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1084,15 +1007,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/StandardCyborgFusion",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/deps/json/include",
-					"$(PROJECT_DIR)/deps/nanoflann/include",
-				);
 				INFOPLIST_FILE = TrueDepthFusion/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1115,15 +1029,6 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/StandardCyborgFusion",
-				);
-				HEADER_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/deps/json/include",
-					"$(PROJECT_DIR)/deps/nanoflann/include",
-				);
 				INFOPLIST_FILE = TrueDepthFusion/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1134,54 +1039,6 @@
 				PRODUCT_NAME = TrueDepthFusion;
 				SDKROOT = iphoneos;
 				SWIFT_OBJC_BRIDGING_HEADER = "TrueDepthFusion/TrueDepthFusion-Bridging-Header.h";
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		76A636822134DE8C0008546D /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FZU7U4ED2K;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				INFOPLIST_FILE = VisualTesteriOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.VisualTesteriOS;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
-				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Debug;
-		};
-		76A636832134DE8C0008546D /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = FZU7U4ED2K;
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
-				INFOPLIST_FILE = VisualTesteriOS/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.standardcyborg.VisualTesteriOS;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1225,25 +1082,65 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		76A636812134DE8C0008546D /* Build configuration list for PBXNativeTarget "VisualTesteriOS" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				76A636822134DE8C0008546D /* Debug */,
-				76A636832134DE8C0008546D /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
+		76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = scsdk;
+		};
 		763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = StandardCyborgFusion;
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		76296F292CFE1317003EE037 /* XCRemoteSwiftPackageReference "ZipArchive" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ZipArchive/ZipArchive.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.6.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		76296F1A2CFE0EAA003EE037 /* scsdk */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = scsdk;
+		};
+		76296F1E2CFE0EC3003EE037 /* scsdk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */;
+			productName = scsdk;
+		};
+		76296F202CFE0ECF003EE037 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			productName = StandardCyborgFusion;
+		};
+		76296F232CFE0F5D003EE037 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			productName = StandardCyborgFusion;
+		};
+		76296F262CFE10AB003EE037 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			productName = StandardCyborgFusion;
+		};
+		76296F2A2CFE1317003EE037 /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76296F292CFE1317003EE037 /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
+		};
+		76296F2C2CFE13EC003EE037 /* ZipArchive */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76296F292CFE1317003EE037 /* XCRemoteSwiftPackageReference "ZipArchive" */;
+			productName = ZipArchive;
+		};
 		763CA4C22CE29245000A0214 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StandardCyborgFusion;
