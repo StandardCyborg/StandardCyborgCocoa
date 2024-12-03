@@ -8,10 +8,10 @@
 
 #import <ModelIO/ModelIO.h>
 #import <SceneKit/SceneKit.h>
-#import <SSZipArchive/SSZipArchive.h>
 #import <StandardCyborgFusion/StandardCyborgFusion.h>
-#import <UIKit/UIKit.h>
 #import <standard_cyborg/sc3d/ColorImage.hpp>
+#import <UIKit/UIKit.h>
+#import <ZipArchive.h>
 
 #import "Scan.h"
 

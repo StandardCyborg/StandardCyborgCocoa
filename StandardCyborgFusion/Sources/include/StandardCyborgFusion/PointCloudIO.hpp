@@ -14,8 +14,8 @@
 #import <standard_cyborg/util/IncludeEigen.hpp>
 #import <standard_cyborg/sc3d/PerspectiveCamera.hpp>
 
-#import "RawFrame.hpp"
-#import "Surfel.hpp"
+#import <StandardCyborgFusion/RawFrame.hpp>
+#import <StandardCyborgFusion/Surfel.hpp>
 
 using JSON = nlohmann::json;
 using namespace standard_cyborg;

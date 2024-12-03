@@ -11,12 +11,12 @@
 
 #import <CoreImage/CoreImage.h>
 #import <simd/simd.h>
-#import <SSZipArchive/SSZipArchive.h>
-#import <StandardCyborgFusion/PerspectiveCamera+AVFoundation.hpp>
 #import <StandardCyborgFusion/GeometryHelpers.hpp>
+#import <StandardCyborgFusion/PerspectiveCamera+AVFoundation.hpp>
 #import <StandardCyborgFusion/PointCloudIO.hpp>
 #import <StandardCyborgFusion/SCOfflineReconstructionManager.h>
 #import <StandardCyborgFusion/StandardCyborgFusion.h>
+#import <ZipArchive.h>
 
 using namespace standard_cyborg;
 
