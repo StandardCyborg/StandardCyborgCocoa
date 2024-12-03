@@ -62,9 +62,9 @@ static void assertHandler(const char* x, const char* prettyFunction, const char*
     errorMessage = buf;
 }
 
-#define STR(x) #x
+#define MY_ASSERT_STR(x) #x
 
-#define MY_ASSERT(x) (!(x)) ? assertHandler(STR(x), __PRETTY_FUNCTION__, __FILE__, __LINE__), true : false
+#define MY_ASSERT(x) (!(x)) ? assertHandler(MY_ASSERT_STR(x), __PRETTY_FUNCTION__, __FILE__, __LINE__), true : false
 
 //#define MY_ASSERT(x) false
 
