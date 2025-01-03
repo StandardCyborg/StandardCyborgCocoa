@@ -6,7 +6,7 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#import "SceneKit+Plane.h"
+#import "SceneKit+Plane.hpp"
 #import <vector>
 
 using namespace standard_cyborg;

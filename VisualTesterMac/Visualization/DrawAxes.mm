@@ -9,7 +9,6 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <GLKit/GLKMatrix4.h>
 #import "DrawAxes.hpp"
-#import "MathHelpers.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

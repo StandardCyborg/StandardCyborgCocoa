@@ -16,13 +16,13 @@
 #import <standard_cyborg/sc3d/Polyline.hpp>
 #import <standard_cyborg/sc3d/VertexSelection.hpp>
 #import <standard_cyborg/io/ply/GeometryFileIO_PLY.hpp>
-#import <StandardCyborgFusion/SceneKit+BoundingBox3.h>
-#import <StandardCyborgFusion/SceneKit+Geometry.h>
-#import <StandardCyborgFusion/SceneKit+Lines.h>
-#import <StandardCyborgFusion/SceneKit+Mat3x3.h>
-#import <StandardCyborgFusion/SceneKit+Mat3x4.h>
-#import <StandardCyborgFusion/SceneKit+Plane.h>
-#import <StandardCyborgFusion/SceneKit+Polyline.h>
+#import <StandardCyborgFusion/SceneKit+BoundingBox3.hpp>
+#import <StandardCyborgFusion/SceneKit+Geometry.hpp>
+#import <StandardCyborgFusion/SceneKit+Lines.hpp>
+#import <StandardCyborgFusion/SceneKit+Mat3x3.hpp>
+#import <StandardCyborgFusion/SceneKit+Mat3x4.hpp>
+#import <StandardCyborgFusion/SceneKit+Plane.hpp>
+#import <StandardCyborgFusion/SceneKit+Polyline.hpp>
 
 #import "NodeToNodeLineNode.h"
 

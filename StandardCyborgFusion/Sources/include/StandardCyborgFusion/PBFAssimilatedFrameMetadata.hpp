@@ -6,6 +6,8 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #pragma once
 
 #import <standard_cyborg/util/IncludeEigen.hpp>
@@ -39,3 +41,5 @@ struct PBFAssimilatedFrameMetadata {
     float icpUnusedIterationFraction = 0.0;
     int icpIterationCount = 0;
 };
+
+#endif

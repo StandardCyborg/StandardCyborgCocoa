@@ -7,14 +7,22 @@
 
 #import <CoreVideo/CoreVideo.h>
 #import <simd/simd.h>
+#import <StandardCyborgFusion/PBFFinalStatistics.h>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
 #import <StandardCyborgFusion/SCReconstructionManagerParameters.h>
 
-#import <StandardCyborgFusion/PBFFinalStatistics.h>
+#ifdef __cplusplus
+#import <StandardCyborgFusion/ICP.hpp>
+#import <StandardCyborgFusion/PBFAssimilatedFrameMetadata.hpp>
+#import <StandardCyborgFusion/RawFrame.hpp>
+#import <StandardCyborgFusion/Surfel.hpp>
+#endif
 
 @class AVCameraCalibrationData;
 @class CMDeviceMotion;
 @class SCPointCloud;
+@protocol SCOfflineReconstructionManagerDelegate;
+
 @protocol MTLCommandQueue;
 @protocol MTLDevice;
 
@@ -44,6 +52,30 @@ NS_ASSUME_NONNULL_BEGIN
 - (SCPointCloud *)buildPointCloud;
 - (BOOL)writePointCloudToPLYFile:(NSString *)plyPath;
 - (BOOL)writePointCloudToUSDAFile:(NSString *)USDAPath;
+
+@property (nonatomic, weak, nullable) id<SCOfflineReconstructionManagerDelegate> delegate;
+
+#ifdef __cplusplus
+/** The most recently processed rawFrame */
+- (std::shared_ptr<RawFrame>)lastRawFrame;
+
+- (const Surfels&)surfels;
+- (const std::vector<uint32_t>&)surfelIndexMap;
+- (id<MTLTexture>)surfelIndexMapTexture;
+- (std::unique_ptr<RawFrame>)readBPLYWithPath:(NSString *)filePath;
+- (SCAssimilatedFrameMetadata)accumulateFromRawFrame:(const RawFrame&)rawFrame;
+- (const std::vector<PBFAssimilatedFrameMetadata>)assimilatedFrameMetadata;
+#endif
+
+@end
+
+
+@protocol SCOfflineReconstructionManagerDelegate <NSObject>
+@optional
+
+#ifdef __cplusplus
+- (void)reconstructionManager:(SCOfflineReconstructionManager *)manager didIterateICPWithResult:(ICPResult)result;
+#endif
 
 @end
 

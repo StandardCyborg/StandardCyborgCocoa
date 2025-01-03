@@ -6,6 +6,8 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #ifndef Surfel_hpp
 #define Surfel_hpp
 
@@ -60,3 +62,5 @@ template struct std::vector<Surfel>;
 #endif /* __METAL_VERSION__ */
 
 #endif /* Surfel_hpp */
+
+#endif /* __cplusplus */

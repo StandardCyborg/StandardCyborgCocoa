@@ -7,7 +7,7 @@
 //
 
 #include <metal_stdlib>
-#include "StandardCyborgFusion/DataStructures/Surfel.hpp"
+#include "../../StandardCyborgFusion/Sources/include/StandardCyborgFusion/Surfel.hpp"
 
 using namespace metal;
 

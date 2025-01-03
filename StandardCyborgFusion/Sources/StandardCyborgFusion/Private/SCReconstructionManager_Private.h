@@ -7,7 +7,6 @@
 //
 
 #import <StandardCyborgFusion/SCReconstructionManager.h>
-#import "SCReconstructionManagerParameters_Private.h"
 
 @protocol SCReconstructionManagerDelegatePrivate <SCReconstructionManagerDelegate>
 
@@ -15,7 +14,4 @@
 didAssimilateFrameWithExtendedMetadata:(SCAssimilatedFrameMetadata)metadata
                 reconstructedModel:(SCPointCloud *)model;
 
-@end
-
-@interface SCReconstructionManager (Private) <SCReconstructionManagerParameters_Private>
 @end

@@ -7,13 +7,13 @@
 //
 
 #import <standard_cyborg/algorithms/Centroid.hpp>
-#import <standard_cyborg/sc3d/Face3.hpp>
-#import <standard_cyborg/sc3d/Geometry.hpp>
-#import <standard_cyborg/math/Vec3.hpp>
 #import <standard_cyborg/io/imgfile/ColorImageFileIO.hpp>
+#import <standard_cyborg/sc3d/Face3.hpp>
+#import <standard_cyborg/math/Vec3.hpp>
+#import <standard_cyborg/sc3d/Geometry.hpp>
 #import <vector>
 
-#import "SceneKit+Geometry.h"
+#import "SceneKit+Geometry.hpp"
 
 using namespace std;
 

@@ -6,7 +6,7 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#import "SceneKit+Polyline.h"
+#import "SceneKit+Polyline.hpp"
 #import <standard_cyborg/math/Vec3.hpp>
 #import <vector>
 

@@ -13,7 +13,7 @@
 #import <standard_cyborg/util/IncludeEigen.hpp>
 #import <standard_cyborg/sc3d/VertexSelection.hpp>
 #import <standard_cyborg/io/ply/GeometryFileIO_PLY.hpp>
-#import <StandardCyborgFusion/SceneKit+Geometry.h>
+#import <StandardCyborgFusion/SceneKit+Geometry.hpp>
 
 
 #import <iostream>

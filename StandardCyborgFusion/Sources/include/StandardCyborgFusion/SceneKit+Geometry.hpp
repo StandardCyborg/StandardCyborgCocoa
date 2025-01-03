@@ -6,6 +6,8 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #import <Foundation/Foundation.h>
 #import <SceneKit/SceneKit.h>
 
@@ -49,3 +51,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

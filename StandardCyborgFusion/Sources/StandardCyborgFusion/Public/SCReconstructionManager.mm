@@ -25,7 +25,7 @@
 #import "SCPointCloud_Private.h"
 #import "SurfelFusion.hpp"
 #import <standard_cyborg/util/DataUtils.hpp>
-#import "SCReconstructionManagerParameters_Private.h"
+#import "SCReconstructionManagerParameters.h"
 #import "SCReconstructionManager_Private.h"
 
 #import <iostream>

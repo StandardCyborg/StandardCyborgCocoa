@@ -12,7 +12,7 @@
 #import "GeometryHelpers.hpp"
 #import "SCMesh+Geometry.h"
 #import "SCPointCloud+Geometry.h"
-#import "SceneKit+StandardCyborgNode.h"
+#import "SceneKit+StandardCyborgNode.hpp"
 
 #import "SCScene.h"
 

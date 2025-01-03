@@ -13,6 +13,9 @@ let package = Package(
             publicHeadersPath: "include",
             cxxSettings: [
                 .define("STD_LIB_FLAG"),
+            ],
+            linkerSettings: [
+                .linkedFramework("Foundation"),
             ]
         ),
     ],

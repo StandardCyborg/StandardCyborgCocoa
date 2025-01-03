@@ -8,10 +8,10 @@
 
 #import <standard_cyborg/sc3d/Landmark.hpp>
 
-#import "SceneKit+Geometry.h"
-#import "SceneKit+Plane.h"
-#import "SceneKit+Polyline.h"
-#import "SceneKit+StandardCyborgNode.h"
+#import "SceneKit+Geometry.hpp"
+#import "SceneKit+Plane.hpp"
+#import "SceneKit+Polyline.hpp"
+#import "SceneKit+StandardCyborgNode.hpp"
 
 using namespace std;
 

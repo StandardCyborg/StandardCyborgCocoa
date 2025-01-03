@@ -14,7 +14,6 @@
 #import <StandardCyborgFusion/GeometryHelpers.hpp>
 #import <StandardCyborgFusion/PointCloudIO.hpp>
 #import <StandardCyborgFusion/SCOfflineReconstructionManager.h>
-#import <StandardCyborgFusion/SCOfflineReconstructionManager_Private.h>
 #import <StandardCyborgFusion/SCPointCloud+Geometry.h>
 #import <StandardCyborgFusion/StandardCyborgFusion.h>
 #import <StandardCyborgFusion/Surfel.hpp>
@@ -128,6 +127,10 @@ static SCNVector3 SurfelsBoundingBoxCenter(const Surfels& surfels);
     [self _assimilateNextFrame];
 }
 
+// Ignoring deprecated -[NSSavePanel setAllowedFileTypes:]
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wdeprecated"
+
 - (IBAction)exportUSDA:(id)sender
 {
     NSSavePanel *panel = [NSSavePanel savePanel];
@@ -234,6 +237,8 @@ static SCNVector3 SurfelsBoundingBoxCenter(const Surfels& surfels);
         io::gltf::WriteSceneGraphToGltf({rootNode}, std::string([GLTFPath UTF8String]));
     }];
 }
+
+#pragma clang diagnostic pop
 
 - (IBAction)uiControlDidChange:(id)sender
 {

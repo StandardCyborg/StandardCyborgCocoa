@@ -6,6 +6,8 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #pragma once
 
 #import <standard_cyborg/util/IncludeEigen.hpp>
@@ -21,7 +23,6 @@ struct Vec2;
 struct Vec3;
 struct Vec4;
 }
-
 
 }
 
@@ -55,6 +56,9 @@ static const float kGammaCorrectionInv = 2.2/1.0;
 static inline float applyGammaCorrection(float x) {
     return powf(x, kGammaCorrection);
 }
+
 static inline float unapplyGammaCorrection(float x) {
     return powf(x, kGammaCorrectionInv);
 }
+
+#endif
