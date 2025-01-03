@@ -6,6 +6,8 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #pragma once
 
 #import <standard_cyborg/sc3d/PerspectiveCamera.hpp>
@@ -46,3 +48,5 @@ private:
     // RawFrame(const RawFrame&) = delete;
     RawFrame& operator=(const RawFrame&) = delete;
 };
+
+#endif

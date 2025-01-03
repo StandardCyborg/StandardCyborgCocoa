@@ -6,7 +6,7 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#import "SceneKit+Lines.h"
+#import "SceneKit+Lines.hpp"
 #import <standard_cyborg/math/Vec3.hpp>
 #import <vector>
 

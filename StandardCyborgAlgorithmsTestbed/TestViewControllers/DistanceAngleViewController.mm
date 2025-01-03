@@ -7,7 +7,7 @@
 //
 
 #import <SceneKit/SceneKit.h>
-#import <StandardCyborgFusion/SceneKit+Geometry.h>
+#import <StandardCyborgFusion/SceneKit+Geometry.hpp>
 
 #import "DistanceAngleViewController.h"
 #import <standard_cyborg/sc3d/Geometry.hpp>

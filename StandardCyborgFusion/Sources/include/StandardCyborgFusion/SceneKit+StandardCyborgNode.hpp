@@ -6,6 +6,8 @@
 //  Copyright © 2019 StandardCyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #import <SceneKit/SceneKit.h>
 #import <standard_cyborg/scene_graph/SceneGraph.hpp>
 #import <memory>
@@ -20,3 +22,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

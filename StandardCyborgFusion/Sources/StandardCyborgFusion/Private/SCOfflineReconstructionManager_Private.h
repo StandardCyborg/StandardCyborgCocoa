@@ -6,11 +6,9 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
-// NOTE: This is Objective-C++. Guarding as such.
 #ifdef __cplusplus
 
 #import <StandardCyborgFusion/SCOfflineReconstructionManager.h>
-#import "SCReconstructionManagerParameters_Private.h"
 #import "ICP.hpp"
 #import "EigenHelpers.hpp"
 #import "Surfel.hpp"
@@ -27,7 +25,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SCOfflineReconstructionManager (Private) <SCReconstructionManagerParameters_Private>
+@interface SCOfflineReconstructionManager (Private) <SCReconstructionManagerParameters>
 
 @property (nonatomic, weak, nullable) id<SCOfflineReconstructionManagerDelegate> delegate;
 

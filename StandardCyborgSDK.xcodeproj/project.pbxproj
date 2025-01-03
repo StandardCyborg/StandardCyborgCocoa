@@ -13,7 +13,6 @@
 		76296F1B2CFE0EAA003EE037 /* scsdk in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F1A2CFE0EAA003EE037 /* scsdk */; };
 		76296F222CFE0ECF003EE037 /* StandardCyborgFusion in Copy Frameworks */ = {isa = PBXBuildFile; productRef = 76296F202CFE0ECF003EE037 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		76296F242CFE0F5D003EE037 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F232CFE0F5D003EE037 /* StandardCyborgFusion */; };
-		76296F252CFE0F5D003EE037 /* StandardCyborgFusion in Copy Frameworks */ = {isa = PBXBuildFile; productRef = 76296F232CFE0F5D003EE037 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		76296F272CFE10AB003EE037 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F262CFE10AB003EE037 /* StandardCyborgFusion */; };
 		76296F282CFE10AB003EE037 /* StandardCyborgFusion in Copy Frameworks */ = {isa = PBXBuildFile; productRef = 76296F262CFE10AB003EE037 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		76296F2B2CFE1317003EE037 /* ZipArchive in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F2A2CFE1317003EE037 /* ZipArchive */; };
@@ -66,6 +65,7 @@
 		769DE0E6224D7DB800ACAD89 /* DistanceAngleViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 769DE0E5224D7DB800ACAD89 /* DistanceAngleViewController.storyboard */; };
 		76B242D321506FB9001A0E57 /* DrawCorrespondences.mm in Sources */ = {isa = PBXBuildFile; fileRef = 76B242D221506FB9001A0E57 /* DrawCorrespondences.mm */; };
 		76B242D521507874001A0E57 /* DrawCorrespondences.metal in Sources */ = {isa = PBXBuildFile; fileRef = 76B242D421507874001A0E57 /* DrawCorrespondences.metal */; };
+		76BE55122D27CC7D007FB631 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 76BE55112D27CC7D007FB631 /* UIKit.framework */; };
 		76BF310B22590EF100DB1347 /* NodeToNodeLineNode.m in Sources */ = {isa = PBXBuildFile; fileRef = 76BF310A22590EF100DB1347 /* NodeToNodeLineNode.m */; };
 		76C79E342257FEE70061658A /* TestViewController.scn in Resources */ = {isa = PBXBuildFile; fileRef = 76C79E332257FE670061658A /* TestViewController.scn */; };
 		76C79E372258050D0061658A /* BaseTestViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 76C79E362258050D0061658A /* BaseTestViewController.mm */; };
@@ -97,7 +97,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				76296F222CFE0ECF003EE037 /* StandardCyborgFusion in Copy Frameworks */,
-				76296F252CFE0F5D003EE037 /* StandardCyborgFusion in Copy Frameworks */,
 			);
 			name = "Copy Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -207,6 +206,7 @@
 		76B242D421507874001A0E57 /* DrawCorrespondences.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DrawCorrespondences.metal; sourceTree = "<group>"; };
 		76BBFD49229B3E990004F9EE /* CoreML.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreML.framework; path = System/Library/Frameworks/CoreML.framework; sourceTree = SDKROOT; };
 		76BBFD51229B3F730004F9EE /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		76BE55112D27CC7D007FB631 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS18.2.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
 		76BF310922590EF100DB1347 /* NodeToNodeLineNode.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NodeToNodeLineNode.h; sourceTree = "<group>"; };
 		76BF310A22590EF100DB1347 /* NodeToNodeLineNode.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NodeToNodeLineNode.m; sourceTree = "<group>"; };
 		76C79E332257FE670061658A /* TestViewController.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = TestViewController.scn; sourceTree = "<group>"; };
@@ -262,6 +262,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				76BE55122D27CC7D007FB631 /* UIKit.framework in Frameworks */,
 				76296F1B2CFE0EAA003EE037 /* scsdk in Frameworks */,
 				767001C8227B8C830037210E /* QuartzCore.framework in Frameworks */,
 				768967F223943069007179B2 /* SceneKit.framework in Frameworks */,
@@ -286,6 +287,7 @@
 		3ABB72D98D8717B89DD61411 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				76BE55112D27CC7D007FB631 /* UIKit.framework */,
 				07317DCD240F0090006EAB2B /* Accelerate.framework */,
 				767F31EC227B4EA400D75BC3 /* AppKit.framework */,
 				07E25C62241155F500ED1EE7 /* AVFoundation.framework */,
@@ -492,6 +494,8 @@
 			buildRules = (
 			);
 			dependencies = (
+				76BE550E2D27C1E8007FB631 /* PBXTargetDependency */,
+				76BE55102D27C1E8007FB631 /* PBXTargetDependency */,
 			);
 			name = VisualTesterMac;
 			productName = VisualTesterMac;
@@ -510,6 +514,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				761100032CFF60DC00C0077B /* PBXTargetDependency */,
 				76296F1F2CFE0EC3003EE037 /* PBXTargetDependency */,
 			);
 			name = StandardCyborgAlgorithmsTestbed;
@@ -701,6 +706,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		761100032CFF60DC00C0077B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 761100022CFF60DC00C0077B /* StandardCyborgFusion */;
+		};
 		76296F1F2CFE0EC3003EE037 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 76296F1E2CFE0EC3003EE037 /* scsdk */;
@@ -708,6 +717,14 @@
 		76296F2D2CFE13EC003EE037 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			productRef = 76296F2C2CFE13EC003EE037 /* ZipArchive */;
+		};
+		76BE550E2D27C1E8007FB631 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 76BE550D2D27C1E8007FB631 /* StandardCyborgFusion */;
+		};
+		76BE55102D27C1E8007FB631 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 76BE550F2D27C1E8007FB631 /* scsdk */;
 		};
 /* End PBXTargetDependency section */
 
@@ -1107,6 +1124,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		761100022CFF60DC00C0077B /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			productName = StandardCyborgFusion;
+		};
 		76296F1A2CFE0EAA003EE037 /* scsdk */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = scsdk;
@@ -1144,6 +1166,16 @@
 		763CA4C22CE29245000A0214 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = StandardCyborgFusion;
+		};
+		76BE550D2D27C1E8007FB631 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			productName = StandardCyborgFusion;
+		};
+		76BE550F2D27C1E8007FB631 /* scsdk */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */;
+			productName = scsdk;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

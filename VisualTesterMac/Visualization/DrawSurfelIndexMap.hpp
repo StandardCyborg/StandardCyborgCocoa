@@ -8,7 +8,6 @@
 
 #import <Foundation/Foundation.h>
 #import <Metal/Metal.h>
-#import <StandardCyborgFusion/EigenHelpers.hpp>
 #import <StandardCyborgFusion/StandardCyborgFusion.h>
 
 @protocol CAMetalDrawable;

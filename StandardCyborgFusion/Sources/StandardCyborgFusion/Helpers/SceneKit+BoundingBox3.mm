@@ -1,12 +1,12 @@
 //
-//  SceneKit+BoundingBox3.m
+//  SceneKit+BoundingBox3.mm
 //  StandardCyborgData
 //
 //  Created by Eric Arneback on 5/21/19.
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#import "SceneKit+BoundingBox3.h"
+#import "SceneKit+BoundingBox3.hpp"
 #import <vector>
 
 #import <standard_cyborg/math/Vec3.hpp>

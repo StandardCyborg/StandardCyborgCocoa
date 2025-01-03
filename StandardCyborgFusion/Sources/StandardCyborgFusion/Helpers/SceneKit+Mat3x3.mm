@@ -1,18 +1,17 @@
 //
-//  SceneKit+Mat3x4.m
+//  SceneKit+Mat3x4.mm
 //  StandardCyborgData
 //
 //  Created by Eric Arneback on 5/21/19.
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#import "SceneKit+Mat3x3.h"
-#import <vector>
+#import "SceneKit+Mat3x3.hpp"
+#import "SceneKit+Mat3x4.hpp"
 
 #import <standard_cyborg/math/Vec3.hpp>
 #import <standard_cyborg/math/Mat3x4.hpp>
-
-#import "SceneKit+Mat3x4.h"
+#import <vector>
 
 using namespace standard_cyborg;
 

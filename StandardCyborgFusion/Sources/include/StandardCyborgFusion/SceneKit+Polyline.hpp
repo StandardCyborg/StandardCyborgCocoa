@@ -6,6 +6,8 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #import <Foundation/Foundation.h>
 #import <SceneKit/SceneKit.h>
 #import <standard_cyborg/sc3d/Polyline.hpp>
@@ -21,3 +23,5 @@ NS_ASSUME_NONNULL_BEGIN
 @end
 
 NS_ASSUME_NONNULL_END
+
+#endif

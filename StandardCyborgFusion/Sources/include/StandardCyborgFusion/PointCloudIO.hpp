@@ -6,6 +6,8 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #pragma once
 
 #import <string>
@@ -69,3 +71,5 @@ public:
     
     static void WriteRawFrameToBPLYFile(const RawFrame& rawFrame, std::string filename);
 };
+
+#endif

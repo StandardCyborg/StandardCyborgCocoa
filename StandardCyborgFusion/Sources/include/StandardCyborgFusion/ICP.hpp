@@ -6,6 +6,8 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
+#ifdef __cplusplus
+
 #pragma once
 
 #import <standard_cyborg/math/Mat4x4.hpp>
@@ -56,3 +58,5 @@ public:
                          sc3d::Geometry& targetCloud,
                          ICPIterationCallback callback = nullptr);
 };
+
+#endif

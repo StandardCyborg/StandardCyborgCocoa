@@ -6,7 +6,7 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#import "SceneKit+Mat3x4.h"
+#import "SceneKit+Mat3x4.hpp"
 #import <vector>
 #import <iostream>
 
