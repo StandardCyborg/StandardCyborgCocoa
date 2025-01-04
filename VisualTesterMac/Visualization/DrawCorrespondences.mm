@@ -73,7 +73,7 @@ struct SharedUniforms {
         if (_pipelineState == nil) { NSLog(@"Unable to create pipeline state: %@", error); }
         
         _sharedUniformsBuffer = [device newBufferWithLength:sizeof(SharedUniforms)
-                                                    options:MTLResourceOptionCPUCacheModeWriteCombined];
+                                                    options:MTLResourceCPUCacheModeWriteCombined];
         _sharedUniformsBuffer.label = @"DrawCorrespondences._sharedUniformsBuffer";
     }
     return self;

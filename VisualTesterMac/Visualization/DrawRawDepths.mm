@@ -40,7 +40,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<MTLBuffer> mapBuffer = [_device newBufferWithBytes:(void *)rawFrame->depths.data()
                                                    length:rawFrame->depths.size() * sizeof(float)
-                                                  options:MTLResourceOptionCPUCacheModeWriteCombined];
+                                                  options:MTLResourceCPUCacheModeWriteCombined];
     id<MTLTexture> texture = [drawable texture];
     
     NSUInteger width = [texture width];

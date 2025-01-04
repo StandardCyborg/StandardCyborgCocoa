@@ -42,7 +42,7 @@ NS_ASSUME_NONNULL_BEGIN
     
     id<MTLBuffer> mapBuffer = [_device newBufferWithBytes:(void *)surfelIndexMap.data()
                                                    length:surfelIndexMap.size() * sizeof(uint32_t)
-                                                  options:MTLResourceOptionCPUCacheModeWriteCombined];
+                                                  options:MTLResourceCPUCacheModeWriteCombined];
     id<MTLTexture> texture = [drawable texture];
     
     NSUInteger width = [texture width];
