@@ -267,13 +267,9 @@ static SCNVector3 SurfelsBoundingBoxCenter(const Surfels& surfels);
     _reconstructionManager = [[SCOfflineReconstructionManager alloc] initWithDevice:_metalDevice
                                                                        commandQueue:_algorithmCommandQueue
                                                                      maxThreadCount:(int)[[NSProcessInfo processInfo] processorCount]];
-  
-    
-    
     _reconstructionManager.delegate = self;
     
     id<MTLLibrary> library = [_metalDevice newDefaultLibrary];
-    
     ClearPass *clearPass = [[ClearPass alloc] initWithDevice:_metalDevice library:library];
     _drawPointCloud = [[DrawPointCloud alloc] initWithDevice:_metalDevice library:library];
     _drawCorrespondences = [[DrawCorrespondences alloc] initWithDevice:_metalDevice library:library];
