@@ -65,8 +65,8 @@ MetalSurfelIndexMap::MetalSurfelIndexMap(id<MTLDevice> device, id<MTLCommandQueu
     _device(device),
     _commandQueue(commandQueue)
 {
-    NSString *mainBundlePath = [[NSBundle mainBundle] bundlePath];
-    NSBundle *scFusionBundle = [NSBundle bundleWithPath:[mainBundlePath stringByAppendingString:@"/StandardCyborgFusion_StandardCyborgFusion.bundle"]];
+    NSString *fusionBundlePath = [[NSBundle mainBundle] pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
+    NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
     NSError *error;
     _library = [_device newDefaultLibraryWithBundle:scFusionBundle error:&error];
     if (_library == nil) { NSLog(@"Unable to create library: %@", error); }
