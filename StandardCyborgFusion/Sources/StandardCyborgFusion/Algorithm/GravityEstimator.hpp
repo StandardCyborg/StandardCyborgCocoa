@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Eric Arneback on 2019-03-15.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #pragma once

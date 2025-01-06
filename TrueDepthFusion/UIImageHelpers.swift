@@ -3,7 +3,6 @@
 //  Capture
 //
 //  Created by Aaron Thompson on 11/23/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 import UIKit

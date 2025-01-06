@@ -3,7 +3,6 @@
 //  TrueDepthFusion
 //
 //  Created by Aaron Thompson on 8/12/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 import ARKit

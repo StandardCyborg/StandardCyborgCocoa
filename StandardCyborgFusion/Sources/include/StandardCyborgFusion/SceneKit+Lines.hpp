@@ -3,7 +3,6 @@
 //  StandardCyborgSDK
 //
 //  Created by Eric Arnebäck on 5/20/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #ifdef __cplusplus

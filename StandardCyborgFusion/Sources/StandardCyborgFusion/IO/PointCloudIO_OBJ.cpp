@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Aaron Thompson on 8/4/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #include "PointCloudIO.hpp"

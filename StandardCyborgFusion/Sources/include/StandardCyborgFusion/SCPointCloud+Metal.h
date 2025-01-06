@@ -2,7 +2,6 @@
 //  SCPointCloud+Metal.h
 //  StandardCyborgFusion
 //
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

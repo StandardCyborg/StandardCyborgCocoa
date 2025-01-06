@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Ricky Reusser on 10/16/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #ifdef __cplusplus

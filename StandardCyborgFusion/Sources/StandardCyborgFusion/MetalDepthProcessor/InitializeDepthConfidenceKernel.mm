@@ -3,7 +3,6 @@
 //  DepthRenderer
 //
 //  Created by Aaron Thompson on 7/25/18.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import "InitializeDepthConfidenceKernel.h"

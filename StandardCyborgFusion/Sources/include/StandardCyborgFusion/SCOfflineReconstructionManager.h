@@ -2,7 +2,6 @@
 //  SCOfflineReconstructionManager.h
 //  StandardCyborgFusion
 //
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #import <CoreVideo/CoreVideo.h>

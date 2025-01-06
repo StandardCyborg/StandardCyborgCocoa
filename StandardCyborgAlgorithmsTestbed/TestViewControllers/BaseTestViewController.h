@@ -3,7 +3,6 @@
 //  StandardCyborgGeometryTestbed
 //
 //  Created by Aaron Thompson on 4/5/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import <SceneKit/SceneKit.h>

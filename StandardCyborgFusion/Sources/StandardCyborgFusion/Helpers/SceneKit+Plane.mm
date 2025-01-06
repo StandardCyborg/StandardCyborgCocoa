@@ -3,7 +3,6 @@
 //  StandardCyborgData
 //
 //  Created by Eric Arneback on 5/21/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import "SceneKit+Plane.hpp"

@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by eric on 2019-09-03.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import "MetalTextureProjection.hpp"

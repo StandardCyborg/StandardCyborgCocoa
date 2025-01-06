@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Ricky Reusser on 12/2/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #include "WriteUSDZCompatibleZip.hpp"

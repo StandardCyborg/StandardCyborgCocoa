@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Aaron Thompson on 3/13/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

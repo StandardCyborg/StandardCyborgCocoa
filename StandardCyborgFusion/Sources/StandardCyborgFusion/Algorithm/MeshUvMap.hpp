@@ -3,7 +3,6 @@
 //  StandardCyborgAlgorithms
 //
 //  Created by eric on 2019-08-13.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #pragma once

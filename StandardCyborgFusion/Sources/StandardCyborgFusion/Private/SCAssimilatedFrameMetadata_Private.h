@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Aaron Thompson on 12/20/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>

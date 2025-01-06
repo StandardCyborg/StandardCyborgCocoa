@@ -2,7 +2,6 @@
 //  SCMeshingOperation.h
 //  StandardCyborgFusion
 //
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
