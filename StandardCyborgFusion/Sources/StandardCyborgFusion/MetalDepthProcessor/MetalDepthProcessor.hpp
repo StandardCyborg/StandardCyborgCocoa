@@ -16,11 +16,12 @@
 @class MetalComputeEngine;
 @protocol MTLCommandQueue;
 @protocol MTLDevice;
+@protocol MTLLibrary;
 @protocol MTLTexture;
 
 class MetalDepthProcessor: public DepthProcessor {
 public:
-    MetalDepthProcessor(id<MTLDevice> device, id<MTLCommandQueue> commandQueue);
+    MetalDepthProcessor(id<MTLDevice> device, id<MTLLibrary> library, id<MTLCommandQueue> commandQueue);
 
     virtual void computeFrameValues(ProcessedFrame &frameOut, const RawFrame &rawFrame, bool smoothPoints = false);
     

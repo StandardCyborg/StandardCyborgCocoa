@@ -10,22 +10,22 @@
 #import <cmath>
 #import <iostream>
 
-#import <standard_cyborg/util/DataUtils.hpp>
-#import <standard_cyborg/util/DebugHelpers.hpp>
+#import <standard_cyborg/io/ply/GeometryFileIO_PLY.hpp>
+#import <standard_cyborg/math/Vec3.hpp>
 #import <standard_cyborg/sc3d/Face3.hpp>
 #import <standard_cyborg/sc3d/Geometry.hpp>
-#import <standard_cyborg/util/IncludeEigen.hpp>
-#import <standard_cyborg/math/Vec3.hpp>
 #import <standard_cyborg/sc3d/VertexSelection.hpp>
+#import <standard_cyborg/util/DataUtils.hpp>
+#import <standard_cyborg/util/DebugHelpers.hpp>
+#import <standard_cyborg/util/IncludeEigen.hpp>
+
 #import "MetalDepthProcessor.hpp"
 #import "PBFModel.hpp"
 #import "PointCloudIO.hpp"
 #import "StandardCyborgFusion.h"
-#import <standard_cyborg/io/ply/GeometryFileIO_PLY.hpp>
 
 #import "Helpers/PathHelpers.h"
-#import "Helpers/ReconstructionHelpers.h"
-
+#import "Helpers/ReconstructionHelpers.hpp"
 
 using namespace standard_cyborg;
 

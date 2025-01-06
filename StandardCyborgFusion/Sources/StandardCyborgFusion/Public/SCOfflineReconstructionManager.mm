@@ -6,47 +6,43 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import <CoreVideo/CoreVideo.h>
-
+#import <Foundation/Foundation.h>
+#import <fstream>
 #import <json.hpp>
+
+#import <standard_cyborg/util/DataUtils.hpp>
 
 #import "DepthProcessor.hpp"
 #import "GeometryHelpers.hpp"
+#import "GravityEstimator.hpp"
 #import "MetalDepthProcessor.hpp"
 #import "MetalSurfelIndexMap.hpp"
 #import "PBFModel.hpp"
-#import "SurfelFusion.hpp"
 #import "PointCloudIO.hpp"
 #import "SCAssimilatedFrameMetadata.h"
 #import "SCAssimilatedFrameMetadata_Private.h"
 #import "SCOfflineReconstructionManager.h"
-#import "SCOfflineReconstructionManager_Private.h"
 #import "SCPointCloud_Private.h"
-
-#import <standard_cyborg/util/DataUtils.hpp>
-
-#import "GravityEstimator.hpp"
-
-#import <fstream>
+#import "SurfelFusion.hpp"
 
 using JSON = nlohmann::json;
 using namespace standard_cyborg;
 
 @implementation SCOfflineReconstructionManager {
     id<MTLDevice> _metalDevice;
+    id<MTLLibrary> _metalLibrary;
     id<MTLCommandQueue> _metalCommandQueue;
+    __weak id<SCOfflineReconstructionManagerDelegate> _delegate;
     std::shared_ptr<DepthProcessor> _depthProcessor;
     std::shared_ptr<MetalSurfelIndexMap> _surfelIndexMap;
     std::shared_ptr<PBFModel> _pbfModel;
     std::shared_ptr<RawFrame> _lastRawFrame;
 
     GravityEstimator _gravityEstimator;
-
     PBFConfiguration _pbfConfig;
     ICPConfiguration _icpConfig;
     SurfelFusionConfiguration _surfelFusionConfig;
-    __weak id<SCOfflineReconstructionManagerDelegate> _delegate;
     BOOL _hasFinalized;
 }
 
@@ -134,7 +130,10 @@ using namespace standard_cyborg;
         _metalCommandQueue = commandQueue;
         _icpConfig.threadCount = maxThreadCount;
 
-        _depthProcessor = std::shared_ptr<DepthProcessor>(new MetalDepthProcessor(_metalDevice, _metalCommandQueue));
+        NSString *fusionBundlePath = [[NSBundle mainBundle] pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
+        NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
+        _metalLibrary = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
+        _depthProcessor = std::shared_ptr<DepthProcessor>(new MetalDepthProcessor(_metalDevice, _metalLibrary, _metalCommandQueue));
 
         [self _reinitializePBFModel];
     }
@@ -143,7 +142,7 @@ using namespace standard_cyborg;
 
 - (void)_reinitializePBFModel
 {
-    _surfelIndexMap = std::shared_ptr<MetalSurfelIndexMap>(new MetalSurfelIndexMap(_metalDevice, _metalCommandQueue));
+    _surfelIndexMap = std::shared_ptr<MetalSurfelIndexMap>(new MetalSurfelIndexMap(_metalDevice, _metalLibrary, _metalCommandQueue));
     _pbfModel = std::shared_ptr<PBFModel>(new PBFModel(_surfelIndexMap));
 
     __weak SCOfflineReconstructionManager *weakSelf = self;
@@ -301,11 +300,7 @@ using namespace standard_cyborg;
     });
 }
 
-@end
-
-// MARK: -
-
-@implementation SCOfflineReconstructionManager (Private)
+// MARK: - Private
 
 - (void)setDelegate:(id<SCOfflineReconstructionManagerDelegate>)delegate
 {

@@ -1,12 +1,12 @@
 //
-//  ReconstructionHelpers.h
+//  ReconstructionHelpers.hpp
 //  StandardCyborgFusion
 //
 //  Created by Ricky Reusser on 5/1/19.
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#include "PBFModel.hpp"
+#include "../../Sources/StandardCyborgFusion/Algorithm/PBFModel.hpp"
 #include "ScreenSpaceLandmark.hpp"
 
 #include <functional>

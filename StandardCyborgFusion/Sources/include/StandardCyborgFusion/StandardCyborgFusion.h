@@ -38,4 +38,11 @@
 #import <StandardCyborgFusion/SCReconstructionManagerParameters.h>
 #import <StandardCyborgFusion/SCScene.h>
 #import <StandardCyborgFusion/SceneKit+BoundingBox3.hpp>
+#import <StandardCyborgFusion/SceneKit+Geometry.hpp>
+#import <StandardCyborgFusion/SceneKit+Lines.hpp>
+#import <StandardCyborgFusion/SceneKit+Mat3x3.hpp>
+#import <StandardCyborgFusion/SceneKit+Mat3x4.hpp>
+#import <StandardCyborgFusion/SceneKit+Plane.hpp>
+#import <StandardCyborgFusion/SceneKit+Polyline.hpp>
+#import <StandardCyborgFusion/SceneKit+StandardCyborgNode.hpp>
 #import <StandardCyborgFusion/Surfel.hpp>

@@ -7,24 +7,22 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "SCMesh+Geometry.h"
+#import <StandardCyborgFusion/SCMesh+Geometry.h>
 #import "SCMesh+FileIO.h"
 #import "SCMesh_Private.h"
+#import "Helpers/PathHelpers.h"
 
 using namespace standard_cyborg;
 using namespace standard_cyborg::math;
 using namespace standard_cyborg::sc3d;
 
-
 @interface SCMeshTests : XCTestCase
-
 @end
 
 @implementation SCMeshTests
 
 - (void)_buildTestGeometry:(sc3d::Geometry &)geometry
 {
-    
     std::vector<Vec3> positions, normals;
     std::vector<Vec2> texCoords;
     std::vector<Face3> faces;
@@ -58,7 +56,7 @@ using namespace standard_cyborg::sc3d;
     Geometry geometry;
     [self _buildTestGeometry:geometry];
     
-    NSString *texturePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"SquareRedImage" ofType:@"jpeg"];
+    NSString *texturePath = [[PathHelpers testCasesPath] stringByAppendingPathComponent:@"SquareRedImage.jpeg"];
     std::vector<float> textureData;
     NSInteger textureResolution = 0;
     [SCMesh readTextureFromImageAtPath:texturePath intoVector:textureData textureResolution:&textureResolution];
@@ -82,7 +80,7 @@ using namespace standard_cyborg::sc3d;
 - (void)testToAndFromPLY
 {
     NSString *PLYPath = [NSTemporaryDirectory() stringByAppendingPathComponent:@"testToAndFromPLY.ply"];
-    NSString *texturePath = [[NSBundle bundleForClass:[self class]] pathForResource:@"SquareRedImage" ofType:@"jpeg"];
+    NSString *texturePath = [[PathHelpers testCasesPath] stringByAppendingPathComponent:@"SquareRedImage.jpeg"];
     
     Geometry geometry;
     [self _buildTestGeometry:geometry];

@@ -54,8 +54,26 @@ let package = Package(
         .testTarget(
             name: "StandardCyborgFusionTests",
             dependencies: ["StandardCyborgFusion"],
+            path: "Tests",
+            resources: [
+                .copy("StandardCyborgFusionTests/Data")
+            ],
             cxxSettings: [
                 .define("DEBUG", .when(configuration: .debug)),
+                .define("PROJECT_DIR", to: "\".\""),
+                .unsafeFlags(["-fobjc-arc"]),
+                .headerSearchPath("."),
+                .headerSearchPath("../libigl/include"),
+                .headerSearchPath("../Sources/StandardCyborgFusion/Algorithm"),
+                .headerSearchPath("../Sources/StandardCyborgFusion/DataStructures"),
+                .headerSearchPath("../Sources/StandardCyborgFusion/Helpers"),
+                .headerSearchPath("../Sources/StandardCyborgFusion/IO"),
+                .headerSearchPath("../Sources/StandardCyborgFusion/MetalDepthProcessor"),
+                .headerSearchPath("../Sources/StandardCyborgFusion/Private"),
+                .headerSearchPath("../Sources/include/StandardCyborgFusion"),
+            ],
+            linkerSettings: [
+                .linkedFramework("XCTest"),
             ]
         )
     ],

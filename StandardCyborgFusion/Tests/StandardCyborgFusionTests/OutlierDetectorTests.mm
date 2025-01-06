@@ -1,5 +1,5 @@
 //
-//  OutlierDetectorTests.m
+//  OutlierDetectorTests.mm
 //  StandardCyborgFusionTests
 //
 //  Created by Ricky Reusser on 8/13/19.
@@ -7,9 +7,9 @@
 //
 
 #import <XCTest/XCTest.h>
-#include <StandardCyborgFusion/OutlierDetector.hpp>
 #include <iostream>
 #include <random>
+#import "../../Sources/StandardCyborgFusion/Algorithm/OutlierDetector.hpp"
 
 using namespace StandardCyborg;
 

@@ -129,13 +129,17 @@ NS_ASSUME_NONNULL_BEGIN
         _modelQueue_maxDepth = _surfelFusionConfig.maxDepth;
         _userSetMaxDepth = NO;
         
-        std::shared_ptr<SurfelIndexMap> surfelIndexMap(new MetalSurfelIndexMap(device, commandQueue));
+        NSString *fusionBundlePath = [[NSBundle mainBundle] pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
+        NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
+        id<MTLLibrary> library = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
+        
+        std::shared_ptr<SurfelIndexMap> surfelIndexMap(new MetalSurfelIndexMap(device, library, commandQueue));
         _modelQueue_model = new PBFModel(surfelIndexMap);
         
         _icpConfig.maxIterations = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"icp_max_iteration_count"] ?: _icpConfig.maxIterations;
         _icpConfig.tolerance = [[NSUserDefaults standardUserDefaults] floatForKey:@"icp_tolerance"] ?: _icpConfig.tolerance;
         
-        _modelQueue_depthProcessor = new MetalDepthProcessor(device, commandQueue);
+        _modelQueue_depthProcessor = new MetalDepthProcessor(device, library, commandQueue);
         
         _modelQueue = dispatch_queue_create("SCReconstructionManager._modelQueue",
                                             dispatch_queue_attr_make_with_qos_class(NULL, QOS_CLASS_USER_INTERACTIVE, 0));

@@ -14,20 +14,6 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "76539C9620F5B1FE009C332E"
-               BuildableName = "StandardCyborgFusion.framework"
-               BlueprintName = "StandardCyborgFusion"
-               ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "76603F5B224D749B00C4C0C4"
                BuildableName = "StandardCyborgAlgorithmsTestbed.app"
                BlueprintName = "StandardCyborgAlgorithmsTestbed"
@@ -95,15 +81,6 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
-         <BuildableReference
-            BuildableIdentifier = "primary"
-            BlueprintIdentifier = "76539C9620F5B1FE009C332E"
-            BuildableName = "StandardCyborgFusion.framework"
-            BlueprintName = "StandardCyborgFusion"
-            ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
-         </BuildableReference>
-      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
