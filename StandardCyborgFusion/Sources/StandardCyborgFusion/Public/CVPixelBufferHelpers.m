@@ -94,12 +94,14 @@ CVReturn CVPixelBufferDeepCopy(CVPixelBufferRef source, CVPixelBufferRef *copyOu
     CVReturn result = kCVReturnSuccess;
     
     if (*copyOut == NULL) {
+        CFDictionaryRef attachments = CVBufferCopyAttachments(source, kCVAttachmentMode_ShouldPropagate);
         result = CVPixelBufferCreate(NULL,
                                      CVPixelBufferGetWidth(source),
                                      CVPixelBufferGetHeight(source),
                                      CVPixelBufferGetPixelFormatType(source),
-                                     CVBufferGetAttachments(source, kCVAttachmentMode_ShouldPropagate),
+                                     attachments,
                                      copyOut);
+        CFRelease(attachments);
     } else {
         assert(CVPixelBufferGetWidth(*copyOut) == CVPixelBufferGetWidth(source));
         assert(CVPixelBufferGetHeight(*copyOut) == CVPixelBufferGetHeight(source));
