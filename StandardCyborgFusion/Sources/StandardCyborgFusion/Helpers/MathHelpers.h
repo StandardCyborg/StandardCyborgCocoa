@@ -3,7 +3,6 @@
 //  TrueDepthFusion
 //
 //  Created by Aaron Thompson on 5/14/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #pragma once

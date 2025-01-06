@@ -3,7 +3,6 @@
 //  StandardCyborgAlgorithmsTestbed
 //
 //  Created by Ricky Reusser on 5/17/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>

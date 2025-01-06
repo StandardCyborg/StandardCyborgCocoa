@@ -3,7 +3,6 @@
 //  StandardCyborgGeometryTestbed
 //
 //  Created by Ricky Reusser on 4/10/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import <standard_cyborg/algorithms/EstimatePlane.hpp>

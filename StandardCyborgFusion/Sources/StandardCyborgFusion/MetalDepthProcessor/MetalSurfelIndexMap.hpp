@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Aaron Thompson on 4/19/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import "SurfelIndexMap.hpp"

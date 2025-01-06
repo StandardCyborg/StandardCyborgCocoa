@@ -3,7 +3,6 @@
 //  Meshing
 //
 //  Created by Aaron Thompson on 4/26/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #import <PoissonRecon/MeshingOperation.h>

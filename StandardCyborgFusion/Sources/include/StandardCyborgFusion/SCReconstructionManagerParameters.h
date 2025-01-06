@@ -2,7 +2,6 @@
 //  SCReconstructionManagerParameters.h
 //  StandardCyborgFusion
 //
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 @protocol SCReconstructionManagerParameters

@@ -3,7 +3,6 @@
 //  DepthRenderer
 //
 //  Created by Aaron Thompson on 5/14/18.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import "MathHelpers.h"

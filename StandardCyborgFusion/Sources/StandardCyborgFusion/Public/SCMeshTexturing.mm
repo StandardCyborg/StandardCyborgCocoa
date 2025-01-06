@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Eric Arnebäck on 5/27/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import <CoreImage/CoreImage.h>

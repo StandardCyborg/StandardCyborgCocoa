@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Ricky Reusser on 9/24/18.
-//  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
 #import <Metal/Metal.h>

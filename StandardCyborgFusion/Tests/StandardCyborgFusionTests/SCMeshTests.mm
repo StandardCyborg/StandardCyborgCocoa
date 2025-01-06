@@ -3,7 +3,6 @@
 //  StandardCyborgFusionTests
 //
 //  Created by Aaron Thompson on 10/19/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import <XCTest/XCTest.h>

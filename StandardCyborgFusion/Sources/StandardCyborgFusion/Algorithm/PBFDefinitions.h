@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Ricky Reusser on 5/2/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #pragma once

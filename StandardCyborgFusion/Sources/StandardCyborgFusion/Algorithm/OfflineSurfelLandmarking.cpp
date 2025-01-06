@@ -3,7 +3,6 @@
 //  StandardCyborgFusion
 //
 //  Created by Aaron Thompson on 5/28/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #include <standard_cyborg/util/IncludeEigen.hpp>

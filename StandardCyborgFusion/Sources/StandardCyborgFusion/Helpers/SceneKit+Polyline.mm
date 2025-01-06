@@ -3,7 +3,6 @@
 //  StandardCyborgData
 //
 //  Created by Ricky Reusser on 5/20/19.
-//  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
 #import "SceneKit+Polyline.hpp"
