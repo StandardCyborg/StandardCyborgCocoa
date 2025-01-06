@@ -8,6 +8,7 @@
 
 #import <CoreImage/CoreImage.h>
 #import <CoreServices/CoreServices.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 #import <StandardCyborgFusion/SCEarLandmarking.h>
 #import <StandardCyborgFusion/SCLandmark2D.h>
@@ -121,7 +122,8 @@ NS_ASSUME_NONNULL_BEGIN
     
     // Now write it
     NSURL *fileURL = [NSURL fileURLWithPath:path];
-    CGImageDestinationRef jpegDest = CGImageDestinationCreateWithURL((__bridge CFURLRef)fileURL, kUTTypeJPEG, 1, NULL);
+    CGImageDestinationRef jpegDest = CGImageDestinationCreateWithURL
+        ((__bridge CFURLRef)fileURL, (__bridge CFStringRef)UTTypeJPEG.identifier, 1, NULL);
     CGImageDestinationAddImage(jpegDest, imageRef, NULL);
     CGImageDestinationFinalize(jpegDest);
     

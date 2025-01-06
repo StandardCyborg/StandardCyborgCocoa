@@ -12,6 +12,7 @@
 #import <CoreGraphics/CoreGraphics.h>
 #import <CoreServices/CoreServices.h>
 #import <ImageIO/ImageIO.h>
+#import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
 
 bool PointCloudIO::WriteSurfelsToUSDAFile(const Surfel *surfels,
                                           size_t surfelCount,
@@ -276,7 +277,8 @@ bool PointCloudIO::WriteSurfelsToUSDAFile(const Surfel *surfels,
     CFStringRef colorImageFilePath = CFStringCreateWithFormat(NULL, NULL, CFSTR("file://%s"), colorMapFilename.c_str());
     CFURLRef colorImageURL = CFURLCreateWithString(NULL, colorImageFilePath, NULL);
     
-    CGImageDestinationRef destination = CGImageDestinationCreateWithURL(colorImageURL, kUTTypePNG, 1, nil);
+    CGImageDestinationRef destination = CGImageDestinationCreateWithURL
+        (colorImageURL, (__bridge CFStringRef)UTTypePNG.identifier, 1, nil);
     CGImageDestinationAddImage(destination, rgbImageRef, nil);
     CGImageDestinationFinalize(destination);
     
