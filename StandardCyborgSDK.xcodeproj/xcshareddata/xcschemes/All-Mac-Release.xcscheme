@@ -14,37 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "76539C9F20F5B1FE009C332E"
-               BuildableName = "StandardCyborgFusionTests.xctest"
-               BlueprintName = "StandardCyborgFusionTests"
-               ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
                BlueprintIdentifier = "76539CB420F5BBC0009C332E"
                BuildableName = "VisualTesterMac.app"
                BlueprintName = "VisualTesterMac"
-               ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E8EB31EB24739C8C00EF7A01"
-               BuildableName = "StandardCyborgFusion.framework"
-               BlueprintName = "StandardCyborgFusionOSX"
                ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -66,16 +38,6 @@
          </BuildableReference>
       </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "76539C9F20F5B1FE009C332E"
-               BuildableName = "StandardCyborgFusionTests.xctest"
-               BlueprintName = "StandardCyborgFusionTests"
-               ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -109,9 +71,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "76539C9F20F5B1FE009C332E"
-            BuildableName = "StandardCyborgFusionTests.xctest"
-            BlueprintName = "StandardCyborgFusionTests"
+            BlueprintIdentifier = "76539CB420F5BBC0009C332E"
+            BuildableName = "VisualTesterMac.app"
+            BlueprintName = "VisualTesterMac"
             ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

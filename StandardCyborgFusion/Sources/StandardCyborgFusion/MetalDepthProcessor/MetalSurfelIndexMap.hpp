@@ -11,7 +11,7 @@
 
 class MetalSurfelIndexMap: public SurfelIndexMap {
 public:
-    MetalSurfelIndexMap(id<MTLDevice> device, id<MTLCommandQueue> commandQueue, bool forColor = false);
+    MetalSurfelIndexMap(id<MTLDevice> device, id<MTLLibrary> library, id<MTLCommandQueue> commandQueue, bool forColor = false);
     
     virtual bool draw(const std::vector<Surfel>& surfels,
                       const Eigen::Matrix4f& modelMatrix,

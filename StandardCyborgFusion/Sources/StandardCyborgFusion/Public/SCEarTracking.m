@@ -18,7 +18,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation SCEarTracking {
-    SCEarTrackingModel *_model;
+    MLModel *_model;
     VNCoreMLModel *_visionModel;
     VNCoreMLRequest *_visionRequest;
     
@@ -46,13 +46,13 @@ NS_ASSUME_NONNULL_BEGIN
         MLModelConfiguration *modelConfig = [[MLModelConfiguration alloc] init];
         modelConfig.computeUnits = MLComputeUnitsCPUAndGPU;
         
-        _model = [[SCEarTrackingModel alloc] initWithContentsOfURL:modelURL configuration:modelConfig error:&error];
+        _model = [MLModel modelWithContentsOfURL:modelURL configuration:modelConfig error:&error];
         if (_model == nil) {
             NSLog(@"Error instantiating SCEarTrackingModel with model at %@: %@", modelURL, error);
             return nil;
         }
         
-        _visionModel = [VNCoreMLModel modelForMLModel:[_model model] error:&error];
+        _visionModel = [VNCoreMLModel modelForMLModel:_model error:&error];
         if (_visionModel == nil) {
             NSLog(@"Failed to create VNCoreMLModel: %@", error);
             return nil;

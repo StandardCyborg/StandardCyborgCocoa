@@ -1,0 +1,30 @@
+{
+  "configurations" : [
+    {
+      "id" : "C1486861-7DFD-4C14-B225-CBD48FB74D69",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false,
+    "targetForVariableExpansion" : {
+      "containerPath" : "container:",
+      "identifier" : "StandardCyborgFusion",
+      "name" : "StandardCyborgFusion"
+    },
+    "uiTestingScreenshotsLifetime" : "keepNever"
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "StandardCyborgFusionTests",
+        "name" : "StandardCyborgFusionTests"
+      }
+    }
+  ],
+  "version" : 1
+}

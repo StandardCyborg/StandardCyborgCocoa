@@ -6,29 +6,27 @@
 //  Copyright © 2018 Standard Cyborg. All rights reserved.
 //
 
-#import <vector>
-#import "ProcessedFrame.hpp"
-#import "RawFrame.hpp"
-#import "MathHelpers.h"
-#import "EigenHelpers.hpp"
 #import <Metal/Metal.h>
+#import <vector>
 
+#import "ComputePointsKernel.h"
+#import "ComputeNormalsKernel.h"
+#import "ComputeWeightsKernel.h"
+#import "EigenHelpers.hpp"
+#import "InitializeDepthConfidenceKernel.h"
+#import "MathHelpers.h"
 #import "MetalComputeEngine.h"
 #import "MetalDepthProcessor.hpp"
 #import "MetalDepthProcessorData.hpp"
-#import "ComputePointsKernel.h"
-#import "InitializeDepthConfidenceKernel.h"
-#import "ComputeNormalsKernel.h"
-#import "ComputeWeightsKernel.h"
+#import "ProcessedFrame.hpp"
+#import "RawFrame.hpp"
 #import "SmoothDepthKernel.h"
-#import "MetalDepthProcessorData.hpp"
 
 
-MetalDepthProcessor::MetalDepthProcessor(id<MTLDevice> device, id<MTLCommandQueue> commandQueue) {
+MetalDepthProcessor::MetalDepthProcessor(id<MTLDevice> device, id<MTLLibrary> library, id<MTLCommandQueue> commandQueue) {
     assert(device != nil);
-    NSString *fusionBundlePath = [[NSBundle mainBundle] pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
-    NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
-    id<MTLLibrary> library = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
+    assert(library != nil);
+    assert(commandQueue != nil);
 
     NSArray *kernels = @[
                          [[InitializeDepthConfidenceKernel alloc] initWithDevice:device library:library],

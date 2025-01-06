@@ -8,6 +8,7 @@
 
 @interface PathHelpers : NSObject
 
++ (NSBundle *)scFusionBundle;
 + (NSString *)testCasesPath;
 
 @end

@@ -14,7 +14,7 @@
 #import <standard_cyborg/math/Vec3.hpp>
 #import <standard_cyborg/io/ply/GeometryFileIO_PLY.hpp>
 
-#import "MeshUvMap.hpp"
+#import "../../Sources/StandardCyborgFusion/Algorithm/MeshUvMap.hpp"
 
 @interface MeshUvMapTests : XCTestCase
 
@@ -546,14 +546,14 @@ using namespace standard_cyborg::sc3d;
 - (void)testUvmapMeshStressTest {
     using namespace StandardCyborg;
     
-    std::vector<NSString*> testCases {
+    std::vector<NSString *> testCases {
         @"stress-test-colinear-tri-points.ply",
         @"stress-test-crash-mesh.ply",
         @"stress-test-fails-dijsktra.ply",
         @"stress-test-kitchen.ply"
     };
     
-    for(NSString* testCase: testCases)
+    for (NSString *testCase : testCases)
     {
         NSString *PLYPath = [[PathHelpers testCasesPath] stringByAppendingPathComponent:testCase];
         Geometry geometry;
@@ -565,7 +565,6 @@ using namespace standard_cyborg::sc3d;
             XCTAssertTrue(false);
         }
     }
-    
 }
 */
 

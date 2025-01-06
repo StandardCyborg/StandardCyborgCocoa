@@ -7,9 +7,7 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "StandardCyborgFusion.h"
-
-#include <StandardCyborgFusion/EigenHelpers.hpp>
+#import "EigenHelpers.hpp"
 
 @interface EigenHelperTests : XCTestCase
 @end

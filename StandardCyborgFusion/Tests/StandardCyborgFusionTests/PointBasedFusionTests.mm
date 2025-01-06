@@ -7,25 +7,22 @@
 //
 
 #import <XCTest/XCTest.h>
-#import "StandardCyborgFusion.h"
+#import <iostream>
+#import <cmath>
 
-#include <standard_cyborg/util/IncludeEigen.hpp>
-#include <standard_cyborg/util/DataUtils.hpp>
-#include <StandardCyborgFusion/MathHelpers.h>
-#include <StandardCyborgFusion/MetalDepthProcessor.hpp>
-#include <StandardCyborgFusion/PBFModel.hpp>
-
-#include "Helpers/PathHelpers.h"
-#include "Helpers/ReconstructionHelpers.h"
-
-#include <iostream>
-#include <cmath>
-
-#import "PointCloudIO.hpp"
 #import <standard_cyborg/math/Mat3x4.hpp>
 #import <standard_cyborg/math/Mat3x3.hpp>
 #import <standard_cyborg/sc3d/PerspectiveCamera.hpp>
+#import <standard_cyborg/util/DataUtils.hpp>
+#import <standard_cyborg/util/IncludeEigen.hpp>
 
+#import "MathHelpers.h"
+#import "MetalDepthProcessor.hpp"
+#import "PBFModel.hpp"
+#import "PointCloudIO.hpp"
+
+#import "Helpers/PathHelpers.h"
+#import "Helpers/ReconstructionHelpers.hpp"
 
 // https://stackoverflow.com/questions/39680320/printing-debugging-libc-stl-with-xcode-lldb
 template struct std::vector<Eigen::VectorXf>;
@@ -68,7 +65,9 @@ using namespace standard_cyborg;
     
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     id<MTLCommandQueue> commandQueue = [device newCommandQueue];
-    MetalDepthProcessor depthProcessor(device, commandQueue);
+    NSBundle *scFusionBundle = [PathHelpers scFusionBundle];
+    id<MTLLibrary> library = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
+    MetalDepthProcessor depthProcessor(device, library, commandQueue);
     
     RawFrame rawFrame(camera, width, height, depths, colors, 0.0f);
     ProcessedFrame frame(rawFrame);

@@ -7,17 +7,19 @@
 //
 
 #import <XCTest/XCTest.h>
+#import <iostream>
 
-#import "StandardCyborgFusion.h"
-#include <standard_cyborg/util/IncludeEigen.hpp>
-#include <StandardCyborgFusion/MetalSurfelIndexMap.hpp>
-#include <StandardCyborgFusion/PointCloudIO.hpp>
-#include <StandardCyborgFusion/SparseSurfelLandmarksIndex.hpp>
-#include <StandardCyborgFusion/MetalDepthProcessor.hpp>
-#include <StandardCyborgFusion/PBFModel.hpp>
-#include "Helpers/PathHelpers.h"
-#include "Helpers/ReconstructionHelpers.h"
-#include <iostream>
+#import <standard_cyborg/util/IncludeEigen.hpp>
+
+#import <StandardCyborgFusion/PointCloudIO.hpp>
+
+#import "MetalDepthProcessor.hpp"
+#import "MetalSurfelIndexMap.hpp"
+#import "PBFModel.hpp"
+#import "SparseSurfelLandmarksIndex.hpp"
+
+#import "Helpers/PathHelpers.h"
+#import "Helpers/ReconstructionHelpers.hpp"
 
 @interface SparseSurfelLandmarksTest : XCTestCase
 @end

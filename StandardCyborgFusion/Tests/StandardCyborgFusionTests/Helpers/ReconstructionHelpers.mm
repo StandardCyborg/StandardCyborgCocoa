@@ -6,11 +6,13 @@
 //  Copyright © 2019 Standard Cyborg. All rights reserved.
 //
 
-#import "ReconstructionHelpers.h"
+#import "ReconstructionHelpers.hpp"
 
 #import "MetalDepthProcessor.hpp"
 #import "MetalSurfelIndexMap.hpp"
 #import "PointCloudIO.hpp"
+#import "SCOfflineReconstructionManager.h"
+#import "PathHelpers.h"
 
 std::unique_ptr<PBFModel> assimilatePointCloud(NSString *depthFramesDir,
                                                ICPConfiguration icpConfig,
@@ -30,9 +32,11 @@ std::unique_ptr<PBFModel> assimilatePointCloud(NSString *depthFramesDir,
 {
     id<MTLDevice> device = MTLCreateSystemDefaultDevice();
     id<MTLCommandQueue> commandQueue = [device newCommandQueue];
+    NSBundle *scFusionBundle = [PathHelpers scFusionBundle];
+    id<MTLLibrary> library = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
 
-    MetalDepthProcessor depthProcessor(device, commandQueue);
-    std::shared_ptr<MetalSurfelIndexMap> surfelIndexMap(new MetalSurfelIndexMap(device, commandQueue));
+    MetalDepthProcessor depthProcessor(device, library, commandQueue);
+    std::shared_ptr<MetalSurfelIndexMap> surfelIndexMap(new MetalSurfelIndexMap(device, library, commandQueue));
     std::unique_ptr<PBFModel> pbf(new PBFModel(surfelIndexMap));
     pbf->reset();
     

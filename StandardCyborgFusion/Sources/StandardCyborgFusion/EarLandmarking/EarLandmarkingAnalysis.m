@@ -8,7 +8,9 @@
 
 #import <CoreImage/CoreImage.h>
 #import <CoreServices/CoreServices.h>
+#import <CoreML/CoreML.h>
 #import <UniformTypeIdentifiers/UniformTypeIdentifiers.h>
+#import <Vision/Vision.h>
 
 #import <StandardCyborgFusion/SCEarLandmarking.h>
 #import <StandardCyborgFusion/SCLandmark2D.h>
@@ -19,7 +21,8 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @implementation EarLandmarkingAnalysis {
-    SCEarLandmarking *_model;
+    MLModel *_model;
+    VNCoreMLModel *_vnModel;
 }
 
 - (instancetype)initWithModelAtURL:(NSURL *)modelURL
@@ -30,12 +33,14 @@ NS_ASSUME_NONNULL_BEGIN
         config.computeUnits = MLComputeUnitsAll;
         
         NSError *error = nil;
-        _model = [[SCEarLandmarking alloc] initWithContentsOfURL:modelURL configuration:config error:&error];
-        
+        _model = [MLModel modelWithContentsOfURL:modelURL configuration:config error:&error];
         if (_model == nil) {
             NSLog(@"Error instantiating model at %@: %@", modelURL, error);
         }
         NSAssert(_model != nil, @"Failed to instantiate face landmarking model at URL %@", modelURL);
+        
+        _vnModel = [VNCoreMLModel modelForMLModel:_model error:&error];
+        NSAssert(_vnModel != nil, @"Error creating VNCoreMLModel: %@", error);
     }
     return self;
 }
@@ -164,42 +169,57 @@ NS_ASSUME_NONNULL_BEGIN
     
     [[CIContext context] render:croppedAndScaled toCVPixelBuffer:pixelBuffer];
     
-    SCEarLandmarkingInput *inputs = [[SCEarLandmarkingInput alloc] initWithInputs__image_tensor__0:pixelBuffer];
-    
-    NSError *error = nil;
-    SCEarLandmarkingOutput *predictions = [_model predictionFromFeatures:inputs error:&error];
-    
-    if (predictions == nil) {
-        NSLog(@"Error predicting ear landmarks from inputs %@: %@", inputs, error);
-        return result;
-    }
-    
-    int landmarkCount = [predictions.normed_coordinates_yx.shape[0] intValue];
-    double *landmarkData = (double *)predictions.normed_coordinates_yx.dataPointer;
-    
-    for (int landmarkIndex = 0; landmarkIndex < landmarkCount; ++landmarkIndex) {
-        double landmarkX = landmarkData[landmarkIndex * 2 + 0];
-        double landmarkY = landmarkData[landmarkIndex * 2 + 1];
-        
-        NSString *landmarkName = [[self class] landmarkNames][landmarkIndex];
-        simd_float3 color;
-        switch (landmarkIndex) {
-            case 0:  color = simd_make_float3(1, 1, 1); break;
-            case 1:  color = simd_make_float3(0, 1, 0); break;
-            case 2:  color = simd_make_float3(0, 0, 1); break;
-            case 3:  color = simd_make_float3(1, 1, 0); break;
-            case 4:  color = simd_make_float3(1, 0, 1); break;
-            default: color = simd_make_float3(0, 1, 1); break;
+    VNCoreMLRequest *request = [[VNCoreMLRequest alloc] initWithModel:_vnModel completionHandler:^(VNRequest *request, NSError *error) {
+        if (error) {
+            NSLog(@"Vision request failed: %@", error.localizedDescription);
+            return;
         }
         
-        SCLandmark2D *landmark = [SCLandmark2D landmarkNamed:landmarkName
-                                                       index:landmarkIndex + (int)(isLeftEar ? 0 : [[[self class] landmarkNames] count] / 2)
-                                                    position:simd_make_float2(landmarkX, landmarkY)
-                                                  confidence:1
-                                                       color:color];
-        
-        [result addObject:landmark];
-    }
+        NSArray<VNCoreMLFeatureValueObservation *> *observations = request.results;
+        if (observations.count == 0) {
+            NSLog(@"No results from Vision request.");
+            return;
+        }
+
+        // Assuming the output is a multi-array
+        VNCoreMLFeatureValueObservation *observation = (VNCoreMLFeatureValueObservation *)observations.firstObject;
+        MLMultiArray *landmarksArray = observation.featureValue.multiArrayValue;
+        if (!landmarksArray) {
+            NSLog(@"Expected MLMultiArray result, but got none.");
+            return;
+        }
+
+        int landmarkCount = [landmarksArray.shape[0] intValue];
+        double *landmarkData = (double *)landmarksArray.dataPointer;
+
+        for (int landmarkIndex = 0; landmarkIndex < landmarkCount; ++landmarkIndex) {
+            double landmarkX = landmarkData[landmarkIndex * 2 + 0];
+            double landmarkY = landmarkData[landmarkIndex * 2 + 1];
+            
+            NSString *landmarkName = [[self class] landmarkNames][landmarkIndex];
+            simd_float3 color;
+            switch (landmarkIndex) {
+                case 0:  color = simd_make_float3(1, 1, 1); break;
+                case 1:  color = simd_make_float3(0, 1, 0); break;
+                case 2:  color = simd_make_float3(0, 0, 1); break;
+                case 3:  color = simd_make_float3(1, 1, 0); break;
+                case 4:  color = simd_make_float3(1, 0, 1); break;
+                default: color = simd_make_float3(0, 1, 1); break;
+            }
+            
+            SCLandmark2D *landmark = [SCLandmark2D landmarkNamed:landmarkName
+                                                           index:landmarkIndex + (int)(isLeftEar ? 0 : [[[self class] landmarkNames] count] / 2)
+                                                        position:simd_make_float2(landmarkX, landmarkY)
+                                                      confidence:1
+                                                           color:color];
+            
+            [result addObject:landmark];
+        }
+    }];
+    
+    VNImageRequestHandler *handler = [[VNImageRequestHandler alloc] initWithCVPixelBuffer:pixelBuffer options:@{}];
+    NSError *error = nil;
+    BOOL success = [handler performRequests:@[request] error:&error];
     
 #if TARGET_OS_OSX && DEBUG
     [[self class] _drawImage:croppedAndScaled

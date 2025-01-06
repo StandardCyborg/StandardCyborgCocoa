@@ -9,13 +9,30 @@
 #import <Foundation/Foundation.h>
 
 #import "PathHelpers.h"
+#import "SCOfflineReconstructionManager.h"
 
 @implementation PathHelpers
 
++ (NSBundle *)scFusionBundle
+{
+    NSBundle *fusionFrameworkBundle = [NSBundle bundleForClass:[SCOfflineReconstructionManager class]];
+    NSString *fusionBundlePath = [fusionFrameworkBundle pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
+    NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
+    return scFusionBundle;
+}
+
++ (NSBundle *)scFusionTestBundle
+{
+    NSBundle *fusionFrameworkBundle = [NSBundle bundleForClass:[SCOfflineReconstructionManager class]];
+    NSString *fusionBundlePath = [fusionFrameworkBundle pathForResource:@"StandardCyborgFusion_StandardCyborgFusionTests" ofType:@"bundle"];
+    NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
+    return scFusionBundle;
+}
+
 + (NSString *)testCasesPath
 {
-    NSString *projectDirectory = [NSString stringWithUTF8String:PROJECT_DIR];
-    return [projectDirectory stringByAppendingPathComponent: @"/StandardCyborgFusionTests"];
+    NSBundle *bundle = [self scFusionTestBundle];
+    return [[bundle resourcePath] stringByAppendingPathComponent:@"Data"];
 }
 
 @end

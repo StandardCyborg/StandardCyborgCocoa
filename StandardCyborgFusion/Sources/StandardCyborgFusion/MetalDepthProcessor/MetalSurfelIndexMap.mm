@@ -16,6 +16,7 @@
 #import "MathHelpers.h"
 #import "MetalSurfelIndexMap.hpp"
 #import "PBFDefinitions.h"
+#import "SCOfflineReconstructionManager.h"
 
 using namespace Eigen;
 
@@ -61,16 +62,11 @@ struct SurfelIndexMapSharedUniforms {
     }
 };
 
-MetalSurfelIndexMap::MetalSurfelIndexMap(id<MTLDevice> device, id<MTLCommandQueue> commandQueue, bool forColor) :
+MetalSurfelIndexMap::MetalSurfelIndexMap(id<MTLDevice> device, id<MTLLibrary> library, id<MTLCommandQueue> commandQueue, bool forColor) :
     _device(device),
+    _library(library),
     _commandQueue(commandQueue)
 {
-    NSString *fusionBundlePath = [[NSBundle mainBundle] pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
-    NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
-    NSError *error;
-    _library = [_device newDefaultLibraryWithBundle:scFusionBundle error:&error];
-    if (_library == nil) { NSLog(@"Unable to create library: %@", error); }
-    
     id<MTLFunction> vertexFunction = [_library newFunctionWithName:forColor ? @"SurfelIndexMapForColorVertex" : @"SurfelIndexMapVertex"];
     id<MTLFunction> fragmentFunction = [_library newFunctionWithName:@"SurfelIndexMapFragment"];
     
@@ -88,6 +84,8 @@ MetalSurfelIndexMap::MetalSurfelIndexMap(id<MTLDevice> device, id<MTLCommandQueu
     pipelineDescriptor.colorAttachments[0].pixelFormat = MTLPixelFormatR32Uint;
     pipelineDescriptor.depthAttachmentPixelFormat = MTLPixelFormatDepth32Float;
     pipelineDescriptor.label = @"SurfelIndexMap._pipelineState";
+    
+    NSError *error = nil;
     _pipelineState = [_device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
     if (_pipelineState == nil) { NSLog(@"Unable to create pipeline state: %@", error); }
     
