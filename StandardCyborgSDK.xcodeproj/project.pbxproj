@@ -820,7 +820,6 @@
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
 					"$(inherited)",
 					"PROJECT_DIR=\\\"$(PROJECT_DIR)\\\"",
 				);
@@ -924,6 +923,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_CXX_STANDARD_LIBRARY_HARDENING = fast;
 				CODE_SIGN_IDENTITY = "-";
 				COMBINE_HIDPI_IMAGES = YES;
 				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";

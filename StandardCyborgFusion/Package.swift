@@ -37,8 +37,8 @@ let package = Package(
             // ],
             publicHeadersPath: "include",
             cxxSettings: [
-                .define("DEBUG", .when(configuration: .debug)),
-                .unsafeFlags(["-fobjc-arc"]),
+                // Always optimize, even for debug builds, in order to be usable while debugging the rest of an app
+                .unsafeFlags(["-fobjc-arc", "-Os", "-fno-math-errno", "-ffast-math"]),
                 .headerSearchPath("."),
                 .headerSearchPath("../libigl/include"),
                 .headerSearchPath("StandardCyborgFusion/Algorithm"),
