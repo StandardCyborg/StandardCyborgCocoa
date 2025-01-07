@@ -35,7 +35,7 @@ let package = Package(
             path: "Sources/standard_cyborg",
             publicHeadersPath: "include",
             cxxSettings: [
-                .define("DEBUG", .when(configuration: .debug)),
+                .unsafeFlags(["-fobjc-arc", "-Os", "-fno-math-errno", "-ffast-math"]),
                 .define("FMT_HEADER_ONLY", to: "1", .when(platforms: [.iOS, .macOS])),
                 .define("HAVE_CONFIG_H", to: "1", .when(platforms: [.iOS, .macOS])),
                 .define("HAVE_PTHREAD", to: "1", .when(platforms: [.iOS, .macOS])),
