@@ -1923,12 +1923,12 @@ protected:
 		if( node )
 		{
 			int d , off[Dim] ; node->depthAndOffset( d , off );
-			BaseFEMIntegrator::template ParentOverlapBounds( UIntPack< FEMDegrees1 ... >() , UIntPack< FEMDegrees2 ... >() , d , off , start , end );
+			BaseFEMIntegrator::template ParentOverlapBounds<>( UIntPack< FEMDegrees1 ... >() , UIntPack< FEMDegrees2 ... >() , d , off , start , end );
 		}
 	}
 	template< unsigned int ... FEMDegrees1 , unsigned int ... FEMDegrees2 > static void _SetParentOverlapBounds( UIntPack< FEMDegrees1 ... > , UIntPack< FEMDegrees2 ... > , int cIdx , int start[Dim] , int end[Dim] )
 	{
-		BaseFEMIntegrator::template ParentOverlapBounds( UIntPack< FEMDegrees1 ... >() , UIntPack< FEMDegrees2 ... >() , cIdx , start , end );
+		BaseFEMIntegrator::template ParentOverlapBounds<>( UIntPack< FEMDegrees1 ... >() , UIntPack< FEMDegrees2 ... >() , cIdx , start , end );
 	}
 
 	template< unsigned int ... FEMSigs >
