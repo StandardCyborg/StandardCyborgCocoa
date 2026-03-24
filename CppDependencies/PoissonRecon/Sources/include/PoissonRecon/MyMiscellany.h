@@ -28,68 +28,108 @@ DAMAGE.
 #ifndef MY_MISCELLANY_INCLUDED
 #define MY_MISCELLANY_INCLUDED
 
-#undef VERBOSE_MESSAGING
-
-//////////////////
-// OpenMP Stuff //
-//////////////////
-#ifdef _OPENMP
-#include <omp.h>
-#else // !_OPENMP
-inline int omp_get_num_procs  ( void ){ return 1; }
-inline int omp_get_max_threads( void ){ return 1; }
-inline int omp_get_thread_num ( void ){ return 0; }
-inline void omp_set_num_threads( int ){}
-inline void omp_set_nested( int ){}
-struct omp_lock_t{};
-inline void omp_init_lock( omp_lock_t* ){}
-inline void omp_set_lock( omp_lock_t* ){}
-inline void omp_unset_lock( omp_lock_t* ){}
-inline void omp_destroy_lock( omp_lock_t* ){}
-#endif // _OPENMP
-
-////////////////
-// Time Stuff //
-////////////////
+#include <iostream>
+#include <sstream>
+#include <filesystem>
 #include <string.h>
 #include <sys/timeb.h>
-#ifndef WIN32
-#include <sys/time.h>
-#endif // WIN32
-
-inline double Time( void )
-{
-#ifdef WIN32
-	struct _timeb t;
-	_ftime( &t );
-	return double( t.time ) + double( t.millitm ) / 1000.0;
-#else // WIN32
-	struct timeval t;
-	gettimeofday( &t , NULL );
-	return t.tv_sec + double( t.tv_usec ) / 1000000;
-#endif // WIN32
-}
-
 #include <cstdio>
 #include <ctime>
 #include <chrono>
-struct Timer
-{
-	Timer( void ){ _startCPUClock = std::clock() , _startWallClock = std::chrono::system_clock::now(); }
-	double cpuTime( void ) const{ return (std::clock() - _startCPUClock) / (double)CLOCKS_PER_SEC; };
-	double wallTime( void ) const{  std::chrono::duration<double> diff = (std::chrono::system_clock::now() - _startWallClock) ; return diff.count(); }
-protected:
-	std::clock_t _startCPUClock;
-	std::chrono::time_point< std::chrono::system_clock > _startWallClock;
-};
-
-///////////////
-// I/O Stuff //
-///////////////
 #if defined( _WIN32 ) || defined( _WIN64 )
-const char FileSeparator = '\\';
+#include <io.h>
+#include <Windows.h>
+#include <Psapi.h>
+#else // !_WIN32 && !_WIN64
+#include <unistd.h>
+#include <sys/time.h> 
+#include <sys/resource.h> 
+#endif // _WIN32 || _WIN64
+#include <memory>
+#if defined(_WIN32) || defined( _WIN64 )
+#elif defined(__unix__) || defined(__unix) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__APPLE__) && defined(__MACH__)
+#include <mach/mach.h>
+#elif (defined(_AIX) || defined(__TOS__AIX__)) || (defined(__sun__) || defined(__sun) || defined(sun) && (defined(__SVR4) || defined(__svr4__)))
+#include <fcntl.h>
+#include <procfs.h>
+#elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
+#include <stdio.h>
+#endif
+
+#else
+#error "Cannot define getPeakRSS( ) or getCurrentRSS( ) for an unknown OS."
+#endif
+#include "Array.h"
+#include "MyAtomic.h"
+#include "MultiThreading.h"
+
+namespace PoissonRecon
+{
+	////////////////////////////
+	// Formatted float output //
+	////////////////////////////
+	struct StreamFloatPrecision
+	{
+		StreamFloatPrecision( std::ostream &str , unsigned int precision , bool scientific=false ) : _str(str)
+		{
+			_defaultPrecision = (int)_str.precision();
+			_str.precision( precision );
+			if( scientific ) _str << std::scientific;
+			else             _str << std::fixed;
+		}
+		~StreamFloatPrecision( void )
+		{
+			_str << std::defaultfloat;
+			_str.precision( _defaultPrecision );
+		}
+	protected:
+		int _defaultPrecision;
+		std::ostream &_str;
+	};
+
+	////////////////
+	// Time Stuff //
+	////////////////
+	inline double Time( void )
+	{
+#ifdef WIN32
+		struct _timeb t;
+		_ftime( &t );
+		return double( t.time ) + double( t.millitm ) / 1000.0;
+#else // WIN32
+		struct timeval t;
+		gettimeofday( &t , NULL );
+		return t.tv_sec + double( t.tv_usec ) / 1000000;
+#endif // WIN32
+	}
+
+	struct Timer
+	{
+		Timer( void ){ _startCPUClock = std::clock() , _startWallClock = std::chrono::system_clock::now(); }
+		double cpuTime( void ) const{ return (std::clock() - _startCPUClock) / (double)CLOCKS_PER_SEC; };
+		double wallTime( void ) const{ std::chrono::duration<double> diff = (std::chrono::system_clock::now() - _startWallClock) ; return diff.count(); }
+		std::string operator()( bool showCpuTime , unsigned int precision=1 ) const
+		{
+			std::stringstream ss;
+			StreamFloatPrecision sfp( ss , precision );
+			ss << wallTime() << " (s)";
+			if( showCpuTime ) ss << " / " << cpuTime() << " (s)";
+			return ss.str();
+		}
+		friend std::ostream &operator << ( std::ostream &os , const Timer &timer ){ return os << timer(false); }
+	protected:
+		std::clock_t _startCPUClock;
+		std::chrono::time_point< std::chrono::system_clock > _startWallClock;
+	};
+
+	///////////////
+	// I/O Stuff //
+	///////////////
+#if defined( _WIN32 ) || defined( _WIN64 )
+	const char FileSeparator = '\\';
 #else // !_WIN
-const char FileSeparator = '/';
+	const char FileSeparator = '/';
 #endif // _WIN
 
 #ifndef SetTempDirectory
@@ -100,432 +140,230 @@ const char FileSeparator = '/';
 #endif // _WIN32 || _WIN64
 #endif // !SetTempDirectory
 
-#include <stdarg.h>
-#include <vector>
-#include <string>
-struct MessageWriter
-{
-	char* outputFile;
-	bool echoSTDOUT;
-	MessageWriter( void ){ outputFile = NULL , echoSTDOUT = true; }
-	void operator() ( const char* format , ... )
-	{
-		if( outputFile )
-		{
-			FILE* fp = fopen( outputFile , "a" );
-			va_list args;
-			va_start( args , format );
-			vfprintf( fp , format , args );
-			fclose( fp );
-			va_end( args );
-		}
-		if( echoSTDOUT )
-		{
-			va_list args;
-			va_start( args , format );
-			vprintf( format , args );
-			va_end( args );
-		}
-	}
-	void operator() ( std::vector< char* >& messages  , const char* format , ... )
-	{
-		if( outputFile )
-		{
-			FILE* fp = fopen( outputFile , "a" );
-			va_list args;
-			va_start( args , format );
-			vfprintf( fp , format , args );
-			fclose( fp );
-			va_end( args );
-		}
-		if( echoSTDOUT )
-		{
-			va_list args;
-			va_start( args , format );
-			vprintf( format , args );
-			va_end( args );
-		}
-		// [WARNING] We are not checking the string is small enough to fit in 1024 characters
-		messages.push_back( new char[1024] );
-		char* str = messages.back();
-		va_list args;
-		va_start( args , format );
-		vsprintf( str , format , args );
-		va_end( args );
-		if( str[strlen(str)-1]=='\n' ) str[strlen(str)-1] = 0;
-	}
-	void operator() ( std::vector< std::string >& messages  , const char* format , ... )
-	{
-		if( outputFile )
-		{
-			FILE* fp = fopen( outputFile , "a" );
-			va_list args;
-			va_start( args , format );
-			vfprintf( fp , format , args );
-			fclose( fp );
-			va_end( args );
-		}
-		if( echoSTDOUT )
-		{
-			va_list args;
-			va_start( args , format );
-			vprintf( format , args );
-			va_end( args );
-		}
-		// [WARNING] We are not checking the string is small enough to fit in 1024 characters
-		char message[1024];
-		va_list args;
-		va_start( args , format );
-		vsprintf( message , format , args );
-		va_end( args );
-		if( message[strlen(message)-1]=='\n' ) message[strlen(message)-1] = 0;
-		messages.push_back( std::string( message ) );
-	}
-};
-
-/////////////////////////////////////
-// Exception, Warnings, and Errors //
-/////////////////////////////////////
-#include <exception>
-#include <string>
-namespace MKExceptions
-{
-#ifdef VERBOSE_MESSAGING
-	inline char *_MakeMessageString( const char *header , const char *fileName , int line , const char *functionName , const char *format , ... )
-	{
-		va_list args;
-		va_start( args , format );
-
-		// Formatting is:
-		// <header> <filename> (Line <line>)
-		// <header size> <function name>
-		// <header size> <format message>
-		char lineBuffer[25];
-		sprintf( lineBuffer , "(Line %d)" , line );
-		size_t _size , size=0;
-
-		// Line 1
-		size += strlen(header)+1;
-		size += strlen(fileName)+1;
-		size += strlen(lineBuffer)+1;
-
-		// Line 2
-		size += strlen(header)+1;
-		size += strlen(functionName)+1;
-
-		// Line 3
-		size += strlen(header)+1;
-		size += vsnprintf( NULL , 0 , format , args );
-
-		char *_buffer , *buffer = new char[ size+1 ];
-		_size = size , _buffer = buffer;
-
-		// Line 1
-		sprintf( _buffer , "%s " , header );
-		_buffer += strlen(header)+1;
-		_size -= strlen(header)+1;
-
-		sprintf( _buffer , "%s " , fileName );
-		_buffer += strlen(fileName)+1;
-		_size -= strlen(fileName)+1;
-
-		sprintf( _buffer , "%s\n" , lineBuffer );
-		_buffer += strlen(lineBuffer)+1;
-		_size -= strlen(lineBuffer)+1;
-
-		// Line 2
-		for( int i=0 ; i<strlen(header)+1 ; i++ ) _buffer[i] = ' ';
-		_buffer += strlen(header)+1;
-		_size -= strlen(header)+1;
-
-		sprintf( _buffer , "%s\n" , functionName );
-		_buffer += strlen(functionName)+1;
-		_size -= strlen(functionName)+1;
-
-		// Line 3
-		for( int i=0 ; i<strlen(header)+1 ; i++ ) _buffer[i] = ' ';
-		_buffer += strlen(header)+1;
-		_size -= strlen(header)+1;
-
-		vsnprintf( _buffer , _size+1 , format , args );
-
-		return buffer;
-	}
-
-	struct Exception : public std::exception
-	{
-		const char *what( void ) const noexcept { return _message.c_str(); }
-		template< typename ... Args >
-		Exception( const char *fileName , int line , const char *functionName , const char *format , Args ... args )
-		{
-			char *buffer = _MakeMessageString( "[EXCEPTION]" , fileName , line , functionName , format , args ... );
-			_message = std::string( buffer );
-			delete[] buffer;
-		}
-	protected:
-		std::string _message;
-	};
-
-	template< typename ... Args > void Throw( const char *fileName , int line , const char *functionName , const char *format , Args ... args ){ throw Exception( fileName , line , functionName , format , args ... ); }
-	template< typename ... Args >
-	void Warn( const char *fileName , int line , const char *functionName , const char *format , Args ... args )
-	{
-		char *buffer = _MakeMessageString( "[WARNING]" , fileName , line , functionName , format , args ... );
-		fprintf( stderr , "%s\n" , buffer );
-		delete[] buffer;
-	}
-	template< typename ... Args >
-	void ErrorOut( const char *fileName , int line , const char *functionName , const char *format , Args ... args )
-	{
-		char *buffer = _MakeMessageString( "[ERROR]" , fileName , line , functionName , format , args ... );
-		fprintf( stderr , "%s\n" , buffer );
-		delete[] buffer;
-		exit(0);
-	}
-#else // !VERBOSE_MESSAGING
-	inline char *_MakeMessageString( const char *header , const char *functionName , const char *format , ... )
-	{
-		va_list args;
-		va_start( args , format );
-
-		size_t _size , size = vsnprintf( NULL , 0 , format , args );
-		size += strlen(header)+1;
-		size += strlen(functionName)+2;
-
-		char *_buffer , *buffer = new char[ size+1 ];
-		_size = size , _buffer = buffer;
-
-		sprintf( _buffer , "%s " , header );
-		_buffer += strlen(header)+1;
-		_size -= strlen(header)+1;
-
-		sprintf( _buffer , "%s: " , functionName );
-		_buffer += strlen(functionName)+2;
-		_size -= strlen(functionName)+2;
-
-		vsnprintf( _buffer , _size+1 , format , args );
-
-		return buffer;
-	}
-	struct Exception : public std::exception
-	{
-		const char *what( void ) const noexcept { return _message.c_str(); }
-		template< typename ... Args >
-		Exception( const char *functionName , const char *format , Args ... args )
-		{
-			char *buffer = _MakeMessageString( "[EXCEPTION]" , functionName , format , args ... );
-			_message = std::string( buffer );
-			delete[] buffer;
-			exit(0);
-		}
-	protected:
-		std::string _message;
-	};
-	template< typename ... Args > void Throw( const char *functionName , const char *format , Args ... args ){ throw Exception( functionName , format , args ... ); }
-	template< typename ... Args >
-	void Warn( const char *functionName , const char *format , Args ... args )
-	{
-		char *buffer = _MakeMessageString( "[WARNING]" , functionName , format , args ... );
-		fprintf( stderr , "%s\n" , buffer );
-		delete[] buffer;
-	}
-	template< typename ... Args >
-	void ErrorOut( const char *functionName , const char *format , Args ... args )
-	{
-		char *buffer = _MakeMessageString( "[ERROR]" , functionName , format , args ... );
-		fprintf( stderr , "%s\n" , buffer );
-		delete[] buffer;
-	}
-#endif // VERBOSE_MESSAGING
-}
-#ifdef VERBOSE_MESSAGING
-#ifndef WARN
-#define WARN( ... ) MKExceptions::Warn( __FILE__ , __LINE__ , __FUNCTION__ , __VA_ARGS__ )
-#endif // WARN
-#ifndef WARN_ONCE
-#define WARN_ONCE( ... ) { static bool firstTime = true ; if( firstTime ) MKExceptions::Warn( __FILE__ , __LINE__ , __FUNCTION__ , __VA_ARGS__ ) ; firstTime = false; }
-#endif // WARN_ONCE
-#ifndef THROW
-#define THROW( ... ) MKExceptions::Throw( __FILE__ , __LINE__ , __FUNCTION__ , __VA_ARGS__ )
-#endif // THROW
-#ifndef ERROR_OUT
-#define ERROR_OUT( ... ) MKExceptions::ErrorOut( __FILE__ , __LINE__ , __FUNCTION__ , __VA_ARGS__ )
-#endif // ERROR_OUT
-#else // !VERBOSE_MESSAGING
-#ifndef WARN
-#define WARN( ... ) MKExceptions::Warn( __FUNCTION__ , __VA_ARGS__ )
-#endif // WARN
-#ifndef WARN_ONCE
-#define WARN_ONCE( ... ) { static bool firstTime = true ; if( firstTime ) MKExceptions::Warn( __FUNCTION__ , __VA_ARGS__ ) ; firstTime = false; }
-#endif // WARN_ONCE
-#ifndef THROW
-#define THROW( ... ) MKExceptions::Throw( __FUNCTION__ , __VA_ARGS__ )
-#endif // THROW
-#ifndef ERROR_OUT
-#define ERROR_OUT( ... ) MKExceptions::ErrorOut( __FUNCTION__ , __VA_ARGS__ )
-#endif // ERROR_OUT
-#endif // VERBOSE_MESSAGING
-
-//////////////////
-// Memory Stuff //
-//////////////////
-size_t getPeakRSS( void );
-size_t getCurrentRSS( void );
-
-struct MemoryInfo
-{
-	static size_t Usage( void ){ return getCurrentRSS(); }
-	static int PeakMemoryUsageMB( void ){ return (int)( getPeakRSS()>>20 ); }
-};
 #if defined( _WIN32 ) || defined( _WIN64 )
-#include <Windows.h>
-#include <Psapi.h>
-inline void SetPeakMemoryMB( size_t sz )
-{
-	sz <<= 20;
-	SIZE_T peakMemory = sz;
-	HANDLE h = CreateJobObject( NULL , NULL );
-	AssignProcessToJobObject( h , GetCurrentProcess() );
-
-	JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli = { 0 };
-	jeli.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_JOB_MEMORY;
-	jeli.JobMemoryLimit = peakMemory;
-	if( !SetInformationJobObject( h , JobObjectExtendedLimitInformation , &jeli , sizeof( jeli ) ) ) WARN( "Failed to set memory limit" );
-}
+	inline void FSync( FILE *fp )
+	{
+		//	FlushFileBuffers( (HANDLE)_fileno( fp ) );
+		_commit( _fileno( fp ) );
+	}
 #else // !_WIN32 && !_WIN64
-#include <sys/time.h> 
-#include <sys/resource.h> 
-inline void SetPeakMemoryMB( size_t sz )
-{
-	sz <<= 20;
-	struct rlimit rl;
-	getrlimit( RLIMIT_AS , &rl );
-	rl.rlim_cur = sz;
-	setrlimit( RLIMIT_AS , &rl );
-}
+	inline void FSync( FILE *fp )
+	{
+		fsync( fileno( fp ) );
+	}
 #endif // _WIN32 || _WIN64
 
-/*
-* Author:  David Robert Nadeau
-* Site:    http://NadeauSoftware.com/
-* License: Creative Commons Attribution 3.0 Unported License
-*          http://creativecommons.org/licenses/by/3.0/deed.en_US
-*/
+	//////////////////
+	// Memory Stuff //
+	//////////////////
+	size_t getPeakRSS( void );
+	size_t getCurrentRSS( void );
 
-#if defined(_WIN32) || defined( _WIN64 )
-#include <windows.h>
-#include <psapi.h>
-
-#elif defined(__unix__) || defined(__unix) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
-#include <unistd.h>
-#include <sys/resource.h>
-
-#if defined(__APPLE__) && defined(__MACH__)
-#include <mach/mach.h>
-
-#elif (defined(_AIX) || defined(__TOS__AIX__)) || (defined(__sun__) || defined(__sun) || defined(sun) && (defined(__SVR4) || defined(__svr4__)))
-#include <fcntl.h>
-#include <procfs.h>
-
-#elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
-#include <stdio.h>
-
-#endif
-
-#else
-#error "Cannot define getPeakRSS( ) or getCurrentRSS( ) for an unknown OS."
-#endif
-
-
-
-
-
-/**
-* Returns the peak (maximum so far) resident set size (physical
-* memory use) measured in bytes, or zero if the value cannot be
-* determined on this OS.
-*/
-inline size_t getPeakRSS( )
-{
-#if defined(_WIN32)
-	/* Windows -------------------------------------------------- */
-	PROCESS_MEMORY_COUNTERS info;
-	GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info) );
-	return (size_t)info.PeakWorkingSetSize;
-
-#elif (defined(_AIX) || defined(__TOS__AIX__)) || (defined(__sun__) || defined(__sun) || defined(sun) && (defined(__SVR4) || defined(__svr4__)))
-	/* AIX and Solaris ------------------------------------------ */
-	struct psinfo psinfo;
-	int fd = -1;
-	if ( (fd = open( "/proc/self/psinfo", O_RDONLY )) == -1 )
-		return (size_t)0L;      /* Can't open? */
-	if ( read( fd, &psinfo, sizeof(psinfo) ) != sizeof(psinfo) )
+	struct Profiler
 	{
-		close( fd );
-		return (size_t)0L;      /* Can't read? */
+		Profiler( unsigned int ms=0 )
+		{
+			_t = Time();
+			_currentPeak = 0;
+			_terminate = false;
+			if( ms )
+			{
+				_thread = std::thread( &Profiler::_updatePeakMemoryFunction , std::ref( *this ) , ms );
+				_spawnedSampler = true;
+			}
+			else _spawnedSampler = false;
+		}
+
+		~Profiler( void )
+		{
+			if( _spawnedSampler )
+			{
+				_terminate = true;
+				_thread.join();
+			}
+		}
+
+		void reset( void )
+		{
+			_t = Time();
+			if( _spawnedSampler )
+			{
+				std::lock_guard< std::mutex > lock( _mutex );
+				_currentPeak = 0;
+			}
+			else _currentPeak = 0;
+		}
+
+		void update( void )
+		{
+			size_t currentPeak = getCurrentRSS();
+			if( _spawnedSampler )
+			{
+				std::lock_guard< std::mutex > lock( _mutex );
+				if( currentPeak>_currentPeak ) _currentPeak = currentPeak;
+			}
+			else if( currentPeak>_currentPeak ) _currentPeak = currentPeak;
+		}
+
+		std::string operator()( bool showTime=true ) const
+		{
+			std::stringstream ss;
+			double dt = Time()-_t;
+			double  localPeakMB = ( (double)_currentPeak )/(1<<20);
+			double globalPeakMB = ( (double)getPeakRSS() )/(1<<20);
+			{
+				StreamFloatPrecision sfp( ss , 1 );
+				if( showTime ) ss << dt << " (s), ";
+				ss << localPeakMB << " (MB) / " << globalPeakMB << " (MB)";
+			}
+			return ss.str();
+		}
+
+		friend std::ostream &operator << ( std::ostream &os , const Profiler &profiler ){ return os << profiler(); }
+
+	protected:
+		std::thread _thread;
+		std::mutex _mutex;
+		double _t;
+		std::atomic< bool > _spawnedSampler;
+		std::atomic< size_t > _currentPeak;
+		std::atomic< bool > _terminate;
+
+		void _updatePeakMemoryFunction( unsigned int ms )
+		{
+			while( true )
+			{
+				std::this_thread::sleep_for( std::chrono::milliseconds( ms ) );
+				update();
+				if( _terminate ) return;
+			}
+		};
+	};
+
+	struct MemoryInfo
+	{
+		static size_t Usage( void ){ return getCurrentRSS(); }
+		static int PeakMemoryUsageMB( void ){ return (int)( getPeakRSS()>>20 ); }
+	};
+
+#if defined( _WIN32 ) || defined( _WIN64 )
+	inline void SetPeakMemoryMB( size_t sz )
+	{
+		sz <<= 20;
+		SIZE_T peakMemory = sz;
+		HANDLE h = CreateJobObject( NULL , NULL );
+		AssignProcessToJobObject( h , GetCurrentProcess() );
+
+		JOBOBJECT_EXTENDED_LIMIT_INFORMATION jeli = { 0 };
+		jeli.BasicLimitInformation.LimitFlags = JOB_OBJECT_LIMIT_JOB_MEMORY;
+		jeli.JobMemoryLimit = peakMemory;
+		if( !SetInformationJobObject( h , JobObjectExtendedLimitInformation , &jeli , sizeof( jeli ) ) ) MK_WARN( "Failed to set memory limit" );
 	}
-	close( fd );
-	return (size_t)(psinfo.pr_rssize * 1024L);
+#else // !_WIN32 && !_WIN64
+	inline void SetPeakMemoryMB( size_t sz )
+	{
+		sz <<= 20;
+		struct rlimit rl;
+		getrlimit( RLIMIT_AS , &rl );
+		rl.rlim_cur = sz;
+		setrlimit( RLIMIT_AS , &rl );
+	}
+#endif // _WIN32 || _WIN64
+
+	/*
+	* Author:  David Robert Nadeau
+	* Site:    http://NadeauSoftware.com/
+	* License: Creative Commons Attribution 3.0 Unported License
+	*          http://creativecommons.org/licenses/by/3.0/deed.en_US
+	*/
+
+	/**
+	* Returns the peak (maximum so far) resident set size (physical
+	* memory use) measured in bytes, or zero if the value cannot be
+	* determined on this OS.
+	*/
+	inline size_t getPeakRSS( )
+	{
+#if defined(_WIN32)
+		/* Windows -------------------------------------------------- */
+		PROCESS_MEMORY_COUNTERS info;
+		GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info) );
+		return (size_t)info.PeakWorkingSetSize;
+
+#elif (defined(_AIX) || defined(__TOS__AIX__)) || (defined(__sun__) || defined(__sun) || defined(sun) && (defined(__SVR4) || defined(__svr4__)))
+		/* AIX and Solaris ------------------------------------------ */
+		struct psinfo psinfo;
+		int fd = -1;
+		if ( (fd = open( "/proc/self/psinfo", O_RDONLY )) == -1 )
+			return (size_t)0L;      /* Can't open? */
+		if ( read( fd, &psinfo, sizeof(psinfo) ) != sizeof(psinfo) )
+		{
+			close( fd );
+			return (size_t)0L;      /* Can't read? */
+		}
+		close( fd );
+		return (size_t)(psinfo.pr_rssize * 1024L);
 
 #elif defined(__unix__) || defined(__unix) || defined(unix) || (defined(__APPLE__) && defined(__MACH__))
-	/* BSD, Linux, and OSX -------------------------------------- */
-	struct rusage rusage;
-	getrusage( RUSAGE_SELF, &rusage );
+		/* BSD, Linux, and OSX -------------------------------------- */
+		struct rusage rusage;
+		getrusage( RUSAGE_SELF, &rusage );
 #if defined(__APPLE__) && defined(__MACH__)
-	return (size_t)rusage.ru_maxrss;
+		return (size_t)rusage.ru_maxrss;
 #else
-	return (size_t)(rusage.ru_maxrss * 1024L);
+		return (size_t)(rusage.ru_maxrss * 1024L);
 #endif
 
 #else
-	/* Unknown OS ----------------------------------------------- */
-	return (size_t)0L;          /* Unsupported. */
+		/* Unknown OS ----------------------------------------------- */
+		return (size_t)0L;          /* Unsupported. */
 #endif
-}
+	}
 
 
 
 
 
-/**
-* Returns the current resident set size (physical memory use) measured
-* in bytes, or zero if the value cannot be determined on this OS.
-*/
-inline size_t getCurrentRSS( )
-{
+	/**
+	* Returns the current resident set size (physical memory use) measured
+	* in bytes, or zero if the value cannot be determined on this OS.
+	*/
+	inline size_t getCurrentRSS( )
+	{
 #if defined(_WIN32) || defined( _WIN64 )
-	/* Windows -------------------------------------------------- */
-	PROCESS_MEMORY_COUNTERS info;
-	GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info) );
-	return (size_t)info.WorkingSetSize;
+		/* Windows -------------------------------------------------- */
+		PROCESS_MEMORY_COUNTERS info;
+		GetProcessMemoryInfo( GetCurrentProcess( ), &info, sizeof(info) );
+		return (size_t)info.WorkingSetSize;
 
 #elif defined(__APPLE__) && defined(__MACH__)
-	/* OSX ------------------------------------------------------ */
-	struct mach_task_basic_info info;
-	mach_msg_type_number_t infoCount = MACH_TASK_BASIC_INFO_COUNT;
-	if ( task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,
-		(task_info_t)&info, &infoCount ) != KERN_SUCCESS )
-		return (size_t)0L;      /* Can't access? */
-	return (size_t)info.resident_size;
+		/* OSX ------------------------------------------------------ */
+		struct mach_task_basic_info info;
+		mach_msg_type_number_t infoCount = MACH_TASK_BASIC_INFO_COUNT;
+		if ( task_info( mach_task_self( ), MACH_TASK_BASIC_INFO,
+			(task_info_t)&info, &infoCount ) != KERN_SUCCESS )
+			return (size_t)0L;      /* Can't access? */
+		return (size_t)info.resident_size;
 
 #elif defined(__linux__) || defined(__linux) || defined(linux) || defined(__gnu_linux__)
-	/* Linux ---------------------------------------------------- */
-	long rss = 0L;
-	FILE* fp = NULL;
-	if ( (fp = fopen( "/proc/self/statm", "r" )) == NULL )
-		return (size_t)0L;      /* Can't open? */
-	if ( fscanf( fp, "%*s%ld", &rss ) != 1 )
-	{
+		/* Linux ---------------------------------------------------- */
+		long rss = 0L;
+		FILE* fp = NULL;
+		if ( (fp = fopen( "/proc/self/statm", "r" )) == NULL )
+			return (size_t)0L;      /* Can't open? */
+		if ( fscanf( fp, "%*s%ld", &rss ) != 1 )
+		{
+			fclose( fp );
+			return (size_t)0L;      /* Can't read? */
+		}
 		fclose( fp );
-		return (size_t)0L;      /* Can't read? */
-	}
-	fclose( fp );
-	return (size_t)rss * (size_t)sysconf( _SC_PAGESIZE);
+		return (size_t)rss * (size_t)sysconf( _SC_PAGESIZE);
 
 #else
-	/* AIX, BSD, Solaris, and Unknown OS ------------------------ */
-	return (size_t)0L;          /* Unsupported. */
+		/* AIX, BSD, Solaris, and Unknown OS ------------------------ */
+		return (size_t)0L;          /* Unsupported. */
 #endif
+	}
 }
 
 #endif // MY_MISCELLANY_INCLUDED

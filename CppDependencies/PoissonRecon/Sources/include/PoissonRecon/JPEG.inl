@@ -1,6 +1,30 @@
-#include <stdio.h>
-#include <stdlib.h>
+/*
+Copyright (c) 2010, Michael Kazhdan
+All rights reserved.
 
+Redistribution and use in source and binary forms, with or without modification,
+are permitted provided that the following conditions are met:
+
+Redistributions of source code must retain the above copyright notice, this list of
+conditions and the following disclaimer. Redistributions in binary form must reproduce
+the above copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the distribution. 
+
+Neither the name of the Johns Hopkins University nor the names of its contributors
+may be used to endorse or promote products derived from this software without specific
+prior written permission. 
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY
+EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO THE IMPLIED WARRANTIES 
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT
+SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+TO, PROCUREMENT OF SUBSTITUTE  GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR
+BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
+DAMAGE.
+*/
 
 inline METHODDEF( void )
 my_error_exit (j_common_ptr cinfo)
@@ -19,7 +43,7 @@ my_error_exit (j_common_ptr cinfo)
 inline bool JPEGReader::GetInfo( const char* fileName , unsigned int& width , unsigned int& height , unsigned int& channels )
 {
 	FILE* fp = fopen( fileName , "rb" );
-	if( !fp ) ERROR_OUT( "Failed to open: %s" , fileName );
+	if( !fp ) MK_THROW( "Failed to open: " , fileName );
 
 	struct jpeg_decompress_struct cInfo;
 	struct my_error_mgr jErr;
@@ -29,7 +53,7 @@ inline bool JPEGReader::GetInfo( const char* fileName , unsigned int& width , un
 	if( setjmp( jErr.setjmp_buffer ) )
 	{
 		jpeg_destroy_decompress( &cInfo );
-		ERROR_OUT( "JPEG error occured" );
+		MK_THROW( "JPEG error occured" );
 	}
 
 	jpeg_create_decompress( &cInfo );
@@ -50,14 +74,14 @@ inline JPEGReader::JPEGReader( const char* fileName , unsigned int& width , unsi
 {
 	_currentRow = 0;
 	_fp = fopen( fileName , "rb" );
-	if( !_fp ) ERROR_OUT( "Failed to open: %s" , fileName );
+	if( !_fp ) MK_THROW( "Failed to open: " , fileName );
 
 	_cInfo.err = jpeg_std_error( &_jErr.pub );
 	_jErr.pub.error_exit = my_error_exit;
 	if( setjmp( _jErr.setjmp_buffer ) )
 	{
 		jpeg_destroy_decompress( &_cInfo );
-		ERROR_OUT( "JPEG error occured" );
+		MK_THROW( "JPEG error occured" );
 	}
 
 	jpeg_create_decompress( &_cInfo );
@@ -88,7 +112,7 @@ inline JPEGWriter::JPEGWriter( const char* fileName , unsigned int width , unsig
 {
 	_currentRow = 0;
 	_fp = fopen( fileName , "wb" );
-	if( !_fp ) ERROR_OUT( "Failed to open: %s" , fileName );
+	if( !_fp ) MK_THROW( "Failed to open: " , fileName );
 
 	_cInfo.err = jpeg_std_error( &_jErr.pub );
 	jpeg_create_compress( &_cInfo );

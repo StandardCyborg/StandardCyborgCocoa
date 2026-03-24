@@ -26,8 +26,6 @@ ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF S
 DAMAGE.
 */
 
-#include "Factor.h"
-
 ////////////////////////
 // StartingPolynomial //
 ////////////////////////
@@ -403,7 +401,7 @@ void PPolynomial<Degree>::printnl(void) const{
 	printf("\n");
 }
 template< >
-PPolynomial< 0 > PPolynomial< 0 >::BSpline( double radius )
+inline PPolynomial< 0 > PPolynomial< 0 >::BSpline( double radius )
 {
 	PPolynomial q;
 	q.set(2);
