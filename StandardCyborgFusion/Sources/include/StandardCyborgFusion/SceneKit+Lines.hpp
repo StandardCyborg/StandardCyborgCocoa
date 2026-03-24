@@ -10,7 +10,7 @@
 #import <Foundation/Foundation.h>
 #import <SceneKit/SceneKit.h>
 #import <standard_cyborg/sc3d/Line.hpp>
-#include <vector>
+#import <vector>
 
 using namespace standard_cyborg;
 
