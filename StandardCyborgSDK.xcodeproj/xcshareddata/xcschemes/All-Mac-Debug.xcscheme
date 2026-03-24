@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1610"
+   LastUpgradeVersion = "2630"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -18,6 +18,20 @@
                BuildableName = "VisualTesterMac.app"
                BlueprintName = "VisualTesterMac"
                ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "StandardCyborgFusion"
+               BuildableName = "StandardCyborgFusion"
+               BlueprintName = "StandardCyborgFusion"
+               ReferencedContainer = "container:StandardCyborgFusion">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>

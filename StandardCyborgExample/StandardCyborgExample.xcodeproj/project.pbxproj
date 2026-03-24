@@ -124,7 +124,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 1610;
+				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = "Standard Cyborg";
 				TargetAttributes = {
 					7642B7F721E679E800BC45C7 = {
