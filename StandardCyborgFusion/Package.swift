@@ -56,7 +56,7 @@ let package = Package(
             dependencies: ["StandardCyborgFusion"],
             path: "Tests",
             resources: [
-                .copy("StandardCyborgFusionTests/Data")
+                .copy("StandardCyborgFusionTests/Data"),
             ],
             cxxSettings: [
                 .define("DEBUG", .when(configuration: .debug)),

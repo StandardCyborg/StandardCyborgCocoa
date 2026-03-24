@@ -214,7 +214,11 @@ BSplineEvaluationData< FEMSig >::BSplineUpSamplingCoefficients::BSplineUpSamplin
 	memset( _coefficients , 0 , sizeof(int) * BSplineSupportSizes< Degree >::UpSampleSize );
 
 	// Get the array of coefficients, relative to the origin
-	int* coefficients = _coefficients - ( 2*offset + BSplineSupportSizes< Degree >::UpSampleStart );
+#ifdef SANITIZED_PR
+	int baseOffset = - ( 2*offset + BSplineSupportSizes< Degree >::UpSampleStart );
+#else // !SANITIZED_PR
+	Pointer( int ) coefficients = GetPointer( _coefficients , BSplineSupportSizes< Degree >::UpSampleSize ) - ( 2*offset + BSplineSupportSizes< Degree >::UpSampleStart );
+#endif // SANITIZED_PR
 	for( int i=BSplineSupportSizes< Degree >::UpSampleStart ; i<=BSplineSupportSizes< Degree >::UpSampleEnd ; i++ )
 	{
 		int _offset = 2*offset+i;
@@ -222,7 +226,11 @@ BSplineEvaluationData< FEMSig >::BSplineUpSamplingCoefficients::BSplineUpSamplin
 		if( useReflected || !reflect )
 		{
 			int _multiplier = multiplier * ( ( BType==BOUNDARY_DIRICHLET && reflect ) ? -1 : 1 );
+#ifdef SANITIZED_PR
+			_coefficients[ _offset + baseOffset ] += b[ i-BSplineSupportSizes< Degree >::UpSampleStart ] * _multiplier;
+#else // !SANITIZED_PR
 			coefficients[ _offset ] += b[ i-BSplineSupportSizes< Degree >::UpSampleStart ] * _multiplier;
+#endif // SANITIZED_PR
 		}
 		// If we are not inset and we are at the boundary, use the reflection as well
 		if( BType!=BOUNDARY_FREE && !BSplineSupportSizes< Degree >::Inset && ( offset % (dim-1) ) && !( _offset % (_dim-1) ) )
@@ -230,7 +238,11 @@ BSplineEvaluationData< FEMSig >::BSplineUpSamplingCoefficients::BSplineUpSamplin
 			_offset = BSplineData< FEMSig >::RemapOffset( depth+1 , _offset , reflect );
 			int _multiplier = multiplier * ( ( BType==BOUNDARY_DIRICHLET && reflect ) ? -1 : 1 );
 			if( BType==BOUNDARY_DIRICHLET ) _multiplier *= -1;
+#ifdef SANITIZED_PR
+			_coefficients[ _offset + baseOffset ] += b[ i-BSplineSupportSizes< Degree >::UpSampleStart ] * _multiplier;
+#else // !SANITIZED_PR
 			coefficients[ _offset ] += b[ i-BSplineSupportSizes< Degree >::UpSampleStart ] * _multiplier;
+#endif // SANITIZED_PR
 		}
 	}
 }
@@ -242,8 +254,8 @@ template< unsigned int FEMSig1 , unsigned int FEMSig2 >
 template< unsigned int D1 , unsigned int D2 >
 double BSplineIntegrationData< FEMSig1 , FEMSig2 >::Dot( int depth1 ,  int off1 , int depth2 , int off2 )
 {
-	if( D1>Degree1 ) ERROR_OUT( "Taking more derivatives than the degree: %d > %d" , D1 , Degree1 );
-	if( D2>Degree2 ) ERROR_OUT( "Taking more derivatives than the degree: %d > %d" , D2 , Degree2 );
+	if( D1>Degree1 ) MK_THROW( "Taking more derivatives than the degree: " , D1 , " > " , Degree1 );
+	if( D2>Degree2 ) MK_THROW( "Taking more derivatives than the degree: " , D2 , " > " , Degree2 );
 	const int _Degree1 = ( Degree1>=D1 ) ? Degree1 - D1 : 0 , _Degree2 = ( Degree2>=D2 ) ? Degree2 - D2 : 0;
 	int sums[ Degree1+1 ][ Degree2+1 ];
 
@@ -441,7 +453,7 @@ double BSplineIntegrationData< FEMSig1 , FEMSig2 >::FunctionIntegrator::ChildInt
 /////////////////
 // BSplineData //
 /////////////////
-#define MODULO( A , B ) ( (A)<0 ? ( (B)-((-(A))%(B)) ) % (B) : (A) % (B) )
+#define PR_MODULO( A , B ) ( (A)<0 ? ( (B)-((-(A))%(B)) ) % (B) : (A) % (B) )
 
 template< unsigned int FEMSig , unsigned int D >
 BSplineData< FEMSig , D >::BSplineComponents::BSplineComponents( int depth , int offset )
@@ -476,12 +488,12 @@ int BSplineData< FEMSig , D >::RemapOffset( int depth , int offset , bool& refle
 	const int I = ( Degree&1 ) ? 0 : 1;
 	if( FEMSignature< FEMSig >::BType==BOUNDARY_FREE ){ reflect = false ; return offset; }
 	int dim = BSplineEvaluationData< FEMDegreeAndBType< Degree , BOUNDARY_NEUMANN >::Signature >::End( depth ) - BSplineEvaluationData< FEMDegreeAndBType< Degree , BOUNDARY_NEUMANN >::Signature >::Begin( depth );
-	offset = MODULO( offset , 2*(dim-1+I) );
+	offset = PR_MODULO( offset , 2*(dim-1+I) );
 	reflect = offset>=dim;
 	if( reflect ) return 2*(dim-1+I) - (offset+I);
 	else          return offset;
 }
-#undef MODULO
+#undef PR_MODULO
 
 template< unsigned int FEMSig , unsigned int D >
 BSplineData< FEMSig , D >::BSplineData( void )
