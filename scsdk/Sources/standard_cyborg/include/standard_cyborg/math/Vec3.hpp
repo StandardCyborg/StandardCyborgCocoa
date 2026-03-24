@@ -30,12 +30,8 @@ struct __attribute__((packed, aligned(16))) Vec3 {
     float y;
     float z;
 
-// A dummy to pad Vec3 and align it for easy texture interop
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Wunused-private-field"
-private:
+    // A dummy variable to pad Vec3 and align it for easy texture interop
     float _padding = 0.0f;
-#pragma clang diagnostic pop
 
 public:
     
