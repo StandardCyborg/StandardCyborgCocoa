@@ -6,6 +6,7 @@
 //
 
 #import "MetalTextureProjection.hpp"
+#import "SCFusionBundle.h"
 
 using namespace standard_cyborg;
 
@@ -15,8 +16,7 @@ MetalTextureProjection::MetalTextureProjection(id<MTLDevice> device,
     _device = device;
 
     NSError *error;
-    NSString *mainBundlePath = [[NSBundle mainBundle] bundlePath];
-    NSBundle *scFusionBundle = [NSBundle bundleWithPath:[mainBundlePath stringByAppendingString:@"/StandardCyborgFusion_StandardCyborgFusion.bundle"]];
+    NSBundle *scFusionBundle = [SCFusionBundle fusionBundle];
     _library = [device newDefaultLibraryWithBundle:scFusionBundle error:&error];
     if (_library == nil) { NSLog(@"Unable to create library: %@", error); }
 

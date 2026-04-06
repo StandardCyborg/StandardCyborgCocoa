@@ -8,16 +8,14 @@
 #import <Foundation/Foundation.h>
 
 #import "PathHelpers.h"
+#import "SCFusionBundle.h"
 #import "SCOfflineReconstructionManager.h"
 
 @implementation PathHelpers
 
 + (NSBundle *)scFusionBundle
 {
-    NSBundle *fusionFrameworkBundle = [NSBundle bundleForClass:[SCOfflineReconstructionManager class]];
-    NSString *fusionBundlePath = [fusionFrameworkBundle pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
-    NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
-    return scFusionBundle;
+    return [SCFusionBundle fusionBundle];
 }
 
 + (NSBundle *)scFusionTestBundle

@@ -1,40 +1,37 @@
-// swift-tools-version:6.0
+// swift-tools-version: 6.0
+
 import PackageDescription
 
 let package = Package(
     name: "StandardCyborgUI",
-    platforms: [
-        .iOS(.v16)
-    ],
+    platforms: [.iOS(.v16)],
     products: [
         .library(
             name: "StandardCyborgUI",
             type: .dynamic,
             targets: ["StandardCyborgUI"]
-        )
+        ),
     ],
     dependencies: [
-        // .package(url: "https://github.com/StandardCyborg/StandardCyborgFusion.git", from: "1.7.3")
-        .package(path: "../StandardCyborgFusion")
+        .package(path: ".."),
     ],
     targets: [
         .target(
             name: "StandardCyborgUI",
             dependencies: [
-                "StandardCyborgFusion",
+                .product(name: "StandardCyborgFusion", package: "StandardCyborgCocoa"),
             ],
             path: "StandardCyborgUI",
             sources: ["Sources"],
             resources: [
-              .process("Resources")
+                .process("Resources")
             ],
             linkerSettings: [
                 .linkedFramework("ARKit"),
                 .linkedFramework("QuartzCore"),
                 .linkedFramework("CoreVideo")
             ]
-        )
+        ),
     ],
-    swiftLanguageModes: [.v5],
-    cxxLanguageStandard: .cxx17
+    swiftLanguageModes: [.v5]
 )

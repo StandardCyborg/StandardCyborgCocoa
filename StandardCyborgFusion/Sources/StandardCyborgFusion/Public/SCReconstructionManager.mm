@@ -12,6 +12,7 @@
 #import <AVFoundation/AVFoundation.h>
 #import <CoreMotion/CoreMotion.h>
 #import "CVPixelBufferHelpers.h"
+#import "SCFusionBundle.h"
 #import "GeometryHelpers.hpp"
 #import "MathHelpers.h"
 #import "MetalDepthProcessor.hpp"
@@ -128,9 +129,7 @@ NS_ASSUME_NONNULL_BEGIN
         _modelQueue_maxDepth = _surfelFusionConfig.maxDepth;
         _userSetMaxDepth = NO;
         
-        NSString *fusionBundlePath = [[NSBundle mainBundle] pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
-        NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
-        id<MTLLibrary> library = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
+        id<MTLLibrary> library = [device newDefaultLibraryWithBundle:[SCFusionBundle fusionBundle] error:NULL];
         
         std::shared_ptr<SurfelIndexMap> surfelIndexMap(new MetalSurfelIndexMap(device, library, commandQueue));
         _modelQueue_model = new PBFModel(surfelIndexMap);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "2630"
+   LastUpgradeVersion = "2640"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "StandardCyborgFusion"
                BuildableName = "StandardCyborgFusion"
                BlueprintName = "StandardCyborgFusion"
-               ReferencedContainer = "container:StandardCyborgFusion">
+               ReferencedContainer = "container:">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -80,7 +80,8 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "76539CB420F5BBC0009C332E"
@@ -88,7 +89,7 @@
             BlueprintName = "VisualTesterMac"
             ReferencedContainer = "container:StandardCyborgSDK.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
