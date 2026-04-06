@@ -14,6 +14,7 @@
 #import <StandardCyborgFusion/PointCloudIO.hpp>
 #import <StandardCyborgFusion/RawFrame.hpp>
 #import <StandardCyborgFusion/SCAssimilatedFrameMetadata.h>
+#import <StandardCyborgFusion/SCFusionBundle.h>
 #import <StandardCyborgFusion/SCEarLandmarking.h>
 #import <StandardCyborgFusion/SCEarTracking.h>
 #import <StandardCyborgFusion/SCEarTrackingModel.h>

@@ -3,14 +3,13 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 60;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		0738A79C22935E7800F33186 /* ScenekitTestbedViewController.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0738A79922935E7800F33186 /* ScenekitTestbedViewController.storyboard */; };
 		0738A79D22935E7800F33186 /* ScenekitTestbedViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 0738A79B22935E7800F33186 /* ScenekitTestbedViewController.mm */; };
 		760D410B214332D300AB99FA /* CameraControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 760D410A214332D300AB99FA /* CameraControl.m */; };
-		76296F1B2CFE0EAA003EE037 /* scsdk in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F1A2CFE0EAA003EE037 /* scsdk */; };
 		76296F222CFE0ECF003EE037 /* StandardCyborgFusion in Copy Frameworks */ = {isa = PBXBuildFile; productRef = 76296F202CFE0ECF003EE037 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		76296F242CFE0F5D003EE037 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F232CFE0F5D003EE037 /* StandardCyborgFusion */; };
 		76296F272CFE10AB003EE037 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76296F262CFE10AB003EE037 /* StandardCyborgFusion */; };
@@ -87,6 +86,7 @@
 		A584B61F214B1D3900BEF8EE /* ClearPass.metal in Sources */ = {isa = PBXBuildFile; fileRef = A584B61E214B1D3900BEF8EE /* ClearPass.metal */; };
 		A584B62D214B2DE200BEF8EE /* DrawAxes.mm in Sources */ = {isa = PBXBuildFile; fileRef = A584B627214B2DE100BEF8EE /* DrawAxes.mm */; };
 		A584B62E214B2DE200BEF8EE /* DrawAxes.metal in Sources */ = {isa = PBXBuildFile; fileRef = A584B62C214B2DE100BEF8EE /* DrawAxes.metal */; };
+		764E9BEB2F836686000D34AA /* TestCase-Hen in Resources */ = {isa = PBXBuildFile; fileRef = 764E9BEA2F836686000D34AA /* TestCase-Hen */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -242,7 +242,11 @@
 		A584B627214B2DE100BEF8EE /* DrawAxes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawAxes.mm; sourceTree = "<group>"; };
 		A584B62B214B2DE100BEF8EE /* DrawAxes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DrawAxes.hpp; sourceTree = "<group>"; };
 		A584B62C214B2DE100BEF8EE /* DrawAxes.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DrawAxes.metal; sourceTree = "<group>"; };
+		764E9BEA2F836686000D34AA /* TestCase-Hen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "TestCase-Hen"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
+/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		76539CB220F5BBC0009C332E /* Frameworks */ = {
@@ -263,7 +267,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				76BE55122D27CC7D007FB631 /* UIKit.framework in Frameworks */,
-				76296F1B2CFE0EAA003EE037 /* scsdk in Frameworks */,
 				767001C8227B8C830037210E /* QuartzCore.framework in Frameworks */,
 				768967F223943069007179B2 /* SceneKit.framework in Frameworks */,
 				76296F242CFE0F5D003EE037 /* StandardCyborgFusion in Frameworks */,
@@ -368,6 +371,7 @@
 				76603F6C224D749B00C4C0C4 /* LaunchScreen.storyboard */,
 				76603F6F224D749B00C4C0C4 /* Info.plist */,
 				76603F70224D749B00C4C0C4 /* main.m */,
+				764E9BEA2F836686000D34AA /* TestCase-Hen */,
 			);
 			path = StandardCyborgAlgorithmsTestbed;
 			sourceTree = "<group>";
@@ -548,7 +552,7 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
-				LastUpgradeCheck = 2630;
+				LastUpgradeCheck = 2640;
 				ORGANIZATIONNAME = "Standard Cyborg";
 				TargetAttributes = {
 					76539CB420F5BBC0009C332E = {
@@ -579,8 +583,7 @@
 			);
 			mainGroup = 76539C8D20F5B1FE009C332E;
 			packageReferences = (
-				763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */,
-				76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */,
+				76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */,
 				76296F292CFE1317003EE037 /* XCRemoteSwiftPackageReference "ZipArchive" */,
 			);
 			productRefGroup = 76539C9820F5B1FE009C332E /* Products */;
@@ -616,6 +619,7 @@
 				A51A3578225E96B70016D70A /* PlaneRemovalViewController.storyboard in Resources */,
 				76C79E342257FEE70061658A /* TestViewController.scn in Resources */,
 				0738A79C22935E7800F33186 /* ScenekitTestbedViewController.storyboard in Resources */,
+				764E9BEB2F836686000D34AA /* TestCase-Hen in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -979,6 +983,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
 				INFOPLIST_FILE = StandardCyborgAlgorithmsTestbed/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1005,6 +1010,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
 				INFOPLIST_FILE = StandardCyborgAlgorithmsTestbed/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1033,6 +1039,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
 				INFOPLIST_FILE = TrueDepthFusion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1055,6 +1062,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = FZU7U4ED2K;
 				INFOPLIST_FILE = TrueDepthFusion/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1110,13 +1118,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */ = {
+		76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */ = {
 			isa = XCLocalSwiftPackageReference;
-			relativePath = scsdk;
-		};
-		763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = StandardCyborgFusion;
+			relativePath = .;
 		};
 /* End XCLocalSwiftPackageReference section */
 
@@ -1134,31 +1138,27 @@
 /* Begin XCSwiftPackageProductDependency section */
 		761100022CFF60DC00C0077B /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = StandardCyborgFusion;
-		};
-		76296F1A2CFE0EAA003EE037 /* scsdk */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = scsdk;
 		};
 		76296F1E2CFE0EC3003EE037 /* scsdk */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = scsdk;
 		};
 		76296F202CFE0ECF003EE037 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = StandardCyborgFusion;
 		};
 		76296F232CFE0F5D003EE037 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = StandardCyborgFusion;
 		};
 		76296F262CFE10AB003EE037 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = StandardCyborgFusion;
 		};
 		76296F2A2CFE1317003EE037 /* ZipArchive */ = {
@@ -1173,16 +1173,17 @@
 		};
 		763CA4C22CE29245000A0214 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = StandardCyborgFusion;
 		};
 		76BE550D2D27C1E8007FB631 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 763CA4C12CE29245000A0214 /* XCLocalSwiftPackageReference "StandardCyborgFusion" */;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = StandardCyborgFusion;
 		};
 		76BE550F2D27C1E8007FB631 /* scsdk */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 76296F192CFE0EAA003EE037 /* XCLocalSwiftPackageReference "scsdk" */;
+			package = 76A00001AAAA000000000001 /* XCLocalSwiftPackageReference "." */;
 			productName = scsdk;
 		};
 /* End XCSwiftPackageProductDependency section */

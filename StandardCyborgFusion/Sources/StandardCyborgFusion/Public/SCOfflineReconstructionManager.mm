@@ -21,6 +21,7 @@
 #import "PointCloudIO.hpp"
 #import "SCAssimilatedFrameMetadata.h"
 #import "SCAssimilatedFrameMetadata_Private.h"
+#import "SCFusionBundle.h"
 #import "SCOfflineReconstructionManager.h"
 #import "SCPointCloud_Private.h"
 #import "SurfelFusion.hpp"
@@ -129,9 +130,7 @@ using namespace standard_cyborg;
         _metalCommandQueue = commandQueue;
         _icpConfig.threadCount = maxThreadCount;
 
-        NSString *fusionBundlePath = [[NSBundle mainBundle] pathForResource:@"StandardCyborgFusion_StandardCyborgFusion" ofType:@"bundle"];
-        NSBundle *scFusionBundle = [NSBundle bundleWithPath:fusionBundlePath];
-        _metalLibrary = [device newDefaultLibraryWithBundle:scFusionBundle error:NULL];
+        _metalLibrary = [device newDefaultLibraryWithBundle:[SCFusionBundle fusionBundle] error:NULL];
         _depthProcessor = std::shared_ptr<DepthProcessor>(new MetalDepthProcessor(_metalDevice, _metalLibrary, _metalCommandQueue));
 
         [self _reinitializePBFModel];
