@@ -127,7 +127,7 @@ std::shared_ptr<Node> Node::mutateNode(std::shared_ptr<Node> targetNode,
         }
 
         if (finalPath.size() == 0) {
-            printf("warning final path is empty\n");
+            printf("Warning: final path is empty\n");
         }
 
         std::set<Uuid> toBeCopied;

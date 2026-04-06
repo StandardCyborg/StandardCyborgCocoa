@@ -31,50 +31,50 @@
  @implementation Face3Tests
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/sc3d/Face3.hpp>
 
 using namespace standard_cyborg::sc3d;
 
-TEST(Face3Tests, testGetIndex)
+TEST_CASE("Face3Tests.testGetIndex")
 {
-    EXPECT_EQ(Face3(1, 2, 3).getIndex(2), 3);
-    EXPECT_EQ(Face3(1, 2, 3).getIndex(-3), -1);
-    EXPECT_EQ(Face3(1, 2, 3).getIndex(+3), -1);
+    CHECK_EQ(Face3(1, 2, 3).getIndex(2), 3);
+    CHECK_EQ(Face3(1, 2, 3).getIndex(-3), -1);
+    CHECK_EQ(Face3(1, 2, 3).getIndex(+3), -1);
 }
 
-TEST(Face3Tests, testDefaultConstructors)
+TEST_CASE("Face3Tests.testDefaultConstructors")
 {
     Face3 d;
-    EXPECT_EQ(d[0], -1);
-    EXPECT_EQ(d[1], -1);
-    EXPECT_EQ(d[2], -1);
+    CHECK_EQ(d[0], -1);
+    CHECK_EQ(d[1], -1);
+    CHECK_EQ(d[2], -1);
 }
 
-TEST(Face3Tests, testOffsetOf)
+TEST_CASE("Face3Tests.testOffsetOf")
 {
     Face3 d(1, 2, 3);
-    EXPECT_EQ(d.offsetOf(1), 0);
-    EXPECT_EQ(d.offsetOf(2), 1);
-    EXPECT_EQ(d.offsetOf(3), 2);
-    EXPECT_EQ(d.offsetOf(10), -1);
+    CHECK_EQ(d.offsetOf(1), 0);
+    CHECK_EQ(d.offsetOf(2), 1);
+    CHECK_EQ(d.offsetOf(3), 2);
+    CHECK_EQ(d.offsetOf(10), -1);
 }
 
-TEST(Face3Tests, testNextVertexIndex)
+TEST_CASE("Face3Tests.testNextVertexIndex")
 {
     Face3 d(1, 2, 10);
     
-    EXPECT_EQ(d.nextVertexIndex(1), 2);
-    EXPECT_EQ(d.nextVertexIndex(2), 10);
-    EXPECT_EQ(d.nextVertexIndex(10), 1);
+    CHECK_EQ(d.nextVertexIndex(1), 2);
+    CHECK_EQ(d.nextVertexIndex(2), 10);
+    CHECK_EQ(d.nextVertexIndex(10), 1);
 }
 
-TEST(Face3Tests, testPreviousVertexIndex)
+TEST_CASE("Face3Tests.testPreviousVertexIndex")
 {
     Face3 d(1, 2, 10);
     
-    EXPECT_EQ(d.previousVertexIndex(1), 10);
-    EXPECT_EQ(d.previousVertexIndex(2), 1);
-    EXPECT_EQ(d.previousVertexIndex(10), 2);
+    CHECK_EQ(d.previousVertexIndex(1), 10);
+    CHECK_EQ(d.previousVertexIndex(2), 1);
+    CHECK_EQ(d.previousVertexIndex(10), 2);
 }

@@ -17,7 +17,7 @@
 
 #include <vector>
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 #include <standard_cyborg/sc3d/Polyline.hpp>
 
 
@@ -25,34 +25,34 @@ using standard_cyborg::sc3d::Polyline;
 namespace math = standard_cyborg::math;
 using math::Vec3;
 
-TEST(PolylineTests, testEmptyConstructor) {
+TEST_CASE("PolylineTests.testEmptyConstructor") {
     Polyline p {};
     
-    EXPECT_EQ(p.getPositions(), std::vector<Vec3>({}));
+    CHECK_EQ(p.getPositions(), std::vector<Vec3>({}));
 }
 
-TEST(PolylineTests, testConstructor) {
+TEST_CASE("PolylineTests.testConstructor") {
     Polyline p {std::vector<Vec3>({
         {1.0f, 2.0f, 3.0f},
         {3.0f, 4.0f, 5.0f}
     })};
     
-    EXPECT_EQ(p.getPositions(), std::vector<Vec3>({
+    CHECK_EQ(p.getPositions(), std::vector<Vec3>({
         {1.0f, 2.0f, 3.0f},
         {3.0f, 4.0f, 5.0f}
     }));
 }
 
-TEST(PolylineTests, testGetNumVertices) {
+TEST_CASE("PolylineTests.testGetNumVertices") {
     Polyline p {std::vector<Vec3>({
         {1.0f, 2.0f, 3.0f},
         {3.0f, 4.0f, 5.0f}
     })};
     
-    EXPECT_EQ(p.vertexCount(), 2);
+    CHECK_EQ(p.vertexCount(), 2);
 }
 
-TEST(PolylineTests, testCopy) {
+TEST_CASE("PolylineTests.testCopy") {
     Polyline p {std::vector<Vec3>({
         {1.0f, 2.0f, 3.0f},
         {3.0f, 4.0f, 5.0f}
@@ -61,13 +61,13 @@ TEST(PolylineTests, testCopy) {
     Polyline p2 {};
     p2.copy(p);
     
-    EXPECT_EQ(p2.getPositions(), std::vector<Vec3>({
+    CHECK_EQ(p2.getPositions(), std::vector<Vec3>({
         {1.0f, 2.0f, 3.0f},
         {3.0f, 4.0f, 5.0f}
     }));
 }
 
-TEST(PolylineTests, testSetPositions) {
+TEST_CASE("PolylineTests.testSetPositions") {
     Polyline p {std::vector<Vec3>({})};
     
     p.setPositions(std::vector<Vec3>({
@@ -75,13 +75,13 @@ TEST(PolylineTests, testSetPositions) {
         {3.0f, 4.0f, 5.0f}
     }));
     
-    EXPECT_EQ(p.getPositions(), std::vector<Vec3>({
+    CHECK_EQ(p.getPositions(), std::vector<Vec3>({
         {1.0f, 2.0f, 3.0f},
         {3.0f, 4.0f, 5.0f}
     }));
 }
 
-TEST(PolylineTests, testIsClosed) {
+TEST_CASE("PolylineTests.testIsClosed") {
     Polyline p {std::vector<Vec3>({})};
     
     p.setPositions(std::vector<Vec3>({
@@ -90,11 +90,11 @@ TEST(PolylineTests, testIsClosed) {
         {0.9999f, 2.0001f, 3.0001f}
     }));
     
-    EXPECT_FALSE(p.isClosed());
-    EXPECT_TRUE(p.isClosed(1e-3, 1e-3));
+    CHECK_FALSE(p.isClosed());
+    CHECK(p.isClosed(1e-3, 1e-3));
 }
 
-TEST(PolylineTests, testLength) {
+TEST_CASE("PolylineTests.testLength") {
     Polyline p{std::vector<Vec3>({
         { -1.0f, -1.0f, 0.0f },
         {  1.0f, -1.0f, 0.0f },
@@ -103,5 +103,5 @@ TEST(PolylineTests, testLength) {
         { -1.0f, -1.0f, 0.0f }
     })};
     
-    EXPECT_EQ(p.length(), 8.0f);
+    CHECK_EQ(p.length(), 8.0f);
 }

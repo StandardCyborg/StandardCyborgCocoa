@@ -15,7 +15,13 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <sstream>
+#include <cmath>
+
+#ifndef CHECK_NEAR
+#define CHECK_NEAR(a, b, tol) CHECK(std::abs(static_cast<double>(a) - static_cast<double>(b)) <= static_cast<double>(tol))
+#endif
 
 #include <standard_cyborg/sc3d/ColorImage.hpp>
 #include <standard_cyborg/sc3d/DepthImage.hpp>
@@ -29,7 +35,7 @@ using namespace standard_cyborg::sc3d;
 using namespace standard_cyborg::math;
 using namespace standard_cyborg::io::imgfile;
 
-TEST(ColorImageFileIOTests, testWritingPNGToFile) {
+TEST_CASE("ColorImageFileIOTests.testWritingPNGToFile") {
     std::string imagePath = "/tmp/test.png";
     
     ColorImage image (2, 2, std::vector<Vec4>{
@@ -39,10 +45,10 @@ TEST(ColorImageFileIOTests, testWritingPNGToFile) {
         {1, 1, 0, 1}
     });
     
-    EXPECT_TRUE(WriteColorImageToFile(imagePath, image, ImageFormat::PNG));
+    CHECK(WriteColorImageToFile(imagePath, image, ImageFormat::PNG));
 }
 
-TEST(ColorImageFileIOTests, testPNGImageSerialization) {
+TEST_CASE("ColorImageFileIOTests.testPNGImageSerialization") {
     std::string imagePath = "/tmp/test.png";
     std::ofstream outStream (imagePath, std::ios::out | std::ios::binary);
     
@@ -53,13 +59,13 @@ TEST(ColorImageFileIOTests, testPNGImageSerialization) {
         {1, 1, 0, 1}
     });
     
-    EXPECT_TRUE(WriteColorImageToStream(outStream, image, ImageFormat::PNG));
+    CHECK(WriteColorImageToStream(outStream, image, ImageFormat::PNG));
     
     outStream.close();
 }
 
 
-TEST(ColorImageFileIOTests, testReadPNGFromFile) {
+TEST_CASE("ColorImageFileIOTests.testReadPNGFromFile") {
     std::string imagePath = "/tmp/test.png";
     
     ColorImage inputImage (2, 2, std::vector<Vec4>{
@@ -69,26 +75,26 @@ TEST(ColorImageFileIOTests, testReadPNGFromFile) {
         {1.0, 0.9, 0.8, 0.7}
     });
     
-    EXPECT_TRUE(WriteColorImageToFile(imagePath, inputImage, ImageFormat::PNG));
+    CHECK(WriteColorImageToFile(imagePath, inputImage, ImageFormat::PNG));
     
     ColorImage outputImage;
-    EXPECT_TRUE(standard_cyborg::io::imgfile::ReadColorImageFromFile(outputImage, imagePath));
+    CHECK(standard_cyborg::io::imgfile::ReadColorImageFromFile(outputImage, imagePath));
     
-    EXPECT_EQ(outputImage.getWidth(), 2);
-    EXPECT_EQ(outputImage.getHeight(), 2);
+    CHECK_EQ(outputImage.getWidth(), 2);
+    CHECK_EQ(outputImage.getHeight(), 2);
     
     std::vector<Vec4> expectedPixels = inputImage.getData();
     std::vector<Vec4> pixels = outputImage.getData();
-    EXPECT_EQ(expectedPixels.size(), pixels.size());
+    CHECK_EQ(expectedPixels.size(), pixels.size());
     
     // Due to quantization to 0-255, we don't exactly reproduce the floating point values,
     // but we get plenty close
     for (int i = 0; i < pixels.size(); i++) {
-        EXPECT_TRUE(Vec4::almostEqual(pixels[i], expectedPixels[i], 4e-3));
+        CHECK(Vec4::almostEqual(pixels[i], expectedPixels[i], 4e-3));
     }
 }
 
-TEST(ColorImageFileIOTests, testReadJPEGFromFile) {
+TEST_CASE("ColorImageFileIOTests.testReadJPEGFromFile") {
     std::string imagePath = "/tmp/test.jpeg";
     
     ColorImage inputImage (2, 2, std::vector<Vec4>{
@@ -98,31 +104,31 @@ TEST(ColorImageFileIOTests, testReadJPEGFromFile) {
         {1.0, 0.9, 0.8, 0.7}
     });
     
-    EXPECT_TRUE(WriteColorImageToFile(imagePath, inputImage, ImageFormat::JPEG, 100));
+    CHECK(WriteColorImageToFile(imagePath, inputImage, ImageFormat::JPEG, 100));
     
     ColorImage outputImage;
-    EXPECT_TRUE(standard_cyborg::io::imgfile::ReadColorImageFromFile(outputImage, imagePath));
+    CHECK(standard_cyborg::io::imgfile::ReadColorImageFromFile(outputImage, imagePath));
     
-    EXPECT_EQ(outputImage.getWidth(), 2);
-    EXPECT_EQ(outputImage.getHeight(), 2);
+    CHECK_EQ(outputImage.getWidth(), 2);
+    CHECK_EQ(outputImage.getHeight(), 2);
     
     std::vector<Vec4> expectedPixels = inputImage.getData();
     std::vector<Vec4> pixels = outputImage.getData();
-    EXPECT_EQ(expectedPixels.size(), pixels.size());
+    CHECK_EQ(expectedPixels.size(), pixels.size());
     
     
     // Due to quantization to 0-255, we don't exactly reproduce the floating point values,
     // but we get plenty close
     for (int i = 0; i < pixels.size(); i++) {
         // Restore the RGB data
-        EXPECT_TRUE(Vec3::almostEqual(pixels[i].xyz(), expectedPixels[i].xyz(), 0.015));
+        CHECK(Vec3::almostEqual(pixels[i].xyz(), expectedPixels[i].xyz(), 0.015));
         
         // Drops the alpha channel:
-        EXPECT_EQ(pixels[i].w, 1.0);
+        CHECK_EQ(pixels[i].w, 1.0);
     }
 }
 
-TEST(ColorImageFileIOTests, testPNGImageDeserialization) {
+TEST_CASE("ColorImageFileIOTests.testPNGImageDeserialization") {
     std::stringstream ioBuffer;
     
     ColorImage inputImage (2, 2, std::vector<Vec4>{
@@ -138,21 +144,21 @@ TEST(ColorImageFileIOTests, testPNGImageDeserialization) {
     
     ReadColorImageFromStream(outputImage, ioBuffer);
     
-    EXPECT_EQ(outputImage.getWidth(), 2);
-    EXPECT_EQ(outputImage.getHeight(), 2);
+    CHECK_EQ(outputImage.getWidth(), 2);
+    CHECK_EQ(outputImage.getHeight(), 2);
     
     std::vector<Vec4> expectedPixels = inputImage.getData();
     std::vector<Vec4> pixels = outputImage.getData();
-    EXPECT_EQ(expectedPixels.size(), pixels.size());
+    CHECK_EQ(expectedPixels.size(), pixels.size());
     
     // Due to quantization to 0-255, we don't exactly reproduce the floating point values,
     // but we get plenty close
     for (int i = 0; i < pixels.size(); i++) {
-        EXPECT_TRUE(Vec4::almostEqual(pixels[i], expectedPixels[i], 4e-3));
+        CHECK(Vec4::almostEqual(pixels[i], expectedPixels[i], 4e-3));
     }
 }
 
-TEST(ColorImageFileIOTests, testJPEGImageDeserialization) {
+TEST_CASE("ColorImageFileIOTests.testJPEGImageDeserialization") {
     std::stringstream ioBuffer;
     
     ColorImage inputImage (2, 2, std::vector<Vec4>{
@@ -168,25 +174,25 @@ TEST(ColorImageFileIOTests, testJPEGImageDeserialization) {
     
     ReadColorImageFromStream(outputImage, ioBuffer);
     
-    EXPECT_EQ(outputImage.getWidth(), 2);
-    EXPECT_EQ(outputImage.getHeight(), 2);
+    CHECK_EQ(outputImage.getWidth(), 2);
+    CHECK_EQ(outputImage.getHeight(), 2);
     
     std::vector<Vec4> expectedPixels = inputImage.getData();
     std::vector<Vec4> pixels = outputImage.getData();
-    EXPECT_EQ(expectedPixels.size(), pixels.size());
+    CHECK_EQ(expectedPixels.size(), pixels.size());
     
     // Due to quantization to 0-255, we don't exactly reproduce the floating point values,
     // but we get plenty close
     for (int i = 0; i < pixels.size(); i++) {
         // Restore the RGB data
-        EXPECT_TRUE(Vec3::almostEqual(pixels[i].xyz(), expectedPixels[i].xyz(), 0.015));
+        CHECK(Vec3::almostEqual(pixels[i].xyz(), expectedPixels[i].xyz(), 0.015));
         
         // Drops the alpha channel:
-        EXPECT_EQ(pixels[i].w, 1.0);
+        CHECK_EQ(pixels[i].w, 1.0);
     }
 }
 
-TEST(ColorImageFileIOTests, testDepthImageSerialization) {
+TEST_CASE("ColorImageFileIOTests.testDepthImageSerialization") {
     std::stringstream ioBuffer;
     
     DepthImage inputImage (2, 2, std::vector<float>{1.0f, 2.0f, 3.0f, 4.0f});
@@ -196,16 +202,16 @@ TEST(ColorImageFileIOTests, testDepthImageSerialization) {
     
     standard_cyborg::io::ply::ReadDepthImageFromPLYStream(outputImage, ioBuffer);
     
-    EXPECT_EQ(outputImage.getWidth(), 2);
-    EXPECT_EQ(outputImage.getHeight(), 2);
+    CHECK_EQ(outputImage.getWidth(), 2);
+    CHECK_EQ(outputImage.getHeight(), 2);
     
     std::vector<float> expectedPixels = inputImage.getData();
     std::vector<float> pixels = outputImage.getData();
-    EXPECT_EQ(expectedPixels.size(), pixels.size());
+    CHECK_EQ(expectedPixels.size(), pixels.size());
     
     // Due to quantization to 0-255, we don't exactly reproduce the floating point values,
     // but we get plenty close
     for (int i = 0; i < pixels.size(); i++) {
-        EXPECT_NEAR(pixels[i], expectedPixels[i], 1e-5);
+        CHECK_NEAR(pixels[i], expectedPixels[i], 1e-5);
     }
 }

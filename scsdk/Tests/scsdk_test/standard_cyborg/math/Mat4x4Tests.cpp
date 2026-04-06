@@ -15,7 +15,7 @@ limitations under the License.
 */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/math/Mat3x4.hpp>
 #include <standard_cyborg/math/Mat4x4.hpp>
@@ -24,30 +24,30 @@ limitations under the License.
 namespace math = standard_cyborg::math;
 using math::Mat4x4;
 
-TEST(Mat4x4Tests, testEquality) {
+TEST_CASE("Mat4x4Tests.testEquality") {
 
-    EXPECT_TRUE(Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16) == Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
-    EXPECT_TRUE(Mat4x4(1, 2, 8, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16) != Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
-    EXPECT_TRUE(Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16) != Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30, 12, 13, 14, 15, 16));
+    CHECK(Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16) == Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
+    CHECK(Mat4x4(1, 2, 8, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16) != Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16));
+    CHECK(Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16) != Mat4x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30, 12, 13, 14, 15, 16));
 }
 
-TEST(Mat4x4Tests, testDefaultConstructor) {
-    EXPECT_EQ(Mat4x4{}, Mat4x4(1, 0, 0, 0,
+TEST_CASE("Mat4x4Tests.testDefaultConstructor") {
+    CHECK_EQ(Mat4x4{}, Mat4x4(1, 0, 0, 0,
                                     0, 1, 0, 0,
                                     0, 0, 1, 0,
                                     0, 0, 0, 1));
     
 }
 
-TEST(Mat4x4Tests, testIdentity) {
-    EXPECT_EQ(Mat4x4::Identity(), Mat4x4({1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1}));
+TEST_CASE("Mat4x4Tests.testIdentity") {
+    CHECK_EQ(Mat4x4::Identity(), Mat4x4({1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0,  0, 0, 0, 1}));
 }
 
-TEST(Mat4x4Tests, testZeros) {
-    EXPECT_EQ(Mat4x4::Zeros(), Mat4x4({0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0}));
+TEST_CASE("Mat4x4Tests.testZeros") {
+    CHECK_EQ(Mat4x4::Zeros(), Mat4x4({0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0}));
 }
 
-TEST(Mat4x4Tests, testMatMultMat) {
+TEST_CASE("Mat4x4Tests.testMatMultMat") {
     Mat4x4 m0 = {
         1, 2, 3, 4,
         5, 6, 7, 8,
@@ -64,7 +64,7 @@ TEST(Mat4x4Tests, testMatMultMat) {
     
     Mat4x4 r = m0 * m1;
     
-    EXPECT_EQ(r, Mat4x4({
+    CHECK_EQ(r, Mat4x4({
         210, 220, 230, 240,
         514, 540, 566, 592,
         818, 860, 902, 944,
@@ -72,7 +72,7 @@ TEST(Mat4x4Tests, testMatMultMat) {
     }));
 }
 
-TEST(Mat4x4Tests, testMatMultVec) {
+TEST_CASE("Mat4x4Tests.testMatMultVec") {
     Mat4x4 m0 {
         1, 2, 3, 4,
         5, 6, 7, 8,
@@ -82,10 +82,10 @@ TEST(Mat4x4Tests, testMatMultVec) {
     
     math::Vec3 r = m0 * math::Vec3{3, 4, 5};
     
-    EXPECT_TRUE(math::Vec3::almostEqual(r, math::Vec3{0.16129f, 0.44086f, 0.72043f}, 1e-5, 1e-5));
+    CHECK(math::Vec3::almostEqual(r, math::Vec3{0.16129f, 0.44086f, 0.72043f}, 1e-5, 1e-5));
 }
 
-TEST(Mat4x4Tests, testInverse) {
+TEST_CASE("Mat4x4Tests.testInverse") {
     Mat4x4 m {
         1, -1, 2, 3,
         2, 3, -1, 0,
@@ -102,10 +102,10 @@ TEST(Mat4x4Tests, testInverse) {
         -0.5,  2.75,  3.75,  1.25
     };
     
-    EXPECT_TRUE(Mat4x4::almostEqual(mInv, expected));
+    CHECK(Mat4x4::almostEqual(mInv, expected));
 }
 
-TEST(Mat4x4Tests, testSingularInverse) {
+TEST_CASE("Mat4x4Tests.testSingularInverse") {
     Mat4x4 m {
         1, 1, 1, 1,
         2, 2, 2, 2,
@@ -115,28 +115,28 @@ TEST(Mat4x4Tests, testSingularInverse) {
     
     Mat4x4 mInv(m.inverse());
     
-    EXPECT_TRUE(std::isnan(mInv.m00));
-    EXPECT_TRUE(std::isnan(mInv.m01));
-    EXPECT_TRUE(std::isnan(mInv.m02));
-    EXPECT_TRUE(std::isnan(mInv.m03));
+    CHECK(std::isnan(mInv.m00));
+    CHECK(std::isnan(mInv.m01));
+    CHECK(std::isnan(mInv.m02));
+    CHECK(std::isnan(mInv.m03));
     
-    EXPECT_TRUE(std::isnan(mInv.m10));
-    EXPECT_TRUE(std::isnan(mInv.m11));
-    EXPECT_TRUE(std::isnan(mInv.m12));
-    EXPECT_TRUE(std::isnan(mInv.m13));
+    CHECK(std::isnan(mInv.m10));
+    CHECK(std::isnan(mInv.m11));
+    CHECK(std::isnan(mInv.m12));
+    CHECK(std::isnan(mInv.m13));
     
-    EXPECT_TRUE(std::isnan(mInv.m20));
-    EXPECT_TRUE(std::isnan(mInv.m21));
-    EXPECT_TRUE(std::isnan(mInv.m22));
-    EXPECT_TRUE(std::isnan(mInv.m23));
+    CHECK(std::isnan(mInv.m20));
+    CHECK(std::isnan(mInv.m21));
+    CHECK(std::isnan(mInv.m22));
+    CHECK(std::isnan(mInv.m23));
     
-    EXPECT_TRUE(std::isnan(mInv.m30));
-    EXPECT_TRUE(std::isnan(mInv.m31));
-    EXPECT_TRUE(std::isnan(mInv.m32));
-    EXPECT_TRUE(std::isnan(mInv.m33));
+    CHECK(std::isnan(mInv.m30));
+    CHECK(std::isnan(mInv.m31));
+    CHECK(std::isnan(mInv.m32));
+    CHECK(std::isnan(mInv.m33));
 }
 
-TEST(Mat4x4Tests, testInPlaceInverse) {
+TEST_CASE("Mat4x4Tests.testInPlaceInverse") {
     Mat4x4 m {
         1, -1, 2, 3,
         2, 3, -1, 0,
@@ -152,13 +152,13 @@ TEST(Mat4x4Tests, testInPlaceInverse) {
     };
     
     // Confirm it return the inverse by reference
-    EXPECT_TRUE(Mat4x4::almostEqual(m.invert(), expected));
+    CHECK(Mat4x4::almostEqual(m.invert(), expected));
     
     // Confirm the matrix has also been mutated
-    EXPECT_TRUE(Mat4x4::almostEqual(m, expected));
+    CHECK(Mat4x4::almostEqual(m, expected));
 }
 
-TEST(Mat4x4Tests, testInPlaceSingularInverse) {
+TEST_CASE("Mat4x4Tests.testInPlaceSingularInverse") {
     Mat4x4 m {
         1, 1, 1, 1,
         2, 2, 2, 2,
@@ -168,28 +168,28 @@ TEST(Mat4x4Tests, testInPlaceSingularInverse) {
     
     m.invert();
     
-    EXPECT_TRUE(std::isnan(m.m00));
-    EXPECT_TRUE(std::isnan(m.m01));
-    EXPECT_TRUE(std::isnan(m.m02));
-    EXPECT_TRUE(std::isnan(m.m03));
+    CHECK(std::isnan(m.m00));
+    CHECK(std::isnan(m.m01));
+    CHECK(std::isnan(m.m02));
+    CHECK(std::isnan(m.m03));
     
-    EXPECT_TRUE(std::isnan(m.m10));
-    EXPECT_TRUE(std::isnan(m.m11));
-    EXPECT_TRUE(std::isnan(m.m12));
-    EXPECT_TRUE(std::isnan(m.m13));
+    CHECK(std::isnan(m.m10));
+    CHECK(std::isnan(m.m11));
+    CHECK(std::isnan(m.m12));
+    CHECK(std::isnan(m.m13));
     
-    EXPECT_TRUE(std::isnan(m.m20));
-    EXPECT_TRUE(std::isnan(m.m21));
-    EXPECT_TRUE(std::isnan(m.m22));
-    EXPECT_TRUE(std::isnan(m.m23));
+    CHECK(std::isnan(m.m20));
+    CHECK(std::isnan(m.m21));
+    CHECK(std::isnan(m.m22));
+    CHECK(std::isnan(m.m23));
     
-    EXPECT_TRUE(std::isnan(m.m30));
-    EXPECT_TRUE(std::isnan(m.m31));
-    EXPECT_TRUE(std::isnan(m.m32));
-    EXPECT_TRUE(std::isnan(m.m33));
+    CHECK(std::isnan(m.m30));
+    CHECK(std::isnan(m.m31));
+    CHECK(std::isnan(m.m32));
+    CHECK(std::isnan(m.m33));
 }
 
-TEST(Mat4x4Tests, testFromRowMajorVector) {
+TEST_CASE("Mat4x4Tests.testFromRowMajorVector") {
     Mat4x4 expected {
         0, 1, 2, 3,
         4, 5, 6, 7,
@@ -199,10 +199,10 @@ TEST(Mat4x4Tests, testFromRowMajorVector) {
     
     Mat4x4 m (Mat4x4::fromRowMajorVector({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }));
     
-    EXPECT_TRUE(Mat4x4::almostEqual(m, expected));
+    CHECK(Mat4x4::almostEqual(m, expected));
 }
 
-TEST(Mat4x4Tests, testFromColumnMajorVector) {
+TEST_CASE("Mat4x4Tests.testFromColumnMajorVector") {
     Mat4x4 expected {
         0, 4, 8, 12,
         1, 5, 9, 13,
@@ -212,10 +212,10 @@ TEST(Mat4x4Tests, testFromColumnMajorVector) {
     
     Mat4x4 m (Mat4x4::fromColumnMajorVector({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }));
     
-    EXPECT_TRUE(Mat4x4::almostEqual(m, expected));
+    CHECK(Mat4x4::almostEqual(m, expected));
 }
 
-TEST(Mat4x4Tests, testToRowMajorVector) {
+TEST_CASE("Mat4x4Tests.testToRowMajorVector") {
     Mat4x4 m {
         0, 1, 2, 3,
         4, 5, 6, 7,
@@ -223,10 +223,10 @@ TEST(Mat4x4Tests, testToRowMajorVector) {
         12, 13, 14, 15
     };
     
-    EXPECT_EQ(m.toRowMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}));
+    CHECK_EQ(m.toRowMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}));
 }
 
-TEST(Mat4x4Tests, testToColumnMajorVector) {
+TEST_CASE("Mat4x4Tests.testToColumnMajorVector") {
     Mat4x4 m {
         0, 4, 8, 12,
         1, 5, 9, 13,
@@ -234,5 +234,5 @@ TEST(Mat4x4Tests, testToColumnMajorVector) {
         3, 7, 11, 15
     };
     
-    EXPECT_EQ(m.toColumnMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}));
+    CHECK_EQ(m.toColumnMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}));
 }

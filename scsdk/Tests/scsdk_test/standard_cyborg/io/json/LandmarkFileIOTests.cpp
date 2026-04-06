@@ -14,7 +14,7 @@
  limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <sstream>
 
@@ -28,7 +28,7 @@ using standard_cyborg::io::json::ReadLandmarkFromJSONStream;
 using standard_cyborg::io::json::WriteLandmarkToJSONFile;
 using standard_cyborg::io::json::ReadLandmarkFromJSONFile;
 
-TEST(LandmarkFileIOTests, testLandmarkReadWrite)
+TEST_CASE("LandmarkFileIOTests.testLandmarkReadWrite")
 {
     Landmark originalLandmark{"foot", {1.0, 2.0, 3.0}};
     
@@ -36,20 +36,20 @@ TEST(LandmarkFileIOTests, testLandmarkReadWrite)
     WriteLandmarkToJSONStream(buf, originalLandmark);
     
     Landmark readLandmark;
-    EXPECT_TRUE(ReadLandmarkFromJSONStream(readLandmark, buf));
+    CHECK(ReadLandmarkFromJSONStream(readLandmark, buf));
     
-    EXPECT_EQ(originalLandmark.position, readLandmark.position);
-    EXPECT_EQ(originalLandmark.name, readLandmark.name);
+    CHECK_EQ(originalLandmark.position, readLandmark.position);
+    CHECK_EQ(originalLandmark.name, readLandmark.name);
 }
 
-TEST(LandmarkFileIOTests, testLandmarkFileIO)
+TEST_CASE("LandmarkFileIOTests.testLandmarkFileIO")
 {
     Landmark originalLandmark{"foot", {1.0, 2.0, 3.0}};
     WriteLandmarkToJSONFile("/tmp/test-landmark.json", originalLandmark);
     
     Landmark readLandmark;
     ReadLandmarkFromJSONFile(readLandmark, "/tmp/test-landmark.json");
-    EXPECT_EQ(originalLandmark.position, readLandmark.position);
-    EXPECT_EQ(originalLandmark.name, readLandmark.name);
+    CHECK_EQ(originalLandmark.position, readLandmark.position);
+    CHECK_EQ(originalLandmark.name, readLandmark.name);
 }
 

@@ -14,14 +14,14 @@
  limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/sc3d/Rect2D.hpp>
 
-TEST(Rect2DTests, test) {
+TEST_CASE("Rect2DTests.test") {
     standard_cyborg::sc3d::Rect2D p;
-    EXPECT_EQ(p.origin.x, 0.0f);
-    EXPECT_EQ(p.origin.y, 0.0f);
-    EXPECT_EQ(p.size.width, 0.0f);
-    EXPECT_EQ(p.size.height, 0.0f);
+    CHECK_EQ(p.origin.x, 0.0f);
+    CHECK_EQ(p.origin.y, 0.0f);
+    CHECK_EQ(p.size.width, 0.0f);
+    CHECK_EQ(p.size.height, 0.0f);
 }

@@ -40,7 +40,9 @@
  @implementation BoundingBox3Tests
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <cfloat>
+#include <limits>
 
 #include <standard_cyborg/sc3d/BoundingBox3.hpp>
 
@@ -54,73 +56,73 @@ using math::Vec3;
 using standard_cyborg::sc3d::BoundingBox3;
 
 
-TEST(BoundingBox3Tests, testEmptyConstructor) {
+TEST_CASE("BoundingBox3Tests.testEmptyConstructor") {
     BoundingBox3 bbox {};
-    EXPECT_EQ(bbox.lower, Vec3({INFINITY, INFINITY, INFINITY}));
-    EXPECT_EQ(bbox.upper, Vec3({-INFINITY, -INFINITY, -INFINITY}));
+    CHECK_EQ(bbox.lower, Vec3({std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity(), std::numeric_limits<float>::infinity()}));
+    CHECK_EQ(bbox.upper, Vec3({-std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity(), -std::numeric_limits<float>::infinity()}));
 }
 
-TEST(BoundingBox3Tests, testVec3Initialization) {
+TEST_CASE("BoundingBox3Tests.testVec3Initialization") {
     BoundingBox3 bbox {Vec3{0.0f, 1.0f, 2.0f}, Vec3{2.0f, 3.0f, 4.0f}};
-    EXPECT_EQ(bbox.lower, Vec3({0.0f, 1.0f, 2.0f}));
-    EXPECT_EQ(bbox.upper, Vec3({2.0f, 3.0f, 4.0f}));
+    CHECK_EQ(bbox.lower, Vec3({0.0f, 1.0f, 2.0f}));
+    CHECK_EQ(bbox.upper, Vec3({2.0f, 3.0f, 4.0f}));
     
 }
 
-TEST(BoundingBox3Tests, testFloatInitialization) {
+TEST_CASE("BoundingBox3Tests.testFloatInitialization") {
     BoundingBox3 bbox {0.0f, 1.0f, 2.0f, 2.0f, 3.0f, 4.0f};
-    EXPECT_EQ(bbox.lower, Vec3({0.0f, 1.0f, 2.0f}));
-    EXPECT_EQ(bbox.upper, Vec3({2.0f, 3.0f, 4.0f}));
+    CHECK_EQ(bbox.lower, Vec3({0.0f, 1.0f, 2.0f}));
+    CHECK_EQ(bbox.upper, Vec3({2.0f, 3.0f, 4.0f}));
 }
 
-TEST(BoundingBox3Tests, testCenter) {
+TEST_CASE("BoundingBox3Tests.testCenter") {
     BoundingBox3 bbox {Vec3{-1.0f}, Vec3{3.0f}};
-    EXPECT_EQ(bbox.center(), Vec3(1.0f));
+    CHECK_EQ(bbox.center(), Vec3(1.0f));
 }
 
-TEST(BoundingBox3Tests, testExtent) {
+TEST_CASE("BoundingBox3Tests.testExtent") {
     BoundingBox3 bbox {Vec3{-1.0f}, Vec3{3.0f}};
-    EXPECT_EQ(bbox.extent(), Vec3(2.0f));
+    CHECK_EQ(bbox.extent(), Vec3(2.0f));
 }
 
-TEST(BoundingBox3Tests, testShape) {
+TEST_CASE("BoundingBox3Tests.testShape") {
     BoundingBox3 bbox {Vec3{-1.0f}, Vec3{3.0f}};
-    EXPECT_EQ(bbox.shape(), Vec3(4.0f));
+    CHECK_EQ(bbox.shape(), Vec3(4.0f));
 }
 
-TEST(BoundingBox3Tests, testRadius) {
+TEST_CASE("BoundingBox3Tests.testRadius") {
     BoundingBox3 bbox {Vec3{0.0f}, Vec3{6.0f, 8.0f, 0.0f}};
-    EXPECT_EQ(bbox.radius(), 5.0f);
+    CHECK_EQ(bbox.radius(), 5.0f);
 }
 
-TEST(BoundingBox3Tests, testSquaredRadius) {
+TEST_CASE("BoundingBox3Tests.testSquaredRadius") {
     BoundingBox3 bbox {{0.0f}, {6.0f, 8.0f, 0.0f}};
-    EXPECT_EQ(bbox.squaredRadius(), 25.0f);
+    CHECK_EQ(bbox.squaredRadius(), 25.0f);
 }
 
-TEST(BoundingBox3Tests, testEquality) {
+TEST_CASE("BoundingBox3Tests.testEquality") {
     BoundingBox3 a {Vec3{0.0f}, Vec3{1.0f}};
     BoundingBox3 b {Vec3{0.0f}, Vec3{1.0f}};
-    EXPECT_TRUE(a == b);
+    CHECK(a == b);
 }
 
-TEST(BoundingBox3Tests, testInequality) {
+TEST_CASE("BoundingBox3Tests.testInequality") {
     BoundingBox3 a {Vec3{0.0f}, Vec3{2.0f}};
     BoundingBox3 b {Vec3{0.0f}, Vec3{1.0f}};
-    EXPECT_TRUE(a != b);
+    CHECK(a != b);
 }
 
-TEST(BoundingBox3Tests, testApproximateEquality) {
+TEST_CASE("BoundingBox3Tests.testApproximateEquality") {
     BoundingBox3 a {Vec3{0.0f}, Vec3{1.0f}};
     BoundingBox3 b {Vec3{0.0f}, Vec3{1.0f + FLT_EPSILON}};
-    EXPECT_FALSE(a == b);
-    EXPECT_TRUE(BoundingBox3::almostEqual(a, b));
+    CHECK_FALSE(a == b);
+    CHECK(BoundingBox3::almostEqual(a, b));
 }
 
-TEST(BoundingBox3Tests, testInitializationFromGeometry) {
+TEST_CASE("BoundingBox3Tests.testInitializationFromGeometry") {
     BoundingBox3 bbox {standard_cyborg::sc3d::Geometry({Vec3{1, 4, 3}, Vec3{2, 2, 4}})};
     BoundingBox3 expected {{1.0f, 2.0f, 3.0f}, {2.0f, 4.0f, 4.0f}};
-    EXPECT_EQ(bbox, expected);
+    CHECK_EQ(bbox, expected);
     
     {
         Vec3 lower{+1.0f, +2.0f, +3.0f};
@@ -139,15 +141,15 @@ TEST(BoundingBox3Tests, testInitializationFromGeometry) {
         
         BoundingBox3 aabb {standard_cyborg::sc3d::Geometry({lower, upper}), m};
         
-        EXPECT_EQ(aabb.getLower(), lower + Vec3(tx, ty, tz));
-        EXPECT_EQ(aabb.getUpper(), upper +  Vec3(tx, ty, tz));
+        CHECK_EQ(aabb.getLower(), lower + Vec3(tx, ty, tz));
+        CHECK_EQ(aabb.getUpper(), upper +  Vec3(tx, ty, tz));
     }
 }
 
-TEST(BoundingBox3Tests, testInitializationFromVec3Vector) {
+TEST_CASE("BoundingBox3Tests.testInitializationFromVec3Vector") {
     BoundingBox3 bbox {std::vector<Vec3>{{1, 4, 3}, {2, 2, 4}}};
     BoundingBox3 expected {{1.0f, 2.0f, 3.0f}, {2.0f, 4.0f, 4.0f}};
-    EXPECT_EQ(bbox, expected);
+    CHECK_EQ(bbox, expected);
     
     {
         Vec3 lower{+1.0f, +2.0f, +3.0f};
@@ -166,12 +168,12 @@ TEST(BoundingBox3Tests, testInitializationFromVec3Vector) {
         
         BoundingBox3 aabb {std::vector<Vec3>{lower, upper}, m};
         
-        EXPECT_EQ(aabb.getLower(), lower + Vec3(tx, ty, tz));
-        EXPECT_EQ(aabb.getUpper(), upper +  Vec3(tx, ty, tz));
+        CHECK_EQ(aabb.getLower(), lower + Vec3(tx, ty, tz));
+        CHECK_EQ(aabb.getUpper(), upper +  Vec3(tx, ty, tz));
     }
 }
 
-TEST(BoundingBox3Tests, testCombination) {
+TEST_CASE("BoundingBox3Tests.testCombination") {
     {
         BoundingBox3 aabb0 {{+1.0f, +2.0f, +3.0f}, {2.0f, 4.0f, 4.0f}};
         BoundingBox3 aabb1 {{-1.0f, -2.0f, -3.0f}, {4.0f, 6.0f, 7.0f}};
@@ -179,7 +181,7 @@ TEST(BoundingBox3Tests, testCombination) {
         
         BoundingBox3 expected {{-1.0f, -2.0f, -3.0f}, {4.0f, 6.0f, 7.0f}};
         
-        EXPECT_EQ(c, expected);
+        CHECK_EQ(c, expected);
     }
     
     {
@@ -189,11 +191,11 @@ TEST(BoundingBox3Tests, testCombination) {
         
         BoundingBox3 expected {{+1.0f, +2.0f, +3.0f}, {10.0f, 11.0f, 12.0f}};
         
-        EXPECT_EQ(c, expected);
+        CHECK_EQ(c, expected);
     }
 }
 
-TEST(BoundingBox3Tests, testCombine) {
+TEST_CASE("BoundingBox3Tests.testCombine") {
     {
         BoundingBox3 aabb0 {{+1.0f, +2.0f, +3.0f}, {2.0f, 4.0f, 4.0f}};
         BoundingBox3 aabb1 {{-1.0f, -2.0f, -3.0f}, {4.0f, 6.0f, 7.0f}};
@@ -201,7 +203,7 @@ TEST(BoundingBox3Tests, testCombine) {
         
         BoundingBox3 expected {{-1.0f, -2.0f, -3.0f}, {4.0f, 6.0f, 7.0f}};
         
-        EXPECT_EQ(aabb0, expected);
+        CHECK_EQ(aabb0, expected);
     }
     
     {
@@ -211,22 +213,22 @@ TEST(BoundingBox3Tests, testCombine) {
         
         BoundingBox3 expected {{+1.0f, +2.0f, +3.0f}, {10.0f, 11.0f, 12.0f}};
         
-        EXPECT_EQ(aabb0, expected);
+        CHECK_EQ(aabb0, expected);
     }
 }
 
-TEST(BoundingBox3Tests, testGetLowerGetUpper)
+TEST_CASE("BoundingBox3Tests.testGetLowerGetUpper")
 {
     BoundingBox3 aabb {{+1.0f, +2.0f, +3.0f}, {+2.0f, +4.0f, +4.0f}};
     
     Vec3 lower{+1.0f, +2.0f, +3.0f};
     Vec3 upper{+2.0f, +4.0f, +4.0f};
     
-    EXPECT_EQ(aabb.getLower(), lower);
-    EXPECT_EQ(aabb.getUpper(), upper);
+    CHECK_EQ(aabb.getLower(), lower);
+    CHECK_EQ(aabb.getUpper(), upper);
 }
 
-TEST(BoundingBox3Tests, testPolylineConstructor)
+TEST_CASE("BoundingBox3Tests.testPolylineConstructor")
 {
     {
         Vec3 lower{+1.0f, +2.0f, +3.0f};
@@ -237,8 +239,8 @@ TEST(BoundingBox3Tests, testPolylineConstructor)
         
         BoundingBox3 aabb {polyline};
         
-        EXPECT_EQ(aabb.getLower(), lower);
-        EXPECT_EQ(aabb.getUpper(), upper);
+        CHECK_EQ(aabb.getLower(), lower);
+        CHECK_EQ(aabb.getUpper(), upper);
     }
     
     {
@@ -260,8 +262,8 @@ TEST(BoundingBox3Tests, testPolylineConstructor)
         
         BoundingBox3 aabb {polyline, m};
         
-        EXPECT_EQ(aabb.getLower(), lower + Vec3(tx, ty, tz));
-        EXPECT_EQ(aabb.getUpper(), upper +  Vec3(tx, ty, tz));
+        CHECK_EQ(aabb.getLower(), lower + Vec3(tx, ty, tz));
+        CHECK_EQ(aabb.getUpper(), upper +  Vec3(tx, ty, tz));
     }
     
 }

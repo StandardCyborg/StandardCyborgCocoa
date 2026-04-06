@@ -18,6 +18,7 @@ limitations under the License.
 
 #include <algorithm>
 #include <iostream>
+#include <limits>
 #include <random>
 #include <vector>
 
@@ -114,7 +115,7 @@ public:
         //    have been chosen.)
         //
         for (int i = 1; i < k; i++) {
-            float bestDistanceSum = INFINITY;
+            float bestDistanceSum = std::numeric_limits<float>::max();
             int bestIndex = -1;
             
             int l = 0;

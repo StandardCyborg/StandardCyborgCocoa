@@ -26,11 +26,11 @@ namespace standard_cyborg {
 
 std::string getTestCasesPath() {
     auto p = std::getenv("SC_TEST_FIXTURES_DIR");
-    if (p) {
-        return p;
-    } else {
-        return SC_TEST_DEFAULT_FIXTURES_DIR;
+    std::string path = p ? p : SC_TEST_DEFAULT_FIXTURES_DIR;
+    if (!path.empty() && path.back() != '/') {
+        path += '/';
     }
+    return path;
 }
 
 }

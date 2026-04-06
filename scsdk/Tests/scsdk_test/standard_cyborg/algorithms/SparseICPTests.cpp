@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 
 #include <standard_cyborg/algorithms/SparseICPWrapper.hpp>
@@ -29,7 +29,7 @@ using standard_cyborg::math::Mat3x4;
 using standard_cyborg::math::Vec3;
 using standard_cyborg::sc3d::Geometry;
 
-TEST(SparseICP, testSparseICP) {
+TEST_CASE("SparseICP.testSparseICP") {
     
     std::vector<Vec3> positions0 {
         {1.0f, 1.0f, 0.0f},
@@ -63,7 +63,7 @@ TEST(SparseICP, testSparseICP) {
     
     Mat3x4 m = standard_cyborg::algorithms::SparseICPPointToPlane(geo0, geo1, pars);
     
-    EXPECT_TRUE(Mat3x4::almostEqual(m, Mat3x4({
+    CHECK(Mat3x4::almostEqual(m, Mat3x4({
         1, 0, 0, +0.0,
         0, 1, 0, +0.0,
         0, 0, 1, +0.01

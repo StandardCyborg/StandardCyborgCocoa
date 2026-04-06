@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <fstream>
 
@@ -75,7 +75,7 @@ std::string stringFromPath(const std::string& path)
     return str;
 }
 
-TEST(SceneGraphIOTests, testSceneGraphsSingleNode)
+TEST_CASE("SceneGraphIOTests.testSceneGraphsSingleNode")
 {
     std::vector<math::Vec3> originalPositions = {{1.0f, 2.0f, 3.0f}};
     std::vector<math::Vec3> originalNormals = {{1.0f, 0.0f, 0.0f}};
@@ -94,24 +94,24 @@ TEST(SceneGraphIOTests, testSceneGraphsSingleNode)
     
     std::string gltfPath = "/tmp/test.gltf";
     
-    EXPECT_TRUE(standard_cyborg::io::gltf::WriteSceneGraphToGltf(originalNode, gltfPath));
+    CHECK(standard_cyborg::io::gltf::WriteSceneGraphToGltf(originalNode, gltfPath));
     
     std::string gltfSource = stringFromPath(gltfPath);
     std::shared_ptr<Node> deserializedNode = standard_cyborg::io::gltf::ReadSceneGraphFromGltf(gltfSource)[0];
     GeometryNode *deserializedGeometryNode = deserializedNode->asGeometryNode();
     const Geometry &deserializedGeometry = deserializedGeometryNode->getGeometry();
     
-    EXPECT_TRUE(deserializedGeometry.getPositions() == originalPositions);
-    EXPECT_EQ(deserializedGeometry.getNormals(), originalNormals);
-    EXPECT_EQ(deserializedGeometry.getColors(), originalColors);
-    EXPECT_EQ(deserializedNode->getName(), originalName);
-    EXPECT_EQ(math::Mat3x4::fromTransform(deserializedNode->getTransform()), originalTransform);
-    EXPECT_EQ(deserializedNode->dataIsResolved(), true);
-    EXPECT_EQ(deserializedNode->numChildren(), 0);
+    CHECK(deserializedGeometry.getPositions() == originalPositions);
+    CHECK_EQ(deserializedGeometry.getNormals(), originalNormals);
+    CHECK_EQ(deserializedGeometry.getColors(), originalColors);
+    CHECK_EQ(deserializedNode->getName(), originalName);
+    CHECK_EQ(math::Mat3x4::fromTransform(deserializedNode->getTransform()), originalTransform);
+    CHECK_EQ(deserializedNode->dataIsResolved(), true);
+    CHECK_EQ(deserializedNode->numChildren(), 0);
 }
 
 
-TEST(SceneGraphIOTests, testSceneGraphRootWithChildren)
+TEST_CASE("SceneGraphIOTests.testSceneGraphRootWithChildren")
 {
     std::shared_ptr<Node> root(new Node());
     
@@ -125,12 +125,12 @@ TEST(SceneGraphIOTests, testSceneGraphRootWithChildren)
     std::string gltfSource = stringFromPath(gltfPath);
     std::shared_ptr<Node> deserializedRoot = standard_cyborg::io::gltf::ReadSceneGraphFromGltf(gltfSource)[0];
     
-    EXPECT_EQ(deserializedRoot->numChildren(), 2);
-    EXPECT_EQ(math::Mat3x4::fromTransform(deserializedRoot->getTransform()), math::Mat3x4{});
-    EXPECT_EQ(deserializedRoot->getName(), std::string("parent"));
+    CHECK_EQ(deserializedRoot->numChildren(), 2);
+    CHECK_EQ(math::Mat3x4::fromTransform(deserializedRoot->getTransform()), math::Mat3x4{});
+    CHECK_EQ(deserializedRoot->getName(), std::string("parent"));
 }
 
-TEST(SceneGraphIOTests, testGeometryNodeBase64)
+TEST_CASE("SceneGraphIOTests.testGeometryNodeBase64")
 {
     Geometry geometry;
     geometry.setPositions({{1, 2, 3}, {2, 3, 4}});
@@ -142,16 +142,16 @@ TEST(SceneGraphIOTests, testGeometryNodeBase64)
     std::shared_ptr<GeometryNode> geometryNode = std::make_shared<GeometryNode>("test0", geometry);
     
     std::string gltfPath = "/tmp/test.gltf";
-    EXPECT_TRUE(standard_cyborg::io::gltf::WriteSceneGraphToGltf(geometryNode, gltfPath));
+    CHECK(standard_cyborg::io::gltf::WriteSceneGraphToGltf(geometryNode, gltfPath));
     
     std::string gltfSource = stringFromPath(gltfPath);
     std::shared_ptr<Node> deserializedNode = standard_cyborg::io::gltf::ReadSceneGraphFromGltf(gltfSource)[0];
     
-    EXPECT_TRUE(deserializedNode->equals(*geometryNode));
+    CHECK(deserializedNode->equals(*geometryNode));
 }
 
 
-TEST(SceneGraphIOTests, testGeometryNodeTexture)
+TEST_CASE("SceneGraphIOTests.testGeometryNodeTexture")
 {
     Geometry geometry;
     
@@ -161,16 +161,16 @@ TEST(SceneGraphIOTests, testGeometryNodeTexture)
     std::shared_ptr<GeometryNode> geometryNode = std::make_shared<GeometryNode>("test0", geometry);
     
     std::string gltfPath = "/tmp/test.gltf";
-    EXPECT_TRUE(standard_cyborg::io::gltf::WriteSceneGraphToGltf(geometryNode, gltfPath));
+    CHECK(standard_cyborg::io::gltf::WriteSceneGraphToGltf(geometryNode, gltfPath));
     
     std::string gltfSource = stringFromPath(gltfPath);
     std::shared_ptr<Node> deserializedNode = standard_cyborg::io::gltf::ReadSceneGraphFromGltf(gltfSource)[0];
     
-    EXPECT_TRUE(deserializedNode->asGeometryNode()->getGeometry().hasTexture());
-    EXPECT_TRUE(texture2 == deserializedNode->asGeometryNode()->getGeometry().getTexture());
+    CHECK(deserializedNode->asGeometryNode()->getGeometry().hasTexture());
+    CHECK(texture2 == deserializedNode->asGeometryNode()->getGeometry().getTexture());
 }
 
-TEST(SceneGraphIOTests, testNodeMaterial)
+TEST_CASE("SceneGraphIOTests.testNodeMaterial")
 {
     std::shared_ptr<Node> node = std::make_shared<Node>("test0");
     
@@ -182,16 +182,16 @@ TEST(SceneGraphIOTests, testNodeMaterial)
     
     
     std::string gltfPath = "/tmp/test.gltf";
-    EXPECT_TRUE(standard_cyborg::io::gltf::WriteSceneGraphToGltf(node, gltfPath));
+    CHECK(standard_cyborg::io::gltf::WriteSceneGraphToGltf(node, gltfPath));
     
     std::string gltfSource = stringFromPath(gltfPath);
     std::shared_ptr<Node> deserializedNode = standard_cyborg::io::gltf::ReadSceneGraphFromGltf(gltfSource)[0];
     
-    EXPECT_TRUE(objectColor == deserializedNode->getMaterial().objectColor);
-    EXPECT_TRUE(materialModel == deserializedNode->getMaterial().materialModel);
+    CHECK(objectColor == deserializedNode->getMaterial().objectColor);
+    CHECK(materialModel == deserializedNode->getMaterial().materialModel);
 }
 
-TEST(SceneGraphIOTests, testPolylineGLTFIO)
+TEST_CASE("SceneGraphIOTests.testPolylineGLTFIO")
 {
     Polyline polyline;
     polyline.setPositions(std::vector<math::Vec3>{math::Vec3{1.0, 0.0, 0.0}, math::Vec3{0.0, 1.0, 0.0}, math::Vec3{0.0, 0.0, 1.0}});
@@ -199,35 +199,35 @@ TEST(SceneGraphIOTests, testPolylineGLTFIO)
     std::shared_ptr<PolylineNode> polylineNode = std::make_shared<PolylineNode>("Polyline", polyline);
     
     std::string gltfPath = "/tmp/test.gltf";
-    EXPECT_TRUE(standard_cyborg::io::gltf::WriteSceneGraphToGltf(polylineNode, gltfPath));
+    CHECK(standard_cyborg::io::gltf::WriteSceneGraphToGltf(polylineNode, gltfPath));
     
     std::string gltfSource = stringFromPath(gltfPath);
     std::shared_ptr<Node> deserializedNode = standard_cyborg::io::gltf::ReadSceneGraphFromGltf(gltfSource)[0];
     
-    EXPECT_TRUE(deserializedNode->isPolylineNode());
-    EXPECT_EQ(deserializedNode->numChildren(), 0);
-    EXPECT_EQ(deserializedNode->asPolylineNode()->getPolyline().getPositions(), polyline.getPositions());
-    EXPECT_TRUE(deserializedNode->equals(*polylineNode));
+    CHECK(deserializedNode->isPolylineNode());
+    CHECK_EQ(deserializedNode->numChildren(), 0);
+    CHECK_EQ(deserializedNode->asPolylineNode()->getPolyline().getPositions(), polyline.getPositions());
+    CHECK(deserializedNode->equals(*polylineNode));
 }
 
-TEST(SceneGraphIOTests, testSceneGraphsEqualsLandmarkNode)
+TEST_CASE("SceneGraphIOTests.testSceneGraphsEqualsLandmarkNode")
 {
     {
         std::shared_ptr<Node> graph0(getTestLandmarkNode("nose", math::Vec3{1.0f, 2.0f, 3.0f}));
         std::shared_ptr<Node> graph1(getTestLandmarkNode("nose", math::Vec3{1.0f, 2.0f, 3.0f}));
-        EXPECT_TRUE(graph0->equals(*graph1));
+        CHECK(graph0->equals(*graph1));
     }
     
     {
         std::shared_ptr<Node> graph0(getTestLandmarkNode("nose", math::Vec3{1.0f, 2.0f, 3.0f}));
         std::shared_ptr<Node> graph1(getTestLandmarkNode("nosee", math::Vec3{1.0f, 2.0f, 3.0f}));
-        EXPECT_FALSE(graph0->equals(*graph1));
+        CHECK_FALSE(graph0->equals(*graph1));
     }
     
     {
         std::shared_ptr<Node> graph0(getTestLandmarkNode("nose", math::Vec3{1.0f, 2.0f, 3.0f}));
         std::shared_ptr<Node> graph1(getTestLandmarkNode("nose", math::Vec3{1.0f, 8.0f, 3.0f}));
-        EXPECT_FALSE(graph0->equals(*graph1));
+        CHECK_FALSE(graph0->equals(*graph1));
     }
     
     {
@@ -235,26 +235,26 @@ TEST(SceneGraphIOTests, testSceneGraphsEqualsLandmarkNode)
         
         Landmark landmark{"nose", {1, 2, 3}};
         std::shared_ptr<LandmarkNode> landmarkNode = std::make_shared<LandmarkNode>("landmark", landmark);
-        EXPECT_TRUE(standard_cyborg::io::gltf::WriteSceneGraphToGltf(landmarkNode, gltfPath));
+        CHECK(standard_cyborg::io::gltf::WriteSceneGraphToGltf(landmarkNode, gltfPath));
         
         std::string gltfSource = stringFromPath(gltfPath);
         std::shared_ptr<Node> deserializedNode = standard_cyborg::io::gltf::ReadSceneGraphFromGltf(gltfSource)[0];
         
-        EXPECT_EQ(deserializedNode->getName(), landmarkNode->getName());
-        EXPECT_EQ(deserializedNode->getTransform(), landmarkNode->getTransform());
-        EXPECT_EQ(deserializedNode->numChildren(), landmarkNode->numChildren());
-        EXPECT_EQ(deserializedNode->asLandmarkNode()->getLandmark().getPosition(), landmarkNode->asLandmarkNode()->getLandmark().getPosition());
-        EXPECT_EQ(deserializedNode->asLandmarkNode()->getLandmark().getName(), landmarkNode->asLandmarkNode()->getLandmark().getName());
+        CHECK_EQ(deserializedNode->getName(), landmarkNode->getName());
+        CHECK_EQ(deserializedNode->getTransform(), landmarkNode->getTransform());
+        CHECK_EQ(deserializedNode->numChildren(), landmarkNode->numChildren());
+        CHECK_EQ(deserializedNode->asLandmarkNode()->getLandmark().getPosition(), landmarkNode->asLandmarkNode()->getLandmark().getPosition());
+        CHECK_EQ(deserializedNode->asLandmarkNode()->getLandmark().getName(), landmarkNode->asLandmarkNode()->getLandmark().getName());
     }
 }
 
-TEST(SceneGraphIOTests, testCyclicGraph)
+TEST_CASE("SceneGraphIOTests.testCyclicGraph")
 {
     std::shared_ptr<Node> n0(new Node());
     std::shared_ptr<Node> n1(new Node());
     std::shared_ptr<Node> n2(new Node());
     
-    EXPECT_TRUE(n0->appendChild(n1, n0));
-    EXPECT_TRUE(n1->appendChild(n2, n0));
-    EXPECT_FALSE(n2->appendChild(n0, n0));
+    CHECK(n0->appendChild(n1, n0));
+    CHECK(n1->appendChild(n2, n0));
+    CHECK_FALSE(n2->appendChild(n0, n0));
 }

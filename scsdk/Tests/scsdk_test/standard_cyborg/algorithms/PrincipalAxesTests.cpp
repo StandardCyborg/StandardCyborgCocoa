@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <iostream>
 
@@ -39,14 +39,14 @@ bool ReadPLY(standard_cyborg::sc3d::Geometry& geometryOut, const std::string& fi
     return ReadGeometryFromPLYFile(geometryOut, PLYPath);
 }
 
-TEST(PrincipalAxesTests, testNormalwisePrincipalAxes) {
+TEST_CASE("PrincipalAxesTests.testNormalwisePrincipalAxes") {
     
     standard_cyborg::sc3d::Geometry geometry;
-    EXPECT_TRUE(ReadPLY(geometry, "TestCase-mannequin-leg/mannequin-leg-meshed.ply"));
+    CHECK(ReadPLY(geometry, "TestCase-mannequin-leg/mannequin-leg-meshed.ply"));
     
     Mat3x4 alignmentMatrix = standard_cyborg::algorithms::computeNormalwisePrincipalAxes(geometry);
     
-    EXPECT_TRUE(Mat3x4::almostEqual(alignmentMatrix, Mat3x4({
+    CHECK(Mat3x4::almostEqual(alignmentMatrix, Mat3x4({
         -0.998805,     0.0350284,    -0.0340911,     0.0207896,
         0.0408923,      0.980892,     -0.190207,    -0.0251242,
         0.0267771,     -0.191373,     -0.981152,     -0.336577
@@ -54,13 +54,13 @@ TEST(PrincipalAxesTests, testNormalwisePrincipalAxes) {
     
 }
 
-TEST(PrincipalAxesTests, testPointwisePrincipalAxes) {
+TEST_CASE("PrincipalAxesTests.testPointwisePrincipalAxes") {
     standard_cyborg::sc3d::Geometry geometry;
-    EXPECT_TRUE(ReadPLY(geometry, "TestCase-mannequin-leg/mannequin-leg-meshed.ply"));
+    CHECK(ReadPLY(geometry, "TestCase-mannequin-leg/mannequin-leg-meshed.ply"));
     
     Mat3x4 alignmentMatrix = standard_cyborg::algorithms::computePointwisePrincipalAxes(geometry);
     
-    EXPECT_TRUE(Mat3x4::almostEqual(alignmentMatrix, Mat3x4({
+    CHECK(Mat3x4::almostEqual(alignmentMatrix, Mat3x4({
         -0.999851,     0.0136953,      0.010522,     0.0207896,
         0.0137762,      0.999876,    0.00765232,    -0.0251242,
         -0.0104159,    0.00779613,     -0.999916,     -0.336577
@@ -68,7 +68,7 @@ TEST(PrincipalAxesTests, testPointwisePrincipalAxes) {
     
 }
 
-TEST(PrincipalAxesTests, testPointwisePrincipalAxesWRTVertices) {
+TEST_CASE("PrincipalAxesTests.testPointwisePrincipalAxesWRTVertices") {
     
     std::vector<Vec3> positions {
         {-1, -0.1, -1},
@@ -79,7 +79,7 @@ TEST(PrincipalAxesTests, testPointwisePrincipalAxesWRTVertices) {
     
     Mat3x4 alignment = standard_cyborg::algorithms::computePointwisePrincipalAxes(positions);
     
-    EXPECT_TRUE(Mat3x4::almostEqual(alignment, Mat3x4({
+    CHECK(Mat3x4::almostEqual(alignment, Mat3x4({
         1, 0, 0,          0,
         0, 1, 0, -0.0333333,
         0, 0, 1,         -1

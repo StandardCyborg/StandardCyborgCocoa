@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/io/ply/RawFrameDataIO_PLY.hpp>
 
@@ -39,7 +39,7 @@
 using namespace standard_cyborg::sc3d;
 using namespace standard_cyborg::math;
 
-TEST(BPLYFrameFileIOTests, testReading) {
+TEST_CASE("BPLYFrameFileIOTests.testReading") {
     std::string testFrame = standard_cyborg::getTestCasesPath() + std::string("frame-000.ply");
     
     ColorImage image;
@@ -47,15 +47,15 @@ TEST(BPLYFrameFileIOTests, testReading) {
     PerspectiveCamera camera;
     
     bool ok = standard_cyborg::io::ply::ReadRawFrameDataFromPLYFile(image, depth, camera, testFrame);
-    EXPECT_TRUE(ok);
+    CHECK(ok);
     
-    EXPECT_EQ(image.getWidth(), 320);
-    EXPECT_EQ(image.getHeight(), 240);
+    CHECK_EQ(image.getWidth(), 320);
+    CHECK_EQ(image.getHeight(), 240);
     
-    EXPECT_EQ(depth.getWidth(), 320);
-    EXPECT_EQ(depth.getHeight(), 240);
+    CHECK_EQ(depth.getWidth(), 320);
+    CHECK_EQ(depth.getHeight(), 240);
     
-    EXPECT_TRUE(Mat3x3::almostEqual(
+    CHECK(Mat3x3::almostEqual(
                                     camera.getIntrinsicMatrix(),
                                     Mat3x3{
         2881.16,       0, 1536.59,
@@ -65,6 +65,6 @@ TEST(BPLYFrameFileIOTests, testReading) {
                                     1.0e-5, 1.0e-5
                                     ));
     
-    EXPECT_EQ(camera.getIntrinsicMatrixReferenceSize().x, 3088.0);
-    EXPECT_EQ(camera.getIntrinsicMatrixReferenceSize().y, 2316.0);
+    CHECK_EQ(camera.getIntrinsicMatrixReferenceSize().x, 3088.0);
+    CHECK_EQ(camera.getIntrinsicMatrixReferenceSize().y, 2316.0);
 }

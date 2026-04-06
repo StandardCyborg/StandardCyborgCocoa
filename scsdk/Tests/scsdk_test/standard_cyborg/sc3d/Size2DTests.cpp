@@ -14,20 +14,20 @@
  limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/sc3d/Size2D.hpp>
 
 using namespace standard_cyborg::sc3d;
 
-TEST(VertexSelectionTests, testConstructor) {
+TEST_CASE("VertexSelectionTests.testConstructor") {
     Size2D s;
-    EXPECT_EQ(s.width, 0.0f);
-    EXPECT_EQ(s.height, 0.0f);
+    CHECK_EQ(s.width, 0.0f);
+    CHECK_EQ(s.height, 0.0f);
 }
 
-TEST(VertexSelectionTests, testAccessor) {
+TEST_CASE("VertexSelectionTests.testAccessor") {
     Size2D s {1, 2};
-    EXPECT_EQ(s[0], 1);
-    EXPECT_EQ(s[1], 2);
+    CHECK_EQ(s[0], 1);
+    CHECK_EQ(s[1], 2);
 }

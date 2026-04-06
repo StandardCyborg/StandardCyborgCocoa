@@ -16,7 +16,13 @@
 
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <cfloat>
+#include <cmath>
+
+#ifndef CHECK_NEAR
+#define CHECK_NEAR(a, b, tol) CHECK(std::abs(static_cast<double>(a) - static_cast<double>(b)) <= static_cast<double>(tol))
+#endif
 
 #include <standard_cyborg/sc3d/Geometry.hpp>
 #include <standard_cyborg/sc3d/Face3.hpp>
@@ -54,7 +60,7 @@ bool checkVectorsEqual(const T& actual, const T& expected)
     return equal;
 }
 
-TEST(GeometryTests, testSetPositions)
+TEST_CASE("GeometryTests.testSetPositions")
 {
     {
         Geometry geo(
@@ -65,8 +71,8 @@ TEST(GeometryTests, testSetPositions)
         
         bool success = geo.setPositions(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}}));
         
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(geo.getPositions() == std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}}));
+        CHECK(success);
+        CHECK(geo.getPositions() == std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}}));
     }
     
     {
@@ -74,8 +80,8 @@ TEST(GeometryTests, testSetPositions)
         geo.setNormals(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many positions, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setPositions(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getPositions().size() == 0);
+        CHECK_FALSE(geo.setPositions(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getPositions().size() == 0);
     }
     
     {
@@ -83,8 +89,8 @@ TEST(GeometryTests, testSetPositions)
         geo.setColors(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many positions, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setPositions(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getPositions().size() == 0);
+        CHECK_FALSE(geo.setPositions(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getPositions().size() == 0);
     }
     
     {
@@ -92,8 +98,8 @@ TEST(GeometryTests, testSetPositions)
         geo.setTexCoords(std::vector<Vec2>({{0.0f, 0.0f}}));
         
         // too many positions, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setPositions(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getPositions().size() == 0);
+        CHECK_FALSE(geo.setPositions(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getPositions().size() == 0);
     }
     
     {
@@ -105,12 +111,12 @@ TEST(GeometryTests, testSetPositions)
                      );
         
         // unset positions.
-        EXPECT_TRUE(geo.setPositions(std::vector<Vec3>()));
-        EXPECT_TRUE(geo.getPositions().size() == 0);
+        CHECK(geo.setPositions(std::vector<Vec3>()));
+        CHECK(geo.getPositions().size() == 0);
     }
 }
 
-TEST(GeometryTests, testSetNormals)
+TEST_CASE("GeometryTests.testSetNormals")
 {
     {
         Geometry geo(
@@ -121,8 +127,8 @@ TEST(GeometryTests, testSetNormals)
         
         bool success = geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}}));
         
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(geo.getNormals() == std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}}));
+        CHECK(success);
+        CHECK(geo.getNormals() == std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}}));
     }
     
     {
@@ -130,8 +136,8 @@ TEST(GeometryTests, testSetNormals)
         geo.setPositions(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many normals, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getNormals().size() == 0);
+        CHECK_FALSE(geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getNormals().size() == 0);
     }
     
     {
@@ -139,8 +145,8 @@ TEST(GeometryTests, testSetNormals)
         geo.setColors(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many normals, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getNormals().size() == 0);
+        CHECK_FALSE(geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getNormals().size() == 0);
     }
     
     {
@@ -148,8 +154,8 @@ TEST(GeometryTests, testSetNormals)
         geo.setTexCoords(std::vector<Vec2>({{0.0f, 0.0f}}));
         
         // too many normals, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getNormals().size() == 0);
+        CHECK_FALSE(geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getNormals().size() == 0);
     }
     
     {
@@ -161,13 +167,13 @@ TEST(GeometryTests, testSetNormals)
                      );
         
         // unset normals.
-        EXPECT_TRUE(geo.setNormals(std::vector<Vec3>()));
-        EXPECT_TRUE(geo.getNormals().size() == 0);
+        CHECK(geo.setNormals(std::vector<Vec3>()));
+        CHECK(geo.getNormals().size() == 0);
     }
 }
 
 
-TEST(GeometryTests, testSetTexCoords)
+TEST_CASE("GeometryTests.testSetTexCoords")
 {
     {
         Geometry geo(
@@ -178,8 +184,8 @@ TEST(GeometryTests, testSetTexCoords)
         
         bool success = geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}}));
         
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(geo.getTexCoords() == std::vector<Vec2>({{0.0f, 1.0f}}));
+        CHECK(success);
+        CHECK(geo.getTexCoords() == std::vector<Vec2>({{0.0f, 1.0f}}));
     }
     
     {
@@ -187,8 +193,8 @@ TEST(GeometryTests, testSetTexCoords)
         geo.setPositions(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many texcoords, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}, {1.0f, 0.0f}})));
-        EXPECT_TRUE(geo.getTexCoords().size() == 0);
+        CHECK_FALSE(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}, {1.0f, 0.0f}})));
+        CHECK(geo.getTexCoords().size() == 0);
     }
     
     {
@@ -196,8 +202,8 @@ TEST(GeometryTests, testSetTexCoords)
         geo.setColors(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many texcoords, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}, {1.0f, 0.0f}})));
-        EXPECT_TRUE(geo.getTexCoords().size() == 0);
+        CHECK_FALSE(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}, {1.0f, 0.0f}})));
+        CHECK(geo.getTexCoords().size() == 0);
     }
     
     {
@@ -205,8 +211,8 @@ TEST(GeometryTests, testSetTexCoords)
         geo.setNormals(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many texcoords, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}, {1.0f, 0.0f}})));
-        EXPECT_TRUE(geo.getTexCoords().size() == 0);
+        CHECK_FALSE(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}, {1.0f, 0.0f}})));
+        CHECK(geo.getTexCoords().size() == 0);
     }
     
     {
@@ -217,31 +223,31 @@ TEST(GeometryTests, testSetTexCoords)
                      std::vector<Vec3>({{6.0f, 7.0f, 8.0f}})
                      );
         
-        EXPECT_TRUE(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}})));
+        CHECK(geo.setTexCoords(std::vector<Vec2>({{0.0f, 1.0f}})));
         
         // unset texcoords.
-        EXPECT_TRUE(geo.setTexCoords(std::vector<Vec2>({})));
-        EXPECT_TRUE(geo.getTexCoords().size() == 0);
+        CHECK(geo.setTexCoords(std::vector<Vec2>({})));
+        CHECK(geo.getTexCoords().size() == 0);
     }
 }
 
-TEST(GeometryTests, testSetTexture)
+TEST_CASE("GeometryTests.testSetTexture")
 {
     Geometry geo(std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}));
     
-    EXPECT_FALSE(geo.hasTexture());
+    CHECK_FALSE(geo.hasTexture());
     
     standard_cyborg::sc3d::ColorImage texture{1, 1, {Vec4{1.0f, 0.0f, 0.0f, 1.0f}}};
     
     bool success = geo.setTexture(texture);
     
     standard_cyborg::sc3d::ColorImage texture2{1, 1, {Vec4{1.0f, 0.0f, 0.0f, 1.0f}}};
-    EXPECT_TRUE(success);
-    EXPECT_TRUE(geo.getTexture() == texture2);
-    EXPECT_TRUE(geo.hasTexture());
+    CHECK(success);
+    CHECK(geo.getTexture() == texture2);
+    CHECK(geo.hasTexture());
 }
 
-TEST(GeometryTests, testSetInconsistentNormals)
+TEST_CASE("GeometryTests.testSetInconsistentNormals")
 {
     Geometry geo(
                  std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}),
@@ -251,11 +257,11 @@ TEST(GeometryTests, testSetInconsistentNormals)
     
     bool success = geo.setNormals(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {1.0f, 2.0f, 3.0f}}));
     
-    EXPECT_FALSE(success);
-    EXPECT_TRUE(geo.getNormals() == std::vector<Vec3>({{3.0f, 4.0f, 5.0f}}));
+    CHECK_FALSE(success);
+    CHECK(geo.getNormals() == std::vector<Vec3>({{3.0f, 4.0f, 5.0f}}));
 }
 
-TEST(GeometryTests, testSetColors)
+TEST_CASE("GeometryTests.testSetColors")
 {
     {
         Geometry geo(
@@ -266,8 +272,8 @@ TEST(GeometryTests, testSetColors)
         
         bool success = geo.setColors(std::vector<Vec3>({{1.0f, 0.0f, 0.0f}}));
         
-        EXPECT_TRUE(success);
-        EXPECT_TRUE(geo.getColors() == std::vector<Vec3>({{1.0f, 0.0f, 0.0f}}));
+        CHECK(success);
+        CHECK(geo.getColors() == std::vector<Vec3>({{1.0f, 0.0f, 0.0f}}));
     }
     
     {
@@ -275,8 +281,8 @@ TEST(GeometryTests, testSetColors)
         geo.setPositions(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many colors, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setColors(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getColors().size() == 0);
+        CHECK_FALSE(geo.setColors(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getColors().size() == 0);
     }
     
     {
@@ -284,8 +290,8 @@ TEST(GeometryTests, testSetColors)
         geo.setNormals(std::vector<Vec3>({{0.0f, 0.0f, 0.0f}}));
         
         // too many colos, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setColors(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getColors().size() == 0);
+        CHECK_FALSE(geo.setColors(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getColors().size() == 0);
     }
     
     {
@@ -293,8 +299,8 @@ TEST(GeometryTests, testSetColors)
         geo.setTexCoords(std::vector<Vec2>({{0.0f, 0.0f}}));
         
         // too many colors, which is inconsistent. so should fail.
-        EXPECT_FALSE(geo.setColors(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
-        EXPECT_TRUE(geo.getColors().size() == 0);
+        CHECK_FALSE(geo.setColors(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {-1.0f, -2.0f, -3.0f}})));
+        CHECK(geo.getColors().size() == 0);
     }
     
     {
@@ -306,47 +312,47 @@ TEST(GeometryTests, testSetColors)
                      );
         
         // unset normals.
-        EXPECT_TRUE(geo.setColors(std::vector<Vec3>()));
-        EXPECT_TRUE(geo.getColors().size() == 0);
+        CHECK(geo.setColors(std::vector<Vec3>()));
+        CHECK(geo.getColors().size() == 0);
     }
 }
 
-TEST(GeometryTests, testConstructor)
+TEST_CASE("GeometryTests.testConstructor")
 {
     std::vector<Vec3> positions({{0.0f, 1.0f, 2.0f}});
     std::vector<Face3> faces({{1, 2, 3}});
     
     Geometry geo(positions, faces);
     
-    EXPECT_TRUE(geo.getPositions() == positions);
-    EXPECT_TRUE(geo.getFaces() == faces);
+    CHECK(geo.getPositions() == positions);
+    CHECK(geo.getFaces() == faces);
 }
 
-TEST(GeometryTests, testSetVertexData)
+TEST_CASE("GeometryTests.testSetVertexData")
 {
     Geometry geo;
     
-    EXPECT_FALSE(geo.setVertexData(
+    CHECK_FALSE(geo.setVertexData(
                                    std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}),
                                    std::vector<Vec3>({{0.0f, 1.0f, 0.0f}, {0.0f, 1.0f, 0.0f}}),
                                    std::vector<Vec3>({{0.0f, 0.0f, 1.0f}})));
     
-    EXPECT_FALSE(geo.setVertexData(
+    CHECK_FALSE(geo.setVertexData(
                                    std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}),
                                    std::vector<Vec3>({{0.0f, 1.0f, 0.0f} }),
                                    std::vector<Vec3>({{0.0f, 0.0f, 1.0f}, {0.0f, 0.0f, 1.0f} })));
     
-    EXPECT_TRUE(geo.setVertexData(
+    CHECK(geo.setVertexData(
                                   std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}),
                                   std::vector<Vec3>({{0.0f, 1.0f, 0.0f} }),
                                   std::vector<Vec3>({{0.0f, 0.0f, 1.0f}})));
     
-    EXPECT_TRUE(geo.getPositions() == std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}));
-    EXPECT_TRUE(geo.getNormals() == std::vector<Vec3>({{0.0f, 1.0f, 0.0f}}));
-    EXPECT_TRUE(geo.getColors() == std::vector<Vec3>({{0.0f, 0.0f, 1.0f}}));
+    CHECK(geo.getPositions() == std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}));
+    CHECK(geo.getNormals() == std::vector<Vec3>({{0.0f, 1.0f, 0.0f}}));
+    CHECK(geo.getColors() == std::vector<Vec3>({{0.0f, 0.0f, 1.0f}}));
 }
 
-TEST(GeometryTests, testSetColorWithSelection)
+TEST_CASE("GeometryTests.testSetColorWithSelection")
 {
     Geometry geo(
                  std::vector<Vec3>({{0.0f, 1.0f, 2.0f}, {1.0f, 2.0f, 3.0f}}),
@@ -356,10 +362,10 @@ TEST(GeometryTests, testSetColorWithSelection)
     
     geo.setColor(Vec3({0.5f, 0.5f, 0.5f}), 0.5f, VertexSelection(geo, {0}));
     
-    EXPECT_TRUE(geo.getColors() == std::vector<Vec3>({{0.25f, 0.75f, 0.25f}, {0.0f, 1.0f, 0.0f}}));
+    CHECK(geo.getColors() == std::vector<Vec3>({{0.25f, 0.75f, 0.25f}, {0.0f, 1.0f, 0.0f}}));
 }
 
-TEST(GeometryTests, testSetColorWithoutSelection)
+TEST_CASE("GeometryTests.testSetColorWithoutSelection")
 {
     Geometry geo(
                  std::vector<Vec3>({{0.0f, 1.0f, 2.0f}, {1.0f, 2.0f, 3.0f}}),
@@ -369,10 +375,10 @@ TEST(GeometryTests, testSetColorWithoutSelection)
     
     geo.setColor(Vec3({0.5f, 0.5f, 0.5f}), 0.5f);
     
-    EXPECT_TRUE(geo.getColors() == std::vector<Vec3>({{0.25f, 0.75f, 0.25f}, {0.25f, 0.75f, 0.25f}}));
+    CHECK(geo.getColors() == std::vector<Vec3>({{0.25f, 0.75f, 0.25f}, {0.25f, 0.75f, 0.25f}}));
 }
 
-TEST(GeometryTests, testSetInconsistentColors)
+TEST_CASE("GeometryTests.testSetInconsistentColors")
 {
     Geometry geo(
                  std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}),
@@ -382,11 +388,11 @@ TEST(GeometryTests, testSetInconsistentColors)
     
     bool success = geo.setColors(std::vector<Vec3>({{-1.0f, -2.0f, -3.0f}, {1.0f, 2.0f, 3.0f}}));
     
-    EXPECT_FALSE(success);
-    EXPECT_TRUE(geo.getColors() == std::vector<Vec3>({{6.0f, 7.0f, 8.0f}}));
+    CHECK_FALSE(success);
+    CHECK(geo.getColors() == std::vector<Vec3>({{6.0f, 7.0f, 8.0f}}));
 }
 
-TEST(GeometryTests, testUnsetNormals)
+TEST_CASE("GeometryTests.testUnsetNormals")
 {
     Geometry geo(
                  std::vector<Vec3>({{0.0f, 1.0f, 2.0f}}),
@@ -394,13 +400,13 @@ TEST(GeometryTests, testUnsetNormals)
                  std::vector<Vec3>({{6.0f, 7.0f, 8.0f}})
                  );
     
-    EXPECT_TRUE(geo.hasNormals());
+    CHECK(geo.hasNormals());
     bool success = geo.setNormals(std::vector<Vec3>({}));
-    EXPECT_TRUE(success);
-    EXPECT_FALSE(geo.hasNormals());
+    CHECK(success);
+    CHECK_FALSE(geo.hasNormals());
 }
 
-TEST(GeometryTests, testGetClosestPoint)
+TEST_CASE("GeometryTests.testGetClosestPoint")
 {
     std::vector<Vec3> positions{
         {+1.0f, +2.0f, +3.0f},
@@ -411,13 +417,13 @@ TEST(GeometryTests, testGetClosestPoint)
     
     Geometry tri(positions);
     
-    EXPECT_EQ(tri.getClosestVertexIndex(Vec3{-2.1f, -1.0f, -6.0f}), 2);
-    EXPECT_EQ(tri.getClosestVertexIndex(Vec3{-9.1f, +4.0f, +1.0f}), 3);
-    EXPECT_TRUE(tri.getClosestVertexPosition(Vec3{-2.1f, -1.0f, -6.0f}) == positions[2]);
-    EXPECT_TRUE(tri.getClosestVertexPosition(Vec3{-9.1f, +4.0f, +1.0f}) == positions[3]);
+    CHECK_EQ(tri.getClosestVertexIndex(Vec3{-2.1f, -1.0f, -6.0f}), 2);
+    CHECK_EQ(tri.getClosestVertexIndex(Vec3{-9.1f, +4.0f, +1.0f}), 3);
+    CHECK(tri.getClosestVertexPosition(Vec3{-2.1f, -1.0f, -6.0f}) == positions[2]);
+    CHECK(tri.getClosestVertexPosition(Vec3{-9.1f, +4.0f, +1.0f}) == positions[3]);
 }
 
-TEST(GeometryTests, testPointsInRadius)
+TEST_CASE("GeometryTests.testPointsInRadius")
 {
     std::vector<Vec3> positions{
         {+1.0f, +2.0f, +3.0f},
@@ -430,10 +436,10 @@ TEST(GeometryTests, testPointsInRadius)
     
     auto closest = geometry.getVertexIndicesInRadius({+1.0, +1.0, +1.0}, 4.0);
     
-    EXPECT_EQ(closest.size(), 1);
+    CHECK_EQ(closest.size(), 1);
 }
 
-TEST(GeometryTests, testDeleteVertices)
+TEST_CASE("GeometryTests.testDeleteVertices")
 {
     std::vector<Vec3> positions{
         {0.0f, 0.0f, 0.0f},
@@ -459,8 +465,8 @@ TEST(GeometryTests, testDeleteVertices)
     VertexSelection vertexSelection1(geometry, {});
     
     geometry.deleteVertices(vertexSelection1);
-    EXPECT_TRUE(geometry.getPositions() == expectedState1);
-    EXPECT_TRUE(geometry.getFaces() == expectedFaces1);
+    CHECK(geometry.getPositions() == expectedState1);
+    CHECK(geometry.getFaces() == expectedFaces1);
     
     
     VertexSelection vertexSelection2(geometry, {1, 2, 4, 5});
@@ -476,8 +482,8 @@ TEST(GeometryTests, testDeleteVertices)
     };
     
     geometry.deleteVertices(vertexSelection2);
-    EXPECT_TRUE(geometry.getPositions() == expectedState2);
-    EXPECT_TRUE(geometry.getFaces() == expectedFaces2);
+    CHECK(geometry.getPositions() == expectedState2);
+    CHECK(geometry.getFaces() == expectedFaces2);
     
     
     VertexSelection vertexSelection3(4, {3});
@@ -490,11 +496,11 @@ TEST(GeometryTests, testDeleteVertices)
     std::vector<Face3> expectedFaces3{};
     
     geometry.deleteVertices(vertexSelection3);
-    EXPECT_TRUE(geometry.getPositions() == expectedState3);
-    EXPECT_TRUE(geometry.getFaces() == expectedFaces3);
+    CHECK(geometry.getPositions() == expectedState3);
+    CHECK(geometry.getFaces() == expectedFaces3);
 }
 
-TEST(GeometryTests, testTransform)
+TEST_CASE("GeometryTests.testTransform")
 {
     std::vector<Vec3> positions{
         {+1.0f, +1.0f, +0.0f},
@@ -523,40 +529,40 @@ TEST(GeometryTests, testTransform)
     positions = tri.getPositions();
     normals = tri.getNormals();
     
-    EXPECT_NEAR(positions[0].x, +1.0f + 7.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[0].y, +0.0f + 8.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[0].z, +1.0f + 9.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[0].x, +1.0f + 7.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[0].y, +0.0f + 8.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[0].z, +1.0f + 9.0f, FLT_EPSILON);
     
-    EXPECT_NEAR(positions[1].x, -1.0f + 7.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[1].y, +0.0f + 8.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[1].z, +1.0f + 9.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[1].x, -1.0f + 7.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[1].y, +0.0f + 8.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[1].z, +1.0f + 9.0f, FLT_EPSILON);
     
-    EXPECT_NEAR(positions[2].x, -1.0f + 7.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[2].y, +0.0f + 8.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[2].z, -1.0f + 9.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[2].x, -1.0f + 7.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[2].y, +0.0f + 8.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[2].z, -1.0f + 9.0f, FLT_EPSILON);
     
-    EXPECT_NEAR(positions[3].x, +1.0f + 7.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[3].y, +0.0f + 8.0f, FLT_EPSILON);
-    EXPECT_NEAR(positions[3].z, -1.0f + 9.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[3].x, +1.0f + 7.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[3].y, +0.0f + 8.0f, FLT_EPSILON);
+    CHECK_NEAR(positions[3].z, -1.0f + 9.0f, FLT_EPSILON);
     
-    EXPECT_NEAR(normals[0].x, +0.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[0].y, -1.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[0].z, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[0].x, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[0].y, -1.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[0].z, +0.0f, FLT_EPSILON);
     
-    EXPECT_NEAR(normals[1].x, +0.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[1].y, -1.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[1].z, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[1].x, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[1].y, -1.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[1].z, +0.0f, FLT_EPSILON);
     
-    EXPECT_NEAR(normals[2].x, +0.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[2].y, -1.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[2].z, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[2].x, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[2].y, -1.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[2].z, +0.0f, FLT_EPSILON);
     
-    EXPECT_NEAR(normals[3].x, +0.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[3].y, -1.0f, FLT_EPSILON);
-    EXPECT_NEAR(normals[3].z, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[3].x, +0.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[3].y, -1.0f, FLT_EPSILON);
+    CHECK_NEAR(normals[3].z, +0.0f, FLT_EPSILON);
 }
 
-TEST(GeometryTests, testCopy)
+TEST_CASE("GeometryTests.testCopy")
 {
     std::vector<Vec3> positions{
         {0.0f, 0.0f, 0.0f},
@@ -587,30 +593,30 @@ TEST(GeometryTests, testCopy)
     Geometry copy;
     copy.copy(tri);
     
-    EXPECT_TRUE(checkVectorsEqual(copy.getPositions(), std::vector<Vec3>({
+    CHECK(checkVectorsEqual(copy.getPositions(), std::vector<Vec3>({
         {0.0f, 0.0f, 0.0f},
         {1.0f, 0.0f, 0.0f},
         {0.0f, 2.0f, 0.0f}
     })));
     
-    EXPECT_TRUE(checkVectorsEqual(copy.getNormals(), std::vector<Vec3>({
+    CHECK(checkVectorsEqual(copy.getNormals(), std::vector<Vec3>({
         {0.0f, 0.0f, 1.0f},
         {0.0f, 0.0f, 1.0f},
         {0.0f, 0.0f, 1.0f},
     })));
     
-    EXPECT_TRUE(checkVectorsEqual(copy.getColors(), std::vector<Vec3>({
+    CHECK(checkVectorsEqual(copy.getColors(), std::vector<Vec3>({
         {1.0f, 0.0f, 0.0f},
         {0.0f, 1.0f, 0.0f},
         {0.0f, 0.0f, 1.0f},
     })));
     
-    EXPECT_TRUE(checkVectorsEqual(copy.getFaces(), std::vector<Face3>({{
+    CHECK(checkVectorsEqual(copy.getFaces(), std::vector<Face3>({{
         0, 1, 2
     }})));
 }
 
-TEST(GeometryTests, testPositionsMutation)
+TEST_CASE("GeometryTests.testPositionsMutation")
 {
     Geometry geo(
                  std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {4.0f, 5.0f, 6.0f}}),
@@ -622,10 +628,10 @@ TEST(GeometryTests, testPositionsMutation)
         return Vec3 {position.x + 1.0f, position.y + 2.0f, position.z + 3.0f};
     });
     
-    EXPECT_TRUE(geo.getPositions() == std::vector<Vec3>({{2.0f, 4.0f, 6.0f}, {5.0f, 7.0f, 9.0f}}));
+    CHECK(geo.getPositions() == std::vector<Vec3>({{2.0f, 4.0f, 6.0f}, {5.0f, 7.0f, 9.0f}}));
 }
 
-TEST(GeometryTests, testPositionsMutationWithSelection)
+TEST_CASE("GeometryTests.testPositionsMutationWithSelection")
 {
     Geometry geo(
                  std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {4.0f, 5.0f, 6.0f}}),
@@ -637,10 +643,10 @@ TEST(GeometryTests, testPositionsMutationWithSelection)
         return Vec3 {position.x + 1.0f, position.y + 2.0f, position.z + 3.0f};
     }, VertexSelection(2, {1}));
     
-    EXPECT_TRUE(geo.getPositions() == std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {5.0f, 7.0f, 9.0f}}));
+    CHECK(geo.getPositions() == std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {5.0f, 7.0f, 9.0f}}));
 }
 
-TEST(GeometryTests, testNormalsMutation)
+TEST_CASE("GeometryTests.testNormalsMutation")
 {
     Geometry geo(
                  std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {4.0f, 5.0f, 6.0f}}),
@@ -652,10 +658,10 @@ TEST(GeometryTests, testNormalsMutation)
         return Vec3 {normal.z, normal.x, normal.y};
     });
     
-    EXPECT_TRUE(geo.getNormals() == std::vector<Vec3>({{0.5f, 0.3f, 0.4f}, {0.3f, 0.4f, 0.5f}}));
+    CHECK(geo.getNormals() == std::vector<Vec3>({{0.5f, 0.3f, 0.4f}, {0.3f, 0.4f, 0.5f}}));
 }
 
-TEST(GeometryTests, testNormalsMutationWithSelection)
+TEST_CASE("GeometryTests.testNormalsMutationWithSelection")
 {
     Geometry geo(
                  std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {4.0f, 5.0f, 6.0f}}),
@@ -667,10 +673,10 @@ TEST(GeometryTests, testNormalsMutationWithSelection)
         return Vec3 {normal.z, normal.x, normal.y};
     }, VertexSelection(2, {1}));
     
-    EXPECT_TRUE(geo.getNormals() == std::vector<Vec3>({{0.3f, 0.4f, 0.5f}, {0.3f, 0.4f, 0.5f}}));
+    CHECK(geo.getNormals() == std::vector<Vec3>({{0.3f, 0.4f, 0.5f}, {0.3f, 0.4f, 0.5f}}));
 }
 
-TEST(GeometryTests, testColorsMutation)
+TEST_CASE("GeometryTests.testColorsMutation")
 {
     Geometry geo(
                  std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {4.0f, 5.0f, 6.0f}}),
@@ -682,10 +688,10 @@ TEST(GeometryTests, testColorsMutation)
         return normal;
     });
     
-    EXPECT_TRUE(geo.getColors() == std::vector<Vec3>({{0.3f, 0.4f, 0.5f}, {0.4f, 0.5f, 0.3f}}));
+    CHECK(geo.getColors() == std::vector<Vec3>({{0.3f, 0.4f, 0.5f}, {0.4f, 0.5f, 0.3f}}));
 }
 
-TEST(GeometryTests, testColorsMutationWithSelection)
+TEST_CASE("GeometryTests.testColorsMutationWithSelection")
 {
     Geometry geo(
                  std::vector<Vec3>({{1.0f, 2.0f, 3.0f}, {4.0f, 5.0f, 6.0f}}),
@@ -697,10 +703,10 @@ TEST(GeometryTests, testColorsMutationWithSelection)
         return normal;
     }, VertexSelection(2, {1}));
     
-    EXPECT_TRUE(geo.getColors() == std::vector<Vec3>({{0.0f, 0.5f, 1.0f}, {0.4f, 0.5f, 0.3f}}));
+    CHECK(geo.getColors() == std::vector<Vec3>({{0.0f, 0.5f, 1.0f}, {0.4f, 0.5f, 0.3f}}));
 }
 
-TEST(GeometryTests, testRayTrace)
+TEST_CASE("GeometryTests.testRayTrace")
 {
     std::vector<Vec3> positions{
         {1.0f, 1.0f, +0.0f},
@@ -725,8 +731,8 @@ TEST(GeometryTests, testRayTrace)
         
         standard_cyborg::sc3d::RayTraceResult result = tri.rayTrace(rayOrigin, rayDirection);
         
-        EXPECT_NEAR(result.t, 2.0f, FLT_EPSILON);
-        EXPECT_EQ(result.index, 0);
+        CHECK_NEAR(result.t, 2.0f, FLT_EPSILON);
+        CHECK_EQ(result.index, 0);
     }
     
     {
@@ -735,8 +741,8 @@ TEST(GeometryTests, testRayTrace)
         
         standard_cyborg::sc3d::RayTraceResult result = tri.rayTrace(rayOrigin, rayDirection);
         
-        EXPECT_NEAR(result.t, 3.0f, FLT_EPSILON);
-        EXPECT_EQ(result.index, 1);
+        CHECK_NEAR(result.t, 3.0f, FLT_EPSILON);
+        CHECK_EQ(result.index, 1);
     }
     
     
@@ -752,7 +758,7 @@ TEST(GeometryTests, testRayTrace)
         
         standard_cyborg::sc3d::RayTraceResult result = tri.rayTrace(rayOrigin, rayDirection);
         
-        EXPECT_NEAR(result.t, 3.0f, FLT_EPSILON);
-        EXPECT_EQ(result.index, 1);
+        CHECK_NEAR(result.t, 3.0f, FLT_EPSILON);
+        CHECK_EQ(result.index, 1);
     }
 }

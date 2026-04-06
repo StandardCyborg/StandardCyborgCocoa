@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/math/Mat3x3.hpp>
 #include <standard_cyborg/math/Quaternion.hpp>
@@ -23,7 +23,7 @@
 namespace math = standard_cyborg::math;
 using math::Mat3x3;
 
-TEST(Mat3x3Tests, testDefaultConstructor) {
+TEST_CASE("Mat3x3Tests.testDefaultConstructor") {
     
     Mat3x3 m0 = {
         1, 2, 3,
@@ -31,7 +31,7 @@ TEST(Mat3x3Tests, testDefaultConstructor) {
         9, 10, 11
     };
     
-    EXPECT_EQ(
+    CHECK_EQ(
               Mat3x3{},
               Mat3x3(
                      1, 0, 0,
@@ -39,20 +39,20 @@ TEST(Mat3x3Tests, testDefaultConstructor) {
                      0, 0, 1));
 }
 
-TEST(Mat3x3Tests, testEquality) {
-    EXPECT_TRUE(Mat3x3(1, 2, 3, 4, 5, 6, 7, 8, 9) == Mat3x3(1, 2, 3, 4, 5, 6, 7, 8, 9));
-    EXPECT_TRUE(Mat3x3(1, 2, 8, 4, 5, 6, 7, 8, 9) != Mat3x3(1, 2, 3, 4, 5, 6, 7, 8, 9));
+TEST_CASE("Mat3x3Tests.testEquality") {
+    CHECK(Mat3x3(1, 2, 3, 4, 5, 6, 7, 8, 9) == Mat3x3(1, 2, 3, 4, 5, 6, 7, 8, 9));
+    CHECK(Mat3x3(1, 2, 8, 4, 5, 6, 7, 8, 9) != Mat3x3(1, 2, 3, 4, 5, 6, 7, 8, 9));
 }
 
-TEST(Mat3x3Tests, testIdentity) {
-    EXPECT_EQ(Mat3x3::Identity(), Mat3x3({1, 0, 0,  0, 1, 0,  0, 0, 1}));
+TEST_CASE("Mat3x3Tests.testIdentity") {
+    CHECK_EQ(Mat3x3::Identity(), Mat3x3({1, 0, 0,  0, 1, 0,  0, 0, 1}));
 }
 
-TEST(Mat3x3Tests, testZeros) {
-    EXPECT_EQ(Mat3x3::Zeros(), Mat3x3({0, 0, 0,  0, 0, 0,  0, 0, 0}));
+TEST_CASE("Mat3x3Tests.testZeros") {
+    CHECK_EQ(Mat3x3::Zeros(), Mat3x3({0, 0, 0,  0, 0, 0,  0, 0, 0}));
 }
 
-TEST(Mat3x3Tests, testMatMultMat) {
+TEST_CASE("Mat3x3Tests.testMatMultMat") {
     Mat3x3 m0 = {
         1, 2, 3,
         4, 5, 6,
@@ -67,14 +67,14 @@ TEST(Mat3x3Tests, testMatMultMat) {
     
     Mat3x3 r = m0 * m1;
     
-    EXPECT_EQ(r, Mat3x3({
+    CHECK_EQ(r, Mat3x3({
         102, 108, 114,
         246, 261, 276,
         390, 414, 438
     }));
 }
 
-TEST(Mat3x3Tests, testMatMultVec) {
+TEST_CASE("Mat3x3Tests.testMatMultVec") {
     Mat3x3 m0 = {
         1, 2, 3,
         4, 5, 6,
@@ -83,10 +83,10 @@ TEST(Mat3x3Tests, testMatMultVec) {
     
     math::Vec3 r = m0 * math::Vec3{3, 4, 5};
     
-    EXPECT_EQ(r, math::Vec3({26, 62, 98}));
+    CHECK_EQ(r, math::Vec3({26, 62, 98}));
 }
 
-TEST(Mat3x3Tests, testInverse) {
+TEST_CASE("Mat3x3Tests.testInverse") {
     Mat3x3 m {
         1, -1, 2,
         2, 3, -1,
@@ -101,10 +101,10 @@ TEST(Mat3x3Tests, testInverse) {
         0.0f, 1.0f, 1.0f
     };
     
-    EXPECT_TRUE(Mat3x3::almostEqual(mInv, expected));
+    CHECK(Mat3x3::almostEqual(mInv, expected));
 }
 
-TEST(Mat3x3Tests, testInPlaceInverse) {
+TEST_CASE("Mat3x3Tests.testInPlaceInverse") {
     Mat3x3 m {
         1, -1, 2,
         2, 3, -1,
@@ -118,13 +118,13 @@ TEST(Mat3x3Tests, testInPlaceInverse) {
     };
     
     // Confirm it returns the inverse by reference
-    EXPECT_TRUE(Mat3x3::almostEqual(m.invert(), expected));
+    CHECK(Mat3x3::almostEqual(m.invert(), expected));
     
     // Confirm it has mutated the original
-    EXPECT_TRUE(Mat3x3::almostEqual(m, expected));
+    CHECK(Mat3x3::almostEqual(m, expected));
 }
 
-TEST(Mat3x3Tests, testFromRowMajorVector) {
+TEST_CASE("Mat3x3Tests.testFromRowMajorVector") {
     Mat3x3 expected {
         0, 1, 2,
         3, 4, 5,
@@ -133,10 +133,10 @@ TEST(Mat3x3Tests, testFromRowMajorVector) {
     
     Mat3x3 m (Mat3x3::fromRowMajorVector({ 0, 1, 2, 3, 4, 5, 6, 7, 8 }));
     
-    EXPECT_TRUE(Mat3x3::almostEqual(m, expected));
+    CHECK(Mat3x3::almostEqual(m, expected));
 }
 
-TEST(Mat3x3Tests, testFromColumnMajorVector) {
+TEST_CASE("Mat3x3Tests.testFromColumnMajorVector") {
     Mat3x3 expected {
         0, 3, 6,
         1, 4, 7,
@@ -145,56 +145,56 @@ TEST(Mat3x3Tests, testFromColumnMajorVector) {
     
     Mat3x3 m (Mat3x3::fromColumnMajorVector({ 0, 1, 2, 3, 4, 5, 6, 7, 8 }));
     
-    EXPECT_TRUE(Mat3x3::almostEqual(m, expected));
+    CHECK(Mat3x3::almostEqual(m, expected));
 }
 
 
-TEST(Mat3x3Tests, testToRowMajorVector) {
+TEST_CASE("Mat3x3Tests.testToRowMajorVector") {
     Mat3x3 m {
         0, 1, 2,
         3, 4, 5,
         6, 7, 8
     };
     
-    EXPECT_EQ(m.toRowMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8}));
+    CHECK_EQ(m.toRowMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8}));
 }
 
-TEST(Mat3x3Tests, testToColumnMajorVector) {
+TEST_CASE("Mat3x3Tests.testToColumnMajorVector") {
     Mat3x3 m {
         0, 3, 6,
         1, 4, 7,
         2, 5, 8
     };
     
-    EXPECT_EQ(m.toColumnMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8}));
+    CHECK_EQ(m.toColumnMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8}));
 }
 
-TEST(Mat3x3Tests, testFromQuaternion) {
+TEST_CASE("Mat3x3Tests.testFromQuaternion") {
     math::Quaternion q {1, -2, 2, -1};
     q.normalize();
     
     Mat3x3 m (Mat3x3::fromQuaternion(q));
     
-    EXPECT_TRUE(Mat3x3::almostEqual(m, {
+    CHECK(Mat3x3::almostEqual(m, {
         -0.6f, 0.0f, 0.8f,
         -0.8f, 0.0f, -0.6f,
         0.0f, -1.0f, 0.0f
     }));
 }
 
-TEST(Mat3x3Tests, testFromDiagonal) {
+TEST_CASE("Mat3x3Tests.testFromDiagonal") {
     Mat3x3 m (Mat3x3::fromDiagonal({1, 2, 3}));
-    EXPECT_EQ(m, Mat3x3(1, 0, 0,  0, 2, 0,  0, 0, 3));
+    CHECK_EQ(m, Mat3x3(1, 0, 0,  0, 2, 0,  0, 0, 3));
 }
 
 
-TEST(Mat3x3Tests, testDiagonal) {
+TEST_CASE("Mat3x3Tests.testDiagonal") {
     Mat3x3 m (1, 0, 0,  0, 2, 0,  0, 0, 3);
-    EXPECT_EQ(m.diagonal(), math::Vec3(1, 2, 3));
+    CHECK_EQ(m.diagonal(), math::Vec3(1, 2, 3));
 }
 
-TEST(Mat3x3Tests, testTrace) {
+TEST_CASE("Mat3x3Tests.testTrace") {
     Mat3x3 m (1, 2, 3, 4, 5, 6, 7, 8, 9);
-    EXPECT_EQ(m.trace(), 15.0f);
+    CHECK_EQ(m.trace(), 15.0f);
 }
 

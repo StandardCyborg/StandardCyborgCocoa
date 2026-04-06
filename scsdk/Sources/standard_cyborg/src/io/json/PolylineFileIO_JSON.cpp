@@ -18,6 +18,7 @@ limitations under the License.
 #include <standard_cyborg/sc3d/Polyline.hpp>
 #include <standard_cyborg/io/json/ParsingHelpers.hpp>
 
+#include <cmath>
 #include <fstream>
 #include <iomanip>
 #include <iostream>
@@ -95,10 +96,12 @@ bool WritePolylineToJSONStream(std::ostream& output, const sc3d::Polyline& polyl
     
     for (int i = 0; i < polylinePositions.size(); i++) {
         math::Vec3 pos = polylinePositions[i];
-        positions.push_back(std::vector<float>({pos.x, pos.y, pos.z}));
+        JSON point = JSON::array();
+        point.push_back(std::isnan(pos.x) ? JSON(nullptr) : JSON(pos.x));
+        point.push_back(std::isnan(pos.y) ? JSON(nullptr) : JSON(pos.y));
+        point.push_back(std::isnan(pos.z) ? JSON(nullptr) : JSON(pos.z));
+        json["data"]["polylineNodePositions"].push_back(point);
     }
-    
-    json["data"]["polylineNodePositions"] = positions;
     json["version"] = "1.0.0";
     
     output << std::setw(4) << json;

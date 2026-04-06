@@ -38,7 +38,7 @@
  // MARK: Vec3 Tests
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <vector>
 
@@ -50,7 +50,7 @@ using standard_cyborg::sc3d::Face3;
 namespace math = standard_cyborg::math;
 using math::Vec3;
 
-TEST(DataUtilsTests, testVec3ArrayToEigen3Xf) {
+TEST_CASE("DataUtilsTests.testVec3ArrayToEigen3Xf") {
     std::vector<Vec3> data {
         { 1.0f, 2.0f, 3.0f },
         { 4.0f, 5.0f, 6.0f},
@@ -66,23 +66,23 @@ TEST(DataUtilsTests, testVec3ArrayToEigen3Xf) {
     2.0f, 5.0f, 8.0f, 11.0f,
     3.0f, 6.0f, 9.0f, 12.0f;
     
-    EXPECT_EQ(matrix, expected);
+    CHECK_EQ(matrix, expected);
     
-    EXPECT_EQ(matrix(0, 0), 1.0f);
-    EXPECT_EQ(matrix(1, 0), 2.0f);
-    EXPECT_EQ(matrix(2, 0), 3.0f);
-    EXPECT_EQ(matrix(0, 1), 4.0f);
-    EXPECT_EQ(matrix(1, 1), 5.0f);
-    EXPECT_EQ(matrix(2, 1), 6.0f);
-    EXPECT_EQ(matrix(0, 2), 7.0f);
-    EXPECT_EQ(matrix(1, 2), 8.0f);
-    EXPECT_EQ(matrix(2, 2), 9.0f);
-    EXPECT_EQ(matrix(0, 3), 10.0f);
-    EXPECT_EQ(matrix(1, 3), 11.0f);
-    EXPECT_EQ(matrix(2, 3), 12.0f);
+    CHECK_EQ(matrix(0, 0), 1.0f);
+    CHECK_EQ(matrix(1, 0), 2.0f);
+    CHECK_EQ(matrix(2, 0), 3.0f);
+    CHECK_EQ(matrix(0, 1), 4.0f);
+    CHECK_EQ(matrix(1, 1), 5.0f);
+    CHECK_EQ(matrix(2, 1), 6.0f);
+    CHECK_EQ(matrix(0, 2), 7.0f);
+    CHECK_EQ(matrix(1, 2), 8.0f);
+    CHECK_EQ(matrix(2, 2), 9.0f);
+    CHECK_EQ(matrix(0, 3), 10.0f);
+    CHECK_EQ(matrix(1, 3), 11.0f);
+    CHECK_EQ(matrix(2, 3), 12.0f);
 }
 
-TEST(DataUtilsTests, testVec3ArrayToEigen3XfDataMutation) {
+TEST_CASE("DataUtilsTests.testVec3ArrayToEigen3XfDataMutation") {
     std::vector<Vec3> data {
         { 1.0f, 2.0f, 3.0f },
         { 4.0f, 5.0f, 6.0f},
@@ -93,19 +93,19 @@ TEST(DataUtilsTests, testVec3ArrayToEigen3XfDataMutation) {
     Eigen::Ref<Eigen::Matrix3Xf> matrix {standard_cyborg::toMatrix3Xf(data)};
     
     // Sanity-check it starts out correct
-    EXPECT_EQ(data[2].y, 8.0f);
+    CHECK_EQ(data[2].y, 8.0f);
     
     // Mutate an entry (remember, 3Xf has three *rows* and X *columns*!)
     matrix(1, 2) = 100.0f;
     
     // Assert the matrix has (trivially) changed
-    EXPECT_EQ(matrix(1, 2), 100.0f);
+    CHECK_EQ(matrix(1, 2), 100.0f);
     
     // Assert the underlying data has changed
-    EXPECT_EQ(data[2].y, 100.0f);
+    CHECK_EQ(data[2].y, 100.0f);
 }
 
-TEST(DataUtilsTests, testConstVec3ArrayToEigen3Xf) {
+TEST_CASE("DataUtilsTests.testConstVec3ArrayToEigen3Xf") {
     const std::vector<Vec3> data {
         { 1.0f, 2.0f, 3.0f },
         { 4.0f, 5.0f, 6.0f},
@@ -118,21 +118,21 @@ TEST(DataUtilsTests, testConstVec3ArrayToEigen3Xf) {
     // woot, "Expression is not assignable"
     // matrix(1, 2) = 100.0f;
     
-    EXPECT_EQ(matrix(0, 0), 1.0f);
-    EXPECT_EQ(matrix(1, 0), 2.0f);
-    EXPECT_EQ(matrix(2, 0), 3.0f);
-    EXPECT_EQ(matrix(0, 1), 4.0f);
-    EXPECT_EQ(matrix(1, 1), 5.0f);
-    EXPECT_EQ(matrix(2, 1), 6.0f);
-    EXPECT_EQ(matrix(0, 2), 7.0f);
-    EXPECT_EQ(matrix(1, 2), 8.0f);
-    EXPECT_EQ(matrix(2, 2), 9.0f);
-    EXPECT_EQ(matrix(0, 3), 10.0f);
-    EXPECT_EQ(matrix(1, 3), 11.0f);
-    EXPECT_EQ(matrix(2, 3), 12.0f);
+    CHECK_EQ(matrix(0, 0), 1.0f);
+    CHECK_EQ(matrix(1, 0), 2.0f);
+    CHECK_EQ(matrix(2, 0), 3.0f);
+    CHECK_EQ(matrix(0, 1), 4.0f);
+    CHECK_EQ(matrix(1, 1), 5.0f);
+    CHECK_EQ(matrix(2, 1), 6.0f);
+    CHECK_EQ(matrix(0, 2), 7.0f);
+    CHECK_EQ(matrix(1, 2), 8.0f);
+    CHECK_EQ(matrix(2, 2), 9.0f);
+    CHECK_EQ(matrix(0, 3), 10.0f);
+    CHECK_EQ(matrix(1, 3), 11.0f);
+    CHECK_EQ(matrix(2, 3), 12.0f);
 }
 
-TEST(DataUtilsTests, testVec3ArrayToEigenX3f) {
+TEST_CASE("DataUtilsTests.testVec3ArrayToEigenX3f") {
     std::vector<Vec3> data {
         { 1.0f, 2.0f, 3.0f },
         { 4.0f, 5.0f, 6.0f},
@@ -142,21 +142,21 @@ TEST(DataUtilsTests, testVec3ArrayToEigenX3f) {
     
     auto matrix = standard_cyborg::toMatrixX3f(data);
     
-    EXPECT_EQ(matrix(0, 0), 1.0f);
-    EXPECT_EQ(matrix(0, 1), 2.0f);
-    EXPECT_EQ(matrix(0, 2), 3.0f);
-    EXPECT_EQ(matrix(1, 0), 4.0f);
-    EXPECT_EQ(matrix(1, 1), 5.0f);
-    EXPECT_EQ(matrix(1, 2), 6.0f);
-    EXPECT_EQ(matrix(2, 0), 7.0f);
-    EXPECT_EQ(matrix(2, 1), 8.0f);
-    EXPECT_EQ(matrix(2, 2), 9.0f);
-    EXPECT_EQ(matrix(3, 0), 10.0f);
-    EXPECT_EQ(matrix(3, 1), 11.0f);
-    EXPECT_EQ(matrix(3, 2), 12.0f);
+    CHECK_EQ(matrix(0, 0), 1.0f);
+    CHECK_EQ(matrix(0, 1), 2.0f);
+    CHECK_EQ(matrix(0, 2), 3.0f);
+    CHECK_EQ(matrix(1, 0), 4.0f);
+    CHECK_EQ(matrix(1, 1), 5.0f);
+    CHECK_EQ(matrix(1, 2), 6.0f);
+    CHECK_EQ(matrix(2, 0), 7.0f);
+    CHECK_EQ(matrix(2, 1), 8.0f);
+    CHECK_EQ(matrix(2, 2), 9.0f);
+    CHECK_EQ(matrix(3, 0), 10.0f);
+    CHECK_EQ(matrix(3, 1), 11.0f);
+    CHECK_EQ(matrix(3, 2), 12.0f);
 }
 
-TEST(DataUtilsTests, testVec3ArrayToEigenX3fDataMutation) {
+TEST_CASE("DataUtilsTests.testVec3ArrayToEigenX3fDataMutation") {
     std::vector<Vec3> data {
         { 1.0f, 2.0f, 3.0f },
         { 4.0f, 5.0f, 6.0f},
@@ -169,19 +169,19 @@ TEST(DataUtilsTests, testVec3ArrayToEigenX3fDataMutation) {
     Eigen::Ref<Eigen::Matrix<float, Eigen::Dynamic, 3, Eigen::RowMajor>> matrix {standard_cyborg::toMatrixX3f(data)};
     
     // Sanity-check it starts out correct
-    EXPECT_EQ(data[2].y, 8.0f);
+    CHECK_EQ(data[2].y, 8.0f);
     
     // Mutate the matrix
     matrix(2, 1) = 100.0f;
     
     // Assert the matrix has (trivially, obviously) changed
-    EXPECT_EQ(matrix(2, 1), 100.0f);
+    CHECK_EQ(matrix(2, 1), 100.0f);
     
     // Assert the underlying data has changed
-    EXPECT_EQ(data[2].y, 100.0f);
+    CHECK_EQ(data[2].y, 100.0f);
 }
 
-TEST(DataUtilsTests, testConstVec3ArrayToEigenX3f) {
+TEST_CASE("DataUtilsTests.testConstVec3ArrayToEigenX3f") {
     const std::vector<Vec3> data {
         { 1.0f, 2.0f, 3.0f },
         { 4.0f, 5.0f, 6.0f},
@@ -194,23 +194,23 @@ TEST(DataUtilsTests, testConstVec3ArrayToEigenX3f) {
     // woot, "Expression is not assignable"
     // matrix(1, 2) = 100.0f;
     
-    EXPECT_EQ(matrix(0, 0), 1.0f);
-    EXPECT_EQ(matrix(0, 1), 2.0f);
-    EXPECT_EQ(matrix(0, 2), 3.0f);
-    EXPECT_EQ(matrix(1, 0), 4.0f);
-    EXPECT_EQ(matrix(1, 1), 5.0f);
-    EXPECT_EQ(matrix(1, 2), 6.0f);
-    EXPECT_EQ(matrix(2, 0), 7.0f);
-    EXPECT_EQ(matrix(2, 1), 8.0f);
-    EXPECT_EQ(matrix(2, 2), 9.0f);
-    EXPECT_EQ(matrix(3, 0), 10.0f);
-    EXPECT_EQ(matrix(3, 1), 11.0f);
-    EXPECT_EQ(matrix(3, 2), 12.0f);
+    CHECK_EQ(matrix(0, 0), 1.0f);
+    CHECK_EQ(matrix(0, 1), 2.0f);
+    CHECK_EQ(matrix(0, 2), 3.0f);
+    CHECK_EQ(matrix(1, 0), 4.0f);
+    CHECK_EQ(matrix(1, 1), 5.0f);
+    CHECK_EQ(matrix(1, 2), 6.0f);
+    CHECK_EQ(matrix(2, 0), 7.0f);
+    CHECK_EQ(matrix(2, 1), 8.0f);
+    CHECK_EQ(matrix(2, 2), 9.0f);
+    CHECK_EQ(matrix(3, 0), 10.0f);
+    CHECK_EQ(matrix(3, 1), 11.0f);
+    CHECK_EQ(matrix(3, 2), 12.0f);
 }
 
 // MARK: Face3 Tests
 
-TEST(DataUtilsTests, testFace3ArrayToEigen3Xi) {
+TEST_CASE("DataUtilsTests.testFace3ArrayToEigen3Xi") {
     std::vector<Face3> data {
         { 1, 2, 3 },
         { 4, 5, 6},
@@ -226,23 +226,23 @@ TEST(DataUtilsTests, testFace3ArrayToEigen3Xi) {
     2, 5, 8, 11,
     3, 6, 9, 12;
     
-    EXPECT_EQ(matrix, expected);
+    CHECK_EQ(matrix, expected);
     
-    EXPECT_EQ(matrix(0, 0), 1);
-    EXPECT_EQ(matrix(1, 0), 2);
-    EXPECT_EQ(matrix(2, 0), 3);
-    EXPECT_EQ(matrix(0, 1), 4);
-    EXPECT_EQ(matrix(1, 1), 5);
-    EXPECT_EQ(matrix(2, 1), 6);
-    EXPECT_EQ(matrix(0, 2), 7);
-    EXPECT_EQ(matrix(1, 2), 8);
-    EXPECT_EQ(matrix(2, 2), 9);
-    EXPECT_EQ(matrix(0, 3), 10);
-    EXPECT_EQ(matrix(1, 3), 11);
-    EXPECT_EQ(matrix(2, 3), 12);
+    CHECK_EQ(matrix(0, 0), 1);
+    CHECK_EQ(matrix(1, 0), 2);
+    CHECK_EQ(matrix(2, 0), 3);
+    CHECK_EQ(matrix(0, 1), 4);
+    CHECK_EQ(matrix(1, 1), 5);
+    CHECK_EQ(matrix(2, 1), 6);
+    CHECK_EQ(matrix(0, 2), 7);
+    CHECK_EQ(matrix(1, 2), 8);
+    CHECK_EQ(matrix(2, 2), 9);
+    CHECK_EQ(matrix(0, 3), 10);
+    CHECK_EQ(matrix(1, 3), 11);
+    CHECK_EQ(matrix(2, 3), 12);
 }
 
-TEST(DataUtilsTests, testFace3ArrayToEigen3XiDataMutation) {
+TEST_CASE("DataUtilsTests.testFace3ArrayToEigen3XiDataMutation") {
     std::vector<Face3> data {
         { 1, 2, 3 },
         { 4, 5, 6},
@@ -253,19 +253,19 @@ TEST(DataUtilsTests, testFace3ArrayToEigen3XiDataMutation) {
     Eigen::Ref<Eigen::Matrix3Xi> matrix {standard_cyborg::toMatrix3Xi(data)};
     
     // Sanity-check it starts out correct
-    EXPECT_EQ(data[2][1], 8);
+    CHECK_EQ(data[2][1], 8);
     
     // Mutate an entry (remember, 3Xi has three *rows* and X *columns*!)
     matrix(1, 2) = 100;
     
     // Assert the matrix has (trivially) changed
-    EXPECT_EQ(matrix(1, 2), 100);
+    CHECK_EQ(matrix(1, 2), 100);
     
     // Assert the underlying data has changed
-    EXPECT_EQ(data[2][1], 100);
+    CHECK_EQ(data[2][1], 100);
 }
 
-TEST(DataUtilsTests, testConstFace3ArrayToEigen3Xi) {
+TEST_CASE("DataUtilsTests.testConstFace3ArrayToEigen3Xi") {
     const std::vector<Face3> data {
         { 1, 2, 3 },
         { 4, 5, 6},
@@ -278,21 +278,21 @@ TEST(DataUtilsTests, testConstFace3ArrayToEigen3Xi) {
     // woot, "Expression is not assignable"
     // matrix(1, 2) = 100;
     
-    EXPECT_EQ(matrix(0, 0), 1);
-    EXPECT_EQ(matrix(1, 0), 2);
-    EXPECT_EQ(matrix(2, 0), 3);
-    EXPECT_EQ(matrix(0, 1), 4);
-    EXPECT_EQ(matrix(1, 1), 5);
-    EXPECT_EQ(matrix(2, 1), 6);
-    EXPECT_EQ(matrix(0, 2), 7);
-    EXPECT_EQ(matrix(1, 2), 8);
-    EXPECT_EQ(matrix(2, 2), 9);
-    EXPECT_EQ(matrix(0, 3), 10);
-    EXPECT_EQ(matrix(1, 3), 11);
-    EXPECT_EQ(matrix(2, 3), 12);
+    CHECK_EQ(matrix(0, 0), 1);
+    CHECK_EQ(matrix(1, 0), 2);
+    CHECK_EQ(matrix(2, 0), 3);
+    CHECK_EQ(matrix(0, 1), 4);
+    CHECK_EQ(matrix(1, 1), 5);
+    CHECK_EQ(matrix(2, 1), 6);
+    CHECK_EQ(matrix(0, 2), 7);
+    CHECK_EQ(matrix(1, 2), 8);
+    CHECK_EQ(matrix(2, 2), 9);
+    CHECK_EQ(matrix(0, 3), 10);
+    CHECK_EQ(matrix(1, 3), 11);
+    CHECK_EQ(matrix(2, 3), 12);
 }
 
-TEST(DataUtilsTests, testFace3ArrayToEigenX3i) {
+TEST_CASE("DataUtilsTests.testFace3ArrayToEigenX3i") {
     std::vector<Face3> data {
         { 1, 2, 3 },
         { 4, 5, 6},
@@ -302,21 +302,21 @@ TEST(DataUtilsTests, testFace3ArrayToEigenX3i) {
     
     auto matrix = standard_cyborg::toMatrixX3i(data);
     
-    EXPECT_EQ(matrix(0, 0), 1);
-    EXPECT_EQ(matrix(0, 1), 2);
-    EXPECT_EQ(matrix(0, 2), 3);
-    EXPECT_EQ(matrix(1, 0), 4);
-    EXPECT_EQ(matrix(1, 1), 5);
-    EXPECT_EQ(matrix(1, 2), 6);
-    EXPECT_EQ(matrix(2, 0), 7);
-    EXPECT_EQ(matrix(2, 1), 8);
-    EXPECT_EQ(matrix(2, 2), 9);
-    EXPECT_EQ(matrix(3, 0), 10);
-    EXPECT_EQ(matrix(3, 1), 11);
-    EXPECT_EQ(matrix(3, 2), 12);
+    CHECK_EQ(matrix(0, 0), 1);
+    CHECK_EQ(matrix(0, 1), 2);
+    CHECK_EQ(matrix(0, 2), 3);
+    CHECK_EQ(matrix(1, 0), 4);
+    CHECK_EQ(matrix(1, 1), 5);
+    CHECK_EQ(matrix(1, 2), 6);
+    CHECK_EQ(matrix(2, 0), 7);
+    CHECK_EQ(matrix(2, 1), 8);
+    CHECK_EQ(matrix(2, 2), 9);
+    CHECK_EQ(matrix(3, 0), 10);
+    CHECK_EQ(matrix(3, 1), 11);
+    CHECK_EQ(matrix(3, 2), 12);
 }
 
-TEST(DataUtilsTests, testFace3ArrayToEigenX3iDataMutation) {
+TEST_CASE("DataUtilsTests.testFace3ArrayToEigenX3iDataMutation") {
     std::vector<Face3> data {
         { 1, 2, 3 },
         { 4, 5, 6},
@@ -329,19 +329,19 @@ TEST(DataUtilsTests, testFace3ArrayToEigenX3iDataMutation) {
     Eigen::Ref<Eigen::Matrix<int, Eigen::Dynamic, 3, Eigen::RowMajor>> matrix {standard_cyborg::toMatrixX3i(data)};
     
     // Sanity-check it starts out correct
-    EXPECT_EQ(data[2][1], 8);
+    CHECK_EQ(data[2][1], 8);
     
     // Mutate the matrix
     matrix(2, 1) = 100;
     
     // Assert the matrix has (trivially, obviously) changed
-    EXPECT_EQ(matrix(2, 1), 100);
+    CHECK_EQ(matrix(2, 1), 100);
     
     // Assert the underlying data has changed
-    EXPECT_EQ(data[2][1], 100);
+    CHECK_EQ(data[2][1], 100);
 }
 
-TEST(DataUtilsTests, testConstFace3ArrayToEigenX3i) {
+TEST_CASE("DataUtilsTests.testConstFace3ArrayToEigenX3i") {
     const std::vector<Face3> data {
         { 1, 2, 3 },
         { 4, 5, 6},
@@ -354,16 +354,16 @@ TEST(DataUtilsTests, testConstFace3ArrayToEigenX3i) {
     // woot, "Expression is not assignable"
     // matrix(1, 2) = 100;
     
-    EXPECT_EQ(matrix(0, 0), 1);
-    EXPECT_EQ(matrix(0, 1), 2);
-    EXPECT_EQ(matrix(0, 2), 3);
-    EXPECT_EQ(matrix(1, 0), 4);
-    EXPECT_EQ(matrix(1, 1), 5);
-    EXPECT_EQ(matrix(1, 2), 6);
-    EXPECT_EQ(matrix(2, 0), 7);
-    EXPECT_EQ(matrix(2, 1), 8);
-    EXPECT_EQ(matrix(2, 2), 9);
-    EXPECT_EQ(matrix(3, 0), 10);
-    EXPECT_EQ(matrix(3, 1), 11);
-    EXPECT_EQ(matrix(3, 2), 12);
+    CHECK_EQ(matrix(0, 0), 1);
+    CHECK_EQ(matrix(0, 1), 2);
+    CHECK_EQ(matrix(0, 2), 3);
+    CHECK_EQ(matrix(1, 0), 4);
+    CHECK_EQ(matrix(1, 1), 5);
+    CHECK_EQ(matrix(1, 2), 6);
+    CHECK_EQ(matrix(2, 0), 7);
+    CHECK_EQ(matrix(2, 1), 8);
+    CHECK_EQ(matrix(2, 2), 9);
+    CHECK_EQ(matrix(3, 0), 10);
+    CHECK_EQ(matrix(3, 1), 11);
+    CHECK_EQ(matrix(3, 2), 12);
 }

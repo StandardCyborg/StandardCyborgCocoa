@@ -31,66 +31,66 @@
  @implementation DepthImageTests
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/sc3d/DepthImage.hpp>
 
 using namespace standard_cyborg::sc3d;
 
-TEST(DepthImageTests, testConstructor) {
+TEST_CASE("DepthImageTests.testConstructor") {
     standard_cyborg::sc3d::DepthImage frame;
-    EXPECT_EQ(frame.getWidth(), 0);
-    EXPECT_EQ(frame.getHeight(), 0);
-    EXPECT_EQ(frame.getData().size(), 0);
+    CHECK_EQ(frame.getWidth(), 0);
+    CHECK_EQ(frame.getHeight(), 0);
+    CHECK_EQ(frame.getData().size(), 0);
 }
 
-TEST(DepthImageTests, testConstructorWithSize) {
+TEST_CASE("DepthImageTests.testConstructorWithSize") {
     standard_cyborg::sc3d::DepthImage frame (2, 2);
-    EXPECT_EQ(frame.getWidth(), 2);
-    EXPECT_EQ(frame.getHeight(), 2);
-    EXPECT_EQ(frame.getData().size(), 4);
+    CHECK_EQ(frame.getWidth(), 2);
+    CHECK_EQ(frame.getHeight(), 2);
+    CHECK_EQ(frame.getData().size(), 4);
 }
 
-TEST(DepthImageTests, testConstructorWithSizeAndData) {
+TEST_CASE("DepthImageTests.testConstructorWithSizeAndData") {
     standard_cyborg::sc3d::DepthImage frame (1, 1, {1});
-    EXPECT_EQ(frame.getWidth(), 1);
-    EXPECT_EQ(frame.getHeight(), 1);
-    //EXPECT_TRUE(Vec4::almostEqual(frame.getData()[0], {1, 0, 1, 0}));
+    CHECK_EQ(frame.getWidth(), 1);
+    CHECK_EQ(frame.getHeight(), 1);
+    //CHECK(Vec4::almostEqual(frame.getData()[0], {1, 0, 1, 0}));
 }
 
-TEST(DepthImageTests, testGetPixel) {
+TEST_CASE("DepthImageTests.testGetPixel") {
     standard_cyborg::sc3d::DepthImage frame (2, 3, {0.0, 0.5, 0.75, 1.0, 0.0, 0.5});
     
-    EXPECT_EQ(frame.getPixelAtColRow(0, 0), 0.0);
-    EXPECT_EQ(frame.getPixelAtColRow(1, 0), 0.5);
+    CHECK_EQ(frame.getPixelAtColRow(0, 0), 0.0);
+    CHECK_EQ(frame.getPixelAtColRow(1, 0), 0.5);
     
-    EXPECT_EQ(frame.getPixelAtColRow(0, 1), 0.75);
-    EXPECT_EQ(frame.getPixelAtColRow(1, 1), 1.0);
+    CHECK_EQ(frame.getPixelAtColRow(0, 1), 0.75);
+    CHECK_EQ(frame.getPixelAtColRow(1, 1), 1.0);
     
-    EXPECT_EQ(frame.getPixelAtColRow(0, 2), 0.0);
-    EXPECT_EQ(frame.getPixelAtColRow(1, 2), 0.5);
+    CHECK_EQ(frame.getPixelAtColRow(0, 2), 0.0);
+    CHECK_EQ(frame.getPixelAtColRow(1, 2), 0.5);
 }
 
-TEST(DepthImageTests, testGetPixelConst) {
+TEST_CASE("DepthImageTests.testGetPixelConst") {
     const standard_cyborg::sc3d::DepthImage frame (2, 3, {0.0, 0.5, 0.75, 1.0, 0.0, 0.5});
     
-    EXPECT_EQ(frame.getPixelAtColRow(0, 0), 0.0);
-    EXPECT_EQ(frame.getPixelAtColRow(1, 0), 0.5);
+    CHECK_EQ(frame.getPixelAtColRow(0, 0), 0.0);
+    CHECK_EQ(frame.getPixelAtColRow(1, 0), 0.5);
     
-    EXPECT_EQ(frame.getPixelAtColRow(0, 1), 0.75);
-    EXPECT_EQ(frame.getPixelAtColRow(1, 1), 1.0);
+    CHECK_EQ(frame.getPixelAtColRow(0, 1), 0.75);
+    CHECK_EQ(frame.getPixelAtColRow(1, 1), 1.0);
     
-    EXPECT_EQ(frame.getPixelAtColRow(0, 2), 0.0);
-    EXPECT_EQ(frame.getPixelAtColRow(1, 2), 0.5);
+    CHECK_EQ(frame.getPixelAtColRow(0, 2), 0.0);
+    CHECK_EQ(frame.getPixelAtColRow(1, 2), 0.5);
 }
 
-TEST(DepthImageTests, testGetTexCoordAtColRow) {
+TEST_CASE("DepthImageTests.testGetTexCoordAtColRow") {
     standard_cyborg::sc3d::DepthImage frame (2, 4);
     
-    EXPECT_TRUE(frame.getTexCoordAtColRow(1, 3) == standard_cyborg::math::Vec2((1.5f) / 2.0f, 3.5f / 4.0f));
+    CHECK(frame.getTexCoordAtColRow(1, 3) == standard_cyborg::math::Vec2((1.5f) / 2.0f, 3.5f / 4.0f));
 }
 
-TEST(DepthImageTests, testSetPixel) {
+TEST_CASE("DepthImageTests.testSetPixel") {
     standard_cyborg::sc3d::DepthImage frame (2, 3);
     
     frame.setPixelAtColRow(0, 0, 1);
@@ -106,31 +106,31 @@ TEST(DepthImageTests, testSetPixel) {
     std::vector<float> expectedPixels {1, 2, 3, 4, 5, 6};
     
     for (int i = 0; i < frame.getWidth() * frame.getHeight(); i++) {
-        EXPECT_EQ(frame.getData()[i], expectedPixels[i]);
+        CHECK_EQ(frame.getData()[i], expectedPixels[i]);
     }
 }
 
-TEST(DepthImageTests, testCopy) {
+TEST_CASE("DepthImageTests.testCopy") {
     standard_cyborg::sc3d::DepthImage i1 (2, 3, {1, 2, 3, 4, 5, 6});
     
     standard_cyborg::sc3d::DepthImage i2;
     i2.copy(i1);
     
-    EXPECT_EQ(i2.getWidth(), 2);
-    EXPECT_EQ(i2.getHeight(), 3);
+    CHECK_EQ(i2.getWidth(), 2);
+    CHECK_EQ(i2.getHeight(), 3);
     
     for (int i = 0; i < i1.getWidth() * i1.getHeight(); i++) {
-        EXPECT_EQ(i1.getData()[i], i2.getData()[i]);
+        CHECK_EQ(i1.getData()[i], i2.getData()[i]);
     }
 }
 
-TEST(DepthImageTests, testGetSizeInBytes) {
+TEST_CASE("DepthImageTests.testGetSizeInBytes") {
     standard_cyborg::sc3d::DepthImage i1 (2, 3, {1, 2, 3, 4, 5, 6});
     
-    EXPECT_EQ(i1.getSizeInBytes(), 2 * 3 * sizeof(int));
+    CHECK_EQ(i1.getSizeInBytes(), 2 * 3 * sizeof(int));
 }
 
-TEST(DepthImageTests, testFlipYOddSize) {
+TEST_CASE("DepthImageTests.testFlipYOddSize") {
     standard_cyborg::sc3d::DepthImage frame (2, 3, {
         1, 2,
         3, 4,
@@ -145,10 +145,10 @@ TEST(DepthImageTests, testFlipYOddSize) {
         1, 2
     });
     
-    EXPECT_TRUE(frame == expectedImage);
+    CHECK(frame == expectedImage);
 }
 
-TEST(DepthImageTests, testFlipYEvenSize) {
+TEST_CASE("DepthImageTests.testFlipYEvenSize") {
     standard_cyborg::sc3d::DepthImage frame (2, 4, {
         1, 2,
         3, 4,
@@ -165,10 +165,10 @@ TEST(DepthImageTests, testFlipYEvenSize) {
         1, 2
     });
     
-    EXPECT_TRUE(frame == expectedImage);
+    CHECK(frame == expectedImage);
 }
 
-TEST(DepthImageTests, testFlipXEvenSize) {
+TEST_CASE("DepthImageTests.testFlipXEvenSize") {
     standard_cyborg::sc3d::DepthImage frame (2, 3, {
         1, 2,
         3, 4,
@@ -183,10 +183,10 @@ TEST(DepthImageTests, testFlipXEvenSize) {
         6, 5
     });
     
-    EXPECT_TRUE(frame == expectedImage);
+    CHECK(frame == expectedImage);
 }
 
-TEST(DepthImageTests, testFlipXOddSize) {
+TEST_CASE("DepthImageTests.testFlipXOddSize") {
     standard_cyborg::sc3d::DepthImage frame (3, 1, {
         1, 2, 3
     });
@@ -197,19 +197,19 @@ TEST(DepthImageTests, testFlipXOddSize) {
         3, 2, 1
     });
     
-    EXPECT_TRUE(frame == expectedImage);
+    CHECK(frame == expectedImage);
 }
 
-TEST(DepthImageTests, testResetSize) {
+TEST_CASE("DepthImageTests.testResetSize") {
     standard_cyborg::sc3d::DepthImage frame;
     
     frame.resetSize(3, 4);
     
-    EXPECT_EQ(frame.getWidth(), 3);
-    EXPECT_EQ(frame.getHeight(), 4);
+    CHECK_EQ(frame.getWidth(), 3);
+    CHECK_EQ(frame.getHeight(), 4);
 }
 
-TEST(DepthImageTests, testForEachPixel) {
+TEST_CASE("DepthImageTests.testForEachPixel") {
     standard_cyborg::sc3d::DepthImage frame (2, 4, {
         1, 2,
         3, 4,
@@ -222,10 +222,10 @@ TEST(DepthImageTests, testForEachPixel) {
     frame.forEachPixelAtColRow([&](int col, int row, float depth) {
         sum += depth;
     });
-    EXPECT_EQ(sum, 36);
+    CHECK_EQ(sum, 36);
 }
 
-TEST(DepthImageTests, testMutatePixelsByColRow) {
+TEST_CASE("DepthImageTests.testMutatePixelsByColRow") {
     standard_cyborg::sc3d::DepthImage frame (2, 3, {
         1, 2,
         3, 4,
@@ -242,5 +242,5 @@ TEST(DepthImageTests, testMutatePixelsByColRow) {
         7, 9,
     });
     
-    EXPECT_TRUE(expectedImage == frame);
+    CHECK(expectedImage == frame);
 }

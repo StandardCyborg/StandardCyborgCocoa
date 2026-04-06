@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/algorithms/EdgeLoopFinder.hpp>
 
@@ -27,7 +27,7 @@
 namespace math = standard_cyborg::math;
 
 
-TEST(EdgeLoopFinderTests, testFindEdgeLoops) {
+TEST_CASE("EdgeLoopFinderTests.testFindEdgeLoops") {
     std::vector<math::Vec3> positions {
         {1.0f, 1.0f, 0.0f},
         {3.0f, 1.0f, 0.0f},
@@ -92,7 +92,7 @@ TEST(EdgeLoopFinderTests, testFindEdgeLoops) {
             {2, 0},
         };
         
-        EXPECT_TRUE(edgeLoops[0] == loop0);
+        CHECK(edgeLoops[0] == loop0);
         
         std::vector<std::pair<int,int> > loop1 = {
             {9, 8},
@@ -101,7 +101,7 @@ TEST(EdgeLoopFinderTests, testFindEdgeLoops) {
             {7, 9},
         };
         
-        EXPECT_TRUE(edgeLoops[1] == loop1);
+        CHECK(edgeLoops[1] == loop1);
         
         std::vector<std::pair<int,int> > loop2 = {
             {4, 5},
@@ -109,6 +109,6 @@ TEST(EdgeLoopFinderTests, testFindEdgeLoops) {
             {3, 4},
         };
         
-        EXPECT_TRUE(edgeLoops[2] == loop2);
+        CHECK(edgeLoops[2] == loop2);
     }
 }

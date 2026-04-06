@@ -16,7 +16,7 @@
 
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/sc3d/Landmark.hpp>
 
@@ -36,7 +36,7 @@ namespace math = standard_cyborg::math;
  namespace math = StandardCyborg::math;
  */
 
-TEST(LandmarkTests, tesInitialization) {
+TEST_CASE("LandmarkTests.tesInitialization") {
     
     using math::Vec3;
     
@@ -44,12 +44,12 @@ TEST(LandmarkTests, tesInitialization) {
     l.setName("nose");
     l.setPosition(Vec3{1.0f, 2.0f, 3.0f});
     
-    EXPECT_TRUE(l.getPosition() == Vec3({1.0f, 2.0f, 3.0f}));
-    EXPECT_TRUE(l.getName() == "nose");
+    CHECK(l.getPosition() == Vec3({1.0f, 2.0f, 3.0f}));
+    CHECK(l.getName() == "nose");
     
-    EXPECT_TRUE(l == standard_cyborg::sc3d::Landmark({"nose", Vec3({1.0f, 2.0f, 3.0f})}));
-    EXPECT_TRUE(l != standard_cyborg::sc3d::Landmark({"nosee", Vec3({1.0f, 2.0f, 3.0f})}));
-    EXPECT_TRUE(l != standard_cyborg::sc3d::Landmark({"nose", Vec3({9.0f, 2.0f, 3.0f})}));
-    EXPECT_FALSE(l != standard_cyborg::sc3d::Landmark({"nose", Vec3({1.0f, 2.0f, 3.0f})}));
+    CHECK(l == standard_cyborg::sc3d::Landmark({"nose", Vec3({1.0f, 2.0f, 3.0f})}));
+    CHECK(l != standard_cyborg::sc3d::Landmark({"nosee", Vec3({1.0f, 2.0f, 3.0f})}));
+    CHECK(l != standard_cyborg::sc3d::Landmark({"nose", Vec3({9.0f, 2.0f, 3.0f})}));
+    CHECK_FALSE(l != standard_cyborg::sc3d::Landmark({"nose", Vec3({1.0f, 2.0f, 3.0f})}));
     
 }

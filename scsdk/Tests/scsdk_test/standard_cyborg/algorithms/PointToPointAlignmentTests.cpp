@@ -32,7 +32,7 @@
  @implementation PointToPointAlignmentTests  : XCTestCase
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/algorithms/PointToPointAlignment.hpp>
 
@@ -43,7 +43,7 @@
 
 namespace math = standard_cyborg::math;
 
-TEST(PlaneEstimationTests, testPointToPointAlignment) {
+TEST_CASE("PlaneEstimationTests.testPointToPointAlignment") {
     
     std::vector<math::Vec3> positions0 {
         {1.0f, 1.0f, 0.0f},
@@ -59,7 +59,7 @@ TEST(PlaneEstimationTests, testPointToPointAlignment) {
     
     math::Mat3x4 m = standard_cyborg::algorithms::PointToPointAlignment(positions0, positions1);
     
-    EXPECT_TRUE(math::Mat3x4::almostEqual(m, math::Mat3x4({
+    CHECK(math::Mat3x4::almostEqual(m, math::Mat3x4({
         1, 0, 0, +0.0,
         0, 1, 0, +0.0,
         0, 0, 1, +0.01
