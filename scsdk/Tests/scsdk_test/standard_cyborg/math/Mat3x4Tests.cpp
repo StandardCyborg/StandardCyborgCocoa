@@ -15,7 +15,8 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <cfloat>
 
 #include <standard_cyborg/math/Mat3x4.hpp>
 #include <standard_cyborg/math/Mat3x3.hpp>
@@ -24,25 +25,25 @@
 namespace math = standard_cyborg::math;
 using math::Mat3x4;
 
-TEST(Mat3x4Tests, testEquality) {
-    EXPECT_TRUE(Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) == Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
-    EXPECT_TRUE(Mat3x4(1, 2, 8, 4, 5, 6, 7, 8, 9, 10, 11, 12) != Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
-    EXPECT_TRUE(Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) != Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30, 12));
+TEST_CASE("Mat3x4Tests.testEquality") {
+    CHECK(Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) == Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+    CHECK(Mat3x4(1, 2, 8, 4, 5, 6, 7, 8, 9, 10, 11, 12) != Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12));
+    CHECK(Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12) != Mat3x4(1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 30, 12));
 }
 
-TEST(Mat3x4Tests, testDefaultConstructor) {
+TEST_CASE("Mat3x4Tests.testDefaultConstructor") {
     Mat3x4 m0 = {
         1, 2, 3, 4,
         5, 6, 7, 8,
         9, 10, 11, 12
     };
     
-    EXPECT_EQ(Mat3x4{}, Mat3x4(1, 0, 0, 0,
+    CHECK_EQ(Mat3x4{}, Mat3x4(1, 0, 0, 0,
                                0, 1, 0, 0,
                                0, 0, 1, 0));
 }
 
-TEST(Mat3x4Tests, testMat3x3WithTranslationConstructor) {
+TEST_CASE("Mat3x4Tests.testMat3x3WithTranslationConstructor") {
     Mat3x4 m0 ({
         1, 2, 3,
         5, 6, 7,
@@ -51,22 +52,22 @@ TEST(Mat3x4Tests, testMat3x3WithTranslationConstructor) {
         4, 8, 12
     });
     
-    EXPECT_EQ(m0, Mat3x4({
+    CHECK_EQ(m0, Mat3x4({
         1, 2, 3, 4,
         5, 6, 7, 8,
         9, 10, 11, 12
     }));
 }
 
-TEST(Mat3x4Tests, testIdentity) {
-    EXPECT_EQ(Mat3x4::Identity(), Mat3x4({1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0}));
+TEST_CASE("Mat3x4Tests.testIdentity") {
+    CHECK_EQ(Mat3x4::Identity(), Mat3x4({1, 0, 0, 0,  0, 1, 0, 0,  0, 0, 1, 0}));
 }
 
-TEST(Mat3x4Tests, testZeros) {
-    EXPECT_EQ(Mat3x4::Zeros(), Mat3x4({0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0}));
+TEST_CASE("Mat3x4Tests.testZeros") {
+    CHECK_EQ(Mat3x4::Zeros(), Mat3x4({0, 0, 0, 0,  0, 0, 0, 0,  0, 0, 0, 0}));
 }
 
-TEST(Mat3x4Tests, testMatMultMat) {
+TEST_CASE("Mat3x4Tests.testMatMultMat") {
     Mat3x4 m0 = {
         1, 2, 3, 4,
         5, 6, 7, 8,
@@ -81,14 +82,14 @@ TEST(Mat3x4Tests, testMatMultMat) {
     
     Mat3x4 r = m0 * m1;
     
-    EXPECT_EQ(r, Mat3x4({
+    CHECK_EQ(r, Mat3x4({
         110, 116, 122, 132,
         314, 332, 350, 376,
         518, 548, 578, 620
     }));
 }
 
-TEST(Mat3x4Tests, testMatMultVec) {
+TEST_CASE("Mat3x4Tests.testMatMultVec") {
     Mat3x4 m0 {
         1, 2, 3, 4,
         5, 6, 7, 8,
@@ -97,10 +98,10 @@ TEST(Mat3x4Tests, testMatMultVec) {
     
     math::Vec3 r = m0 * math::Vec3{3, 4, 5};
     
-    EXPECT_EQ(r, math::Vec3(30, 82, 134));
+    CHECK_EQ(r, math::Vec3(30, 82, 134));
 }
 
-TEST(Mat3x4Tests, testInverse) {
+TEST_CASE("Mat3x4Tests.testInverse") {
     Mat3x4 m {
         1, -1, 2, 3,
         2, 3, -1, 0,
@@ -115,10 +116,10 @@ TEST(Mat3x4Tests, testInverse) {
         0.0f, 1.0f, 1.0f, -1.0f
     };
     
-    EXPECT_TRUE(Mat3x4::almostEqual(mInv, expected));
+    CHECK(Mat3x4::almostEqual(mInv, expected));
 }
 
-TEST(Mat3x4Tests, testInPlaceInverse) {
+TEST_CASE("Mat3x4Tests.testInPlaceInverse") {
     Mat3x4 m {
         1, -1, 2, 3,
         2, 3, -1, 0,
@@ -132,13 +133,13 @@ TEST(Mat3x4Tests, testInPlaceInverse) {
     };
     
     // Confirm it return the inverse by reference
-    EXPECT_TRUE(Mat3x4::almostEqual(m.invert(), expected));
+    CHECK(Mat3x4::almostEqual(m.invert(), expected));
     
     // Confirm the matrix has also been mutated
-    EXPECT_TRUE(Mat3x4::almostEqual(m, expected));
+    CHECK(Mat3x4::almostEqual(m, expected));
 }
 
-TEST(Mat3x4Tests, testFromRotationX) {
+TEST_CASE("Mat3x4Tests.testFromRotationX") {
     Mat3x4 m {
         1.0f, 2.0f, 3.0f, 4.0f,
         5.0f, 6.0f, 7.0f, 8.0f,
@@ -151,10 +152,10 @@ TEST(Mat3x4Tests, testFromRotationX) {
         -5.0f, -6.0f, -7.0f, -8.0f
     };
     
-    EXPECT_TRUE(Mat3x4::almostEqual(Mat3x4::fromRotationX(M_PI * 0.5) * m, expected));
+    CHECK(Mat3x4::almostEqual(Mat3x4::fromRotationX(M_PI * 0.5) * m, expected));
 }
 
-TEST(Mat3x4Tests, testFromRotationY) {
+TEST_CASE("Mat3x4Tests.testFromRotationY") {
     Mat3x4 m {
         1.0f, 2.0f, 3.0f, 4.0f,
         5.0f, 6.0f, 7.0f, 8.0f,
@@ -170,10 +171,10 @@ TEST(Mat3x4Tests, testFromRotationY) {
     // Those floating point sines and cosines aren't floating-point perfect.
     float tolerance = 4.0f * FLT_EPSILON;
     
-    EXPECT_TRUE(Mat3x4::almostEqual(Mat3x4::fromRotationY(M_PI * 0.5) * m, expected, tolerance, tolerance));
+    CHECK(Mat3x4::almostEqual(Mat3x4::fromRotationY(M_PI * 0.5) * m, expected, tolerance, tolerance));
 }
 
-TEST(Mat3x4Tests, testRotateZ) {
+TEST_CASE("Mat3x4Tests.testRotateZ") {
     Mat3x4 m {
         1.0f, 2.0f, 3.0f, 4.0f,
         5.0f, 6.0f, 7.0f, 8.0f,
@@ -190,10 +191,10 @@ TEST(Mat3x4Tests, testRotateZ) {
     float tolerance = 2.0f * FLT_EPSILON;
     
     // Assert returns reference to mutated original
-    EXPECT_TRUE(Mat3x4::almostEqual(Mat3x4::fromRotationZ(M_PI * 0.5) * m, expected, tolerance, tolerance));
+    CHECK(Mat3x4::almostEqual(Mat3x4::fromRotationZ(M_PI * 0.5) * m, expected, tolerance, tolerance));
 }
 
-TEST(Mat3x4Tests, testTranslate) {
+TEST_CASE("Mat3x4Tests.testTranslate") {
     Mat3x4 m {
         1, 2, 3, 4,
         5, 6, 7, 8,
@@ -206,10 +207,10 @@ TEST(Mat3x4Tests, testTranslate) {
         9, 10, 11, 15
     };
     
-    EXPECT_TRUE(Mat3x4::almostEqual(Mat3x4::fromTranslation({1, 2, 3}) * m, expected, FLT_EPSILON, FLT_EPSILON));
+    CHECK(Mat3x4::almostEqual(Mat3x4::fromTranslation({1, 2, 3}) * m, expected, FLT_EPSILON, FLT_EPSILON));
 }
 
-TEST(Mat3x4Tests, testScale) {
+TEST_CASE("Mat3x4Tests.testScale") {
     Mat3x4 m {
         1, 2, 3, 4,
         5, 6, 7, 8,
@@ -222,10 +223,10 @@ TEST(Mat3x4Tests, testScale) {
         36, 40, 44, 48
     };
     
-    EXPECT_TRUE(Mat3x4::almostEqual(Mat3x4::fromScale({2, 3, 4}) * m, expected, FLT_EPSILON, FLT_EPSILON));
+    CHECK(Mat3x4::almostEqual(Mat3x4::fromScale({2, 3, 4}) * m, expected, FLT_EPSILON, FLT_EPSILON));
 }
 
-TEST(Mat3x4Tests, testFromRowMajorVector) {
+TEST_CASE("Mat3x4Tests.testFromRowMajorVector") {
     Mat3x4 expected {
         0, 1, 2, 3,
         4, 5, 6, 7,
@@ -234,10 +235,10 @@ TEST(Mat3x4Tests, testFromRowMajorVector) {
     
     Mat3x4 m (Mat3x4::fromRowMajorVector({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }));
     
-    EXPECT_TRUE(Mat3x4::almostEqual(m, expected));
+    CHECK(Mat3x4::almostEqual(m, expected));
 }
 
-TEST(Mat3x4Tests, testFromColumnMajorVector) {
+TEST_CASE("Mat3x4Tests.testFromColumnMajorVector") {
     Mat3x4 expected {
         0, 3, 6, 9,
         1, 4, 7, 10,
@@ -246,32 +247,32 @@ TEST(Mat3x4Tests, testFromColumnMajorVector) {
     
     Mat3x4 m (Mat3x4::fromColumnMajorVector({ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 }));
     
-    EXPECT_TRUE(Mat3x4::almostEqual(m, expected));
+    CHECK(Mat3x4::almostEqual(m, expected));
 }
 
-TEST(Mat3x4Tests, testToRowMajorVector) {
+TEST_CASE("Mat3x4Tests.testToRowMajorVector") {
     Mat3x4 m {
         0, 1, 2, 3,
         4, 5, 6, 7,
         8, 9, 10, 11
     };
     
-    EXPECT_EQ(m.toRowMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}));
+    CHECK_EQ(m.toRowMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}));
 }
 
-TEST(Mat3x4Tests, testToColumnMajorVector) {
+TEST_CASE("Mat3x4Tests.testToColumnMajorVector") {
     Mat3x4 m {
         0, 3, 6, 9,
         1, 4, 7, 10,
         2, 5, 8, 11,
     };
     
-    EXPECT_EQ(m.toColumnMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}));
+    CHECK_EQ(m.toColumnMajorVector(), std::vector<float>({0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11}));
 }
 
 
-TEST(Mat3x4Tests, testFromMat3x3) {
-    EXPECT_TRUE(Mat3x4::almostEqual(Mat3x4::fromMat3x3({
+TEST_CASE("Mat3x4Tests.testFromMat3x3") {
+    CHECK(Mat3x4::almostEqual(Mat3x4::fromMat3x3({
         1, 2, 3,
         4, 5, 6,
         7, 8, 9

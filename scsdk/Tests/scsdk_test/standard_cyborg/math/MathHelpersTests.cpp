@@ -15,14 +15,14 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/math/MathHelpers.hpp>
 
 using namespace standard_cyborg::math;
 
-TEST(MathHelpersTests, testAlmostEquals) {
-    EXPECT_FALSE(standard_cyborg::math::AlmostEqual(100.0, 100.0 + 1e-4));
-    EXPECT_TRUE(standard_cyborg::math::AlmostEqual(100.0, 100.0 + 1e-5));
-    EXPECT_TRUE(standard_cyborg::math::AlmostEqual(100.0, 100.0 + 1e-4, 1e-6, 1e-6));
+TEST_CASE("MathHelpersTests.testAlmostEquals") {
+    CHECK_FALSE(standard_cyborg::math::AlmostEqual(100.0, 100.0 + 1e-4));
+    CHECK(standard_cyborg::math::AlmostEqual(100.0, 100.0 + 1e-5));
+    CHECK(standard_cyborg::math::AlmostEqual(100.0, 100.0 + 1e-4, 1e-6, 1e-6));
 }

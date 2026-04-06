@@ -17,6 +17,7 @@ limitations under the License.
 
 #pragma once
 
+#include <limits>
 #include <vector>
 
 #include <standard_cyborg/sc3d/Face3.hpp>
@@ -29,7 +30,7 @@ namespace standard_cyborg {
 namespace sc3d {
 
 struct RayTraceResult {
-    float t = INFINITY;
+    float t = std::numeric_limits<float>::max();
     int index = -1; // index of hit triangle. -1 if no triangle was hit.
     math::Vec3 hitPoint;
 };

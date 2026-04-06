@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/sc3d/MeshTopology.hpp>
 
@@ -44,7 +44,7 @@ using namespace standard_cyborg::sc3d;
  @implementation MeshTopologyTests
  */
 
-TEST(MeshTopologyTests, testSimpleMesh) {
+TEST_CASE("MeshTopologyTests.testSimpleMesh") {
     // 3 ----3---- 2
     // |         / | \
     // |  1    /   |   6
@@ -61,15 +61,15 @@ TEST(MeshTopologyTests, testSimpleMesh) {
     
     MeshTopology::MeshTopology topology (faces);
     
-    EXPECT_EQ(topology.getFaceEdges().size(), 3);
-    EXPECT_EQ(topology.getVertexEdges().size(), 5);
-    EXPECT_EQ(topology.getEdges().size(), 7);
+    CHECK_EQ(topology.getFaceEdges().size(), 3);
+    CHECK_EQ(topology.getVertexEdges().size(), 5);
+    CHECK_EQ(topology.getEdges().size(), 7);
     
-    EXPECT_EQ(topology.getNumFaceEdges(), 3);
-    EXPECT_EQ(topology.getNumVertexEdges(), 5);
-    EXPECT_EQ(topology.getNumEdges(), 7);
+    CHECK_EQ(topology.getNumFaceEdges(), 3);
+    CHECK_EQ(topology.getNumVertexEdges(), 5);
+    CHECK_EQ(topology.getNumEdges(), 7);
     
-    EXPECT_EQ(topology.getEdges(), std::vector<MeshTopology::Edge>({
+    CHECK_EQ(topology.getEdges(), std::vector<MeshTopology::Edge>({
         // {vertex0, vertex1, face0, face1}
         {0, 1, 0, -1},
         {1, 2, 0, 2},
@@ -80,14 +80,14 @@ TEST(MeshTopologyTests, testSimpleMesh) {
         {4, 2, 2, -1}
     }));
     
-    EXPECT_EQ(topology.getFaceEdges(), std::vector<MeshTopology::FaceEdges>({
+    CHECK_EQ(topology.getFaceEdges(), std::vector<MeshTopology::FaceEdges>({
         // {edgeAB, edgeBC, edgeCA}
         {0, 1, 2},
         {2, 3, 4},
         {5, 6, 1}
     }));
     
-    EXPECT_EQ(topology.getVertexEdges(), std::vector<MeshTopology::VertexEdges>({
+    CHECK_EQ(topology.getVertexEdges(), std::vector<MeshTopology::VertexEdges>({
         {0, 2, 4},
         {0, 1, 5},
         {1, 2, 3, 6},
@@ -96,7 +96,7 @@ TEST(MeshTopologyTests, testSimpleMesh) {
     }));
 }
 
-TEST(MeshTopologyTests, testMeshTopologyConstructor) {
+TEST_CASE("MeshTopologyTests.testMeshTopologyConstructor") {
     
     std::vector<MeshTopology::Edge> edges({
         {0, 1, 0, -1},
@@ -124,68 +124,68 @@ TEST(MeshTopologyTests, testMeshTopologyConstructor) {
     
     MeshTopology::MeshTopology topology (edges, faceEdges, vertexEdges);
     
-    EXPECT_EQ(topology.getEdges(), edges);
+    CHECK_EQ(topology.getEdges(), edges);
     
-    EXPECT_EQ(topology.getFaceEdges(), faceEdges);
+    CHECK_EQ(topology.getFaceEdges(), faceEdges);
     
-    EXPECT_EQ(topology.getVertexEdges(), vertexEdges);
+    CHECK_EQ(topology.getVertexEdges(), vertexEdges);
 }
 
-TEST(MeshTopologyTests, testDefaultConstructor) {
+TEST_CASE("MeshTopologyTests.testDefaultConstructor") {
     MeshTopology::MeshTopology topology;
     
-    EXPECT_EQ(topology.getFaceEdges().size(), 0);
-    EXPECT_EQ(topology.getVertexEdges().size(), 0);
-    EXPECT_EQ(topology.getEdges().size(), 0);
+    CHECK_EQ(topology.getFaceEdges().size(), 0);
+    CHECK_EQ(topology.getVertexEdges().size(), 0);
+    CHECK_EQ(topology.getEdges().size(), 0);
 }
 
-TEST(MeshTopologyTests, testFacesEdgesEqualityOperator)
+TEST_CASE("MeshTopologyTests.testFacesEdgesEqualityOperator")
 {
     
-    EXPECT_TRUE(MeshTopology::FaceEdges({1, 2, 3}) == MeshTopology::FaceEdges({1, 2, 3}));
+    CHECK(MeshTopology::FaceEdges({1, 2, 3}) == MeshTopology::FaceEdges({1, 2, 3}));
     
-    EXPECT_TRUE(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({0, 2, 3}));
-    EXPECT_TRUE(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({1, 0, 3}));
-    EXPECT_TRUE(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({1, 2, 9}));
-    EXPECT_FALSE(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({1, 2, 3}));
+    CHECK(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({0, 2, 3}));
+    CHECK(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({1, 0, 3}));
+    CHECK(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({1, 2, 9}));
+    CHECK_FALSE(MeshTopology::FaceEdges({1, 2, 3}) != MeshTopology::FaceEdges({1, 2, 3}));
 }
 
-TEST(MeshTopologyTests, testEdgeEqualityOperator) {
+TEST_CASE("MeshTopologyTests.testEdgeEqualityOperator") {
     
-    EXPECT_TRUE(MeshTopology::Edge({1, 2, 3, 4}) == MeshTopology::Edge({1, 2, 3, 4}));
-    EXPECT_FALSE(MeshTopology::Edge({1, 2, 3, 4}) == MeshTopology::Edge({1, 0, 3, 4}));
+    CHECK(MeshTopology::Edge({1, 2, 3, 4}) == MeshTopology::Edge({1, 2, 3, 4}));
+    CHECK_FALSE(MeshTopology::Edge({1, 2, 3, 4}) == MeshTopology::Edge({1, 0, 3, 4}));
     
-    EXPECT_TRUE(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 2, 3, 9}));
-    EXPECT_TRUE(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 0, 3, 4}));
-    EXPECT_TRUE(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 2, 7, 4}));
-    EXPECT_TRUE(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({8, 2, 3, 4}));
-    EXPECT_FALSE(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 2, 3, 4}));
+    CHECK(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 2, 3, 9}));
+    CHECK(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 0, 3, 4}));
+    CHECK(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 2, 7, 4}));
+    CHECK(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({8, 2, 3, 4}));
+    CHECK_FALSE(MeshTopology::Edge({1, 2, 3, 4}) != MeshTopology::Edge({1, 2, 3, 4}));
 }
 
-TEST(MeshTopologyTests, testFaceEdgesOffsetOf) {
+TEST_CASE("MeshTopologyTests.testFaceEdgesOffsetOf") {
     MeshTopology::FaceEdges fe({1, 2, 3});
     
-    EXPECT_EQ(fe.offsetOf(1), 0);
-    EXPECT_EQ(fe.offsetOf(2), 1);
-    EXPECT_EQ(fe.offsetOf(3), 2);
-    EXPECT_EQ(fe.offsetOf(10), -1);
-    EXPECT_EQ(fe.offsetOf(-2), -1);
+    CHECK_EQ(fe.offsetOf(1), 0);
+    CHECK_EQ(fe.offsetOf(2), 1);
+    CHECK_EQ(fe.offsetOf(3), 2);
+    CHECK_EQ(fe.offsetOf(10), -1);
+    CHECK_EQ(fe.offsetOf(-2), -1);
 }
 
-TEST(MeshTopologyTests, testFaceEdgesEdgeIndexAfter) {
+TEST_CASE("MeshTopologyTests.testFaceEdgesEdgeIndexAfter") {
     MeshTopology::FaceEdges fe({5, 10, 2});
     
-    EXPECT_EQ(fe.edgeIndexAfter(5), 10);
-    EXPECT_EQ(fe.edgeIndexAfter(10), 2);
-    EXPECT_EQ(fe.edgeIndexAfter(2), 5);
+    CHECK_EQ(fe.edgeIndexAfter(5), 10);
+    CHECK_EQ(fe.edgeIndexAfter(10), 2);
+    CHECK_EQ(fe.edgeIndexAfter(2), 5);
 }
 
-TEST(MeshTopologyTests, testFaceEdgesEdgeIndexBefore) {
+TEST_CASE("MeshTopologyTests.testFaceEdgesEdgeIndexBefore") {
     MeshTopology::FaceEdges fe({5, 10, 2});
     
-    EXPECT_EQ(fe.edgeIndexBefore(5), 2);
-    EXPECT_EQ(fe.edgeIndexBefore(10), 5);
-    EXPECT_EQ(fe.edgeIndexBefore(2), 10);
+    CHECK_EQ(fe.edgeIndexBefore(5), 2);
+    CHECK_EQ(fe.edgeIndexBefore(10), 5);
+    CHECK_EQ(fe.edgeIndexBefore(2), 10);
 }
 
 /*

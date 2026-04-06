@@ -40,7 +40,7 @@
  @implementation DBScanTests
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/algorithms/DBScan.hpp>
 #include <standard_cyborg/math/Vec3.hpp>
@@ -61,7 +61,7 @@ float randFloat(float fmin, float fmax) {
     return fmin + (fmax - fmin) * randFloat();
 }
 
-TEST(DBScanTests, testDBscan) {
+TEST_CASE("DBScanTests.testDBscan") {
     // Create two well-separated clusters
     Vec3 point1 {1.0f, 2.0f, 4.0f};
     Vec3 point2 {-7.0f, -3.0f, 1.0};
@@ -100,20 +100,20 @@ TEST(DBScanTests, testDBscan) {
      */
     auto result = standard_cyborg::algorithms::DBScan::compute(positions, 10, 0.2);
     
-    EXPECT_EQ(result.size(), positions.size());
+    CHECK_EQ(result.size(), positions.size());
     
     // first 50 are cluster #0
     for (int ii = 0; ii < 50; ++ii) {
-        EXPECT_EQ(result[ii], 0);
+        CHECK_EQ(result[ii], 0);
     }
     
     // second 50 are cluster #1
     for (int ii = 50; ii < 100; ++ii) {
-        EXPECT_EQ(result[ii], 1);
+        CHECK_EQ(result[ii], 1);
     }
     
     // finally, some noise points.
     for (int ii = 100; ii < result.size(); ++ii) {
-        EXPECT_EQ(result[ii], -1);
+        CHECK_EQ(result[ii], -1);
     }
 }

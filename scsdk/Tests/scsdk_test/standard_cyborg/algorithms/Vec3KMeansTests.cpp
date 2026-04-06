@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/algorithms/Vec3KMeans.hpp>
 
@@ -29,7 +29,7 @@
 
 using standard_cyborg::math::Vec3;
 
-TEST(Vec3KMeansTests, testKMeans) {
+TEST_CASE("Vec3KMeansTests.testKMeans") {
     // Create two well-separated clusters
     Vec3 point1 {1.0f, 2.0f, 4.0f};
     Vec3 point2 {-7.0f, -3.0f, 1.0};
@@ -46,15 +46,15 @@ TEST(Vec3KMeansTests, testKMeans) {
     
     auto result = standard_cyborg::algorithms::Vec3KMeans::compute(positions, 2);
     
-    EXPECT_LT((result.centroids[0] - point2).norm(), 0.2);
-    EXPECT_LT((result.centroids[1] - point1).norm(), 0.2);
-    EXPECT_EQ(result.assignments.size(), n);
-    EXPECT_TRUE(result.converged);
-    EXPECT_EQ(result.iterations, 2);
-    EXPECT_EQ(result.counts, std::vector<int>({66, 34}));
+    CHECK_LT((result.centroids[0] - point2).norm(), 0.2);
+    CHECK_LT((result.centroids[1] - point1).norm(), 0.2);
+    CHECK_EQ(result.assignments.size(), n);
+    CHECK(result.converged);
+    CHECK_EQ(result.iterations, 2);
+    CHECK_EQ(result.counts, std::vector<int>({66, 34}));
 }
 
-TEST(Vec3KMeansTests, testKMeansWithUnspecifiedK) {
+TEST_CASE("Vec3KMeansTests.testKMeansWithUnspecifiedK") {
     // Create two well-separated clusters
     Vec3 point1 {1.0f, 2.0f, 4.0f};
     Vec3 point2 {-7.0f, -3.0f, 1.0};
@@ -71,9 +71,9 @@ TEST(Vec3KMeansTests, testKMeansWithUnspecifiedK) {
     
     auto result = standard_cyborg::algorithms::Vec3KMeans::compute(positions);
     
-    EXPECT_EQ(result.centroids.size(), 7);
-    EXPECT_EQ(result.assignments.size(), n);
-    EXPECT_TRUE(result.converged);
-    EXPECT_EQ(result.iterations, 8);
-    EXPECT_EQ(result.counts, std::vector<int>({40, 7, 8, 12, 21, 6, 6}));
+    CHECK_EQ(result.centroids.size(), 7);
+    CHECK_EQ(result.assignments.size(), n);
+    CHECK(result.converged);
+    CHECK_EQ(result.iterations, 8);
+    CHECK_EQ(result.counts, std::vector<int>({40, 7, 8, 12, 21, 6, 6}));
 }

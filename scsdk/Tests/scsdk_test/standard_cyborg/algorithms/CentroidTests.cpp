@@ -14,7 +14,13 @@
  limitations under the License.
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <cfloat>
+#include <cmath>
+
+#ifndef CHECK_NEAR
+#define CHECK_NEAR(a, b, tol) CHECK(std::abs(static_cast<double>(a) - static_cast<double>(b)) <= static_cast<double>(tol))
+#endif
 
 #include <standard_cyborg/algorithms/Centroid.hpp>
 #include <standard_cyborg/math/Vec3.hpp>
@@ -28,7 +34,7 @@ namespace math = standard_cyborg::math;
 using math::Vec3;
 
 
-TEST(CentroidTests, testVectorOfVec3Centroid) {
+TEST_CASE("CentroidTests.testVectorOfVec3Centroid") {
     std::vector<Vec3> positions {
         {0.0f, 0.0f, 0.0f},
         {1.0f, 0.0f, 2.0f},
@@ -38,12 +44,12 @@ TEST(CentroidTests, testVectorOfVec3Centroid) {
     
     Vec3 centroid = standard_cyborg::algorithms::computeCentroid(positions);
     
-    EXPECT_NEAR(centroid.x, 3.0f / 4.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.y, 7.0f / 4.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.z, 5.0f / 2.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.x, 3.0f / 4.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.y, 7.0f / 4.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.z, 5.0f / 2.0f, FLT_EPSILON);
 }
 
-TEST(CentroidTests, testGeometryCentroidWithFaces) {
+TEST_CASE("CentroidTests.testGeometryCentroidWithFaces") {
     std::vector<Vec3> positions {
         {0.0f, 0.0f, 0.0f},
         {1.0f, 0.0f, 2.0f},
@@ -60,13 +66,13 @@ TEST(CentroidTests, testGeometryCentroidWithFaces) {
     
     Vec3 centroid = standard_cyborg::algorithms::computeCentroid(geometry);
     
-    EXPECT_NEAR(centroid.x, 0.767176f, 1e-6f);
-    EXPECT_NEAR(centroid.y, 1.317430f, 1e-6f);
-    EXPECT_NEAR(centroid.z, 2.0f, 1e-6f);
+    CHECK_NEAR(centroid.x, 0.767176f, 1e-6f);
+    CHECK_NEAR(centroid.y, 1.317430f, 1e-6f);
+    CHECK_NEAR(centroid.z, 2.0f, 1e-6f);
 }
 
 
-TEST(CentroidTests, testGeometryCentroidWithoutFaces) {
+TEST_CASE("CentroidTests.testGeometryCentroidWithoutFaces") {
     std::vector<Vec3> positions {
         {0.0f, 0.0f, 0.0f},
         {1.0f, 0.0f, 2.0f},
@@ -79,12 +85,12 @@ TEST(CentroidTests, testGeometryCentroidWithoutFaces) {
     Vec3 centroid = standard_cyborg::algorithms::computeCentroid(geometry);
     
     // Reduces to the equivalent above result for a point cloud
-    EXPECT_NEAR(centroid.x, 3.0f / 4.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.y, 7.0f / 4.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.z, 5.0f / 2.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.x, 3.0f / 4.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.y, 7.0f / 4.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.z, 5.0f / 2.0f, FLT_EPSILON);
 }
 
-TEST(CentroidTests, testGeometryCentroidEmpty) {
+TEST_CASE("CentroidTests.testGeometryCentroidEmpty") {
     std::vector<Vec3> positions { };
     
     standard_cyborg::sc3d::Geometry geometry (positions);
@@ -92,12 +98,12 @@ TEST(CentroidTests, testGeometryCentroidEmpty) {
     Vec3 centroid = standard_cyborg::algorithms::computeCentroid(geometry);
     
     // Reduces to the equivalent above result for a point cloud
-    EXPECT_NEAR(centroid.x, 0.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.y, 0.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.z, 0.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.x, 0.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.y, 0.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.z, 0.0f, FLT_EPSILON);
 }
 
-TEST(CentroidTests, testCentroidPointCloud) {
+TEST_CASE("CentroidTests.testCentroidPointCloud") {
     std::vector<Vec3> positions {
         {+1.0f, +2.0f, +3.0f},
         {+6.0f, +7.0f, +8.0f},
@@ -109,12 +115,12 @@ TEST(CentroidTests, testCentroidPointCloud) {
     
     Vec3 centroid = standard_cyborg::algorithms::computeCentroid(tri.getPositions());
     
-    EXPECT_NEAR(centroid.x, -4.0f / 4.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.y, 12.0f / 4.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.z, 6.00f / 4.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.x, -4.0f / 4.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.y, 12.0f / 4.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.z, 6.00f / 4.0f, FLT_EPSILON);
 }
 
-TEST(CentroidTests, testPolylineCentroid) {
+TEST_CASE("CentroidTests.testPolylineCentroid") {
     // By symmetry this set of positions has the centroid at the origin if interpreted
     // as a closed curve but not if interpreted as a point cloud (due to the repeated
     // endpoint)
@@ -130,12 +136,12 @@ TEST(CentroidTests, testPolylineCentroid) {
     
     Vec3 centroid = standard_cyborg::algorithms::computeCentroid(curve);
     
-    EXPECT_NEAR(centroid.x, 0.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.y, 0.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.z, 0.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.x, 0.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.y, 0.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.z, 0.0f, FLT_EPSILON);
 }
 
-TEST(CentroidTests, testCentroidPointCloudSelection) {
+TEST_CASE("CentroidTests.testCentroidPointCloudSelection") {
     std::vector<Vec3> positions {
         {+1.0f, +2.0f, +3.0f},
         {+6.0f, +7.0f, +8.0f},
@@ -147,7 +153,7 @@ TEST(CentroidTests, testCentroidPointCloudSelection) {
     
     Vec3 centroid = standard_cyborg::algorithms::computeCentroid(points.getPositions(), standard_cyborg::sc3d::VertexSelection(4, {1, 3}));
     
-    EXPECT_NEAR(centroid.x, -3.0f / 2.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.y, 11.0f / 2.0f, FLT_EPSILON);
-    EXPECT_NEAR(centroid.z, 9.0f / 2.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.x, -3.0f / 2.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.y, 11.0f / 2.0f, FLT_EPSILON);
+    CHECK_NEAR(centroid.z, 9.0f / 2.0f, FLT_EPSILON);
 }

@@ -37,6 +37,14 @@ The version of StandardCyborgFusion hosted via Cocoapods is now deprecated and u
 - **VisualTesterMac**<br>
   A macOS app used for iterating on StandardCyborgFusion with pre-recorded scan data
 
+## Testing
+
+To run the scsdk C++ tests on macOS:
+
+```bash
+swift test --filter SCSDKTests
+```
+
 ## Requirements
 
 An iOS device with a TrueDepth camera, which is found on iPhone X and later, and on iPad Pro (2018) and later

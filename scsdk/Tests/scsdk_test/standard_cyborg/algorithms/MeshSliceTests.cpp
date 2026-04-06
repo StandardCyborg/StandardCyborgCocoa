@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/algorithms/MeshSlice.hpp>
 
@@ -30,7 +30,7 @@ using standard_cyborg::sc3d::Face3;
 namespace math = standard_cyborg::math;
 using math::Vec3;
 
-TEST(MeshSliceTests, testSimpleOpenPolyline) {
+TEST_CASE("MeshSliceTests.testSimpleOpenPolyline") {
     // 3 ----3---- 2
     // |         / | \
     // |  1    /   |   \
@@ -50,12 +50,12 @@ TEST(MeshSliceTests, testSimpleOpenPolyline) {
         return p.y - 0.5;
     }));
     
-    EXPECT_EQ(polylines.size(), 1);
-    EXPECT_EQ(polylines[0].vertexCount(), 4);
-    EXPECT_FALSE(polylines[0].isClosed());
+    CHECK_EQ(polylines.size(), 1);
+    CHECK_EQ(polylines[0].vertexCount(), 4);
+    CHECK_FALSE(polylines[0].isClosed());
 }
 
-TEST(MeshSliceTests, testOpenWithDifficultOrderingPolyline) {
+TEST_CASE("MeshSliceTests.testOpenWithDifficultOrderingPolyline") {
     // 3 ----1---- 2
     // |         / | \
     // |  0    /   |   \
@@ -78,12 +78,12 @@ TEST(MeshSliceTests, testOpenWithDifficultOrderingPolyline) {
     
     std::vector<Polyline> polylines (standard_cyborg::algorithms::sliceMesh(geometry, [](int i, Vec3 p) { return p.y - 0.5; }));
     
-    EXPECT_EQ(polylines.size(), 1);
-    EXPECT_EQ(polylines[0].vertexCount(), 4);
-    EXPECT_FALSE(polylines[0].isClosed());
+    CHECK_EQ(polylines.size(), 1);
+    CHECK_EQ(polylines[0].vertexCount(), 4);
+    CHECK_FALSE(polylines[0].isClosed());
 }
 
-TEST(MeshSliceTests, testSimpleOpenPolylineWithPrecomputedTopology) {
+TEST_CASE("MeshSliceTests.testSimpleOpenPolylineWithPrecomputedTopology") {
     // 3 ----3---- 2
     // |         / | \
     // |  1    /   |   \
@@ -105,12 +105,12 @@ TEST(MeshSliceTests, testSimpleOpenPolylineWithPrecomputedTopology) {
         return p.y - 0.5;
     }, topology));
     
-    EXPECT_EQ(polylines.size(), 1);
-    EXPECT_EQ(polylines[0].vertexCount(), 4);
-    EXPECT_FALSE(polylines[0].isClosed());
+    CHECK_EQ(polylines.size(), 1);
+    CHECK_EQ(polylines[0].vertexCount(), 4);
+    CHECK_FALSE(polylines[0].isClosed());
 }
 
-TEST(MeshSliceTests, testSimpleClosedPolyline) {
+TEST_CASE("MeshSliceTests.testSimpleClosedPolyline") {
     
     // 3 ------5------ 2
     // | \           / |
@@ -131,19 +131,19 @@ TEST(MeshSliceTests, testSimpleClosedPolyline) {
         return p.squaredNorm() - 1.0f;
     }));
     
-    EXPECT_EQ(polylines.size(), 1);
-    EXPECT_EQ(polylines[0].vertexCount(), 5);
-    EXPECT_EQ(polylines[0].getPositions(), std::vector<Vec3>({
+    CHECK_EQ(polylines.size(), 1);
+    CHECK_EQ(polylines[0].vertexCount(), 5);
+    CHECK_EQ(polylines[0].getPositions(), std::vector<Vec3>({
         {-0.5f, -0.5f, 0.0f},
         { 0.5f, -0.5f, 0.0f},
         { 0.5f,  0.5f, 0.0f},
         {-0.5f,  0.5f, 0.0f},
         {-0.5f, -0.5f, 0.0f}
     }));
-    EXPECT_TRUE(polylines[0].isClosed());
+    CHECK(polylines[0].isClosed());
 }
 
-TEST(MeshSliceTests, testVertexIntersection) {
+TEST_CASE("MeshSliceTests.testVertexIntersection") {
     Geometry geometry (
                        std::vector<Vec3>{
         {-2.0f, -1.0f, 0.0f},

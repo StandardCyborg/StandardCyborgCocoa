@@ -33,7 +33,12 @@
  @implementation CreateVectorRotationMatrixTests : XCTestCase
  */
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <cmath>
+
+#ifndef CHECK_NEAR
+#define CHECK_NEAR(a, b, tol) CHECK(std::abs(static_cast<double>(a) - static_cast<double>(b)) <= static_cast<double>(tol))
+#endif
 
 #include <standard_cyborg/algorithms/CreateVectorRotationMatrix.hpp>
 #include <standard_cyborg/math/Vec3.hpp>
@@ -45,7 +50,7 @@ using math::Vec3;
 
 constexpr float EPS = 1E-6;
 
-TEST(CreateVectorRotationMatrixTests, testCreateVectorRotationMatrix) {
+TEST_CASE("CreateVectorRotationMatrixTests.testCreateVectorRotationMatrix") {
     Vec3 v0(-0.215666, 0.107833, -0.970495);
     Vec3 v1(0.224105, -0.0194874, -0.97437);
     
@@ -53,12 +58,12 @@ TEST(CreateVectorRotationMatrixTests, testCreateVectorRotationMatrix) {
     
     Vec3 result = mat * v0;
     
-    EXPECT_NEAR(result.x, v1.x, EPS);
-    EXPECT_NEAR(result.y, v1.y, EPS);
-    EXPECT_NEAR(result.z, v1.z, EPS);
+    CHECK_NEAR(result.x, v1.x, EPS);
+    CHECK_NEAR(result.y, v1.y, EPS);
+    CHECK_NEAR(result.z, v1.z, EPS);
 }
 
-TEST(CreateVectorRotationMatrixTests, testCreateVectorRotationMatrixParallel) {
+TEST_CASE("CreateVectorRotationMatrixTests.testCreateVectorRotationMatrixParallel") {
     Vec3 v0(-0.215666, 0.107833, -0.970495);
     Vec3 v1 = v0;
     
@@ -66,12 +71,12 @@ TEST(CreateVectorRotationMatrixTests, testCreateVectorRotationMatrixParallel) {
     
     Vec3 result = mat * v0;
     
-    EXPECT_NEAR(result.x, v1.x, EPS);
-    EXPECT_NEAR(result.y, v1.y, EPS);
-    EXPECT_NEAR(result.z, v1.z, EPS);
+    CHECK_NEAR(result.x, v1.x, EPS);
+    CHECK_NEAR(result.y, v1.y, EPS);
+    CHECK_NEAR(result.z, v1.z, EPS);
 }
 
-TEST(CreateVectorRotationMatrixTests, testCreateVectorRotationMatrixClose) {
+TEST_CASE("CreateVectorRotationMatrixTests.testCreateVectorRotationMatrixClose") {
     Vec3 v0 = Vec3::normalize(Vec3(12424002.0f, 3.0f, 100.0f));
     Vec3 v1 = Vec3::normalize(Vec3(12424003.0f, 3.0f, 100.0f));
     
@@ -79,7 +84,7 @@ TEST(CreateVectorRotationMatrixTests, testCreateVectorRotationMatrixClose) {
     
     Vec3 result = mat * v0;
     
-    EXPECT_NEAR(result.x, v1.x, EPS);
-    EXPECT_NEAR(result.y, v1.y, EPS);
-    EXPECT_NEAR(result.z, v1.z, EPS);
+    CHECK_NEAR(result.x, v1.x, EPS);
+    CHECK_NEAR(result.y, v1.y, EPS);
+    CHECK_NEAR(result.z, v1.z, EPS);
 }

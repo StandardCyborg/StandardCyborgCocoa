@@ -15,13 +15,18 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
+#include <cmath>
+
+#ifndef CHECK_NEAR
+#define CHECK_NEAR(a, b, tol) CHECK(std::abs(static_cast<double>(a) - static_cast<double>(b)) <= static_cast<double>(tol))
+#endif
 
 #include <standard_cyborg/sc3d/PerspectiveCamera.hpp>
 
 using namespace standard_cyborg;
 
-TEST(PerspectiveCameraTests, testDistortionTableConstantsComputation) {
+TEST_CASE("PerspectiveCameraTests.testDistortionTableConstantsComputation") {
     sc3d::PerspectiveCamera camera;
     
     camera.setLensDistortionLookupTable({
@@ -40,13 +45,13 @@ TEST(PerspectiveCameraTests, testDistortionTableConstantsComputation) {
     
     math::Vec4 curveFit = camera.getLensDistortionCurveFit();
     
-    EXPECT_NEAR(curveFit.x, 0.049931, 1e-6);
-    EXPECT_NEAR(curveFit.y, 0.194135, 1e-6);
-    EXPECT_NEAR(curveFit.z, -0.574323, 1e-6);
-    EXPECT_NEAR(curveFit.w, 0.348729, 1e-6);
+    CHECK_NEAR(curveFit.x, 0.049931, 1e-6);
+    CHECK_NEAR(curveFit.y, 0.194135, 1e-6);
+    CHECK_NEAR(curveFit.z, -0.574323, 1e-6);
+    CHECK_NEAR(curveFit.w, 0.348729, 1e-6);
 }
 
-TEST(PerspectiveCameraTests, testConstructor) {
+TEST_CASE("PerspectiveCameraTests.testConstructor") {
     sc3d::PerspectiveCamera camera;
     
     camera.setIntrinsicMatrixReferenceSize({3088.0f, 2316.0f});
@@ -62,22 +67,22 @@ TEST(PerspectiveCameraTests, testConstructor) {
     });
     camera.setFocalLengthScaleFactor(1.017f);
     
-    EXPECT_TRUE(math::Vec4::almostEqual(camera.getLensDistortionCurveFit(), math::Vec4(0)));
-    EXPECT_TRUE(math::Vec4::almostEqual(camera.getInverseLensDistortionCurveFit(), math::Vec4(0)));
-    EXPECT_EQ(camera.getFocalLengthScaleFactor(), 1.017f);
-    EXPECT_EQ(camera.getExtrinsicMatrix(), math::Mat3x4({
+    CHECK(math::Vec4::almostEqual(camera.getLensDistortionCurveFit(), math::Vec4(0)));
+    CHECK(math::Vec4::almostEqual(camera.getInverseLensDistortionCurveFit(), math::Vec4(0)));
+    CHECK_EQ(camera.getFocalLengthScaleFactor(), 1.017f);
+    CHECK_EQ(camera.getExtrinsicMatrix(), math::Mat3x4({
         0.0, 1.0, 0.0, 0.0,
         1.0, 0.0, 0.0, 0.0,
         0.0, 0.0, -1.0, 0.0,
     }));
-    EXPECT_TRUE(math::Mat3x3::almostEqual(camera.getIntrinsicMatrix(), math::Mat3x3({
+    CHECK(math::Mat3x3::almostEqual(camera.getIntrinsicMatrix(), math::Mat3x3({
         2930.14, 0.0, 1536.59,
         0.0, 2930.14, 1149.33,
         0.0, 0.0, 1.0
     }), 1.0e-5f, 1.0e-5f));
 }
 
-TEST(PerspectiveCameraTests, UnprojectDepthSampleTests) {
+TEST_CASE("PerspectiveCameraTests.UnprojectDepthSampleTests") {
     namespace sc3d = standard_cyborg::sc3d;
     using standard_cyborg::math::Mat3x4;
     using standard_cyborg::math::Mat3x3;
@@ -120,7 +125,7 @@ TEST(PerspectiveCameraTests, UnprojectDepthSampleTests) {
     
     float EPS = 0.00001f;
     
-    EXPECT_NEAR(unprojectedPos.x, 0.073601f, EPS);
-    EXPECT_NEAR(unprojectedPos.y, 0.030987f, EPS);
-    EXPECT_NEAR(unprojectedPos.z, 0.214100f, EPS);
+    CHECK_NEAR(unprojectedPos.x, 0.073601f, EPS);
+    CHECK_NEAR(unprojectedPos.y, 0.030987f, EPS);
+    CHECK_NEAR(unprojectedPos.z, 0.214100f, EPS);
 }

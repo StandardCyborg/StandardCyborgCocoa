@@ -15,20 +15,20 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/sc3d/Point2D.hpp>
 
 using namespace standard_cyborg::sc3d;
 
-TEST(Point2DTests, testConstructor) {
+TEST_CASE("Point2DTests.testConstructor") {
     Point2D p;
-    EXPECT_EQ(p.x, 0.0f);
-    EXPECT_EQ(p.y, 0.0f);
+    CHECK_EQ(p.x, 0.0f);
+    CHECK_EQ(p.y, 0.0f);
 }
 
-TEST(Point2DTests, testAccessor) {
+TEST_CASE("Point2DTests.testAccessor") {
     Point2D p {1, 2};
-    EXPECT_EQ(p[0], 1);
-    EXPECT_EQ(p[1], 2);
+    CHECK_EQ(p[0], 1);
+    CHECK_EQ(p[1], 2);
 }

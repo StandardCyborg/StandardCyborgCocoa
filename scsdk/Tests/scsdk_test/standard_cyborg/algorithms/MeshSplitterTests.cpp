@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/algorithms/MeshSplitter.hpp>
 
@@ -25,7 +25,7 @@ using standard_cyborg::math::Vec3;
 using standard_cyborg::sc3d::Geometry;
 using standard_cyborg::sc3d::Face3;
 
-TEST(MeshSplitterTests, testMeshSplitter) {
+TEST_CASE("MeshSplitterTests.testMeshSplitter") {
     
     std::vector<Vec3> positions {
         {1.0f, 1.0f, 0.0f},
@@ -107,10 +107,10 @@ TEST(MeshSplitterTests, testMeshSplitter) {
             { 0, 1, 2 },
         };
         
-        EXPECT_TRUE(geo0->getPositions() == pos);
-        EXPECT_TRUE(geo0->getNormals() == normals);
-        EXPECT_TRUE(geo0->getColors() == colors);
-        EXPECT_TRUE(geo0->getFaces() == faces);
+        CHECK(geo0->getPositions() == pos);
+        CHECK(geo0->getNormals() == normals);
+        CHECK(geo0->getColors() == colors);
+        CHECK(geo0->getFaces() == faces);
     }
     
     
@@ -138,10 +138,10 @@ TEST(MeshSplitterTests, testMeshSplitter) {
             { 0, 1, 2 },
         };
         
-        EXPECT_TRUE(geo0->getPositions() == pos);
-        EXPECT_TRUE(geo0->getNormals() == normals);
-        EXPECT_TRUE(geo0->getColors() == colors);
-        EXPECT_TRUE(geo0->getFaces() == faces);
+        CHECK(geo0->getPositions() == pos);
+        CHECK(geo0->getNormals() == normals);
+        CHECK(geo0->getColors() == colors);
+        CHECK(geo0->getFaces() == faces);
     }
     
     {
@@ -173,28 +173,28 @@ TEST(MeshSplitterTests, testMeshSplitter) {
             { 1, 3, 2 },
         };
         
-        EXPECT_TRUE(geo0->getPositions() == pos);
-        EXPECT_TRUE(geo0->getNormals() == normals);
-        EXPECT_TRUE(geo0->getColors() == colors);
-        EXPECT_TRUE(geo0->getFaces() == faces);
+        CHECK(geo0->getPositions() == pos);
+        CHECK(geo0->getNormals() == normals);
+        CHECK(geo0->getColors() == colors);
+        CHECK(geo0->getFaces() == faces);
     }
 }
 
 
-TEST(MeshSplitterTests, testMeshSplitterEmptyMesh) {
+TEST_CASE("MeshSplitterTests.testMeshSplitterEmptyMesh") {
     
     {
         Geometry geometry0(std::vector<Vec3>({}));
-        EXPECT_EQ(standard_cyborg::algorithms::splitMeshIntoPieces(geometry0).size(), 0);
+        CHECK_EQ(standard_cyborg::algorithms::splitMeshIntoPieces(geometry0).size(), 0);
     }
     
     {
         Geometry geometry0(std::vector<Vec3>({1.0f, 2.0f, 3.0f}), std::vector<Face3>({}));
-        EXPECT_EQ(standard_cyborg::algorithms::splitMeshIntoPieces(geometry0).size(), 0);
+        CHECK_EQ(standard_cyborg::algorithms::splitMeshIntoPieces(geometry0).size(), 0);
     }
     
     {
         Geometry geometry0(std::vector<Vec3>({}), std::vector<Face3>({Face3{1, 2, 3}}));
-        EXPECT_EQ(standard_cyborg::algorithms::splitMeshIntoPieces(geometry0).size(), 0);
+        CHECK_EQ(standard_cyborg::algorithms::splitMeshIntoPieces(geometry0).size(), 0);
     }
 }

@@ -11,13 +11,19 @@ In the directory `scsdk/`, are the components of the library:
       JSON, PLY, GLTF, and other file formats.
  * `util` - Various supporting utilities.
 
-`scsdk_test/` contains GTest-based tests for all of the above components. `test_fixture_data/` contains data used in the tests.
+`scsdk_test/` contains doctest-based tests for all of the above components. `test_fixture_data/` contains data used in the tests.
 
 ## Development
 
-### Building scsdk
+### Running tests via Swift Package Manager
 
-#### CMake
+From the repository root, run:
+
+```
+swift test --filter SCSDKTests
+```
+
+### Building scsdk via CMake
 
 To do an out-of-source build, use the following on Mac or Linux:
 ```

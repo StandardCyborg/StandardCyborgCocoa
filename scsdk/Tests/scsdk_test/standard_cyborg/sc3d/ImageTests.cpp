@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/math/Vec4.hpp>
 #include <standard_cyborg/sc3d/ColorImage.hpp>
@@ -25,75 +25,75 @@ using standard_cyborg::sc3d::ColorImage;
 namespace math = standard_cyborg::math;
 using math::Vec4;
 
-TEST(ImageTests, testConstructor) {
+TEST_CASE("ImageTests.testConstructor") {
     ColorImage image;
-    EXPECT_EQ(image.getWidth(), 0);
-    EXPECT_EQ(image.getHeight(), 0);
-    EXPECT_EQ(image.getData().size(), 0);
+    CHECK_EQ(image.getWidth(), 0);
+    CHECK_EQ(image.getHeight(), 0);
+    CHECK_EQ(image.getData().size(), 0);
 }
 
-TEST(ImageTests, testConstructorWithSize) {
+TEST_CASE("ImageTests.testConstructorWithSize") {
     ColorImage image (2, 2);
-    EXPECT_EQ(image.getWidth(), 2);
-    EXPECT_EQ(image.getHeight(), 2);
-    EXPECT_EQ(image.getData().size(), 4);
+    CHECK_EQ(image.getWidth(), 2);
+    CHECK_EQ(image.getHeight(), 2);
+    CHECK_EQ(image.getData().size(), 4);
 }
 
-TEST(ImageTests, testConstructorWithSizeAndData) {
+TEST_CASE("ImageTests.testConstructorWithSizeAndData") {
     ColorImage image (1, 1, {{1, 0, 1, 0}});
-    EXPECT_EQ(image.getWidth(), 1);
-    EXPECT_EQ(image.getHeight(), 1);
-    EXPECT_TRUE(Vec4::almostEqual(image.getData()[0], {1, 0, 1, 0}));
+    CHECK_EQ(image.getWidth(), 1);
+    CHECK_EQ(image.getHeight(), 1);
+    CHECK(Vec4::almostEqual(image.getData()[0], {1, 0, 1, 0}));
 }
 
-TEST(ImageTests, testGetPixel) {
+TEST_CASE("ImageTests.testGetPixel") {
     ColorImage image (2, 3, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {0, 1, 0, 1}, {0, 1, 1, 1},
         {0, 0, 1, 1}, {1, 0, 1, 1}
     });
     
-    EXPECT_EQ(image.getPixelAtColRow(0, 0), Vec4({1, 0, 0, 1}));
-    EXPECT_EQ(image.getPixelAtColRow(1, 0), Vec4({1, 1, 0, 1}));
+    CHECK_EQ(image.getPixelAtColRow(0, 0), Vec4({1, 0, 0, 1}));
+    CHECK_EQ(image.getPixelAtColRow(1, 0), Vec4({1, 1, 0, 1}));
     
-    EXPECT_EQ(image.getPixelAtColRow(0, 1), Vec4({0, 1, 0, 1}));
-    EXPECT_EQ(image.getPixelAtColRow(1, 1), Vec4({0, 1, 1, 1}));
+    CHECK_EQ(image.getPixelAtColRow(0, 1), Vec4({0, 1, 0, 1}));
+    CHECK_EQ(image.getPixelAtColRow(1, 1), Vec4({0, 1, 1, 1}));
     
-    EXPECT_EQ(image.getPixelAtColRow(0, 2), Vec4({0, 0, 1, 1}));
-    EXPECT_EQ(image.getPixelAtColRow(1, 2), Vec4({1, 0, 1, 1}));
+    CHECK_EQ(image.getPixelAtColRow(0, 2), Vec4({0, 0, 1, 1}));
+    CHECK_EQ(image.getPixelAtColRow(1, 2), Vec4({1, 0, 1, 1}));
 }
 
-TEST(ImageTests, testGetPixelConst) {
+TEST_CASE("ImageTests.testGetPixelConst") {
     const ColorImage image (2, 3, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {0, 1, 0, 1}, {0, 1, 1, 1},
         {0, 0, 1, 1}, {1, 0, 1, 1}
     });
     
-    EXPECT_EQ(image.getPixelAtColRow(0, 0), Vec4({1, 0, 0, 1}));
-    EXPECT_EQ(image.getPixelAtColRow(1, 0), Vec4({1, 1, 0, 1}));
+    CHECK_EQ(image.getPixelAtColRow(0, 0), Vec4({1, 0, 0, 1}));
+    CHECK_EQ(image.getPixelAtColRow(1, 0), Vec4({1, 1, 0, 1}));
     
-    EXPECT_EQ(image.getPixelAtColRow(0, 1), Vec4({0, 1, 0, 1}));
-    EXPECT_EQ(image.getPixelAtColRow(1, 1), Vec4({0, 1, 1, 1}));
+    CHECK_EQ(image.getPixelAtColRow(0, 1), Vec4({0, 1, 0, 1}));
+    CHECK_EQ(image.getPixelAtColRow(1, 1), Vec4({0, 1, 1, 1}));
     
-    EXPECT_EQ(image.getPixelAtColRow(0, 2), Vec4({0, 0, 1, 1}));
-    EXPECT_EQ(image.getPixelAtColRow(1, 2), Vec4({1, 0, 1, 1}));
+    CHECK_EQ(image.getPixelAtColRow(0, 2), Vec4({0, 0, 1, 1}));
+    CHECK_EQ(image.getPixelAtColRow(1, 2), Vec4({1, 0, 1, 1}));
 }
 
-TEST(ImageTests, testGetLightness) {
+TEST_CASE("ImageTests.testGetLightness") {
     const ColorImage image (2, 2, {
         {1, 1, 1, 1}, {0, 0, 0, 1},
         {0, 0, 0, 1}, {1, 1, 1, 1},
         
     });
     
-    EXPECT_EQ(image.getLightness(0,0), 1.0f);
-    EXPECT_EQ(image.getLightness(1,0), 0.0f);
+    CHECK_EQ(image.getLightness(0,0), 1.0f);
+    CHECK_EQ(image.getLightness(1,0), 0.0f);
     
 }
 
 
-TEST(ImageTests, testSetPixel) {
+TEST_CASE("ImageTests.testSetPixel") {
     ColorImage image (2, 3);
     
     image.setPixelAtColRow(0, 0, {1, 0, 0, 1});
@@ -113,11 +113,11 @@ TEST(ImageTests, testSetPixel) {
     };
     
     for (int i = 0; i < image.getWidth() * image.getHeight(); i++) {
-        EXPECT_EQ(image.getData()[i], expectedPixels[i]);
+        CHECK_EQ(image.getData()[i], expectedPixels[i]);
     }
 }
 
-TEST(ImageTests, testCopy) {
+TEST_CASE("ImageTests.testCopy") {
     ColorImage i1 (2, 3, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {0, 1, 0, 1}, {0, 1, 1, 1},
@@ -127,15 +127,15 @@ TEST(ImageTests, testCopy) {
     ColorImage i2;
     i2.copy(i1);
     
-    EXPECT_EQ(i2.getWidth(), 2);
-    EXPECT_EQ(i2.getHeight(), 3);
+    CHECK_EQ(i2.getWidth(), 2);
+    CHECK_EQ(i2.getHeight(), 3);
     
     for (int i = 0; i < i1.getWidth() * i1.getHeight(); i++) {
-        EXPECT_EQ(i1.getData()[i], i2.getData()[i]);
+        CHECK_EQ(i1.getData()[i], i2.getData()[i]);
     }
 }
 
-TEST(ImageTests, testResize) {
+TEST_CASE("ImageTests.testResize") {
     ColorImage src (2, 3, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {0, 1, 0, 1}, {0, 1, 1, 1},
@@ -147,7 +147,7 @@ TEST(ImageTests, testResize) {
     dst.resizeFrom(src);
 }
 
-TEST(ImageTests, testFlipYOddSize) {
+TEST_CASE("ImageTests.testFlipYOddSize") {
     ColorImage image (2, 3, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {0, 1, 0, 1}, {0, 1, 1, 1},
@@ -162,10 +162,10 @@ TEST(ImageTests, testFlipYOddSize) {
         {1, 0, 0, 1}, {1, 1, 0, 1}
     });
     
-    EXPECT_TRUE(image == expectedImage);
+    CHECK(image == expectedImage);
 }
 
-TEST(ImageTests, testFlipYEvenSize) {
+TEST_CASE("ImageTests.testFlipYEvenSize") {
     ColorImage image (2, 4, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {1, 1, 1, 1}, {0, 0, 0, 1},
@@ -182,10 +182,10 @@ TEST(ImageTests, testFlipYEvenSize) {
         {1, 0, 0, 1}, {1, 1, 0, 1}
     });
     
-    EXPECT_TRUE(image == expectedImage);
+    CHECK(image == expectedImage);
 }
 
-TEST(ImageTests, testFlipXEvenSize) {
+TEST_CASE("ImageTests.testFlipXEvenSize") {
     ColorImage image (2, 4, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {1, 1, 1, 1}, {0, 0, 0, 1},
@@ -202,10 +202,10 @@ TEST(ImageTests, testFlipXEvenSize) {
         {1, 0, 1, 1}, {0, 0, 1, 1}
     });
     
-    EXPECT_TRUE(image == expectedImage);
+    CHECK(image == expectedImage);
 }
 
-TEST(ImageTests, testFlipXOddSize) {
+TEST_CASE("ImageTests.testFlipXOddSize") {
     ColorImage image (3, 2, {
         {1, 0, 0, 1}, {1, 1, 0, 1}, {1, 0, 1, 1},
         {1, 1, 1, 1}, {0, 0, 0, 1}, {1, 0, 1, 1},
@@ -218,20 +218,20 @@ TEST(ImageTests, testFlipXOddSize) {
         {1, 0, 1, 1}, {0, 0, 0, 1}, {1, 1, 1, 1}
     });
     
-    EXPECT_TRUE(image == expectedImage);
+    CHECK(image == expectedImage);
 }
 
-TEST(ImageTests, testGetSizeInBytes) {
+TEST_CASE("ImageTests.testGetSizeInBytes") {
     ColorImage image (3, 2, {
         {1, 0, 0, 1}, {1, 1, 0, 1}, {1, 0, 1, 1},
         {1, 1, 1, 1}, {0, 0, 0, 1}, {1, 0, 1, 1},
     });
     
-    EXPECT_TRUE(image.getSizeInBytes() == 3 * 2 * 4 * sizeof(float));
+    CHECK(image.getSizeInBytes() == 3 * 2 * 4 * sizeof(float));
 }
 
 
-TEST(ImageTests, testPremultiplyAlpha) {
+TEST_CASE("ImageTests.testPremultiplyAlpha") {
     ColorImage image (2, 2, {
         {1, 0, 0, 0.5}, {1, 1, 0, 0.75},
         {1, 1, 1, 0.25}, {0, 0, 0, 1.0}
@@ -244,10 +244,10 @@ TEST(ImageTests, testPremultiplyAlpha) {
         {0.25, 0.25, 0.25, 0.25}, {0, 0, 0, 1.0}
     });
     
-    EXPECT_TRUE(image == expectedImage);
+    CHECK(image == expectedImage);
 }
 
-TEST(ImageTests, testInPlaceResize) {
+TEST_CASE("ImageTests.testInPlaceResize") {
     ColorImage src (2, 3, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {0, 1, 0, 1}, {0, 1, 1, 1},
@@ -256,26 +256,26 @@ TEST(ImageTests, testInPlaceResize) {
     
     src.resize(4, 6);
     
-    EXPECT_EQ(src.getWidth(), 4);
-    EXPECT_EQ(src.getHeight(), 6);
+    CHECK_EQ(src.getWidth(), 4);
+    CHECK_EQ(src.getHeight(), 6);
 }
 
-TEST(ImageTests, testGetTexCoord) {
+TEST_CASE("ImageTests.testGetTexCoord") {
     using math::Vec2;
     
     ColorImage src (2, 3);
     
-    EXPECT_TRUE(Vec2::almostEqual(src.getTexCoordAtColRow(0, 0), Vec2(1.0 / 4.0, 1.0 / 6.0)));
-    EXPECT_TRUE(Vec2::almostEqual(src.getTexCoordAtColRow(1, 0), Vec2(3.0 / 4.0, 1.0 / 6.0)));
+    CHECK(Vec2::almostEqual(src.getTexCoordAtColRow(0, 0), Vec2(1.0 / 4.0, 1.0 / 6.0)));
+    CHECK(Vec2::almostEqual(src.getTexCoordAtColRow(1, 0), Vec2(3.0 / 4.0, 1.0 / 6.0)));
     
-    EXPECT_TRUE(Vec2::almostEqual(src.getTexCoordAtColRow(0, 1), Vec2(1.0 / 4.0, 3.0 / 6.0)));
-    EXPECT_TRUE(Vec2::almostEqual(src.getTexCoordAtColRow(1, 1), Vec2(3.0 / 4.0, 3.0 / 6.0)));
+    CHECK(Vec2::almostEqual(src.getTexCoordAtColRow(0, 1), Vec2(1.0 / 4.0, 3.0 / 6.0)));
+    CHECK(Vec2::almostEqual(src.getTexCoordAtColRow(1, 1), Vec2(3.0 / 4.0, 3.0 / 6.0)));
     
-    EXPECT_TRUE(Vec2::almostEqual(src.getTexCoordAtColRow(0, 2), Vec2(1.0 / 4.0, 5.0 / 6.0)));
-    EXPECT_TRUE(Vec2::almostEqual(src.getTexCoordAtColRow(1, 2), Vec2(3.0 / 4.0, 5.0 / 6.0)));
+    CHECK(Vec2::almostEqual(src.getTexCoordAtColRow(0, 2), Vec2(1.0 / 4.0, 5.0 / 6.0)));
+    CHECK(Vec2::almostEqual(src.getTexCoordAtColRow(1, 2), Vec2(3.0 / 4.0, 5.0 / 6.0)));
 }
 
-TEST(ImageTests, testMutatePixels) {
+TEST_CASE("ImageTests.testMutatePixels") {
     ColorImage src(2, 3, {
         {1, 0, 0, 1}, {1, 1, 0, 1},
         {0, 1, 0, 1}, {0, 1, 1, 1},
@@ -293,14 +293,14 @@ TEST(ImageTests, testMutatePixels) {
         {0, 2, 1, 0}, {1, 2, 1, 0}
     });
     
-    EXPECT_TRUE(src == expectedImage);
+    CHECK(src == expectedImage);
 }
 
-TEST(ImageTests, testResetSize) {
+TEST_CASE("ImageTests.testResetSize") {
     ColorImage img;
     
     img.resetSize(2,3);
     
-    EXPECT_EQ(img.getWidth(), 2);
-    EXPECT_EQ(img.getHeight(), 3);
+    CHECK_EQ(img.getWidth(), 2);
+    CHECK_EQ(img.getHeight(), 3);
 }

@@ -15,7 +15,7 @@
  */
 
 
-#include <gtest/gtest.h>
+#include <doctest/doctest.h>
 
 #include <standard_cyborg/algorithms/SobelEdgeFilter.hpp>
 
@@ -34,7 +34,7 @@ using standard_cyborg::sc3d::DepthImage;
 
 using standard_cyborg::algorithms::SobelEdgeFilter;
 
-TEST(SobelEdgeFilterTests, testSobelEdgeFilterDepthImage) {
+TEST_CASE("SobelEdgeFilterTests.testSobelEdgeFilterDepthImage") {
     DepthImage src (3, 3, {
         1, 2, 3,
         4, 5, 6,
@@ -53,13 +53,13 @@ TEST(SobelEdgeFilterTests, testSobelEdgeFilterDepthImage) {
         float g = sqrt(gx * gx + gy * gy);
         tmp = g;
         
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1), g);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1), g);
     }
     
     // now threshold it to zero:
     {
         SobelEdgeFilter(dst, src, tmp + 1.0f);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1), 0.0f);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1), 0.0f);
     }
     
     // try sampling at corner:
@@ -70,12 +70,12 @@ TEST(SobelEdgeFilterTests, testSobelEdgeFilterDepthImage) {
         float gy = (-1)*1 + (-2)*1 + (-1)*2 + (+1)*4 + (+2)*4 + (+1)*5;
         float g = sqrt(gx * gx + gy * gy);
         
-        EXPECT_EQ(dst.getPixelAtColRow(0, 0), g);
+        CHECK_EQ(dst.getPixelAtColRow(0, 0), g);
     }
 }
 
 
-TEST(SobelEdgeFilterTests, testSobelEdgeFilterColorImage) {
+TEST_CASE("SobelEdgeFilterTests.testSobelEdgeFilterColorImage") {
     ColorImage src (3, 3, {
         {0,0,0,1}, {1,1,1,1}, {1,1,1,1},
         {1,1,1,1}, {1,1,1,1}, {1,1,1,1},
@@ -94,20 +94,20 @@ TEST(SobelEdgeFilterTests, testSobelEdgeFilterColorImage) {
         float g = sqrt(gx * gx + gy * gy);
         tmp = g;
         
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).x, g);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).y, g);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).z, g);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).w, 1.0f);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).x, g);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).y, g);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).z, g);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).w, 1.0f);
         
     }
     
     // now threshold it to zero:
     {
         SobelEdgeFilter(dst, src, tmp + 1.0f);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).x, 0.0f);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).y, 0.0f);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).z, 0.0f);
-        EXPECT_EQ(dst.getPixelAtColRow(1, 1).w, 1.0f);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).x, 0.0f);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).y, 0.0f);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).z, 0.0f);
+        CHECK_EQ(dst.getPixelAtColRow(1, 1).w, 1.0f);
     }
     
     // try sampling at corner:
@@ -118,6 +118,6 @@ TEST(SobelEdgeFilterTests, testSobelEdgeFilterColorImage) {
         float gy = (-1)*0 + (-2)*0 + (-1)*1 + (+1)*1 + (+2)*1 + (+1)*1;
         float g = sqrt(gx * gx + gy * gy);
         
-        EXPECT_EQ(dst.getPixelAtColRow(0, 0).x, g);
+        CHECK_EQ(dst.getPixelAtColRow(0, 0).x, g);
     }
 }
