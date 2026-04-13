@@ -79,7 +79,7 @@ typedef struct {
         if (_pipelineState == nil) { NSLog(@"Unable to create pipeline state: %@", error); }
         
         _sharedUniformsBuffer = [device newBufferWithLength:sizeof(SharedUniforms)
-                                                    options:MTLResourceOptionCPUCacheModeWriteCombined];
+                                                    options:MTLResourceCPUCacheModeWriteCombined];
         _sharedUniformsBuffer.label = @"SCPointCloudRenderer._sharedUniformsBuffer";
     }
     return self;

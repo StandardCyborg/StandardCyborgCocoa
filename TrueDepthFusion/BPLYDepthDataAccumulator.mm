@@ -277,6 +277,7 @@ using namespace standard_cyborg;
                toPath:(NSString *)path
 {
     FILE *file = fopen([path UTF8String], "w");
+    if (file == NULL) return;
     
     [self _writeHeaderStartToFile:file];
     [self _writeHeaderMetadata:metadata toFile:file];
