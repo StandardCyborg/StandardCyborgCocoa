@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 70;
+	objectVersion = 60;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -19,6 +19,7 @@
 		76385562212F390500C7DA06 /* DepthColoringFilter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76385561212F390500C7DA06 /* DepthColoringFilter.swift */; };
 		7639967A212E360D000E5D3D /* DepthColoringFilter.metal in Sources */ = {isa = PBXBuildFile; fileRef = 76399679212E360D000E5D3D /* DepthColoringFilter.metal */; };
 		763CA4C32CE29245000A0214 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 763CA4C22CE29245000A0214 /* StandardCyborgFusion */; };
+		764E9BEB2F836686000D34AA /* TestCase-Hen in Resources */ = {isa = PBXBuildFile; fileRef = 764E9BEA2F836686000D34AA /* TestCase-Hen */; };
 		76539CB920F5BBC0009C332E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 76539CB820F5BBC0009C332E /* AppDelegate.m */; };
 		76539CBE20F5BBC1009C332E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 76539CBD20F5BBC1009C332E /* Assets.xcassets */; };
 		76539CC120F5BBC1009C332E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 76539CBF20F5BBC1009C332E /* Main.storyboard */; };
@@ -86,7 +87,6 @@
 		A584B61F214B1D3900BEF8EE /* ClearPass.metal in Sources */ = {isa = PBXBuildFile; fileRef = A584B61E214B1D3900BEF8EE /* ClearPass.metal */; };
 		A584B62D214B2DE200BEF8EE /* DrawAxes.mm in Sources */ = {isa = PBXBuildFile; fileRef = A584B627214B2DE100BEF8EE /* DrawAxes.mm */; };
 		A584B62E214B2DE200BEF8EE /* DrawAxes.metal in Sources */ = {isa = PBXBuildFile; fileRef = A584B62C214B2DE100BEF8EE /* DrawAxes.metal */; };
-		764E9BEB2F836686000D34AA /* TestCase-Hen in Resources */ = {isa = PBXBuildFile; fileRef = 764E9BEA2F836686000D34AA /* TestCase-Hen */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -143,6 +143,7 @@
 		76385561212F390500C7DA06 /* DepthColoringFilter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DepthColoringFilter.swift; sourceTree = "<group>"; };
 		76399679212E360D000E5D3D /* DepthColoringFilter.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = DepthColoringFilter.metal; sourceTree = "<group>"; };
 		7649BF54210A490A006030E0 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
+		764E9BEA2F836686000D34AA /* TestCase-Hen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "TestCase-Hen"; sourceTree = "<group>"; };
 		7652F65C2339551400103299 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		76539CB520F5BBC0009C332E /* VisualTesterMac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = VisualTesterMac.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		76539CB720F5BBC0009C332E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -242,11 +243,7 @@
 		A584B627214B2DE100BEF8EE /* DrawAxes.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = DrawAxes.mm; sourceTree = "<group>"; };
 		A584B62B214B2DE100BEF8EE /* DrawAxes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DrawAxes.hpp; sourceTree = "<group>"; };
 		A584B62C214B2DE100BEF8EE /* DrawAxes.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = DrawAxes.metal; sourceTree = "<group>"; };
-		764E9BEA2F836686000D34AA /* TestCase-Hen */ = {isa = PBXFileReference; lastKnownFileType = folder; path = "TestCase-Hen"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		76539CB220F5BBC0009C332E /* Frameworks */ = {
