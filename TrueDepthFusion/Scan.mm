@@ -75,9 +75,10 @@
     NSString *plyPath = [containerPath stringByAppendingPathComponent:plyFilename];
     NSString *jpegPath = [[self class] _thumbnailPathForPLYPath:plyPath];
     
+    NSError *jpegError = nil;
     @autoreleasepool {
         NSData *jpegData = UIImageJPEGRepresentation(_thumbnail, 0.8);
-        success = [jpegData writeToFile:jpegPath options:NSDataWritingAtomic error:errorOut];
+        success = [jpegData writeToFile:jpegPath options:NSDataWritingAtomic error:&jpegError];
     }
     
     if (success) {
@@ -184,3 +185,4 @@
 }
 
 @end
+
