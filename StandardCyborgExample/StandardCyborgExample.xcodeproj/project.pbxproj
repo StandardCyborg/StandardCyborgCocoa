@@ -12,10 +12,10 @@
 		7642B80121E679E800BC45C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7642B7FF21E679E800BC45C7 /* Main.storyboard */; };
 		7642B80321E679E900BC45C7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7642B80221E679E900BC45C7 /* Assets.xcassets */; };
 		7642B80621E679E900BC45C7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7642B80421E679E900BC45C7 /* LaunchScreen.storyboard */; };
-		766314042CEB185300CC7AF3 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 766314032CEB185300CC7AF3 /* StandardCyborgFusion */; };
-		766314072CEB186300CC7AF3 /* StandardCyborgUI in Frameworks */ = {isa = PBXBuildFile; productRef = 766314062CEB186300CC7AF3 /* StandardCyborgUI */; };
-		7663140D2CECFCDD00CC7AF3 /* StandardCyborgFusion in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 766314032CEB185300CC7AF3 /* StandardCyborgFusion */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		7663140F2CECFCDE00CC7AF3 /* StandardCyborgUI in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 766314062CEB186300CC7AF3 /* StandardCyborgUI */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
+		76C3BB6D2F8D847C00C75979 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76C3BB6C2F8D847C00C75979 /* StandardCyborgFusion */; };
+		76C3BB712F8D885C00C75979 /* StandardCyborgUI in Frameworks */ = {isa = PBXBuildFile; productRef = 76C3BB702F8D885C00C75979 /* StandardCyborgUI */; };
+		76C3BB742F8D88F900C75979 /* StandardCyborgFusion in Frameworks */ = {isa = PBXBuildFile; productRef = 76C3BB732F8D88F900C75979 /* StandardCyborgFusion */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,7 +25,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				7663140D2CECFCDD00CC7AF3 /* StandardCyborgFusion in Embed Frameworks */,
 				7663140F2CECFCDE00CC7AF3 /* StandardCyborgUI in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -48,8 +47,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				766314042CEB185300CC7AF3 /* StandardCyborgFusion in Frameworks */,
-				766314072CEB186300CC7AF3 /* StandardCyborgUI in Frameworks */,
+				76C3BB6D2F8D847C00C75979 /* StandardCyborgFusion in Frameworks */,
+				76C3BB712F8D885C00C75979 /* StandardCyborgUI in Frameworks */,
+				76C3BB742F8D88F900C75979 /* StandardCyborgFusion in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,8 +108,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				7663140A2CECF41100CC7AF3 /* PBXTargetDependency */,
-				7663140C2CECF41100CC7AF3 /* PBXTargetDependency */,
 			);
 			name = StandardCyborgExample;
 			productName = CatScan;
@@ -124,7 +122,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1010;
-				LastUpgradeCheck = 2600;
+				LastUpgradeCheck = 2640;
 				ORGANIZATIONNAME = "Standard Cyborg";
 				TargetAttributes = {
 					7642B7F721E679E800BC45C7 = {
@@ -143,8 +141,8 @@
 			);
 			mainGroup = 7642B7EF21E679E800BC45C7;
 			packageReferences = (
-				76A00002AAAA000000000001 /* XCLocalSwiftPackageReference ".." */,
-				76A00002AAAA000000000002 /* XCLocalSwiftPackageReference "../StandardCyborgUI" */,
+				76C3BB6F2F8D885C00C75979 /* XCLocalSwiftPackageReference "../StandardCyborgUI" */,
+				76C3BB722F8D88F900C75979 /* XCLocalSwiftPackageReference "../../StandardCyborgCocoa" */,
 			);
 			productRefGroup = 7642B7F921E679E800BC45C7 /* Products */;
 			projectDirPath = "";
@@ -179,17 +177,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		7663140A2CECF41100CC7AF3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 766314092CECF41100CC7AF3 /* StandardCyborgFusion */;
-		};
-		7663140C2CECF41100CC7AF3 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			productRef = 7663140B2CECF41100CC7AF3 /* StandardCyborgUI */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		7642B7FF21E679E800BC45C7 /* Main.storyboard */ = {
@@ -270,6 +257,7 @@
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -328,6 +316,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -344,6 +333,7 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/StandardCyborgExample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -369,6 +359,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = "$(SRCROOT)/StandardCyborgExample/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -408,36 +399,42 @@
 /* End XCConfigurationList section */
 
 /* Begin XCLocalSwiftPackageReference section */
-		76A00002AAAA000000000001 /* XCLocalSwiftPackageReference ".." */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ..;
-		};
 		76A00002AAAA000000000002 /* XCLocalSwiftPackageReference "../StandardCyborgUI" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../StandardCyborgUI;
 		};
+		76C3BB692F8D83FD00C75979 /* XCLocalSwiftPackageReference "../../StandardCyborgCocoa" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../StandardCyborgCocoa;
+		};
+		76C3BB6F2F8D885C00C75979 /* XCLocalSwiftPackageReference "../StandardCyborgUI" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../StandardCyborgUI;
+		};
+		76C3BB722F8D88F900C75979 /* XCLocalSwiftPackageReference "../../StandardCyborgCocoa" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../StandardCyborgCocoa;
+		};
 /* End XCLocalSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		766314032CEB185300CC7AF3 /* StandardCyborgFusion */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = 76A00002AAAA000000000001 /* XCLocalSwiftPackageReference ".." */;
-			productName = StandardCyborgFusion;
-		};
 		766314062CEB186300CC7AF3 /* StandardCyborgUI */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 76A00002AAAA000000000002 /* XCLocalSwiftPackageReference "../StandardCyborgUI" */;
 			productName = StandardCyborgUI;
 		};
-		766314092CECF41100CC7AF3 /* StandardCyborgFusion */ = {
+		76C3BB6C2F8D847C00C75979 /* StandardCyborgFusion */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 76A00002AAAA000000000001 /* XCLocalSwiftPackageReference ".." */;
+			package = 76C3BB692F8D83FD00C75979 /* XCLocalSwiftPackageReference "../../StandardCyborgCocoa" */;
 			productName = StandardCyborgFusion;
 		};
-		7663140B2CECF41100CC7AF3 /* StandardCyborgUI */ = {
+		76C3BB702F8D885C00C75979 /* StandardCyborgUI */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 76A00002AAAA000000000002 /* XCLocalSwiftPackageReference "../StandardCyborgUI" */;
 			productName = StandardCyborgUI;
+		};
+		76C3BB732F8D88F900C75979 /* StandardCyborgFusion */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = StandardCyborgFusion;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
