@@ -43,15 +43,26 @@ sc3d::PerspectiveCamera PerspectiveCameraFromAVCameraCalibrationData(AVCameraCal
     camera.setExtrinsicMatrix(extrinsicMatrix);
 
     // The extrinsic matrix Apple gives us in calibrationData.extrinsicMatrix doesn't match the
-    // coordinate system we otherwise prefer, so we use this matrix to rotate the model about the
-    // z axis by 90 degrees so that the model is unprojected out along the negative z axis. This
-    // means that if you look at the screen with x to the right and y up, then you see the model
-    // in front of you.
-    math::Mat3x4 desiredOrientation({
-        0, 1, 0, 0,
-        1, 0, 0, 0,
-        0, 0, -1, 0
-    });
+    // coordinate system we otherwise prefer, so we post-multiply by an orientation matrix to
+    // produce world space with x to the right, y up, and z toward the user.
+    //
+    // On 4:3 TrueDepth sensors, the sensor's pixel-u axis points UP in portrait, so we swap
+    // X↔Y and negate Z. On 16:9 sensors (iPhone 17 Pro+), the pixel-u axis points RIGHT in
+    // portrait, so no swap is needed — just negate Y and Z.
+    CGSize refDims = calibrationData.intrinsicMatrixReferenceDimensions;
+    bool isWidescreenSensor = (refDims.width / refDims.height) > 1.5f;
+
+    math::Mat3x4 desiredOrientation = isWidescreenSensor
+        ? math::Mat3x4({
+            1, 0, 0, 0,
+            0, -1, 0, 0,
+            0, 0, -1, 0
+        })
+        : math::Mat3x4({
+            0, 1, 0, 0,
+            1, 0, 0, 0,
+            0, 0, -1, 0
+        });
     // We construct a baseline extrinsic matrix strictly to nail down our desired output given
     // expected input, with the additional expectation that if the extrinsic matrix returned by
     // Apple changed for some reason, we'd actually want to pick up those changes. That is to say,
