@@ -184,23 +184,20 @@ typedef struct {
     float near = 0.001; // meters
     float far = 10.0; // meters
     
-    // NB: the source aspect ratio is inverted because the incoming frame is sideways
-    // relative to what we display. It's much, much, much easier to reason about if
-    // we just flip it.
     float resultAspectRatio = (float)resultWidth / (float)resultHeight;
+    // The source aspect ratio is inverted because the incoming frame is sideways
     float sourceAspectRatio = (float)sourceHeight / (float)sourceWidth;
-    
+
     // These magic numbers are chosen to anchor a nominal point size with the initial setup,
     // then to scale it correctly with the shape of the input and output.
     float nominalPointSize = 8.0;
     float nominalFrameWidth = 640.0;
     float nominalResultHeight = 1556.0;
     float pointSize = nominalPointSize * (nominalFrameWidth / depthFrameSize.width) * ((float)resultHeight / nominalResultHeight);
-    
+
     simd_float2 imageScale;
     float referenceSize;
     if (sourceAspectRatio > resultAspectRatio) {
-        // The source data is wider than the result display
         imageScale[0] = 1.0 / resultAspectRatio;
         imageScale[1] = 1.0;
         referenceSize = sourceWidth;
@@ -210,48 +207,38 @@ typedef struct {
         referenceSize = sourceHeight;
     }
 
+    float px = 2.0f * fx / referenceSize * imageScale[0];
+    float py = 2.0f * fy / referenceSize * imageScale[1];
+    float pz = (far + near) / (near - far);
+    float pw = 2.0f * far * near / (near - far);
+
     simd_float4x4 projection = {
-        .columns[0] = {2.0f * fx / referenceSize * imageScale[0], 0.0f, 0.0f, 0.0f},
-        .columns[1] = {0.0f, 2.0f * fy / referenceSize * imageScale[1], 0.0f, 0.0f},
-        .columns[2] = {0.0f, 0.0f, (far + near) / (near - far), -1.0f},
-        .columns[3] = {0.0f, 0.0f, 2.0f * far * near / (near - far), 0.0f}
+        .columns[0] = {    px, 0.0f, 0.0f,  0.0f },
+        .columns[1] = {  0.0f,   py, 0.0f,  0.0f },
+        .columns[2] = {  0.0f, 0.0f,   pz, -1.0f },
+        .columns[3] = {  0.0f, 0.0f,   pw,  0.0f },
     };
-    
+
     simd_float4x4 viewInverse = matrix_invert(viewMatrix);
-    
-    // According to Aaron, the TrueDepth camera is rotated 90degrees inside the phone,
-    // so we need to swap the x and y axes to counteract this.
-    simd_float4x4 orientationTransform;
-    if (flipsInputHorizontally) {
-        // if we flip input horizontally, then the rendered point cloud will also be
-        // flipped horizontally, and not match the selfie image shown in the background,
-        // which looks weird. So, we flip horizontally, before applying the projection matrix.
-        orientationTransform = (simd_float4x4){
-            .columns[0] = { -1.0, 0.0,  0.0, 0.0 },
-            .columns[1] = {  0.0, 1.0,  0.0, 0.0 },
-            .columns[2] = {  0.0, 0.0, -1.0, 0.0 },
-            .columns[3] = {  0.0, 0.0,  0.0, 1.0 },
-        };
-    } else {
-        orientationTransform = (simd_float4x4){
-            .columns[0] = { 1.0, 0.0,  0.0, 0.0 },
-            .columns[1] = { 0.0, 1.0,  0.0, 0.0 },
-            .columns[2] = { 0.0, 0.0, -1.0, 0.0 },
-            .columns[3] = { 0.0, 0.0,  0.0, 1.0 },
-        };
-    }
-    
-    
+
+    float xSign = flipsInputHorizontally ? -1.0f : 1.0f;
+    simd_float4x4 orientationTransform = (simd_float4x4){
+        .columns[0] = { xSign, 0.0f,  0.0f, 0.0f },
+        .columns[1] = {  0.0f, 1.0f,  0.0f, 0.0f },
+        .columns[2] = {  0.0f, 0.0f, -1.0f, 0.0f },
+        .columns[3] = {  0.0f, 0.0f,  0.0f, 1.0f },
+    };
+
     simd_float4x4 view = matrix_multiply(orientationTransform, viewInverse);
-    
+
     simd_float3x3 truncatedView = {
         .columns[0] = { view.columns[0][0], view.columns[0][1], view.columns[0][2] },
         .columns[1] = { view.columns[1][0], view.columns[1][1], view.columns[1][2] },
         .columns[2] = { view.columns[2][0], view.columns[2][1], view.columns[2][2] }
     };
     simd_float3x3 viewNormalMatrix = matrix_transpose(matrix_invert(truncatedView));
-    
-    simd_float4x4 viewProjectionMatrix = matrix_multiply(projection, matrix_multiply(orientationTransform, viewInverse));
+
+    simd_float4x4 viewProjectionMatrix = matrix_multiply(projection, view);
     
     SharedUniforms sharedUniforms;
     sharedUniforms.viewMatrix = view;
