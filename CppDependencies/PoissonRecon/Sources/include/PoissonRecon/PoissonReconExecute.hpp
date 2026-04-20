@@ -155,7 +155,12 @@ void _PoissonReconExecute(const char *In,
         auto& v = vertexCollector.vertices[i];
         plyVertices[i].template get<0>() = v.position;
         plyVertices[i].template get<1>() = v.weight;
-        plyVertices[i].template get<2>() = v.gradient;
+        // The solver negates the input normal field before reconstruction, so
+        // the gradient of the reconstructed implicit function points inward.
+        // Negate it here to get an outward-facing unit normal (matches
+        // pre-18.75 PoissonRecon output, which used the input-sample normals).
+        Point<float, 3> normal = -v.gradient;
+        plyVertices[i].template get<2>() = normal;
         plyVertices[i].template get<3>() = v.color;
     }
 
