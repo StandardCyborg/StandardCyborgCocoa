@@ -285,12 +285,28 @@ static Eigen::Matrix4f _computePointToPlaneTransform(_ICPCorrespondence& corresp
     FillUpperTriangularMatrixIntoLower6x6(A);
     
     x = A.llt().solve(b);
-    
-    Eigen::Matrix4f sourceTransform;
-    sourceTransform.setIdentity();
-    sourceTransform.matrix().topLeftCorner(3, 3) = rotationFromEulerAngles(x.head<3>());
-    sourceTransform.matrix().topRightCorner(3, 1) = x.tail<3>();
-    
+
+    // Retract the linearized 6-vector back to SE(3) via Rodrigues (axis-angle exponential), not Euler XYZ.
+    // The Jacobian above (cn.head<3> = p × n) corresponds to the skew-symmetric/axis-angle parameterization
+    // p_new ≈ p + ω × p + t, so retracting with R = exp([ω]×) is the internally consistent choice.
+    Eigen::Vector3f omega = x.head<3>();
+    float theta = omega.norm();
+    Eigen::Matrix3f R;
+    if (theta < 1e-8f) {
+        // Small-angle fallback: R ≈ I + [ω]× (first-order Rodrigues). Avoids the
+        // division by theta without introducing a discontinuity.
+        R = Eigen::Matrix3f::Identity();
+        R(0,1) = -omega.z(); R(0,2) =  omega.y();
+        R(1,0) =  omega.z(); R(1,2) = -omega.x();
+        R(2,0) = -omega.y(); R(2,1) =  omega.x();
+    } else {
+        R = Eigen::AngleAxisf(theta, omega / theta).toRotationMatrix();
+    }
+
+    Eigen::Matrix4f sourceTransform = Eigen::Matrix4f::Identity();
+    sourceTransform.topLeftCorner<3, 3>() = R;
+    sourceTransform.topRightCorner<3, 1>() = x.tail<3>();
+
     return sourceTransform;
 }
 
