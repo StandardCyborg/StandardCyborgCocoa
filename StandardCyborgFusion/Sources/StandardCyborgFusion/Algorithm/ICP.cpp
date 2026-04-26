@@ -10,6 +10,7 @@
 #include <standard_cyborg/util/DataUtils.hpp>
 #include <standard_cyborg/util/DebugHelpers.hpp>
 
+#include "DebugLog.h"
 #include "GeometryHelpers.hpp"
 #include "ThreadPool.hpp"
 #include "ICP.hpp"
@@ -401,6 +402,10 @@ ICPResult ICP::run(ICPConfiguration config,
         // This check doesn't enforce overall camera movement limits, but is instead an early bailout
         // for when ICP simply diverges to infinity
         if (sourceTransformAdjustment.col(3).head<3>().squaredNorm() > squaredTranslationLimit) {
+            DEBUG_LOG("[ICP] iteration %d bailed: per-step translation %.3fm > limit %.3fm",
+                      iteration,
+                      sourceTransformAdjustment.col(3).head<3>().norm(),
+                      kTranslationLimit);
             result.succeeded = false;
             break;
         }
@@ -418,6 +423,10 @@ ICPResult ICP::run(ICPConfiguration config,
         sourceTransform = sourceTransformAdjustment * sourceTransform;
 
         if (sourceTransform.col(3).head<3>().squaredNorm() > squaredTranslationLimit) {
+            DEBUG_LOG("[ICP] iteration %d bailed: cumulative translation %.3fm > limit %.3fm",
+                      iteration,
+                      sourceTransform.col(3).head<3>().norm(),
+                      kTranslationLimit);
             result.succeeded = false;
             break;
         }

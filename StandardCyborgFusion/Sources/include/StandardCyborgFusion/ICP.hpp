@@ -36,6 +36,8 @@ struct ICPResult {
     math::Mat4x4 sourceTransform;
     
     // A value that measures the error in alignment between source and target.
+    // Weighted by the outlier-rejection mask, so it reflects the cost that ICP is
+    // actually minimizing (and on which the convergence test depends).
     float rmsCorrespondenceError = 1e10;
     
     // The number of iterations, the ICP algorithm needed to align. This

@@ -395,8 +395,10 @@ NS_ASSUME_NONNULL_BEGIN
         // We only use the most recent raw frame, dropping any other ones that haven't had a chance to process
         BOOL dropped = _inputQueue_incomingFrameData != nil;
         _inputQueue_incomingFrameData = data;
-        
-        if (!dropped) {
+
+        if (dropped) {
+            _inputQueue_statistics.droppedFrameCount += 1;
+        } else {
             dispatch_semaphore_signal(_incomingFrameDataSemaphore);
         }
     });
@@ -551,8 +553,9 @@ static const float kCenterDepthExpansionRatio = 1.4;
         
         dispatch_async(dispatch_get_main_queue(), ^{
 #ifndef XCODE_ACTION_install // Avoid logging in archive builds
-            printf("STATS: succeeded: %zd, lost tracking: %zd, consecutive lost tracking: %zd\n",
-                   statistics.succeededCount, statistics.lostTrackingCount, statistics.consecutiveLostTrackingCount);
+            printf("[RC] STATS: succeeded=%zd lost=%zd consecLost=%zd dropped=%zd\n",
+                   statistics.succeededCount, statistics.lostTrackingCount,
+                   statistics.consecutiveLostTrackingCount, statistics.droppedFrameCount);
 #endif
             
             [_delegate reconstructionManager:self didProcessWithMetadata:metadata statistics:statistics];
@@ -592,7 +595,8 @@ static const float kCenterDepthExpansionRatio = 1.4;
     float quality = metadata.icpUnusedIterationFraction;
     
     CFAbsoluteTime endTime = CFAbsoluteTimeGetCurrent();
-    printf("Assimilated frame %d in %.2f ms with quality %f\n", data.sequence, 1000.0 * (endTime - startTime), quality);
+    printf("[RC] frame seq=%d took %.2fms quality=%.3f\n",
+           data.sequence, 1000.0 * (endTime - startTime), quality);
 #endif
     
     return metadata;

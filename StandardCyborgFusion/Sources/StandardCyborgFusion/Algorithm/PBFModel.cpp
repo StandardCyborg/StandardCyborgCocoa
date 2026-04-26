@@ -216,6 +216,12 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
     // The surfel index map is drawn from the point of view of the incoming frame (inverse world transform)
     // Points in the new frame are un-projected into 3D based on the world transform
     
+    const size_t frameIndex = _assimilatedFrameMetadatas.size();
+    const size_t surfelsAtStart = _surfels.size();
+    DEBUG_LOG("[PBF] --- frame %zu start: surfels=%zu t=%.3f predictedDelta_t=%.4fm",
+              frameIndex, surfelsAtStart, currentTime,
+              _lastAcceptedPoseDelta.topRightCorner<3,1>().norm());
+
     // Get the current most recent metadata (haven't pushed this frame's metadata yet)
     PBFAssimilatedFrameMetadata* previousFrameMeta = _nthMostRecentValidFrameMetadata(0);
 
@@ -252,7 +258,7 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
         frameMeta.correspondenceError = icpResult.rmsCorrespondenceError;
         
         if (!icpResult.succeeded) {
-            DEBUG_LOG("ICP rejected due to bad convergence after %d/%d iterations", icpResult.iterationCount, icpConfig.maxIterations);
+            DEBUG_LOG("[PBF] ICP rejected: bad convergence after %d/%d iterations", icpResult.iterationCount, icpConfig.maxIterations);
             frameMeta.icpUnusedIterationFraction = 0;
         } else {
             frameMeta.icpUnusedIterationFraction = 1.0f - (float)icpResult.iterationCount / (float)icpConfig.maxIterations;
@@ -260,12 +266,14 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
             CameraVelocity cv = _cameraVelocity(previousFrameMeta, &frameMeta);
             
             if (cv.angularVelocity.hasNaN() || cv.angularVelocity.norm() > pbfConfig.maxCameraAngularVelocity) {
-                DEBUG_LOG("Rejecting ICP due to bad fit with angular velocity %f", cv.angularVelocity.norm());
+                DEBUG_LOG("[PBF] ICP rejected: angular velocity %.3f rad/s > %.3f",
+                          cv.angularVelocity.norm(), pbfConfig.maxCameraAngularVelocity);
                 frameMeta.icpUnusedIterationFraction = 0;
             }
             
             else if (cv.velocity.hasNaN() || cv.velocity.norm() > pbfConfig.maxCameraVelocity) {
-                DEBUG_LOG("Rejecting ICP due to bad fit with linear velocity %f", cv.velocity.norm());
+                DEBUG_LOG("[PBF] ICP rejected: linear velocity %.3f m/s > %.3f",
+                          cv.velocity.norm(), pbfConfig.maxCameraVelocity);
                 frameMeta.icpUnusedIterationFraction = 0;
             }
         }
@@ -275,9 +283,14 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
             // the previous velocity remains the best extrapolation for the next frame.
             _lastAcceptedPoseDelta = extrinsicMatrixTmp * _rigidInverse(_extrinsicMatrix);
             _extrinsicMatrix = extrinsicMatrixTmp;
+
+            DEBUG_LOG("[PBF] frame %zu accepted: iters=%d/%d rms=%.4fm quality=%.2f",
+                      frameIndex, icpResult.iterationCount, icpConfig.maxIterations,
+                      icpResult.rmsCorrespondenceError,
+                      frameMeta.icpUnusedIterationFraction);
         } else {
-            // It didn't converge in time, so bail out
-            DEBUG_LOG("ICP didn't converge with enough quality (%f) after %d/%d iterations. Ignoring frame.", frameMeta.icpUnusedIterationFraction, icpResult.iterationCount, icpConfig.maxIterations);
+            DEBUG_LOG("[PBF] Dropping frame: quality %.2f after %d/%d iterations",
+                      frameMeta.icpUnusedIterationFraction, icpResult.iterationCount, icpConfig.maxIterations);
             _assimilatedFrameMetadatas.push_back(frameMeta);
             return frameMeta;
         }
