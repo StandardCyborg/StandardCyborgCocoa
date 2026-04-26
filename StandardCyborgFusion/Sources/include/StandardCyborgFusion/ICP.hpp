@@ -23,8 +23,11 @@ using namespace standard_cyborg;
 struct ICPConfiguration {
     float tolerance = 1e-4; // if the relative correspondence error is below this tolerance value, then the ICP is done.
     int maxIterations = 18; // maximum number of iterations to run ICP.
-    float outlierDeviationsThreshold = 1.0; // threshold value, used for filtering out outlier points.
-    int threadCount = 1; // number of threads allowed to use, for the correspondence search of ICP. 
+    // Standard-deviations multiplier for outlier rejection. A correspondence whose distance exceeds
+    // `meanDistance + outlierDeviationsThreshold * stdDev(distance)` is dropped from this iteration.
+    // Typical values: 2.5–3.5 for moderately noisy TrueDepth data.
+    float outlierDeviationsThreshold = 3.0;
+    int threadCount = 1; // number of threads allowed to use, for the correspondence search of ICP.
 };
 
 struct ICPResult {

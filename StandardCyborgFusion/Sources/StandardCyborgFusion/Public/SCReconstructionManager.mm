@@ -137,6 +137,11 @@ NS_ASSUME_NONNULL_BEGIN
         _icpConfig.maxIterations = (int)[[NSUserDefaults standardUserDefaults] integerForKey:@"icp_max_iteration_count"] ?: _icpConfig.maxIterations;
         _icpConfig.tolerance = [[NSUserDefaults standardUserDefaults] floatForKey:@"icp_tolerance"] ?: _icpConfig.tolerance;
         
+        NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults objectForKey:@"icp_outlier_deviations_threshold"] != nil) {
+            _icpConfig.outlierDeviationsThreshold = [defaults floatForKey:@"icp_outlier_deviations_threshold"];
+        }
+
         _modelQueue_depthProcessor = new MetalDepthProcessor(device, library, commandQueue);
         
         _modelQueue = dispatch_queue_create("SCReconstructionManager._modelQueue",

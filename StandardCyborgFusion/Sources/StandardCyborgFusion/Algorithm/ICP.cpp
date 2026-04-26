@@ -211,15 +211,31 @@ static _ICPCorrespondence _computeCorrespondence(const std::vector<math::Vec3>& 
     }
 #endif
     
-    float avgSquaredError = sumSquaredError / vertexCount;
-    float normalizedVarianceThreshold = config.outlierDeviationsThreshold * config.outlierDeviationsThreshold;
-    
+    // Outlier rejection based on the Euclidean distance distribution of correspondences
+    Eigen::VectorXf distances(vertexCount);
+    double sumDistance = 0.0;
+    for (size_t i = 0; i < vertexCount; ++i) {
+        float d = std::sqrt((*squaredErrors)(i));
+        distances(i) = d;
+        sumDistance += d;
+    }
+    double meanDistance = sumDistance / vertexCount;
+
+    double varianceDistance = 0.0;
+    for (size_t i = 0; i < vertexCount; ++i) {
+        double delta = distances(i) - meanDistance;
+        varianceDistance += delta * delta;
+    }
+    float stdDevDistance = (vertexCount > 1) ? (float)std::sqrt(varianceDistance / (vertexCount - 1)) : 0.0f;
+
+    // Small floor so that a nearly-perfect fit doesn't reject its own noise floor
+    const float kMinStdDev = 1e-4f;
+    float effectiveStdDev = std::max(stdDevDistance, kMinStdDev);
+    float rejectDistance = (float)meanDistance + config.outlierDeviationsThreshold * effectiveStdDev;
+
     for (size_t i = 0; i < vertexCount; i++) {
-        float squaredError = (*squaredErrors)(i);
-        float normalizedVariance = squaredError / avgSquaredError;
-        float weight = normalizedVariance > normalizedVarianceThreshold ? 0.0 : 1.0;
-        
-        (*weights)(i) = weight; // * sourceWeights[i];
+        float weight = (distances(i) > rejectDistance) ? 0.0f : 1.0f;
+        (*weights)(i) = weight;
     }
     
     return _ICPCorrespondence(sourceVertices, targetVertices, targetNormals, squaredErrors, weights);
