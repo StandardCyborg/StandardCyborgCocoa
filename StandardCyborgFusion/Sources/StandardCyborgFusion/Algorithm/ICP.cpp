@@ -409,8 +409,11 @@ ICPResult ICP::run(ICPConfiguration config,
         
         // Calculate the correspondence error
         float rmsError = correspondence.computeRMSCorrespondenceError();
-        
-        relativeError = fabsf(rmsError - previousError) / rmsError;
+
+        // Guard the relative-change convergence test against near-zero error (which
+        // would inject Inf/NaN and exit the loop prematurely).
+        const float kRelativeErrorFloor = 1e-6f;
+        relativeError = fabsf(rmsError - previousError) / std::max(rmsError, kRelativeErrorFloor);
         previousError = rmsError;
         sourceTransform = sourceTransformAdjustment * sourceTransform;
 
