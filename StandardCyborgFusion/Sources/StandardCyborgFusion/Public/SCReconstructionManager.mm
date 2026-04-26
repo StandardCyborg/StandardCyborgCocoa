@@ -138,6 +138,12 @@ NS_ASSUME_NONNULL_BEGIN
         _icpConfig.tolerance = [[NSUserDefaults standardUserDefaults] floatForKey:@"icp_tolerance"] ?: _icpConfig.tolerance;
         
         NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+        if ([defaults objectForKey:@"icp_motion_prediction_enabled"] != nil) {
+            _pbfConfig.enableMotionPrediction = [defaults boolForKey:@"icp_motion_prediction_enabled"];
+        }
+        if ([defaults objectForKey:@"icp_motion_prediction_damping"] != nil) {
+            _pbfConfig.motionPredictionDamping = [defaults floatForKey:@"icp_motion_prediction_damping"];
+        }
         if ([defaults objectForKey:@"icp_outlier_deviations_threshold"] != nil) {
             _icpConfig.outlierDeviationsThreshold = [defaults floatForKey:@"icp_outlier_deviations_threshold"];
         }

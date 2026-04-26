@@ -32,6 +32,43 @@ struct CameraVelocity {
     Vector3f velocity;
 };
 
+// Rigid-transform inverse assuming `m` is in SE(3): inv([R|t]) = [R^T | -R^T t].
+// Avoids the general 4×4 inverse which is numerically fragile once `m` drifts even
+// slightly from rigid, and sidesteps the "is this really orthogonal?" question for
+// the accumulated extrinsic matrix.
+static Eigen::Matrix4f _rigidInverse(const Eigen::Matrix4f& m)
+{
+    Eigen::Matrix4f out = Eigen::Matrix4f::Identity();
+    Eigen::Matrix3f Rt = m.topLeftCorner<3, 3>().transpose();
+    out.topLeftCorner<3, 3>() = Rt;
+    out.topRightCorner<3, 1>() = -Rt * m.topRightCorner<3, 1>();
+    return out;
+}
+
+// Scale a small rigid transform toward identity by `damping`. Rotation is slerped
+// from identity via the angle-axis exponential; translation is linearly scaled.
+// Both are valid because the deltas we handle here are small (one frame of motion).
+static Eigen::Matrix4f _dampDelta(const Eigen::Matrix4f& delta, float damping)
+{
+    damping = std::max(0.0f, std::min(1.0f, damping));
+    Eigen::Matrix3f R = delta.topLeftCorner<3, 3>();
+    Eigen::Vector3f t = delta.topRightCorner<3, 1>();
+
+    Eigen::AngleAxisf aa(R);
+    float scaledAngle = aa.angle() * damping;
+    Eigen::Matrix3f Rs;
+    if (fabsf(scaledAngle) < 1e-8f || !aa.axis().allFinite()) {
+        Rs = Eigen::Matrix3f::Identity();
+    } else {
+        Rs = Eigen::AngleAxisf(scaledAngle, aa.axis()).toRotationMatrix();
+    }
+
+    Eigen::Matrix4f out = Eigen::Matrix4f::Identity();
+    out.topLeftCorner<3, 3>() = Rs;
+    out.topRightCorner<3, 1>() = damping * t;
+    return out;
+}
+
 
 PBFModel::PBFModel(std::shared_ptr<SurfelIndexMap> surfelIndexMap, unsigned int randomSeed) :
     _surfelFusion(surfelIndexMap)
@@ -194,9 +231,20 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
     const size_t height = rawFrame.height;
     
     if (_surfels.size() > 0) {
-        ICPResult icpResult = _runICP(frame, surfelFusionConfiguration, icpConfig, pbfConfig);
+        // Motion prediction: pre-transform the incoming frame by (lastDelta * prevPose) instead of just prevPose,
+        // so ICP starts from where we predict the camera is rather than where it was.
+        // Damping the delta per-frame keeps a single noisy frame's delta from ricocheting into a runaway prediction.
+        Matrix4f predictedExtrinsic = _extrinsicMatrix;
+        if (pbfConfig.enableMotionPrediction) {
+            Matrix4f dampedDelta = _dampDelta(_lastAcceptedPoseDelta, pbfConfig.motionPredictionDamping);
+            predictedExtrinsic = dampedDelta * _extrinsicMatrix;
+        }
 
-        Matrix4f extrinsicMatrixTmp = toMatrix4f(icpResult.sourceTransform) * _extrinsicMatrix;
+        ICPResult icpResult = _runICP(frame, surfelFusionConfiguration, icpConfig, pbfConfig, predictedExtrinsic);
+
+        // The transform ICP returns is the residual on top of `predictedExtrinsic`, so
+        // compose it with `predictedExtrinsic`, NOT `_extrinsicMatrix`.
+        Matrix4f extrinsicMatrixTmp = toMatrix4f(icpResult.sourceTransform) * predictedExtrinsic;
         // Store this whether or not we end up using it since we also store information about whether
         // the frame was assimilated or not
         frameMeta.viewMatrix = extrinsicMatrixTmp;
@@ -223,6 +271,9 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
         }
         
         if (frameMeta.icpUnusedIterationFraction > 0) {
+            // If the frame was rejected we leave the previous delta in place;
+            // the previous velocity remains the best extrapolation for the next frame.
+            _lastAcceptedPoseDelta = extrinsicMatrixTmp * _rigidInverse(_extrinsicMatrix);
             _extrinsicMatrix = extrinsicMatrixTmp;
         } else {
             // It didn't converge in time, so bail out
@@ -326,6 +377,7 @@ void PBFModel::reset(unsigned int randomSeed)
     DEBUG_LOG("Resetting");
 
     _extrinsicMatrix.setIdentity();
+    _lastAcceptedPoseDelta.setIdentity();
 
     _fastRNG.seed(randomSeed);
 
@@ -338,7 +390,11 @@ void PBFModel::reset(unsigned int randomSeed)
 
 // MARK: - Private
 
-ICPResult PBFModel::_runICP(ProcessedFrame& frame, SurfelFusionConfiguration surfelFusionConfiguration, ICPConfiguration icpConfig, PBFConfiguration pbfConfig)
+ICPResult PBFModel::_runICP(ProcessedFrame& frame,
+                            SurfelFusionConfiguration surfelFusionConfiguration,
+                            ICPConfiguration icpConfig,
+                            PBFConfiguration pbfConfig,
+                            const Eigen::Matrix4f& predictedExtrinsic)
 {
     bool shouldRebuildPointCloud = false;
     if (_assimilatedFrameMetadatas.size() < pbfConfig.kdTreeRebuildInterval / 2 || _ICPTargetCloud == nullptr) {
@@ -367,8 +423,11 @@ ICPResult PBFModel::_runICP(ProcessedFrame& frame, SurfelFusionConfiguration sur
         downsampledVertices.reserve(frame.positions.size());
         
         float downsampledFraction = pbfConfig.icpDownsampleFraction;
-        
-        Matrix3f normalTransform = NormalMatrixFromMat4(_extrinsicMatrix);
+
+        // Pre-transform by the predicted pose (constant-velocity extrapolation) so ICP's initial residual
+        // is as small as possible. When motion prediction is disabled in config, `predictedExtrinsic`
+        // is just `_extrinsicMatrix`, which reduces to the original constant-pose seed.
+        Matrix3f normalTransform = NormalMatrixFromMat4(predictedExtrinsic);
         
         // Filter by depth
         size_t pointCount = frame.positions.size();
@@ -387,7 +446,7 @@ ICPResult PBFModel::_runICP(ProcessedFrame& frame, SurfelFusionConfiguration sur
             if (_fastRNG.sample(1000) > frame.weights[i] * 1000.0f) continue;
             if (depth < surfelFusionConfiguration.minDepth || depth > surfelFusionConfiguration.maxDepth) continue;
           
-            downsampledVertices.push_back(standard_cyborg::toVec3(  Vec3TransformMat4( toVector3f(frame.positions[i]), _extrinsicMatrix)  ) );
+            downsampledVertices.push_back(standard_cyborg::toVec3(Vec3TransformMat4(toVector3f(frame.positions[i]), predictedExtrinsic)));
             
             downsampledNormals.push_back(standard_cyborg::toVec3(normalTransform * standard_cyborg::toVector3f(frame.normals[i])));
             
