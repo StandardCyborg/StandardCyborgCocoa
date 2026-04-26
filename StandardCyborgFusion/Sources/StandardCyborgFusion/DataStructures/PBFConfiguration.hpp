@@ -11,9 +11,9 @@
 #import <cmath>
 
 struct PBFConfiguration {
-    float maxCameraVelocity = 0.6;
-    float maxCameraAngularVelocity = 2.5;
     
+    float maxCameraVelocity = 6.0;
+    float maxCameraAngularVelocity = 20.0;
     float icpDownsampleFraction = 0.05;
     
     int kdTreeRebuildInterval = 6;

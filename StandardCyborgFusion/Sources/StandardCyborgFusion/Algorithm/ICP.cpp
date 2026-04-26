@@ -43,24 +43,27 @@ struct _ICPCorrespondence {
         weights(weights)
     {}
     
+    // Weighted RMS: only correspondences whose outlier weight is non-zero contribute.
+    // This is the quantity ICP's convergence test watches.
     float computeRMSCorrespondenceError()
     {
         size_t sourceVerticesLength = sourceVertices.size();
-        
+        const Eigen::VectorXf& w = *weights;
+
         double sumSquaredError = 0.0;
         double weightSum = 0;
         
         for (size_t i = 0; i < sourceVerticesLength; ++i) {
+            float weight = w(i);
+            if (weight == 0.0f) { continue; }
             Vector3f correspondenceError = standard_cyborg::toVector3f(sourceVertices[i]) - standard_cyborg::toVector3f(targetVertices[i]);
-            float errorSquared = correspondenceError.squaredNorm(); // squaredNorm is the squared Euclidean distance
-            float weight = 1.0; //(*weights)(i);
+            float errorSquared = correspondenceError.squaredNorm();
             sumSquaredError += errorSquared * weight;
             weightSum += weight;
         }
-        
-        double variance = sumSquaredError / weightSum;
-        
-        return (float)sqrt(variance);
+
+        if (weightSum == 0.0) { return 0.0f; }
+        return (float)sqrt(sumSquaredError / weightSum);
     }
 };
 
