@@ -78,8 +78,8 @@ bool ReadColorImageFromBuffer(sc3d::ColorImage& imageOut, const uint8_t *buf, si
 
     unsigned char* data = stbi_load_from_memory(
       static_cast<const stbi_uc*>(buf), 
-      len, 
-      &width, 
+      (int)len,
+      &width,
       &height, 
       &numChannels, 
       desiredChannels);

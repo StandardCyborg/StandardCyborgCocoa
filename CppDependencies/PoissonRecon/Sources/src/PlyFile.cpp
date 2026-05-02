@@ -1809,7 +1809,7 @@ void get_ascii_item( const std::string &word , int type , int &int_val , unsigne
 
 	case PLY_UINT:
 	case PLY_UINT_32:
-		uint_val = strtol( word.c_str() , (char **)NULL , 10 );
+		uint_val = (unsigned int)strtol( word.c_str() , (char **)NULL , 10 );
 		int_val = (int)uint_val;
 		double_val = (double)uint_val;
 		longlong_val = (long long)uint_val;

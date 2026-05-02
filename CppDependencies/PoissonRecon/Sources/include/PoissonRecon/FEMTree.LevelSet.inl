@@ -529,7 +529,7 @@ namespace LevelSetExtraction
 		void set( const SortedTreeNodes< Dim > &sNodes , int depth , int slice )
 		{
 			std::pair< node_index_type , node_index_type > span( sNodes.begin( depth , slice-1 ) , sNodes.end( depth , slice ) );
-			nodeOffset = (size_t)span.first;
+			nodeOffset = (node_index_type)span.first;
 			resize( (size_t)( span.second - span.first ) );
 			_scratch.resize( size() );
 
@@ -663,7 +663,7 @@ namespace LevelSetExtraction
 		void set( const SortedTreeNodes< Dim > &sNodes , int depth , int slab )
 		{
 			std::pair< node_index_type , node_index_type > span( sNodes.begin( depth , slab ) , sNodes.end( depth , slab ) );
-			nodeOffset = (size_t)span.first;
+			nodeOffset = (node_index_type)span.first;
 			resize( (size_t)( span.second - span.first ) );
 			_scratch.resize( size() );
 

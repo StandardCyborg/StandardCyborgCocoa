@@ -117,7 +117,12 @@ let package = Package(
             publicHeadersPath: "include",
             cxxSettings: [
                 // Always optimize, even for debug builds, in order to be usable while debugging the rest of an app
-                .unsafeFlags(["-fobjc-arc", "-Os", "-fno-math-errno", "-ffast-math"]),
+                // Keep -fno-finite-math-only: incoming surfel data from the camera uses NaN/inf to
+                // mark unknown values, and -ffast-math would otherwise enable -ffinite-math-only.
+                .unsafeFlags([
+                    "-fobjc-arc", "-Os", "-fno-math-errno", "-ffast-math", "-fno-finite-math-only",
+                    "-Wno-vla-cxx-extension",
+                ]),
                 .headerSearchPath("."),
                 .headerSearchPath("../libigl/include"),
                 .headerSearchPath("StandardCyborgFusion/Algorithm"),

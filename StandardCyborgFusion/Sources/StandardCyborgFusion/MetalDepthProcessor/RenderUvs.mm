@@ -115,7 +115,7 @@ struct SharedUniforms {
         _pipelineState = [device newRenderPipelineStateWithDescriptor:pipelineDescriptor error:&error];
         if (_pipelineState == nil) { NSLog(@"Unable to create pipeline state: %@", error); }
         
-        _sharedUniformsBuffer = [device newBufferWithLength:sizeof(SharedUniforms) options:MTLResourceOptionCPUCacheModeWriteCombined];
+        _sharedUniformsBuffer = [device newBufferWithLength:sizeof(SharedUniforms) options:MTLResourceCPUCacheModeWriteCombined];
         _sharedUniformsBuffer.label = @"RenderUvs.sharedUniforms";
     }
     return self;
