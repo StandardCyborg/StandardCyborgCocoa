@@ -19,7 +19,7 @@
     
     return [device newBufferWithBytesNoCopy:(void *)self.pointsData.bytes
                                      length:roundUpToMultiple(self.pointsData.length, 4096)
-                                    options:MTLResourceOptionCPUCacheModeWriteCombined
+                                    options:MTLResourceCPUCacheModeWriteCombined
                                 deallocator:NULL];
 }
 

@@ -94,7 +94,7 @@ MetalSurfelIndexMap::MetalSurfelIndexMap(id<MTLDevice> device, id<MTLLibrary> li
     depthStencilDescriptor.label = @"SurfelIndexMap._depthStencilState";
     _depthStencilState = [_device newDepthStencilStateWithDescriptor:depthStencilDescriptor];
     
-    _sharedUniformsBuffer = [_device newBufferWithLength:sizeof(SurfelIndexMapSharedUniforms) options:MTLResourceOptionCPUCacheModeWriteCombined];
+    _sharedUniformsBuffer = [_device newBufferWithLength:sizeof(SurfelIndexMapSharedUniforms) options:MTLResourceCPUCacheModeWriteCombined];
     _sharedUniformsBuffer.label = @"SurfelIndexMap shared uniforms";
     _vertexBuffer = this->_createVertexBuffer();
     _vertexBuffer.label = @"SurfelIndexMap._vertexBuffer";

@@ -68,8 +68,15 @@ private:
 
     Eigen::Matrix4f _extrinsicMatrix = Eigen::Matrix4f::Identity();
 
+    // Last-accepted pose change for constant-velocity motion prediction
+    Eigen::Matrix4f _lastAcceptedPoseDelta = Eigen::Matrix4f::Identity();
+
     void _cullLowConfidence(bool ignoreLifetime, int minWeight, std::vector<int>* deletedSurfelList = NULL);
-    ICPResult _runICP(ProcessedFrame& frame, SurfelFusionConfiguration surfelFusionConfiguration, ICPConfiguration icpConfig, PBFConfiguration pbfConfig);
+    ICPResult _runICP(ProcessedFrame& frame,
+                      SurfelFusionConfiguration surfelFusionConfiguration,
+                      ICPConfiguration icpConfig,
+                      PBFConfiguration pbfConfig,
+                      const Eigen::Matrix4f& predictedExtrinsic);
     
     PBFAssimilatedFrameMetadata* _nthMostRecentValidFrameMetadata(size_t offset = 0);
     PBFFinalStatistics _calcFinalStatistics();

@@ -10,6 +10,7 @@
 #include <standard_cyborg/util/DataUtils.hpp>
 #include <standard_cyborg/util/DebugHelpers.hpp>
 
+#include "DebugLog.h"
 #include "GeometryHelpers.hpp"
 #include "ThreadPool.hpp"
 #include "ICP.hpp"
@@ -43,24 +44,27 @@ struct _ICPCorrespondence {
         weights(weights)
     {}
     
+    // Weighted RMS: only correspondences whose outlier weight is non-zero contribute.
+    // This is the quantity ICP's convergence test watches.
     float computeRMSCorrespondenceError()
     {
         size_t sourceVerticesLength = sourceVertices.size();
-        
+        const Eigen::VectorXf& w = *weights;
+
         double sumSquaredError = 0.0;
         double weightSum = 0;
         
         for (size_t i = 0; i < sourceVerticesLength; ++i) {
+            float weight = w(i);
+            if (weight == 0.0f) { continue; }
             Vector3f correspondenceError = standard_cyborg::toVector3f(sourceVertices[i]) - standard_cyborg::toVector3f(targetVertices[i]);
-            float errorSquared = correspondenceError.squaredNorm(); // squaredNorm is the squared Euclidean distance
-            float weight = 1.0; //(*weights)(i);
+            float errorSquared = correspondenceError.squaredNorm();
             sumSquaredError += errorSquared * weight;
             weightSum += weight;
         }
-        
-        double variance = sumSquaredError / weightSum;
-        
-        return (float)sqrt(variance);
+
+        if (weightSum == 0.0) { return 0.0f; }
+        return (float)sqrt(sumSquaredError / weightSum);
     }
 };
 
@@ -208,15 +212,31 @@ static _ICPCorrespondence _computeCorrespondence(const std::vector<math::Vec3>& 
     }
 #endif
     
-    float avgSquaredError = sumSquaredError / vertexCount;
-    float normalizedVarianceThreshold = config.outlierDeviationsThreshold * config.outlierDeviationsThreshold;
-    
+    // Outlier rejection based on the Euclidean distance distribution of correspondences
+    Eigen::VectorXf distances(vertexCount);
+    double sumDistance = 0.0;
+    for (size_t i = 0; i < vertexCount; ++i) {
+        float d = std::sqrt((*squaredErrors)(i));
+        distances(i) = d;
+        sumDistance += d;
+    }
+    double meanDistance = sumDistance / vertexCount;
+
+    double varianceDistance = 0.0;
+    for (size_t i = 0; i < vertexCount; ++i) {
+        double delta = distances(i) - meanDistance;
+        varianceDistance += delta * delta;
+    }
+    float stdDevDistance = (vertexCount > 1) ? (float)std::sqrt(varianceDistance / (vertexCount - 1)) : 0.0f;
+
+    // Small floor so that a nearly-perfect fit doesn't reject its own noise floor
+    const float kMinStdDev = 1e-4f;
+    float effectiveStdDev = std::max(stdDevDistance, kMinStdDev);
+    float rejectDistance = (float)meanDistance + config.outlierDeviationsThreshold * effectiveStdDev;
+
     for (size_t i = 0; i < vertexCount; i++) {
-        float squaredError = (*squaredErrors)(i);
-        float normalizedVariance = squaredError / avgSquaredError;
-        float weight = normalizedVariance > normalizedVarianceThreshold ? 0.0 : 1.0;
-        
-        (*weights)(i) = weight; // * sourceWeights[i];
+        float weight = (distances(i) > rejectDistance) ? 0.0f : 1.0f;
+        (*weights)(i) = weight;
     }
     
     return _ICPCorrespondence(sourceVertices, targetVertices, targetNormals, squaredErrors, weights);
@@ -266,12 +286,28 @@ static Eigen::Matrix4f _computePointToPlaneTransform(_ICPCorrespondence& corresp
     FillUpperTriangularMatrixIntoLower6x6(A);
     
     x = A.llt().solve(b);
-    
-    Eigen::Matrix4f sourceTransform;
-    sourceTransform.setIdentity();
-    sourceTransform.matrix().topLeftCorner(3, 3) = rotationFromEulerAngles(x.head<3>());
-    sourceTransform.matrix().topRightCorner(3, 1) = x.tail<3>();
-    
+
+    // Retract the linearized 6-vector back to SE(3) via Rodrigues (axis-angle exponential), not Euler XYZ.
+    // The Jacobian above (cn.head<3> = p × n) corresponds to the skew-symmetric/axis-angle parameterization
+    // p_new ≈ p + ω × p + t, so retracting with R = exp([ω]×) is the internally consistent choice.
+    Eigen::Vector3f omega = x.head<3>();
+    float theta = omega.norm();
+    Eigen::Matrix3f R;
+    if (theta < 1e-8f) {
+        // Small-angle fallback: R ≈ I + [ω]× (first-order Rodrigues). Avoids the
+        // division by theta without introducing a discontinuity.
+        R = Eigen::Matrix3f::Identity();
+        R(0,1) = -omega.z(); R(0,2) =  omega.y();
+        R(1,0) =  omega.z(); R(1,2) = -omega.x();
+        R(2,0) = -omega.y(); R(2,1) =  omega.x();
+    } else {
+        R = Eigen::AngleAxisf(theta, omega / theta).toRotationMatrix();
+    }
+
+    Eigen::Matrix4f sourceTransform = Eigen::Matrix4f::Identity();
+    sourceTransform.topLeftCorner<3, 3>() = R;
+    sourceTransform.topRightCorner<3, 1>() = x.tail<3>();
+
     return sourceTransform;
 }
 
@@ -366,6 +402,10 @@ ICPResult ICP::run(ICPConfiguration config,
         // This check doesn't enforce overall camera movement limits, but is instead an early bailout
         // for when ICP simply diverges to infinity
         if (sourceTransformAdjustment.col(3).head<3>().squaredNorm() > squaredTranslationLimit) {
+            DEBUG_LOG("[ICP] iteration %d bailed: per-step translation %.3fm > limit %.3fm",
+                      iteration,
+                      sourceTransformAdjustment.col(3).head<3>().norm(),
+                      kTranslationLimit);
             result.succeeded = false;
             break;
         }
@@ -374,12 +414,19 @@ ICPResult ICP::run(ICPConfiguration config,
         
         // Calculate the correspondence error
         float rmsError = correspondence.computeRMSCorrespondenceError();
-        
-        relativeError = fabsf(rmsError - previousError) / rmsError;
+
+        // Guard the relative-change convergence test against near-zero error (which
+        // would inject Inf/NaN and exit the loop prematurely).
+        const float kRelativeErrorFloor = 1e-6f;
+        relativeError = fabsf(rmsError - previousError) / std::max(rmsError, kRelativeErrorFloor);
         previousError = rmsError;
         sourceTransform = sourceTransformAdjustment * sourceTransform;
 
         if (sourceTransform.col(3).head<3>().squaredNorm() > squaredTranslationLimit) {
+            DEBUG_LOG("[ICP] iteration %d bailed: cumulative translation %.3fm > limit %.3fm",
+                      iteration,
+                      sourceTransform.col(3).head<3>().norm(),
+                      kTranslationLimit);
             result.succeeded = false;
             break;
         }

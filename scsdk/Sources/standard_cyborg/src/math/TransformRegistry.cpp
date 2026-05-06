@@ -152,7 +152,7 @@ Result<Transform> TransformRegistry::getTransform(const std::string& srcFrame, c
     const std::vector<std::string>& path = *(pathResult.value);
     Mat3x4 t;
     
-    for (int i = path.size() - 2; i >= 0; i--) {
+    for (size_t i = path.size() - 2; i >= 0; i--) {
         if (!edges.count(path[i])) return {.error =
             "Invalid access of frame " + path[i] };
         const auto adj = edges.at(path[i]);

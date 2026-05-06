@@ -20,12 +20,12 @@ namespace sg = standard_cyborg::scene_graph;
 
 static simd_float4x4 simd_float4x4FromMat3x4(math::Mat3x4 mat)
 {
-    return (simd_float4x4){
-        .columns[0] = {mat.m00, mat.m10, mat.m20, 0},
-        .columns[1] = {mat.m01, mat.m11, mat.m21, 0},
-        .columns[2] = {mat.m02, mat.m12, mat.m22, 0},
-        .columns[3] = {mat.m03, mat.m13, mat.m23, 1}
-    };
+    return simd_matrix(
+        (simd_float4){mat.m00, mat.m10, mat.m20, 0},
+        (simd_float4){mat.m01, mat.m11, mat.m21, 0},
+        (simd_float4){mat.m02, mat.m12, mat.m22, 0},
+        (simd_float4){mat.m03, mat.m13, mat.m23, 1}
+    );
 }
 
 @implementation SCNNode (StandardCyborgNode)
