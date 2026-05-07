@@ -214,7 +214,7 @@ class DepthColoringFilter {
     private func _metalTexture(fromDepthBuffer depthBuffer: CVPixelBuffer, device: MTLDevice) -> MTLTexture? {
         let textureAttributes: [CFString: Any] = [
             kCVPixelBufferMetalCompatibilityKey: true,
-            kCVMetalTextureUsage: MTLTextureUsage.shaderWrite.rawValue
+            kCVMetalTextureUsage: MTLTextureUsage.shaderRead.rawValue
         ]
         
         var texture: CVMetalTexture?
