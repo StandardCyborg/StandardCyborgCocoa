@@ -10,6 +10,7 @@
 #import <standard_cyborg/math/Mat3x3.hpp>
 #import <standard_cyborg/math/Mat3x4.hpp>
 #import <standard_cyborg/math/Vec2.hpp>
+#import <sys/utsname.h>
 #import <vector>
 
 #import "EigenHelpers.hpp"
@@ -17,6 +18,19 @@
 #import "PerspectiveCamera+AVFoundation.hpp"
 
 using namespace standard_cyborg;
+
+// iPhone 17 Pro and 17 Pro Max ship a 16:9 TrueDepth sensor that needs a
+// different orientation matrix than the 4:3 sensor used on every prior
+// iPhone. Apple identifies them as iPhone18,1 and iPhone18,2 respectively.
+// Selecting by device model rather than sensor aspect ratio because the
+// upstream's aspect-ratio heuristic mis-classified iPhone 15 Pro Max as
+// widescreen and flipped its scan orientation.
+static bool _isIPhone17ProFamily(void)
+{
+    struct utsname info;
+    if (uname(&info) != 0) return false;
+    return strncmp(info.machine, "iPhone18,", 9) == 0;
+}
 
 sc3d::PerspectiveCamera PerspectiveCameraFromAVCameraCalibrationData(AVCameraCalibrationData *calibrationData, size_t pixelsWide, size_t pixelsHigh)
 {
@@ -46,13 +60,9 @@ sc3d::PerspectiveCamera PerspectiveCameraFromAVCameraCalibrationData(AVCameraCal
     // coordinate system we otherwise prefer, so we post-multiply by an orientation matrix to
     // produce world space with x to the right, y up, and z toward the user.
     //
-    // On 4:3 TrueDepth sensors, the sensor's pixel-u axis points UP in portrait, so we swap
-    // X↔Y and negate Z. On 16:9 sensors (iPhone 17 Pro+), the pixel-u axis points RIGHT in
-    // portrait, so no swap is needed — just negate Y and Z.
-    CGSize refDims = calibrationData.intrinsicMatrixReferenceDimensions;
-    bool isWidescreenSensor = (refDims.width / refDims.height) > 1.5f;
-
-    math::Mat3x4 desiredOrientation = isWidescreenSensor
+    // iPhone 17 Pro family (16:9 sensor): pixel-u axis points RIGHT in portrait — just negate
+    // Y and Z. Every other iPhone (4:3 sensor): swap X↔Y and negate Z.
+    math::Mat3x4 desiredOrientation = _isIPhone17ProFamily()
         ? math::Mat3x4({
             1, 0, 0, 0,
             0, -1, 0, 0,
