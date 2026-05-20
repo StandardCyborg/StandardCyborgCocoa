@@ -59,4 +59,9 @@
     return [_operation isCancelled];
 }
 
+- (NSString *)failureReason
+{
+    return _operation.failureReason;
+}
+
 @end

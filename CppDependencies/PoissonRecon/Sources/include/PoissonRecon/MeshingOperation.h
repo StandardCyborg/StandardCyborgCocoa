@@ -41,4 +41,7 @@
  */
 @property (nonatomic) BOOL closed;
 
+/** Set after -main if a stage failed (vs. completed or was cancelled). nil on success. */
+@property (nonatomic, readonly, nullable) NSString *failureReason;
+
 @end

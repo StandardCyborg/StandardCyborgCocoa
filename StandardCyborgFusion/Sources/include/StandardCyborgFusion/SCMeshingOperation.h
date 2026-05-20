@@ -54,6 +54,13 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic, copy) void (^progressHandler)(float progress);
 
+/**
+ If meshing completed but produced no usable output (e.g. PoissonRecon silently
+ failed on a sparse/degenerate input cloud), this carries a human-readable reason.
+ nil if meshing succeeded or was cancelled.
+ */
+@property (nonatomic, readonly, nullable) NSString *failureReason;
+
 @end
 
 NS_ASSUME_NONNULL_END
