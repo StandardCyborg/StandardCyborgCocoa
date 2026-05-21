@@ -7,22 +7,30 @@ import UIKit
     @objc optional func scanningViewController(_ controller: ScanningViewController, didScan pointCloud: SCPointCloud)
 }
 
+/// UserDefaults key that opts the scan flow into the ARKit + head-pose-prior
+/// pipeline. When false (default), the legacy AVCaptureSession + plain ICP
+/// pipeline runs unchanged. When true and ARFaceTrackingConfiguration is
+/// supported, the controller drives capture from an ARSession and feeds a
+/// face-frame head-pose delta into SCReconstructionManager's ICP-bypass path.
+public let kScanUseARFacePipelineDefaultsKey = "scan.use_ar_face_pipeline"
+
 /**
     Shows a live color + depth camera preview and shutter button.
- 
+
     When the shutter is tapped, performs a customizable 3-second
     countdown, then starts scanning.
- 
+
     When scanning is manually finished, or if it fails,
     reconstructs a 3D point cloud and informs its delegate.
- 
+
     This class does not itself show a preview of the scan.
- 
+
     Rendering can be customized by setting the scanningViewRenderer
     to your own object conforming to that protocol.
  */
 @objc open class ScanningViewController: UIViewController,
     CameraManagerDelegate,
+    ARFaceCameraManagerDelegate,
     SCReconstructionManagerDelegate
 {
     
@@ -34,7 +42,13 @@ import UIKit
     }
     
     @objc public weak var delegate: ScanningViewControllerDelegate?
-    
+
+    /// Optional Face-ID-style overlay hook. When the AR pipeline is engaged,
+    /// fires for every face-tracking frame with the face anchor's pose in
+    /// camera coordinates. Use this to drive a SwiftUI overlay (cardinal arc
+    /// fills, prompts, etc.). Always called on the main thread.
+    @objc public var facePoseObserver: ((simd_float4x4, Bool) -> Void)?
+
     /** Override to drop in your own visualization */
     @objc public lazy var scanningViewRenderer: ScanningViewRenderer =
         DefaultScanningViewRenderer(device: _metalDevice, commandQueue: _visualizationCommandQueue)
@@ -58,11 +72,12 @@ import UIKit
     }
     
     @objc public func shutterTapped(_ sender: UIButton?) {
+        let sessionRunning = _cameraManager?.isSessionRunning ?? _arFaceCameraManager?.isSessionRunning ?? false
         guard
             presentedViewController == nil,
-            _cameraManager.isSessionRunning
+            sessionRunning
             else { return }
-        
+
         switch _state {
         case .default:
             _startCountdown { self.startScanning() }
@@ -100,8 +115,9 @@ import UIKit
         }
         
         if reason == .finished {
-            _cameraManager.stopSession()
-            
+            _cameraManager?.stopSession()
+            _arFaceCameraManager?.stopSession()
+
             meshTexturing.cameraCalibrationData = _reconstructionManager.latestCameraCalibrationData
             meshTexturing.cameraCalibrationFrameWidth = _reconstructionManager.latestCameraCalibrationFrameWidth
             meshTexturing.cameraCalibrationFrameHeight = _reconstructionManager.latestCameraCalibrationFrameHeight
@@ -124,20 +140,22 @@ import UIKit
     @objc public var maxDepthResolution: Int = 320 {
         didSet {
             if isViewLoaded && oldValue != maxDepthResolution {
-                _cameraManager.configureCaptureSession(maxResolution: maxDepthResolution)
+                _cameraManager?.configureCaptureSession(maxResolution: maxDepthResolution)
             }
         }
     }
-    
+
     /** To manually pause the camera output, set this to true */
     @objc public var isCameraPaused: Bool = false {
         didSet {
             guard oldValue != isCameraPaused else { return }
-            
+
             if isCameraPaused {
-                _cameraManager.stopSession()
+                _cameraManager?.stopSession()
+                _arFaceCameraManager?.stopSession()
             } else {
-                _cameraManager.startSession(nil)
+                _cameraManager?.startSession(nil)
+                _arFaceCameraManager?.startSession()
             }
         }
     }
@@ -166,31 +184,37 @@ import UIKit
     
     override open func viewDidLoad() {
         super.viewDidLoad()
-    
+
         _setUpSubviews()
-        
-        _cameraManager.delegate = self
-        _cameraManager.configureCaptureSession(maxResolution: maxDepthResolution)
-        
+
+        if let cm = _cameraManager {
+            cm.delegate = self
+            cm.configureCaptureSession(maxResolution: maxDepthResolution)
+        }
+        if let arcm = _arFaceCameraManager {
+            arcm.delegate = self
+        }
+
         _reconstructionManager.delegate = self
-        
+
         NotificationCenter.default.addObserver(self, selector: #selector(_thermalStateChanged), name: ProcessInfo.thermalStateDidChangeNotification, object: nil)
     }
-    
+
     override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+
         guard CameraManager.isDepthCameraAvailable else { return }
-        
+
         _startCameraSession()
     }
-    
+
     override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
+
         stopScanning(reason: ScanningViewController.ScanningTerminationReason.canceled)
-        
-        _cameraManager.stopSession()
+
+        _cameraManager?.stopSession()
+        _arFaceCameraManager?.stopSession()
     }
     
     override open func viewDidLayoutSubviews() {
@@ -236,10 +260,11 @@ import UIKit
     @objc private func _focusOnTap(_ gesture: UITapGestureRecognizer) {
         // Disallow this while scanning
         guard _state != _State.scanning else { return }
-        
+
         let location = gesture.location(in: view)
-        
-        _cameraManager.focusOnTap(at: location)
+
+        // Manual focus only applies to the AVCaptureSession path; ARKit controls focus itself.
+        _cameraManager?.focusOnTap(at: location)
     }
     
     @objc private func _thermalStateChanged(notification: Notification) {
@@ -251,15 +276,45 @@ import UIKit
     }
     
     // MARK: - CameraManagerDelegate
-    
+
     public func cameraDidOutput(colorBuffer: CVPixelBuffer, depthBuffer: CVPixelBuffer, depthCalibrationData: AVCameraCalibrationData) {
+        _handleFrame(colorBuffer: colorBuffer,
+                     depthBuffer: depthBuffer,
+                     depthCalibrationData: depthCalibrationData,
+                     headPoseDelta: matrix_identity_float4x4,
+                     headPoseConfidence: 0.0)
+    }
+
+    // MARK: - ARFaceCameraManagerDelegate
+
+    public func arFaceCameraDidOutput(colorBuffer: CVPixelBuffer,
+                                      depthBuffer: CVPixelBuffer,
+                                      depthCalibrationData: AVCameraCalibrationData,
+                                      headPoseDelta: simd_float4x4,
+                                      headPoseConfidence: Float) {
+        _handleFrame(colorBuffer: colorBuffer,
+                     depthBuffer: depthBuffer,
+                     depthCalibrationData: depthCalibrationData,
+                     headPoseDelta: headPoseDelta,
+                     headPoseConfidence: headPoseConfidence)
+    }
+
+    public func arFaceCameraDidObserveFacePose(_ facePoseInCamera: simd_float4x4, isTracked: Bool) {
+        facePoseObserver?(facePoseInCamera, isTracked)
+    }
+
+    private func _handleFrame(colorBuffer: CVPixelBuffer,
+                              depthBuffer: CVPixelBuffer,
+                              depthCalibrationData: AVCameraCalibrationData,
+                              headPoseDelta: simd_float4x4,
+                              headPoseConfidence: Float) {
         var isScanning = false
         DispatchQueue.main.sync {
             isScanning = self._state == _State.scanning
         }
-        
+
         let pointCloud: SCPointCloud
-        
+
         if isScanning {
             pointCloud = _reconstructionManager.buildPointCloud()
         } else {
@@ -272,17 +327,19 @@ import UIKit
                                                                              with: depthCalibrationData,
                                                                              smoothingPoints: true)
         }
-        
+
         scanningViewRenderer.draw(colorBuffer: colorBuffer,
                                   pointCloud: pointCloud,
                                   depthCameraCalibrationData: depthCalibrationData,
                                   viewMatrix: _latestViewMatrix,
                                   into: _metalLayer)
-        
+
         if isScanning {
             _reconstructionManager.accumulate(depthBuffer: depthBuffer,
                                               colorBuffer: colorBuffer,
-                                              calibrationData: depthCalibrationData)
+                                              calibrationData: depthCalibrationData,
+                                              headPoseDelta: headPoseDelta,
+                                              headPoseConfidence: headPoseConfidence)
         }
     }
     
@@ -330,7 +387,15 @@ import UIKit
     private lazy var _algorithmCommandQueue = _metalDevice.makeCommandQueue()!
     private lazy var _visualizationCommandQueue = _metalDevice.makeCommandQueue()!
     private lazy var _reconstructionManager = SCReconstructionManager(device: _metalDevice, commandQueue: _algorithmCommandQueue, maxThreadCount: _maxReconstructionThreadCount)
-    private let _cameraManager = CameraManager()
+    // Exactly one of these is non-nil based on the kScanUseARFacePipelineDefaultsKey flag at
+    // construction time. The legacy AVCaptureSession path is the default; the ARKit path
+    // engages when the flag is true AND the device supports face tracking.
+    private lazy var _useARFacePipeline: Bool = {
+        UserDefaults.standard.bool(forKey: kScanUseARFacePipelineDefaultsKey)
+            && ARFaceCameraManager.isSupported
+    }()
+    private lazy var _cameraManager: CameraManager? = _useARFacePipeline ? nil : CameraManager()
+    private lazy var _arFaceCameraManager: ARFaceCameraManager? = _useARFacePipeline ? ARFaceCameraManager() : nil
     private var _latestViewMatrix = matrix_identity_float4x4
     private var _assimilatedFrameIndex = 0
     
@@ -426,16 +491,20 @@ import UIKit
             
         }
         
-        _cameraManager.isFocusLocked = _state == .scanning
-        
+        _cameraManager?.isFocusLocked = _state == .scanning
+
         _mirrorModeBackground.isHidden = !showsMirrorModeButton
         _mirrorModeLabel.isHidden = !mirrorModeEnabled
         scanningViewRenderer.flipsInputHorizontally = mirrorModeEnabled
         _reconstructionManager.flipsInputHorizontally = mirrorModeEnabled
     }
-    
+
     private func _startCameraSession() {
-        _cameraManager.startSession { result in
+        if let arcm = _arFaceCameraManager {
+            arcm.startSession()
+            return
+        }
+        _cameraManager?.startSession { result in
             switch result {
             case .success:
                 break
@@ -452,7 +521,7 @@ import UIKit
                 { _ in
                     UIApplication.shared.open(URL.init(string: UIApplication.openSettingsURLString)!, options: [:], completionHandler: nil)
                 })
-                
+
                 self.present(alertController, animated: true)
             }
         }

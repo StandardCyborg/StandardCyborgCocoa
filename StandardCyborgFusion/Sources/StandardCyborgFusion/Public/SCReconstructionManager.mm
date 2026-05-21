@@ -43,11 +43,15 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) CVPixelBufferRef depthBuffer;
 @property (nonatomic, readonly) CVPixelBufferRef colorBuffer;
 @property (nonatomic, readonly) AVCameraCalibrationData *calibrationData;
+@property (nonatomic, readonly) simd_float4x4 headPoseDelta;
+@property (nonatomic, readonly) float headPoseConfidence;
 
 - (instancetype)initWithSequence:(int)sequence
                      depthBuffer:(CVPixelBufferRef)depthBuffer
                      colorBuffer:(CVPixelBufferRef)colorBuffer
-                 calibrationData:(AVCameraCalibrationData *)calibrationData;
+                 calibrationData:(AVCameraCalibrationData *)calibrationData
+                   headPoseDelta:(simd_float4x4)headPoseDelta
+              headPoseConfidence:(float)headPoseConfidence;
 
 @end
 
@@ -57,6 +61,8 @@ NS_ASSUME_NONNULL_BEGIN
                      depthBuffer:(CVPixelBufferRef)depthBuffer
                      colorBuffer:(CVPixelBufferRef)colorBuffer
                  calibrationData:(AVCameraCalibrationData *)calibrationData
+                   headPoseDelta:(simd_float4x4)headPoseDelta
+              headPoseConfidence:(float)headPoseConfidence
 {
     self = [super init];
     if (self) {
@@ -67,6 +73,8 @@ NS_ASSUME_NONNULL_BEGIN
         _depthBuffer = CVPixelBufferRetain(depthBuffer);
         _colorBuffer = CVPixelBufferRetain(colorBuffer);
         _calibrationData = calibrationData;
+        _headPoseDelta = headPoseDelta;
+        _headPoseConfidence = headPoseConfidence;
     }
     return self;
 }
@@ -366,25 +374,40 @@ NS_ASSUME_NONNULL_BEGIN
                   colorBuffer:(CVPixelBufferRef)colorBuffer
               calibrationData:(AVCameraCalibrationData *)calibrationData
 {
+    [self accumulateDepthBuffer:depthBuffer
+                    colorBuffer:colorBuffer
+                calibrationData:calibrationData
+                  headPoseDelta:matrix_identity_float4x4
+             headPoseConfidence:0.0f];
+}
+
+- (void)accumulateDepthBuffer:(CVPixelBufferRef)depthBuffer
+                  colorBuffer:(CVPixelBufferRef)colorBuffer
+              calibrationData:(AVCameraCalibrationData *)calibrationData
+                headPoseDelta:(simd_float4x4)headPoseDelta
+           headPoseConfidence:(float)headPoseConfidence
+{
     if (depthBuffer == NULL || colorBuffer == NULL || calibrationData == nil) { return; }
     CVPixelBufferRetain(depthBuffer);
     CVPixelBufferRetain(colorBuffer);
-    
+
     dispatch_async(_inputQueue, ^{
         _inputQueue_stopped = NO;
-        
+
         int sequence = _inputQueue_incomingFrameSequence++;
         _IncomingFrameData *data = [[_IncomingFrameData alloc] initWithSequence:sequence
                                                                     depthBuffer:depthBuffer
                                                                     colorBuffer:colorBuffer
-                                                                calibrationData:calibrationData];
+                                                                calibrationData:calibrationData
+                                                                  headPoseDelta:headPoseDelta
+                                                             headPoseConfidence:headPoseConfidence];
         CVPixelBufferRelease(depthBuffer);
         CVPixelBufferRelease(colorBuffer);
-        
+
         // We only use the most recent raw frame, dropping any other ones that haven't had a chance to process
         BOOL dropped = _inputQueue_incomingFrameData != nil;
         _inputQueue_incomingFrameData = data;
-        
+
         if (!dropped) {
             dispatch_semaphore_signal(_incomingFrameDataSemaphore);
         }
@@ -574,8 +597,28 @@ static const float kCenterDepthExpansionRatio = 1.4;
     [self _modelQueue_unprojectRawFrameIntoFrame];
     
     [self _modelQueue_configureModelForRawFrame];
-    
-    auto metadata = _modelQueue_model->assimilate(*_modelQueue_frame, _pbfConfig, _icpConfig, _surfelFusionConfig, startTime);
+
+    // Convert simd_float4x4 (column-major) to Eigen::Matrix4f for the C++ side.
+    // simd and Eigen agree on column-major layout, but Eigen wraps memory by
+    // reference via Map, so a plain memcpy through Matrix4f's data buffer is safe.
+    Eigen::Matrix4f headPoseDeltaEigen;
+    simd_float4x4 swiftPose = data.headPoseDelta;
+    for (int col = 0; col < 4; ++col) {
+        headPoseDeltaEigen(0, col) = swiftPose.columns[col].x;
+        headPoseDeltaEigen(1, col) = swiftPose.columns[col].y;
+        headPoseDeltaEigen(2, col) = swiftPose.columns[col].z;
+        headPoseDeltaEigen(3, col) = swiftPose.columns[col].w;
+    }
+
+    const Eigen::Matrix4f* headPosePtr = (data.headPoseConfidence > 0.0f) ? &headPoseDeltaEigen : nullptr;
+    auto metadata = _modelQueue_model->assimilate(*_modelQueue_frame,
+                                                  _pbfConfig,
+                                                  _icpConfig,
+                                                  _surfelFusionConfig,
+                                                  startTime,
+                                                  /* screenSpaceLandmarks */ nullptr,
+                                                  headPosePtr,
+                                                  data.headPoseConfidence);
     
 #ifndef XCODE_ACTION_install // Avoid logging in archive builds
     float quality = metadata.icpUnusedIterationFraction;

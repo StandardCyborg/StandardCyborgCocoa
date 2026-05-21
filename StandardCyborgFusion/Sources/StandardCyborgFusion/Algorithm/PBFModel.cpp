@@ -169,7 +169,9 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
                                                  ICPConfiguration icpConfig,
                                                  SurfelFusionConfiguration surfelFusionConfiguration,
                                                  double currentTime,
-                                                 const std::vector<ScreenSpaceLandmark>* screenSpaceLandmarks)
+                                                 const std::vector<ScreenSpaceLandmark>* screenSpaceLandmarks,
+                                                 const Eigen::Matrix4f* headPoseDelta,
+                                                 float headPoseConfidence)
 {
     // Summary of algorithm:
     // The first frame is defined to be identity for the world coordinates
@@ -178,7 +180,19 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
     // That resulting transform is multiplied into the world transform
     // The surfel index map is drawn from the point of view of the incoming frame (inverse world transform)
     // Points in the new frame are un-projected into 3D based on the world transform
-    
+    //
+    // Head-pose-prior extension (Phase B/C of head-pose-aware scan rework):
+    // When a caller (e.g. ARFaceCameraManager) provides headPoseDelta with high
+    // confidence, we trust it and skip ICP entirely -- this lets us fuse frames
+    // when ICP would otherwise reject them due to head motion that ICP can't
+    // distinguish from camera motion. At lower confidence we still run ICP but
+    // could (future) seed it with the prior; for now low-conf falls through to
+    // pure ICP.
+
+    // Thresholds (tuned conservatively; high-conf bypass requires ARFaceAnchor
+    // .isTracked == true which Swift maps to confidence == 1.0f).
+    static const float kHighConfidenceThreshold = 0.9f;
+
     // Get the current most recent metadata (haven't pushed this frame's metadata yet)
     PBFAssimilatedFrameMetadata* previousFrameMeta = _nthMostRecentValidFrameMetadata(0);
 
@@ -192,43 +206,58 @@ PBFAssimilatedFrameMetadata PBFModel::assimilate(ProcessedFrame& frame,
     const RawFrame& rawFrame = frame.rawFrame;
     const size_t width = rawFrame.width;
     const size_t height = rawFrame.height;
-    
-    if (_surfels.size() > 0) {
-        ICPResult icpResult = _runICP(frame, surfelFusionConfiguration, icpConfig, pbfConfig);
 
-        Matrix4f extrinsicMatrixTmp = toMatrix4f(icpResult.sourceTransform) * _extrinsicMatrix;
-        // Store this whether or not we end up using it since we also store information about whether
-        // the frame was assimilated or not
-        frameMeta.viewMatrix = extrinsicMatrixTmp;
-        frameMeta.icpIterationCount = icpResult.iterationCount;
-        frameMeta.correspondenceError = icpResult.rmsCorrespondenceError;
-        
-        if (!icpResult.succeeded) {
-            DEBUG_LOG("ICP rejected due to bad convergence after %d/%d iterations", icpResult.iterationCount, icpConfig.maxIterations);
-            frameMeta.icpUnusedIterationFraction = 0;
-        } else {
-            frameMeta.icpUnusedIterationFraction = 1.0f - (float)icpResult.iterationCount / (float)icpConfig.maxIterations;
-            
-            CameraVelocity cv = _cameraVelocity(previousFrameMeta, &frameMeta);
-            
-            if (cv.angularVelocity.hasNaN() || cv.angularVelocity.norm() > pbfConfig.maxCameraAngularVelocity) {
-                DEBUG_LOG("Rejecting ICP due to bad fit with angular velocity %f", cv.angularVelocity.norm());
-                frameMeta.icpUnusedIterationFraction = 0;
-            }
-            
-            else if (cv.velocity.hasNaN() || cv.velocity.norm() > pbfConfig.maxCameraVelocity) {
-                DEBUG_LOG("Rejecting ICP due to bad fit with linear velocity %f", cv.velocity.norm());
-                frameMeta.icpUnusedIterationFraction = 0;
-            }
-        }
-        
-        if (frameMeta.icpUnusedIterationFraction > 0) {
+    const bool useHighConfPriorBypass =
+        (headPoseDelta != nullptr) && (headPoseConfidence >= kHighConfidenceThreshold);
+
+    if (_surfels.size() > 0) {
+        if (useHighConfPriorBypass) {
+            // High-confidence head-pose prior: skip ICP. headPoseDelta is the
+            // frame-to-frame camera-in-head delta supplied by the caller; apply
+            // it to the cumulative extrinsic and proceed straight to fusion.
+            Matrix4f extrinsicMatrixTmp = (*headPoseDelta) * _extrinsicMatrix;
+            frameMeta.viewMatrix = extrinsicMatrixTmp;
+            frameMeta.icpIterationCount = 0;
+            frameMeta.correspondenceError = 0.0f;
+            frameMeta.icpUnusedIterationFraction = 1.0f;
             _extrinsicMatrix = extrinsicMatrixTmp;
         } else {
-            // It didn't converge in time, so bail out
-            DEBUG_LOG("ICP didn't converge with enough quality (%f) after %d/%d iterations. Ignoring frame.", frameMeta.icpUnusedIterationFraction, icpResult.iterationCount, icpConfig.maxIterations);
-            _assimilatedFrameMetadatas.push_back(frameMeta);
-            return frameMeta;
+            ICPResult icpResult = _runICP(frame, surfelFusionConfiguration, icpConfig, pbfConfig);
+
+            Matrix4f extrinsicMatrixTmp = toMatrix4f(icpResult.sourceTransform) * _extrinsicMatrix;
+            // Store this whether or not we end up using it since we also store information about whether
+            // the frame was assimilated or not
+            frameMeta.viewMatrix = extrinsicMatrixTmp;
+            frameMeta.icpIterationCount = icpResult.iterationCount;
+            frameMeta.correspondenceError = icpResult.rmsCorrespondenceError;
+
+            if (!icpResult.succeeded) {
+                DEBUG_LOG("ICP rejected due to bad convergence after %d/%d iterations", icpResult.iterationCount, icpConfig.maxIterations);
+                frameMeta.icpUnusedIterationFraction = 0;
+            } else {
+                frameMeta.icpUnusedIterationFraction = 1.0f - (float)icpResult.iterationCount / (float)icpConfig.maxIterations;
+
+                CameraVelocity cv = _cameraVelocity(previousFrameMeta, &frameMeta);
+
+                if (cv.angularVelocity.hasNaN() || cv.angularVelocity.norm() > pbfConfig.maxCameraAngularVelocity) {
+                    DEBUG_LOG("Rejecting ICP due to bad fit with angular velocity %f", cv.angularVelocity.norm());
+                    frameMeta.icpUnusedIterationFraction = 0;
+                }
+
+                else if (cv.velocity.hasNaN() || cv.velocity.norm() > pbfConfig.maxCameraVelocity) {
+                    DEBUG_LOG("Rejecting ICP due to bad fit with linear velocity %f", cv.velocity.norm());
+                    frameMeta.icpUnusedIterationFraction = 0;
+                }
+            }
+
+            if (frameMeta.icpUnusedIterationFraction > 0) {
+                _extrinsicMatrix = extrinsicMatrixTmp;
+            } else {
+                // It didn't converge in time, so bail out
+                DEBUG_LOG("ICP didn't converge with enough quality (%f) after %d/%d iterations. Ignoring frame.", frameMeta.icpUnusedIterationFraction, icpResult.iterationCount, icpConfig.maxIterations);
+                _assimilatedFrameMetadatas.push_back(frameMeta);
+                return frameMeta;
+            }
         }
     }
 

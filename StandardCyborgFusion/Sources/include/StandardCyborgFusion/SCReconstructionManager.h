@@ -83,6 +83,21 @@ typedef struct {
               calibrationData:(AVCameraCalibrationData *)calibrationData
 NS_SWIFT_NAME(accumulate(depthBuffer:colorBuffer:calibrationData:));
 
+/** Variant carrying a head-pose-delta prior (camera-in-head frame-to-frame transform)
+ obtained from an external tracker such as ARKit's ARFaceAnchor. At high confidence
+ (>= 0.9) the prior bypasses ICP entirely, which lets the pipeline fuse frames where
+ plain ICP would otherwise diverge under head motion. At lower confidence the prior is
+ currently ignored and the standard ICP path runs.
+
+ confidence is expected to be in [0, 1]. Pass simd_float4x4(1) and 0 to disable, which
+ is equivalent to the non-prior accumulate variant above. */
+- (void)accumulateDepthBuffer:(CVPixelBufferRef)depthBuffer
+                  colorBuffer:(CVPixelBufferRef)colorBuffer
+              calibrationData:(AVCameraCalibrationData *)calibrationData
+                headPoseDelta:(simd_float4x4)headPoseDelta
+           headPoseConfidence:(float)headPoseConfidence
+NS_SWIFT_NAME(accumulate(depthBuffer:colorBuffer:calibrationData:headPoseDelta:headPoseConfidence:));
+
 /** Pass in device motion updates as fast as they are made available by the system */
 - (void)accumulateDeviceMotion:(CMDeviceMotion *)deviceMotion;
 

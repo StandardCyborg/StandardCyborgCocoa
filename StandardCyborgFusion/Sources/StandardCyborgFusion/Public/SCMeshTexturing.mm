@@ -360,10 +360,13 @@ static NSString * const _MetadataJSONFilename = @"Metadata.json";
     va_start(args, description);
     NSString *message = [[NSString alloc] initWithFormat:description arguments:args];
     va_end(args);
-    
+
     return [NSError errorWithDomain:SCMeshTexturingAPIErrorDomain
                                code:errorCode
-                           userInfo:@{NSDebugDescriptionErrorKey: message}];
+                           userInfo:@{
+                               NSLocalizedDescriptionKey: message,
+                               NSDebugDescriptionErrorKey: message,
+                           }];
 }
 
 - (void)_removeDataFromPreviousRuns
@@ -624,54 +627,102 @@ static NSString * const _MetadataJSONFilename = @"Metadata.json";
                   error:(NSError **)errorOut
         progressHandler:(void (^)(float, BOOL *))progressHandler
 {
+    // Pre-meshing input validation. PoissonRecon will silently produce nothing
+    // for trivially sparse clouds; refuse early with a concrete reason so the
+    // app can show it instead of waiting through a doomed meshing pass.
+    static const NSInteger kMinPointCountForMeshing = 500;
+    NSInteger inputCount = pointCloud.pointCount;
+    if (inputCount < kMinPointCountForMeshing) {
+        if (errorOut != NULL) {
+            *errorOut = [self _buildAPIError:SCMeshTexturingAPIErrorArgument
+                                 description:@"Point cloud too sparse to mesh: %ld points (minimum %ld). Likely cause: registration diverged during scan, so few frames were fused.",
+                                 (long)inputCount, (long)kMinPointCountForMeshing];
+        }
+        return NO;
+    }
+
     // Write the point cloud to a .ply file, so we can use SCMeshingOperation
     NSString *plyFilename = @"temp-point-cloud.ply";
     NSString *pointCloudPlyPath = [_containerPath stringByAppendingPathComponent:plyFilename];
     NSString *outputPath = [pointCloudPlyPath stringByReplacingOccurrencesOfString:@".ply" withString:@"-mesh.ply"];
-    
+
     [self _ensureContainerDirectory];
-    
+
+    // Remove any stale output from a prior run so post-meshing existence checks
+    // are meaningful.
+    [[NSFileManager defaultManager] removeItemAtPath:outputPath error:NULL];
+
     BOOL success = [pointCloud writeToPLYAtPath:pointCloudPlyPath];
     if (!success) {
         if (errorOut != NULL) {
             *errorOut = [self _buildAPIError:SCMeshTexturingAPIErrorInternal
-                                 description:@"Error writing to %@", pointCloudPlyPath];
+                                 description:@"Error writing point cloud to %@", pointCloudPlyPath];
         }
         return NO;
     }
-    
+
     __block BOOL shouldStop = NO;
-    
+
     SCMeshingOperation *operation = [[SCMeshingOperation alloc] initWithInputPLYPath:pointCloudPlyPath outputPLYPath:outputPath];
     operation.parameters = parameters;
-    
+
     __weak SCMeshingOperation *weakOperation = operation;
     operation.progressHandler = ^(float progress) {
         // Adapt the progress handler to allow cancellation
         progressHandler(progress, &shouldStop);
-        
+
         if (shouldStop) {
             NSLog(@"Cancelling meshing operation");
             [weakOperation cancel];
         }
     };
-    
+
     [operation start];
-    
+
     if ([operation isCancelled]) {
         return NO;
-    } else {
-        io::ply::ReadGeometryFromPLYFile(geometryOut, std::string([outputPath UTF8String]));
-        
-        // color is no longer needed beyond this point. discard.
-        std::vector<math::Vec3> newColors(geometryOut.vertexCount(), math::Vec3{1, 1, 1});
-        
-        if (!geometryOut.setColors(newColors)) {
-            return NO;
-        }
-        
-        return YES;
     }
+
+    // Surface silent failures from the C++ layer (PoissonRecon NULL solver,
+    // SurfaceTrimmer -1 returns, empty output PLY) rather than reading garbage.
+    if (operation.failureReason != nil) {
+        if (errorOut != NULL) {
+            *errorOut = [self _buildAPIError:SCMeshTexturingAPIErrorInternal
+                                 description:@"Meshing failed: %@", operation.failureReason];
+        }
+        return NO;
+    }
+
+    if (![[NSFileManager defaultManager] fileExistsAtPath:outputPath]) {
+        if (errorOut != NULL) {
+            *errorOut = [self _buildAPIError:SCMeshTexturingAPIErrorInternal
+                                 description:@"Meshing produced no output file at %@", outputPath];
+        }
+        return NO;
+    }
+
+    io::ply::ReadGeometryFromPLYFile(geometryOut, std::string([outputPath UTF8String]));
+
+    if (geometryOut.vertexCount() == 0) {
+        if (errorOut != NULL) {
+            *errorOut = [self _buildAPIError:SCMeshTexturingAPIErrorInternal
+                                 description:@"Meshing produced an empty mesh (0 vertices). Likely cause: input normals invalid or points coplanar."];
+        }
+        return NO;
+    }
+
+    // color is no longer needed beyond this point. discard.
+    std::vector<math::Vec3> newColors(geometryOut.vertexCount(), math::Vec3{1, 1, 1});
+
+    if (!geometryOut.setColors(newColors)) {
+        if (errorOut != NULL) {
+            *errorOut = [self _buildAPIError:SCMeshTexturingAPIErrorInternal
+                                 description:@"Failed to assign vertex colors to meshed geometry."];
+        }
+        return NO;
+    }
+
+    return YES;
 }
 
 #ifdef SAVE_DIAGNOSTICS

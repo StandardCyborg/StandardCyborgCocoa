@@ -40,7 +40,9 @@ public:
                                            ICPConfiguration icpConfig,
                                            SurfelFusionConfiguration surfelFusionConfiguration,
                                            double currentTime,
-                                           const std::vector<ScreenSpaceLandmark>* screenSpaceLandmarks = NULL);
+                                           const std::vector<ScreenSpaceLandmark>* screenSpaceLandmarks = NULL,
+                                           const Eigen::Matrix4f* headPoseDelta = nullptr,
+                                           float headPoseConfidence = 0.0f);
 
     PBFFinalStatistics finishAssimilating(SurfelFusionConfiguration surfelFusionConfiguration);
 
